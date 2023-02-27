@@ -1,0 +1,89 @@
+name: mh
+version: 1.0.0+1
+publish_to: none
+description: A new Flutter project.
+environment:
+  sdk: '>=2.18.6 <3.0.0'
+
+dependencies:
+  cupertino_icons: ^1.0.2
+
+  # better error handle helper
+  dartz: ^0.10.1
+
+  # state management, routing
+  get: 4.6.5
+
+  # local storage
+  get_storage: ^2.0.3
+
+  # save image in local
+  cached_network_image: ^3.2.1
+
+  # image picker form local
+  image_picker: ^0.8.5+3
+  image_cropper: ^3.0.0
+
+  # for image picker
+  permission_handler: any
+
+  # for network (specially for upload file)
+  dio: ^4.0.6
+  http_parser: ^4.0.2
+
+  # check ui in different device
+  device_preview: ^1.1.0
+
+  # bottom modal sheet
+  modal_bottom_sheet: ^2.1.2
+
+  # dotted border for beautiful ui
+  dotted_border: ^2.0.0+2
+
+  # handle multiple device ratio
+  flutter_screenutil: ^5.6.0
+
+  # check token expire or not
+  jwt_decoder: ^2.0.1
+
+  expandable_page_view: ^1.0.17
+
+  states_rebuilder: ^6.2.0
+
+  intl_phone_field: ^3.1.0
+
+  lottie: ^2.2.0
+
+  another_xlider: ^1.1.2
+
+  badges: ^3.0.2
+
+  intl: ^0.17.0
+
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_lints: ^2.0.0
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/icons/positions/
+    - assets/lottie/
+    - assets/payment/
+
+  fonts:
+    - family: Montserrat
+      fonts:
+        - asset: assets/fonts/Montserrat-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Montserrat-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Montserrat-SemiBold.ttf
+          weight: 600
+
