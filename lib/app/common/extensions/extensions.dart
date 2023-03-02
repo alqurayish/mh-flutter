@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:intl/intl.dart';
 
 import '../utils/exports.dart';
 
@@ -20,6 +21,18 @@ extension CompactShort on num {
 
 extension BoolApiFormat on bool {
   String get toApiFormat => this ? "YES" : "NO";
+}
+
+extension DatetimeFormat on DateTime {
+  String get EdMMMy => DateFormat('E, d MMM ,y').format(this).toString();
+
+  String get dMMMy => DateFormat('d MMM yy').format(this).toString();
+
+  String differenceInDays(DateTime endDate) {
+    int difference = endDate.difference(this).inDays + 1;
+
+    return "$difference day${difference > 1 ? 's' : ''}";
+  }
 }
 
 extension TextColor on Color {

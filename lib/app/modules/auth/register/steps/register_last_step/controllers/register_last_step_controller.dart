@@ -47,13 +47,13 @@ class RegisterLastStepController extends GetxController {
     ]).then((response) {
 
       response[0].fold((CustomError customError) {
-        Utils.errorDialog(context!, customError..onRetry = _clientRegistration);
+        Utils.errorDialog(context!, customError..onRetry = _fetchSourceAndRefers);
       }, (r) {
         sources = r as Sources;
       });
 
       response[1].fold((CustomError customError) {
-        Utils.errorDialog(context!, customError..onRetry = _clientRegistration);
+        Utils.errorDialog(context!, customError..onRetry = _fetchSourceAndRefers);
       }, (r) {
         employees = r as Employees;
       });
@@ -61,6 +61,27 @@ class RegisterLastStepController extends GetxController {
       loading.value = false;
 
     });
+  }
+
+  String _getSourceId() {
+    for (Source element in (sources?.sources ?? [])) {
+      if(element.name == selectedSource) {
+        return element.id;
+      }
+    }
+    return '';
+  }
+
+  String _getReferPersonId() {
+    if (selectedRefer == "Other") return "";
+
+    for (Employee element in (employees?.users ?? [])) {
+      if("${element.name} - ${element.userIdNumber}" == selectedRefer) {
+        return element.id!;
+      }
+    }
+
+    return "";
   }
 
   void onRegisterClick() {
@@ -97,8 +118,8 @@ class RegisterLastStepController extends GetxController {
         restaurantAddress: _registerController.tecRestaurantAddress.text,
         email: _registerController.tecEmailAddress.text,
         phoneNumber: _registerController.selectedClientCountry.dialCode + _registerController.tecPhoneNumber.text,
-        sourceFrom: _registerController.tecRestaurantName.text,
-        referPersonName: _registerController.tecRestaurantName.text,
+        sourceFrom: _getSourceId(),
+        referPersonName: _getReferPersonId(),
         password: _registerController.tecPassword.text,
       );
 
@@ -146,8 +167,8 @@ class RegisterLastStepController extends GetxController {
           emmergencyContact : step3.selectedCountry.dialCode + step3.tecEmergencyContact.text.trim(),
           skillId : Utils.getPositionId(step3.selectedSkill.value.trim()),
           password : "",
-          sourceFrom : "",
-          referPersonId : "",
+          sourceFrom : _getSourceId(),
+          referPersonId : _getReferPersonId(),
           employeeExperience : "0",
       );
 

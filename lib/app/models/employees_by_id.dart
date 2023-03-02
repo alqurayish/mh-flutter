@@ -16,7 +16,7 @@ class Employees {
   final String? message;
   final int? total;
   final int? count;
-  final dynamic next;
+  final int? next;
   final List<Employee>? users;
 
   factory Employees.fromRawJson(String str) => Employees.fromJson(json.decode(str));

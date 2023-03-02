@@ -15,6 +15,7 @@ class PaymentForHireController extends GetxController {
   }
 
   void onSubmitRequestClick() {
+    shortlistController.fetchShortListEmployees();
     Get.until((route) => Get.currentRoute == Routes.clientHome);
     Get.toNamed(Routes.hireStatus);
   }

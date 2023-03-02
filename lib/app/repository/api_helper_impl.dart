@@ -164,6 +164,8 @@ class ApiHelperImpl extends GetConnect with ApiHelper {
 
     var response = await get(url);
 
+    print(response.body);
+
     return _convert<Employees>(
       response,
       Employees.fromJson,
@@ -183,6 +185,8 @@ class ApiHelperImpl extends GetConnect with ApiHelper {
   @override
   EitherModel<ShortlistedEmployees> fetchShortlistEmployees() async {
     var response = await get("short-list");
+
+    print(response.body);
 
     return _convert<ShortlistedEmployees>(
       response,
@@ -207,9 +211,35 @@ class ApiHelperImpl extends GetConnect with ApiHelper {
   EitherModel<Sources> fetchSources() async {
     var response = await get("sources");
 
+    print(response.body);
+
     return _convert<Sources>(
       response,
       Sources.fromJson,
+    ).fold((l) => left(l), (r) => right(r));
+  }
+
+  @override
+  EitherModel<Response> updateShortlistItem(Map<String, dynamic> data) async {
+    var response = await put("short-list/update", jsonEncode(data));
+
+    return _convert<Response>(
+      response,
+      (Map<String, dynamic> data) {},
+      onlyErrorCheck: true,
+    ).fold((l) => left(l), (r) => right(r));
+  }
+
+  @override
+  EitherModel<Response> deleteFromShortlist(String shortlistId) async {
+    var response = await delete("short-list/delete/$shortlistId");
+
+    print(response.body);
+
+    return _convert<Response>(
+      response,
+      (Map<String, dynamic> data) {},
+      onlyErrorCheck: true,
     ).fold((l) => left(l), (r) => right(r));
   }
 }

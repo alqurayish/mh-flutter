@@ -47,4 +47,8 @@ abstract class ApiHelper {
   EitherModel<Sources> fetchSources();
 
   EitherModel<Response> addToShortlist(Map<String, dynamic> data);
+
+  EitherModel<Response> updateShortlistItem(Map<String, dynamic> data);
+
+  EitherModel<Response> deleteFromShortlist(String shortlistId);
 }

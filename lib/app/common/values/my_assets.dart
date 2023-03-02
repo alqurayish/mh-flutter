@@ -27,6 +27,7 @@ class MyAssets {
   static const education = "assets/images/education.png";
   static const certificate = "assets/images/certificate.png";
   static const language = "assets/images/language.png";
+  static const calender = "assets/images/calender.png";
 
   // position
   static const barista = "assets/icons/positions/barista.png";

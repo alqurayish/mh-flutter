@@ -1,5 +1,6 @@
 import '../../../../common/utils/exports.dart';
 import '../../../../common/widgets/custom_appbar.dart';
+import '../../../../common/widgets/custom_bottombar.dart';
 import '../controllers/client_shortlisted_controller.dart';
 import '../models/shortlisted_employees.dart';
 
@@ -15,27 +16,39 @@ class ClientShortlistedView extends GetView<ClientShortlistedController> {
         title: "Shortlist",
         context: context,
       ),
-      body: Column(
-        children: [
-          ...controller.shortlistController.getUniquePositions().map((e) {
-            return _employeeInSamePosition(e);
-          }),
-        ],
+      bottomNavigationBar: _bottomBar(context),
+      body: Obx(
+        () => Column(
+          children: [
+            SizedBox(height: 22.h),
+
+            ...controller.shortlistController.getUniquePositions().map((e) {
+              return _employeeInSamePosition(e);
+            }),
+          ],
+        ),
       ),
     );
   }
 
   Widget _employeeInSamePosition(String positionId) {
+    final List<ShortList> employees = controller.shortlistController.getEmployeesBasedOnPosition(positionId);
+
     return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          Utils.getPositionName(positionId),
-          style: MyColors.l111111_dwhite(controller.context!).semiBold16,
+        Padding(
+          padding: EdgeInsets.fromLTRB(24.w, 0, 24.w, 12.h),
+          child: Text(
+            "${Utils.getPositionName(positionId)} (${employees.length})",
+            style: MyColors.l111111_dwhite(controller.context!).semiBold16,
+          ),
         ),
 
-        // ...controller.shortlistController.getEmployeesBasedOnPosition(positionId).map((e) {
-        //   return _employeeItem(e);
-        // }),
+        ...employees.map((e) {
+          return _employeeItem(e);
+        }),
       ],
     );
   }
@@ -71,13 +84,34 @@ class ClientShortlistedView extends GetView<ClientShortlistedController> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          SizedBox(height: 16.h),
+                          SizedBox(height: 5.h),
                           Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              _name("Khalid Hassan"),
-                              _rating(4),
-                              // _name(employee ?? "-"),
-                              // _rating(user.rating ?? 0),
+                              _name(employee.employeeName ?? "-"),
+                              _rating(employee.employeeRating ?? 0),
+                              const Spacer(),
+                              Obx(
+                                () => controller.shortlistController.getIcon(
+                                  employee.employeeId!,
+                                  controller.shortlistController.isFetching.value,
+                                ),
+                              ),
+                              // Obx(
+                              //   () => controller.loadingRemoveFromShortcut.value && employee.id == controller.removeShortlistId
+                              //       ? const Center(
+                              //           child: CircularProgressIndicator(),
+                              //         )
+                              //       : GestureDetector(
+                              //           onTap: () => controller.onBookmarkClick(employee),
+                              //           child: const Icon(
+                              //             Icons.bookmark,
+                              //             color: MyColors.c_C6A34F,
+                              //           ),
+                              //         ),
+                              // ),
+                              SizedBox(width: 9.w),
                             ],
                           ),
                         ],
@@ -86,16 +120,82 @@ class ClientShortlistedView extends GetView<ClientShortlistedController> {
                   ],
                 ),
 
-                SizedBox(height: 8.h),
+                SizedBox(height: 3.h),
 
-                const Divider(
+                Divider(
                   thickness: .5,
                   height: 1,
                   color: MyColors.c_D9D9D9,
-                  endIndent: 13,
+                  endIndent: 13.w,
                 ),
 
-                SizedBox(height: 8.h),
+                SizedBox(height: 10.h),
+
+                Row(
+                  children: [
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () =>  controller.onDataSelect(employee.id!),
+                        child: Container(
+                          height: 25.h,
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 5.w,
+                            vertical: 2.h,
+                          ),
+                          decoration: BoxDecoration(
+                            color: MyColors.c_F5F5F5,
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: Row(
+                            children: [
+                              Image.asset(MyAssets.calender),
+                              SizedBox(width: 10.w),
+
+                              Text(
+                                employee.fromDate != null && employee.toDate != null ?
+                                "${employee.fromDate!.dMMMy} - ${employee.toDate!.dMMMy} (${employee.fromDate!.differenceInDays(employee.toDate!)})"
+                                : "--/--/--   -   --/--/--",
+                                style: MyColors.c_111111.medium12,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    SizedBox(width: 17.w),
+
+                    Obx(
+                      ()=> GestureDetector(
+                        onTap: () => controller.onSelectClick(employee),
+                        child: Container(
+                          width: 25.h,
+                          height: 25.h,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: controller.shortlistController.selectedForHire.contains(employee)
+                                ? Colors.green.shade400
+                                : MyColors.c_F5F5F5,
+                            border: Border.all(
+                              color: controller.shortlistController.selectedForHire.contains(employee)
+                                  ? Colors.green
+                                  : Colors.grey.shade300,
+                            ),
+                          ),
+                          child: Icon(
+                            Icons.check,
+                            size: 14,
+                            color: controller.shortlistController.selectedForHire.contains(employee)
+                                ? Colors.white
+                                : Colors.grey.shade300,
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    SizedBox(width: 10.w),
+                  ],
+                )
 
               ],
             ),
@@ -106,9 +206,9 @@ class ClientShortlistedView extends GetView<ClientShortlistedController> {
   }
 
   Widget _image() => Container(
-        margin: const EdgeInsets.fromLTRB(16, 16, 13, 16),
+        margin: const EdgeInsets.fromLTRB(8, 8, 13, 8),
         width: 74.w,
-        height: 74.w,
+        height: 74.h,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5),
           color: Colors.grey.withOpacity(.1),
@@ -147,4 +247,19 @@ class ClientShortlistedView extends GetView<ClientShortlistedController> {
           ],
         ),
       );
+
+  Widget _bottomBar(BuildContext context) {
+    return Obx(
+      () => CustomBottomBar(
+        child: CustomButtons.button(
+          onTap: controller.onBookAllClick,
+          text: controller.shortlistController.selectedForHire.isEmpty
+              || controller.shortlistController.selectedForHire.length == controller.shortlistController.totalShortlisted.value
+              ? "Book All"
+              : "Book (${controller.shortlistController.selectedForHire.length}) Employee",
+          customButtonStyle: CustomButtonStyle.radiusTopBottomCorner,
+        ),
+      ),
+    );
+  }
 }

@@ -16,7 +16,7 @@ class ShortlistedEmployees {
   final String? message;
   final int? total;
   final int? count;
-  final dynamic next;
+  final int? next;
   final List<ShortList>? shortList;
 
   factory ShortlistedEmployees.fromRawJson(String str) => ShortlistedEmployees.fromJson(json.decode(str));
@@ -48,6 +48,10 @@ class ShortList {
   ShortList({
     this.id,
     this.employeeId,
+    this.employeeName,
+    this.employeeRating,
+    this.positionId,
+    this.feeAmount,
     this.createdBy,
     this.createdAt,
     this.updatedAt,
@@ -59,6 +63,10 @@ class ShortList {
 
   final String? id;
   final String? employeeId;
+  final String? employeeName;
+  final int? employeeRating;
+  final String? positionId;
+  final int? feeAmount;
   final String? createdBy;
   final DateTime? createdAt;
   final DateTime? updatedAt;
@@ -74,6 +82,10 @@ class ShortList {
   factory ShortList.fromJson(Map<String, dynamic> json) => ShortList(
     id: json["_id"],
     employeeId: json["employeeId"],
+    employeeName: json["employeeName"],
+    employeeRating: json["employeeRating"],
+    positionId: json["positionId"],
+    feeAmount: json["feeAmount"],
     createdBy: json["createdBy"],
     createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
     updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
@@ -86,6 +98,10 @@ class ShortList {
   Map<String, dynamic> toJson() => {
     "_id": id,
     "employeeId": employeeId,
+    "employeeName": employeeName,
+    "employeeRating": employeeRating,
+    "positionId": positionId,
+    "feeAmount": feeAmount,
     "createdBy": createdBy,
     "createdAt": createdAt?.toIso8601String(),
     "updatedAt": updatedAt?.toIso8601String(),

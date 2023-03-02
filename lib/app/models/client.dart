@@ -14,6 +14,7 @@ class Client {
     this.restaurantName,
     this.restaurantAddress,
     this.rating,
+    this.isReferPerson,
     this.iat,
     this.exp,
   });
@@ -30,6 +31,7 @@ class Client {
   final String? restaurantName;
   final String? restaurantAddress;
   final int? rating;
+  final bool? isReferPerson;
   final int? iat;
   final int? exp;
 
@@ -50,6 +52,7 @@ class Client {
     restaurantName: json["restaurantName"],
     restaurantAddress: json["restaurantAddress"],
     rating: json["rating"],
+    isReferPerson: json["isReferPerson"],
     iat: json["iat"],
     exp: json["exp"],
   );
@@ -67,6 +70,7 @@ class Client {
     "restaurantName": restaurantName,
     "restaurantAddress": restaurantAddress,
     "rating": rating,
+    "isReferPerson": isReferPerson,
     "iat": iat,
     "exp": exp,
   };

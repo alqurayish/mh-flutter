@@ -41,15 +41,15 @@ class ShortlistController extends GetxService {
   List<String> getUniquePositions() {
     List<String> ids = [];
     for (ShortList element in shortList) {
-      if (!ids.contains(element)) {
-        ids.add(element.employeeId!);
+      if (!ids.contains(element.positionId)) {
+        ids.add(element.positionId!);
       }
     }
     return ids;
   }
 
   List<ShortList> getEmployeesBasedOnPosition(String position) {
-    return shortList.where((employee) => employee.employeeId == position).toList();
+    return shortList.where((employee) => employee.positionId == position).toList();
   }
 
   Future<void> onBookNowClick(String employeeId) async {
@@ -61,11 +61,7 @@ class ShortlistController extends GetxService {
   Future<void> _addEmployeeToShortlist(String employeeId) async {
     isFetching.value = true;
 
-    _selectedId = employeeId;
-
-    Map<String, dynamic> data  = {
-      "shortList" : [{"employeeId" : employeeId}]
-    };
+    Map<String, dynamic> data  = {"employeeId" : employeeId};
 
     await _apiHelper.addToShortlist(data).then((response) {
       response.fold((l) {
@@ -77,15 +73,37 @@ class ShortlistController extends GetxService {
 
   }
 
-  void _removeEmployeeFromFromShortlist(String employeeId) {
+  Future<void> _removeEmployeeFromFromShortlist(String employeeId) async {
     isFetching.value = true;
-    for (var element in shortList) {
-      if(element.employeeId == employeeId) {
-        shortList..remove(element)..refresh();
-        isFetching.value = false;
-        break;
-      }
-    }
+
+    String shortlistId = shortList.firstWhere((element) => element.employeeId == employeeId).id!;
+
+    await _apiHelper.deleteFromShortlist(shortlistId).then((response) {
+
+      isFetching.value = false;
+
+      response.fold((l) {
+        Logcat.msg(l.msg);
+      }, (r) {
+        for (var element in shortList) {
+          if (element.employeeId == employeeId) {
+
+            shortList..remove(element)..refresh();
+
+            totalShortlisted.value = shortList.length;
+
+            selectedForHire.removeWhere((element) => element.employeeId == employeeId);
+            selectedForHire.refresh();
+
+            isFetching.value = false;
+
+            break;
+          }
+        }
+      });
+
+    });
+
   }
 
   Widget getIcon(String employeeId, bool isFetching) {
@@ -114,6 +132,8 @@ class ShortlistController extends GetxService {
   }
 
   void _onBookmarkClick(String employeeId) {
+    _selectedId = employeeId;
+
     if(_isEmployeeAddedInShortlist(employeeId)) {
       _confirmationForRemoveEmployeeFromShortlist(employeeId);
     } else {
@@ -121,12 +141,32 @@ class ShortlistController extends GetxService {
     }
   }
 
-  void addShortlistEmployeeForHire(ShortList shortList) {
-    selectedForHire..add(shortList)..refresh();
+  void onSelectClick(ShortList shortList) {
+    if(selectedForHire.contains(shortList)) {
+      selectedForHire.remove(shortList);
+    } else {
+      selectedForHire.add(shortList);
+    }
+
+    selectedForHire.refresh();
   }
 
-  void removeShortlistEmployeeForHire(ShortList shortList) {
-    selectedForHire..remove(shortList)..refresh();
+  bool isDateRangeSetForSelectedUser() {
+    if(selectedForHire.isEmpty) {
+      selectedForHire.addAll(shortList);
+      selectedForHire.refresh();
+    }
+
+    bool valid = true;
+
+    for (ShortList element in selectedForHire) {
+      if(element.fromDate == null || element.toDate == null) {
+        valid = false;
+        break;
+      }
+    }
+
+    return valid;
   }
 
   bool _isEmployeeAddedInShortlist(String employeeId) {
