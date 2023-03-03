@@ -4,7 +4,7 @@ class ClientRegistration {
   String email;
   String phoneNumber;
   String sourceFrom;
-  String referPersonName;
+  String referPersonId;
   String password;
 
   ClientRegistration({
@@ -13,17 +13,17 @@ class ClientRegistration {
     required this.email,
     required this.phoneNumber,
     required this.sourceFrom,
-    required this.referPersonName,
+    required this.referPersonId,
     required this.password,
   });
 
-  Map<String, String> get toJson => {
+  Map<String, dynamic> get toJson => {
         "restaurantName": restaurantName,
         "restaurantAddress": restaurantAddress,
         "email": email,
         "phoneNumber": phoneNumber,
         "sourceFrom": sourceFrom,
-        "referPersonName": referPersonName,
+        "referPersonId": referPersonId,
         "password": password,
       };
 }

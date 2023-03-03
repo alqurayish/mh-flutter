@@ -9,6 +9,7 @@ import '../../../../../../repository/api_helper.dart';
 import '../../../../../../routes/app_pages.dart';
 import '../../../controllers/register_controller.dart';
 import '../../../models/client_register.dart';
+import '../../../models/client_register_response.dart';
 import '../../../models/employee_registration.dart';
 import '../../register_employee_step_2/controllers/register_employee_step_2_controller.dart';
 import '../../register_employee_step_3/controllers/register_employee_step_3_controller.dart';
@@ -119,13 +120,9 @@ class RegisterLastStepController extends GetxController {
         email: _registerController.tecEmailAddress.text,
         phoneNumber: _registerController.selectedClientCountry.dialCode + _registerController.tecPhoneNumber.text,
         sourceFrom: _getSourceId(),
-        referPersonName: _getReferPersonId(),
+        referPersonId: _getReferPersonId(),
         password: _registerController.tecPassword.text,
       );
-
-      print(clientRegistration.toJson);
-
-      return;
 
       CustomLoader.show(context!);
 
@@ -135,8 +132,8 @@ class RegisterLastStepController extends GetxController {
 
         response.fold((CustomError customError) {
           Utils.errorDialog(context!, customError..onRetry = _clientRegistration);
-        }, (r) {
-          Get.toNamed(Routes.clientHome);
+        }, (ClientRegistrationResponse clientRegistrationResponse) async {
+          await _appController.afterSuccessLoginOrRegister(clientRegistrationResponse.token!);
         });
       });
     }
@@ -166,20 +163,18 @@ class RegisterLastStepController extends GetxController {
           licensesNo : step3.tecLicence.text.trim(),
           emmergencyContact : step3.selectedCountry.dialCode + step3.tecEmergencyContact.text.trim(),
           skillId : Utils.getPositionId(step3.selectedSkill.value.trim()),
-          password : "",
           sourceFrom : _getSourceId(),
           referPersonId : _getReferPersonId(),
-          employeeExperience : "0",
+          employeeExperience : 0,
       );
 
       print(employeeRegistration.toJson);
-      return;
 
       await _apiHelper.employeeRegister(employeeRegistration).then((response) {
-        response.fold((l) {
-
-        }, (r) {
-          Get.toNamed(Routes.employeeRegisterSuccess);
+        response.fold((CustomError customError) {
+          Utils.errorDialog(context!, customError..onRetry = _clientRegistration);
+        }, (ClientRegistrationResponse clientRegistrationResponse) async {
+          await _appController.afterSuccessLoginOrRegister(clientRegistrationResponse.token!);
         });
       });
     }

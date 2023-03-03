@@ -17,7 +17,7 @@ import '../modules/auth/login/model/login_response.dart';
 import '../modules/auth/register/models/client_register.dart';
 import '../modules/auth/register/models/client_register_response.dart';
 import '../modules/auth/register/models/employee_registration.dart';
-import '../modules/client/client_shortlisted/models/shortlisted_employees.dart';
+import '../modules/client/client_shortlisted/models/shortlisted_employees.dart' as shortlistEmployees;
 import '../modules/client/client_terms_condition_for_hire/models/terms_condition_for_hire.dart';
 import 'api_error_handel.dart';
 import 'api_helper.dart';
@@ -112,7 +112,10 @@ class ApiHelperImpl extends GetConnect with ApiHelper {
   EitherModel<ClientRegistrationResponse> clientRegister(
     ClientRegistration clientRegistration,
   ) async {
+    print(clientRegistration.toJson);
     var response = await get("users/client-register");
+
+    print(response.body);
 
     return _convert<ClientRegistrationResponse>(
       response,
@@ -125,6 +128,8 @@ class ApiHelperImpl extends GetConnect with ApiHelper {
     EmployeeRegistration employeeRegistration,
   ) async {
     var response = await get("users/employee-register");
+
+    print(response.body);
 
     return _convert<ClientRegistrationResponse>(
       response,
@@ -183,14 +188,14 @@ class ApiHelperImpl extends GetConnect with ApiHelper {
   }
 
   @override
-  EitherModel<ShortlistedEmployees> fetchShortlistEmployees() async {
+  EitherModel<shortlistEmployees.ShortlistedEmployees> fetchShortlistEmployees() async {
     var response = await get("short-list");
 
     print(response.body);
 
-    return _convert<ShortlistedEmployees>(
+    return _convert<shortlistEmployees.ShortlistedEmployees>(
       response,
-      ShortlistedEmployees.fromJson,
+      shortlistEmployees.ShortlistedEmployees.fromJson,
     ).fold((l) => left(l), (r) => right(r));
   }
 
@@ -209,9 +214,7 @@ class ApiHelperImpl extends GetConnect with ApiHelper {
 
   @override
   EitherModel<Sources> fetchSources() async {
-    var response = await get("sources");
-
-    print(response.body);
+    var response = await get("sources/list-for-dropdown");
 
     return _convert<Sources>(
       response,
@@ -233,6 +236,19 @@ class ApiHelperImpl extends GetConnect with ApiHelper {
   @override
   EitherModel<Response> deleteFromShortlist(String shortlistId) async {
     var response = await delete("short-list/delete/$shortlistId");
+
+    print(response.body);
+
+    return _convert<Response>(
+      response,
+      (Map<String, dynamic> data) {},
+      onlyErrorCheck: true,
+    ).fold((l) => left(l), (r) => right(r));
+  }
+
+  @override
+  EitherModel<Response> hireConfirm(Map<String, dynamic> data) async {
+    var response = await post("hired-histories/create", jsonEncode(data));
 
     print(response.body);
 

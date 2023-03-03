@@ -14,10 +14,9 @@ class EmployeeRegistration {
   String licensesNo;
   String emmergencyContact;
   String skillId;
-  String password;
   String sourceFrom;
   String referPersonId;
-  String employeeExperience;
+  int employeeExperience;
 
   EmployeeRegistration({
     required this.name,
@@ -34,13 +33,12 @@ class EmployeeRegistration {
     required this.licensesNo,
     required this.emmergencyContact,
     required this.skillId,
-    required this.password,
     required this.sourceFrom,
     required this.referPersonId,
     required this.employeeExperience,
   });
 
-  Map<String, String> get toJson => {
+  Map<String, dynamic> get toJson => {
         "name": name,
         "positionId": positionId,
         "gender": gender,
@@ -55,7 +53,6 @@ class EmployeeRegistration {
         "licensesNo": licensesNo,
         "emmergencyContact": emmergencyContact,
         "skillId": skillId,
-        "password": password,
         "sourceFrom": sourceFrom,
         "referPersonId": referPersonId,
         "employeeExperience": employeeExperience,

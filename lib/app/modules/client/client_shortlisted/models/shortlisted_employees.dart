@@ -1,6 +1,12 @@
-import 'dart:convert';
-
 class ShortlistedEmployees {
+  String? status;
+  int? statusCode;
+  String? message;
+  int? total;
+  int? count;
+  int? next;
+  List<ShortList>? shortList;
+
   ShortlistedEmployees({
     this.status,
     this.statusCode,
@@ -11,103 +17,144 @@ class ShortlistedEmployees {
     this.shortList,
   });
 
-  final String? status;
-  final int? statusCode;
-  final String? message;
-  final int? total;
-  final int? count;
-  final int? next;
-  final List<ShortList>? shortList;
+  ShortlistedEmployees.fromJson(Map<String, dynamic> json) {
+    status = json['status'];
+    statusCode = json['statusCode'];
+    message = json['message'];
+    total = json['total'];
+    count = json['count'];
+    next = json['next'];
+    if (json['shortList'] != null) {
+      shortList = <ShortList>[];
+      json['shortList'].forEach((v) {
+        shortList!.add(ShortList.fromJson(v));
+      });
+    }
+  }
 
-  factory ShortlistedEmployees.fromRawJson(String str) => ShortlistedEmployees.fromJson(json.decode(str));
-
-  String toRawJson() => json.encode(toJson());
-
-  factory ShortlistedEmployees.fromJson(Map<String, dynamic> json) => ShortlistedEmployees(
-    status: json["status"],
-    statusCode: json["statusCode"],
-    message: json["message"],
-    total: json["total"],
-    count: json["count"],
-    next: json["next"],
-    shortList: json["shortList"] == null ? [] : List<ShortList>.from(json["shortList"]!.map((x) => ShortList.fromJson(x))),
-  );
-
-  Map<String, dynamic> toJson() => {
-    "status": status,
-    "statusCode": statusCode,
-    "message": message,
-    "total": total,
-    "count": count,
-    "next": next,
-    "shortList": shortList == null ? [] : List<dynamic>.from(shortList!.map((x) => x.toJson())),
-  };
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
+    data['statusCode'] = statusCode;
+    data['message'] = message;
+    data['total'] = total;
+    data['count'] = count;
+    data['next'] = next;
+    if (shortList != null) {
+      data['shortList'] = shortList!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
 }
 
 class ShortList {
+  String? sId;
+  String? employeeId;
+  Employees? employees;
+  int? feeAmount;
+  String? createdBy;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+  int? iV;
+  DateTime? fromDate;
+  DateTime? toDate;
+
   ShortList({
-    this.id,
+    this.sId,
     this.employeeId,
-    this.employeeName,
-    this.employeeRating,
-    this.positionId,
+    this.employees,
     this.feeAmount,
     this.createdBy,
     this.createdAt,
     this.updatedAt,
-    this.v,
-    this.introductionFee,
+    this.iV,
     this.fromDate,
     this.toDate,
   });
 
-  final String? id;
-  final String? employeeId;
-  final String? employeeName;
-  final int? employeeRating;
-  final String? positionId;
-  final int? feeAmount;
-  final String? createdBy;
-  final DateTime? createdAt;
-  final DateTime? updatedAt;
-  final int? v;
-  final int? introductionFee;
-  final DateTime? fromDate;
-  final DateTime? toDate;
+  ShortList.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    employeeId = json['employeeId'];
+    employees = json['employees'] != null
+        ? Employees.fromJson(json['employees'])
+        : null;
+    feeAmount = json['feeAmount'];
+    createdBy = json['createdBy'];
+    createdAt = json['createdAt'] == null ? null : DateTime.parse(json["createdAt"]);
+    updatedAt = json['updatedAt'] == null ? null : DateTime.parse(json["updatedAt"]);
+    iV = json['__v'];
+    fromDate = json['fromDate'] == null ? null : DateTime.parse(json["fromDate"]);
+    toDate = json['toDate'] == null ? null : DateTime.parse(json["toDate"]);
+  }
 
-  factory ShortList.fromRawJson(String str) => ShortList.fromJson(json.decode(str));
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['_id'] = sId;
+    data['employeeId'] = employeeId;
+    if (employees != null) {
+      data['employees'] = employees!.toJson();
+    }
+    data['feeAmount'] = feeAmount;
+    data['createdBy'] = createdBy;
+    data['createdAt'] = createdAt;
+    data['updatedAt'] = updatedAt;
+    data['__v'] = iV;
+    data['fromDate'] = fromDate;
+    data['toDate'] = toDate;
+    return data;
+  }
+}
 
-  String toRawJson() => json.encode(toJson());
+class Employees {
+  String? employeeId;
+  String? name;
+  String? positionId;
+  String? presentAddress;
+  String? permanentAddress;
+  int? employeeExperience;
+  int? rating;
+  int? totalWorkingHour;
+  int? hourlyRate;
+  String? sId;
 
-  factory ShortList.fromJson(Map<String, dynamic> json) => ShortList(
-    id: json["_id"],
-    employeeId: json["employeeId"],
-    employeeName: json["employeeName"],
-    employeeRating: json["employeeRating"],
-    positionId: json["positionId"],
-    feeAmount: json["feeAmount"],
-    createdBy: json["createdBy"],
-    createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
-    updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
-    v: json["__v"],
-    introductionFee: json["introductionFee"],
-    fromDate: json["fromDate"] == null ? null : DateTime.parse(json["fromDate"]),
-    toDate: json["toDate"] == null ? null : DateTime.parse(json["toDate"]),
-  );
+  Employees({
+    this.employeeId,
+    this.name,
+    this.positionId,
+    this.presentAddress,
+    this.permanentAddress,
+    this.employeeExperience,
+    this.rating,
+    this.totalWorkingHour,
+    this.hourlyRate,
+    this.sId,
+  });
 
-  Map<String, dynamic> toJson() => {
-    "_id": id,
-    "employeeId": employeeId,
-    "employeeName": employeeName,
-    "employeeRating": employeeRating,
-    "positionId": positionId,
-    "feeAmount": feeAmount,
-    "createdBy": createdBy,
-    "createdAt": createdAt?.toIso8601String(),
-    "updatedAt": updatedAt?.toIso8601String(),
-    "__v": v,
-    "introductionFee": introductionFee,
-    "fromDate": fromDate?.toIso8601String(),
-    "toDate": toDate?.toIso8601String(),
-  };
+  Employees.fromJson(Map<String, dynamic> json) {
+    employeeId = json['employeeId'];
+    name = json['name'];
+    positionId = json['positionId'];
+    presentAddress = json['presentAddress'];
+    permanentAddress = json['permanentAddress'];
+    employeeExperience = json['employeeExperience'];
+    rating = json['rating'];
+    totalWorkingHour = json['totalWorkingHour'];
+    hourlyRate = json['hourlyRate'];
+    sId = json['_id'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['employeeId'] = employeeId;
+    data['name'] = name;
+    data['positionId'] = positionId;
+    data['presentAddress'] = presentAddress;
+    data['permanentAddress'] = permanentAddress;
+    data['employeeExperience'] = employeeExperience;
+    data['rating'] = rating;
+    data['totalWorkingHour'] = totalWorkingHour;
+    data['hourlyRate'] = hourlyRate;
+    data['_id'] = sId;
+    return data;
+  }
 }

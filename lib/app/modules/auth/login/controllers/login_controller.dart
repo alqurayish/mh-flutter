@@ -82,14 +82,7 @@ class LoginController extends GetxController implements LoginViewInterface {
   }
 
   Future<void> _goToNextRoute(String token) async {
-    await _appController.updateToken(token);
-
-    if(_appController.user.value.userType == null) {
-
-    } else {
-      _appController.activeShortlistService();
-      Get.offAndToNamed(_appController.user.value.userType!.homeRoute);
-    }
+    await _appController.afterSuccessLoginOrRegister(token);
   }
 
   void _accountBan() {

@@ -9,7 +9,7 @@ import '../modules/auth/login/model/login_response.dart';
 import '../modules/auth/register/models/client_register.dart';
 import '../modules/auth/register/models/client_register_response.dart';
 import '../modules/auth/register/models/employee_registration.dart';
-import '../modules/client/client_shortlisted/models/shortlisted_employees.dart';
+import '../modules/client/client_shortlisted/models/shortlisted_employees.dart' as shortlistEmployees;
 import '../modules/client/client_terms_condition_for_hire/models/terms_condition_for_hire.dart';
 
 abstract class ApiHelper {
@@ -42,7 +42,7 @@ abstract class ApiHelper {
 
   EitherModel<TermsConditionForHire> getTermsConditionForHire();
 
-  EitherModel<ShortlistedEmployees> fetchShortlistEmployees();
+  EitherModel<shortlistEmployees.ShortlistedEmployees> fetchShortlistEmployees();
 
   EitherModel<Sources> fetchSources();
 
@@ -51,4 +51,6 @@ abstract class ApiHelper {
   EitherModel<Response> updateShortlistItem(Map<String, dynamic> data);
 
   EitherModel<Response> deleteFromShortlist(String shortlistId);
+
+  EitherModel<Response> hireConfirm(Map<String, dynamic> data);
 }

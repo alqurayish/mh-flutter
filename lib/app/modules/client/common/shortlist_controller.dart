@@ -16,7 +16,7 @@ class ShortlistController extends GetxService {
   String _selectedId = '';
 
   int getIntroductionFees() {
-    return selectedForHire.fold(0, (previousValue, element) => previousValue + (element.introductionFee ?? 0));
+    return selectedForHire.fold(0, (previousValue, element) => previousValue + (element.feeAmount ?? 0));
   }
 
   Future<void> fetchShortListEmployees() async {
@@ -41,15 +41,15 @@ class ShortlistController extends GetxService {
   List<String> getUniquePositions() {
     List<String> ids = [];
     for (ShortList element in shortList) {
-      if (!ids.contains(element.positionId)) {
-        ids.add(element.positionId!);
+      if (!ids.contains(element.employees!.positionId!)) {
+        ids.add(element.employees!.positionId!);
       }
     }
     return ids;
   }
 
   List<ShortList> getEmployeesBasedOnPosition(String position) {
-    return shortList.where((employee) => employee.positionId == position).toList();
+    return shortList.where((employee) => employee.employees!.positionId == position).toList();
   }
 
   Future<void> onBookNowClick(String employeeId) async {
@@ -76,7 +76,7 @@ class ShortlistController extends GetxService {
   Future<void> _removeEmployeeFromFromShortlist(String employeeId) async {
     isFetching.value = true;
 
-    String shortlistId = shortList.firstWhere((element) => element.employeeId == employeeId).id!;
+    String shortlistId = shortList.firstWhere((element) => element.employeeId == employeeId).sId!;
 
     await _apiHelper.deleteFromShortlist(shortlistId).then((response) {
 
@@ -153,8 +153,15 @@ class ShortlistController extends GetxService {
 
   bool isDateRangeSetForSelectedUser() {
     if(selectedForHire.isEmpty) {
-      selectedForHire.addAll(shortList);
+      for(ShortList employee in shortList) {
+        if(employee.fromDate != null && employee.toDate != null) {
+          selectedForHire.add(employee);
+        }
+      }
+
       selectedForHire.refresh();
+
+      return shortList.length == selectedForHire.length;
     }
 
     bool valid = true;

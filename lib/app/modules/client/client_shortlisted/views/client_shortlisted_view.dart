@@ -89,8 +89,8 @@ class ClientShortlistedView extends GetView<ClientShortlistedController> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              _name(employee.employeeName ?? "-"),
-                              _rating(employee.employeeRating ?? 0),
+                              _name(employee.employees?.name ?? "-"),
+                              _rating(employee.employees?.rating ?? 0),
                               const Spacer(),
                               Obx(
                                 () => controller.shortlistController.getIcon(
@@ -135,7 +135,7 @@ class ClientShortlistedView extends GetView<ClientShortlistedController> {
                   children: [
                     Expanded(
                       child: GestureDetector(
-                        onTap: () =>  controller.onDataSelect(employee.id!),
+                        onTap: () =>  controller.onDataSelect(employee.sId!),
                         child: Container(
                           height: 25.h,
                           padding: EdgeInsets.symmetric(

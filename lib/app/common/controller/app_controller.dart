@@ -45,6 +45,17 @@ class AppController extends GetxService {
 
   bool _isTokenExpire() => JwtDecoder.isExpired(StorageHelper.getToken);
 
+  Future<void> afterSuccessLoginOrRegister(String token) async {
+    await updateToken(token);
+
+    if(user.value.userType == null) {
+
+    } else {
+      activeShortlistService();
+      Get.offAndToNamed(user.value.userType!.homeRoute);
+    }
+  }
+
   Future<void> updateToken(String token) async {
     // update token on local
     await StorageHelper.setToken(token);

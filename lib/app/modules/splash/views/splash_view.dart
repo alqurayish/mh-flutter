@@ -10,17 +10,11 @@ class SplashView extends GetView<SplashController> {
 
     return WillPopScope(
       onWillPop: () => Utils.appExitConfirmation(context),
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('SplashView'),
-          centerTitle: true,
-        ),
-        body: const Center(
-          child: Text(
-            "MH",
-            style: TextStyle(fontSize: 20),
-          ),
-        ),
+      child: const Scaffold(
+        body: Center(
+            child: CircularProgressIndicator(
+          color: MyColors.c_C6A34F,
+        )),
       ),
     );
   }
