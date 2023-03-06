@@ -18,6 +18,7 @@ class MhEmployeesByIdView extends GetView<MhEmployeesByIdController> {
       appBar: CustomAppbar.appbar(
         title: controller.position.name ?? "Employees",
         context: context,
+          centerTitle: true,
           actions: [
             Obx(
               () => Visibility(

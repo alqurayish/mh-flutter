@@ -11,35 +11,42 @@ class MhEmployeesView extends GetView<MhEmployeesController> {
   Widget build(BuildContext context) {
     controller.context = context;
 
-    return Scaffold(
-      appBar: CustomAppbar.appbar(
-        title: " Employees",
-        context: context,
-        visibleMH: true,
-      ),
-      body: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
-            children: [
+    return WillPopScope(
+      onWillPop: () => controller.appController.user.value.isClient
+          ? Future.value(true)
+          : Utils.appExitConfirmation(context),
+      child: Scaffold(
+        appBar: CustomAppbar.appbar(
+          title: " Employees",
+          context: context,
+          visibleMH: true,
+          visibleBack: controller.appController.user.value.isClient,
+          centerTitle: true,
+        ),
+        body: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
+              children: [
 
-              SizedBox(height: 20.h),
+                SizedBox(height: 20.h),
 
-              Wrap(
-                crossAxisAlignment: WrapCrossAlignment.center,
-                alignment: WrapAlignment.center,
-                spacing: 16,
-                runSpacing: 20,
-                children: [
-                  ...controller.appController.allActivePositions.map((e) {
-                    return _item(e);
-                  }),
-                ],
-              ),
+                Wrap(
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  alignment: WrapAlignment.center,
+                  spacing: 16,
+                  runSpacing: 20,
+                  children: [
+                    ...controller.appController.allActivePositions.map((e) {
+                      return _item(e);
+                    }),
+                  ],
+                ),
 
-              SizedBox(height: 20.h),
-            ],
+                SizedBox(height: 20.h),
+              ],
+            ),
           ),
         ),
       ),

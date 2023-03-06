@@ -4,7 +4,7 @@ import 'custom_appbar_back_button.dart';
 class CustomAppbar {
   static PreferredSize appbar({
     List<Widget>? actions,
-    bool centerTitle = true,
+    bool centerTitle = false,
     bool visibleBack = true,
     bool visibleMH = false,
     required String title,
@@ -35,9 +35,11 @@ class CustomAppbar {
                     child: Image.asset(MyAssets.logo),
                   ),
             title: Row(
-              mainAxisAlignment: (!visibleBack || (actions ?? []).length > 1)
-                  ? MainAxisAlignment.start
-                  : MainAxisAlignment.center,
+              mainAxisAlignment: centerTitle
+                  ? MainAxisAlignment.center
+                  : (!visibleBack || (actions ?? []).length > 1)
+                      ? MainAxisAlignment.start
+                      : MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Visibility(
@@ -53,7 +55,6 @@ class CustomAppbar {
                 ),
               ],
             ),
-            centerTitle: centerTitle,
             actions: actions == null || actions.isEmpty
                 ? [SizedBox(width: 16.w)]
                 : actions,
