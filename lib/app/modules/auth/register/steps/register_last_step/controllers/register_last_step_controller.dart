@@ -1,5 +1,6 @@
 import '../../../../../../common/controller/app_controller.dart';
 import '../../../../../../common/utils/exports.dart';
+import '../../../../../../common/widgets/custom_dialog.dart';
 import '../../../../../../common/widgets/custom_loader.dart';
 import '../../../../../../enums/user_type.dart';
 import '../../../../../../models/custom_error.dart';
@@ -118,8 +119,7 @@ class RegisterLastStepController extends GetxController {
         restaurantName: _registerController.tecRestaurantName.text,
         restaurantAddress: _registerController.tecRestaurantAddress.text,
         email: _registerController.tecEmailAddress.text,
-        phoneNumber: _registerController.selectedClientCountry.dialCode + _registerController.tecPhoneNumber.text,
-        sourceFrom: _getSourceId(),
+        phoneNumber: _registerController.selectedClientCountry.dialCode + _registerController.tecPhoneNumber.text,sourceFrom: _getSourceId(),
         referPersonId: _getReferPersonId(),
         password: _registerController.tecPassword.text,
       );
@@ -133,7 +133,7 @@ class RegisterLastStepController extends GetxController {
         response.fold((CustomError customError) {
           Utils.errorDialog(context!, customError..onRetry = _clientRegistration);
         }, (ClientRegistrationResponse clientRegistrationResponse) async {
-          await _appController.afterSuccessLoginOrRegister(clientRegistrationResponse.token!);
+          _afterSuccessfullyRegister(clientRegistrationResponse);
         });
       });
     }
@@ -152,8 +152,8 @@ class RegisterLastStepController extends GetxController {
           name : _registerController.tecEmployeeFullName.text.trim(),
           positionId : Utils.getPositionId(_registerController.selectedPosition.value.trim()),
           gender : _registerController.selectedGender.value.trim(),
-          dateOfBirth : _registerController.tecEmployeeFullName.text.trim(),
-          email : _registerController.tecEmailAddress.text.trim(),
+          dateOfBirth : _registerController.dateOfBirth.value.toString().split(" ").first,
+          email : _registerController.tecEmployeeEmail.text.trim(),
           phoneNumber : _registerController.selectedEmployeeCountry.dialCode + _registerController.tecEmployeePhone.text.trim(),
           countryName : step2.selectedCountry.value.trim(),
           presentAddress : step2.tecPresentAddress.text.trim(),
@@ -168,15 +168,47 @@ class RegisterLastStepController extends GetxController {
           employeeExperience : 0,
       );
 
-      print(employeeRegistration.toJson);
+      CustomLoader.show(context!);
 
       await _apiHelper.employeeRegister(employeeRegistration).then((response) {
+
+        CustomLoader.hide(context!);
+
         response.fold((CustomError customError) {
           Utils.errorDialog(context!, customError..onRetry = _clientRegistration);
         }, (ClientRegistrationResponse clientRegistrationResponse) async {
-          await _appController.afterSuccessLoginOrRegister(clientRegistrationResponse.token!);
+          _afterSuccessfullyRegister(clientRegistrationResponse);
         });
       });
+    }
+  }
+
+
+  Future<void> _afterSuccessfullyRegister(ClientRegistrationResponse clientRegistrationResponse) async {
+    if (clientRegistrationResponse.statusCode == 201) {
+      await _appController.afterSuccessRegister(clientRegistrationResponse.token!);
+    } else if (clientRegistrationResponse.statusCode == 400) {
+      String errorTitle = "Invalid Information";
+      String msg = "";
+
+      for(var element in (clientRegistrationResponse.errors ?? []).reversed) {
+        if(element.value != null) {
+          msg = element.msg ?? "You Provide invalid value";
+          break;
+        }
+      }
+
+      CustomDialogue.information(
+        context: context!,
+        title: errorTitle,
+        description: msg,
+      );
+    } else {
+      CustomDialogue.information(
+        context: context!,
+        title: 'Error!',
+        description: "Something wrong. Please try after sometime or contact us",
+      );
     }
   }
 }

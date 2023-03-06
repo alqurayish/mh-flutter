@@ -76,6 +76,8 @@ class MyStrings {
   static const String myEmployees = "myEmployees";
   static const String invoicePayment = "invoicePayment";
   static const String helpSupport = "helpSupport";
+  static const String myDashboard = "myDashboard";
+  static const String emergencyCheckInCheckOut = "emergencyCheckInCheckOut";
   static const String areShowing = "areShowing";
   static const String exp = "exp";
   static const String countYears = "countYears";

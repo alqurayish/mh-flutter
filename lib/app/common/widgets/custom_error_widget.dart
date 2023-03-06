@@ -18,20 +18,20 @@ class CustomErrorWidget extends StatelessWidget {
             MyAssets.somethingWrong,
             fit: BoxFit.cover,
           ),
-          Positioned(
-            bottom: MediaQuery.of(context).size.height * 0.15,
-            left: MediaQuery.of(context).size.width * 0.3,
-            right: MediaQuery.of(context).size.width * 0.3,
-            child: ElevatedButton(
-              onPressed: () {
-                Toast.snackbar("Error submit successfully");
-              },
-              child: const Text(
-                "SUBMIT REPORT",
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
-          ),
+          // Positioned(
+          //   bottom: MediaQuery.of(context).size.height * 0.15,
+          //   left: MediaQuery.of(context).size.width * 0.3,
+          //   right: MediaQuery.of(context).size.width * 0.3,
+          //   child: ElevatedButton(
+          //     onPressed: () {
+          //       Toast.snackbar("Error submit successfully");
+          //     },
+          //     child: const Text(
+          //       "SUBMIT REPORT",
+          //       style: TextStyle(color: Colors.white),
+          //     ),
+          //   ),
+          // ),
         ],
       ),
     );

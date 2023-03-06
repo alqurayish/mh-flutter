@@ -1,3 +1,4 @@
+import '../../../../common/controller/app_controller.dart';
 import '../../../../common/utils/exports.dart';
 import '../../../../common/widgets/custom_loader.dart';
 import '../../../../models/custom_error.dart';
@@ -10,6 +11,7 @@ import '../../common/shortlist_controller.dart';
 class MhEmployeesByIdController extends GetxController {
   BuildContext? context;
 
+  final AppController _appController = Get.find();
   final ApiHelper _apiHelper = Get.find();
   final ShortlistController shortlistController = Get.find();
 
@@ -32,6 +34,8 @@ class MhEmployeesByIdController extends GetxController {
   }
 
   Future<void> onBookNowClick(Employee employee) async {
+    if(!_appController.hasPermission()) return;
+
     await shortlistController.onBookNowClick(employee.id!);
     goToShortListedPage();
   }

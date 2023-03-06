@@ -18,6 +18,8 @@ class MyAssets {
   static const invoicePayment = "assets/images/invoice_payment.png";
   static const splash = "assets/images/splash.png";
 
+  static const emergencyCheckInCheckout = "assets/images/emergency_checin_checkout.png";
+
   static const helpSupport = "assets/images/help_support.png";
   static const exp = "assets/images/exp.png";
   static const rate = "assets/images/rate.png";

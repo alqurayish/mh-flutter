@@ -23,7 +23,7 @@ class ClientRegistration {
         "email": email,
         "phoneNumber": phoneNumber,
         "sourceFrom": sourceFrom,
-        "referPersonId": referPersonId,
+        if(referPersonId.isNotEmpty) "referPersonId": referPersonId,
         "password": password,
       };
 }

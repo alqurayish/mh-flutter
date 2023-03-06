@@ -33,6 +33,7 @@ class ApiHelperImpl extends GetConnect with ApiHelper {
     httpClient.addRequestModifier<dynamic>((request) {
       Logcat.msg(request.url.toString());
       if (StorageHelper.hasToken) {
+        Logcat.msg("Token Attached");
         request.headers['Authorization'] = "Bearer ${StorageHelper.getToken}";
       }
       return request;
@@ -113,7 +114,7 @@ class ApiHelperImpl extends GetConnect with ApiHelper {
     ClientRegistration clientRegistration,
   ) async {
     print(clientRegistration.toJson);
-    var response = await get("users/client-register");
+    var response = await post("users/client-register", jsonEncode(clientRegistration.toJson));
 
     print(response.body);
 
@@ -127,7 +128,7 @@ class ApiHelperImpl extends GetConnect with ApiHelper {
   EitherModel<ClientRegistrationResponse> employeeRegister(
     EmployeeRegistration employeeRegistration,
   ) async {
-    var response = await get("users/employee-register");
+    var response = await post("users/employee-register", jsonEncode(employeeRegistration.toJson));
 
     print(response.body);
 
@@ -158,14 +159,14 @@ class ApiHelperImpl extends GetConnect with ApiHelper {
     String? maxTotalHour,
     bool? isReferred,
   }) async {
-    String url = "users?";
+    String url = "users/list?";
 
     if ((positionId ?? "").isNotEmpty) url += "positionId=$positionId";
     if ((rating ?? "").isNotEmpty) url += "&rating=$rating";
     if ((employeeExperience ?? "").isNotEmpty) url += "&employeeExperience=$employeeExperience";
     if ((minTotalHour ?? "").isNotEmpty) url += "&minTotalHour=$minTotalHour";
     if ((maxTotalHour ?? "").isNotEmpty) url += "&maxTotalHour=$maxTotalHour";
-    if (isReferred ?? false) url += "&isReferred=${isReferred!.toApiFormat}";
+    if (isReferred ?? false) url += "&isReferPerson=${isReferred!.toApiFormat}";
 
     var response = await get(url);
 

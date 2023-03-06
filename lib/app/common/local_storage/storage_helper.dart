@@ -17,5 +17,5 @@ class StorageHelper {
   static String get getToken => Storage.getValue<String>(_token) ?? "";
   static Future setToken(String token) async => await Storage.saveValue(_token, token);
   static get removeToken async => await Storage.removeValue(_token);
-  static get hasToken => Storage.hasData(_token);
+  static get hasToken => getToken.isNotEmpty;
 }

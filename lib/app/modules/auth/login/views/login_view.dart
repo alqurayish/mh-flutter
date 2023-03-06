@@ -13,34 +13,31 @@ class LoginView extends GetView<LoginController> {
     controller.context = context;
     Utils.setStatusBarColorColor(Theme.of(context).brightness);
 
-    return WillPopScope(
-      onWillPop: () => Utils.appExitConfirmation(context),
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        body: Stack(
-          children: [
-            Positioned(
-              left: -65.w,
-              top: -100.h,
-              child: _topLeftBg,
-            ),
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      body: Stack(
+        children: [
+          Positioned(
+            left: -65.w,
+            top: -100.h,
+            child: _topLeftBg,
+          ),
 
-            Positioned(
-              right: -75.w,
-              bottom: -130.h,
-              child: _bottomRightBg,
-            ),
+          Positioned(
+            right: -75.w,
+            bottom: -130.h,
+            child: _bottomRightBg,
+          ),
 
-            Positioned(
-              left: 0.w,
-              right: 0.w,
-              bottom: 50.h,
-              child: _dontHaveAnAccount,
-            ),
+          Positioned(
+            left: 0.w,
+            right: 0.w,
+            bottom: 50.h,
+            child: _dontHaveAnAccount,
+          ),
 
-            _mainContent,
-          ],
-        ),
+          _mainContent,
+        ],
       ),
     );
   }

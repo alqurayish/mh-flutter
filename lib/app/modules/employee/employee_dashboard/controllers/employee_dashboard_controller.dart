@@ -1,7 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 class EmployeeDashboardController extends GetxController {
-  //TODO: Implement EmployeeDashboardController
+  BuildContext? context;
 
   final count = 0.obs;
   @override

@@ -1,3 +1,5 @@
+import 'package:mh/app/common/controller/app_controller.dart';
+
 import '../../../common/utils/exports.dart';
 import '../../../repository/api_helper.dart';
 import '../client_shortlisted/models/shortlisted_employees.dart';
@@ -8,6 +10,8 @@ class ShortlistController extends GetxService {
   RxList<ShortList> selectedForHire = <ShortList>[].obs;
 
   final ApiHelper _apiHelper = Get.find();
+
+  final AppController _appController = Get.find();
 
   RxInt totalShortlisted = 0.obs;
 
@@ -108,7 +112,11 @@ class ShortlistController extends GetxService {
 
   Widget getIcon(String employeeId, bool isFetching) {
     return GestureDetector(
-      onTap: () => _onBookmarkClick(employeeId),
+      onTap: () {
+        if(!_appController.hasPermission()) return;
+
+        _onBookmarkClick(employeeId);
+      },
       child: isFetching && employeeId == _selectedId
           ? const SizedBox(
               width: 20,

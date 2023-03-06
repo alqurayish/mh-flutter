@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mh/app/common/controller/app_controller.dart';
 
 import '../../../../routes/app_pages.dart';
 import '../interface/login_register_hints_interface.dart';
@@ -8,18 +9,20 @@ class LoginRegisterHintsController extends GetxController implements LoginRegist
 
   BuildContext? context;
 
+  final AppController _appController = Get.find();
+
   @override
   void onLoginPressed() {
-    Get.offAndToNamed(Routes.login);
+    Get.toNamed(Routes.login);
   }
 
   @override
   void onSignUpPressed() {
-    Get.offAndToNamed(Routes.register);
+    Get.toNamed(Routes.register);
   }
 
   @override
   void onSkipPressed() {
-    Get.toNamed(Routes.mhEmployees);
+    _appController.enterAsGuestMode();
   }
 }

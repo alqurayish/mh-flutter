@@ -21,28 +21,25 @@ class RegisterView extends GetView<RegisterController> {
     controller.context = context;
     Utils.setStatusBarColorColor(Theme.of(context).brightness);
 
-    return WillPopScope(
-      onWillPop: () => Utils.appExitConfirmation(context),
-      child: Scaffold(
-        body: SizedBox(
-          height: double.infinity,
-          child: Stack(
-            children: [
-              Positioned(
-                left: -65.w,
-                top: -100.h,
-                child: _topLeftBg,
-              ),
+    return Scaffold(
+      body: SizedBox(
+        height: double.infinity,
+        child: Stack(
+          children: [
+            Positioned(
+              left: -65.w,
+              top: -100.h,
+              child: _topLeftBg,
+            ),
 
-              Positioned(
-                right: -75.w,
-                bottom: -130.h,
-                child: _bottomRightBg,
-              ),
+            Positioned(
+              right: -75.w,
+              bottom: -130.h,
+              child: _bottomRightBg,
+            ),
 
-              _mainContent,
-            ],
-          ),
+            _mainContent,
+          ],
         ),
       ),
     );

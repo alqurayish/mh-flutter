@@ -1,4 +1,4 @@
-import 'package:badges/badges.dart';
+import 'package:badges/badges.dart' as badge;
 
 import '../../../../common/utils/exports.dart';
 import '../../../../common/widgets/custom_appbar.dart';
@@ -23,15 +23,15 @@ class MhEmployeesByIdView extends GetView<MhEmployeesByIdController> {
               () => Visibility(
                 visible: controller.shortlistController.totalShortlisted.value > 0,
                 child: Center(
-                  child: Badge(
-                    position: BadgePosition.topEnd(top: -9, end: -4),
+                  child: badge.Badge(
+                    position: badge.BadgePosition.topEnd(top: -9, end: -4),
                     onTap: controller.goToShortListedPage,
                     ignorePointer: false,
                     badgeContent: Text(
                       controller.shortlistController.totalShortlisted.value.toString(),
                       style: MyColors.white.semiBold12,
                     ),
-                    badgeStyle: const BadgeStyle(
+                    badgeStyle: const badge.BadgeStyle(
                       badgeColor: MyColors.c_C6A34F,
                       elevation: 0,
                     ),

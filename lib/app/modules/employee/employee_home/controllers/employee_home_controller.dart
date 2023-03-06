@@ -1,23 +1,68 @@
-import 'package:get/get.dart';
+import 'package:slide_to_act/slide_to_act.dart';
+
+import '../../../../common/controller/app_controller.dart';
+import '../../../../common/utils/exports.dart';
+import '../../../../routes/app_pages.dart';
 
 class EmployeeHomeController extends GetxController {
-  //TODO: Implement EmployeeHomeController
 
-  final count = 0.obs;
+  BuildContext? context;
+
+  final AppController appController = Get.find();
+
+  final GlobalKey<SlideActionState> key = GlobalKey();
+
+  RxBool checkIn = true.obs;
+  RxBool checkOut = false.obs;
+
+
   @override
-  void onInit() {
-    super.onInit();
+  void onDashboardClick() {
+    Get.toNamed(Routes.employeeDashboard);
   }
 
   @override
-  void onReady() {
-    super.onReady();
+  void onEmergencyCheckinCheckout() {
+    Get.toNamed(Routes.employeeDashboard);
   }
 
   @override
-  void onClose() {
-    super.onClose();
+  void onHelpAndSupportClick() {
+    Get.toNamed(Routes.contactUs);
   }
 
-  void increment() => count.value++;
+  @override
+  void onNotificationClick() {
+    Get.toNamed(Routes.clientNotification);
+  }
+
+  void onCheckInCheckOut() {
+    if(checkIn.value) {
+      _onCheckIn();
+    } else if(checkOut.value) {
+      _onCheckout();
+    }
+  }
+
+  void _onCheckIn() {
+    Future.delayed(
+      const Duration(seconds: 3),
+      () {
+        checkIn.value = false;
+        checkOut.value = true;
+        key.currentState?.reset();
+      },
+    );
+  }
+
+  void _onCheckout() {
+    Future.delayed(
+      const Duration(seconds: 3),
+          () {
+        checkIn.value = true;
+        checkOut.value = false;
+        key.currentState?.reset();
+      },
+    );
+  }
 }

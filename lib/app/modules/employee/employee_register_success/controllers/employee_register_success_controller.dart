@@ -5,13 +5,13 @@ import '../../../../enums/user_type.dart';
 import '../../../../routes/app_pages.dart';
 
 class EmployeeRegisterSuccessController extends GetxController {
-  final AppController _appController = Get.find();
+  final AppController appController = Get.find();
 
   @override
   void onGetStartedClick() {
-    if (_appController.user.value.userType == UserType.client) {
+    if (appController.user.value.userType == UserType.client) {
       Get.offAndToNamed(Routes.clientHome);
-    } else if (_appController.user.value.userType == UserType.employee) {
+    } else {
       Get.offAndToNamed(Routes.mhEmployees);
     }
   }

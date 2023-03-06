@@ -48,13 +48,13 @@ class EmployeeRegistration {
         "countryName": countryName,
         "presentAddress": presentAddress,
         "permanentAddress": permanentAddress,
-        "language": language.toString(),
+        "language": language,
         "higherEducation": higherEducation,
         "licensesNo": licensesNo,
         "emmergencyContact": emmergencyContact,
         "skillId": skillId,
         "sourceFrom": sourceFrom,
-        "referPersonId": referPersonId,
+        if(referPersonId.isNotEmpty) "referPersonId": referPersonId,
         "employeeExperience": employeeExperience,
       };
 }

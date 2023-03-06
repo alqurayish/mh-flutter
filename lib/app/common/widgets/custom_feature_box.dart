@@ -6,6 +6,7 @@ class CustomFeatureBox extends StatelessWidget {
   final String icon;
   final bool visibleMH;
   final Function() onTap;
+  final double? iconHeight;
 
   const CustomFeatureBox({
     Key? key,
@@ -13,6 +14,7 @@ class CustomFeatureBox extends StatelessWidget {
     required this.icon,
     this.visibleMH = false,
     required this.onTap,
+    this.iconHeight,
   }) : super(key: key);
 
   @override
@@ -31,10 +33,12 @@ class CustomFeatureBox extends StatelessWidget {
             children: [
               Image.asset(
                 icon,
-                width: 70.w,
-                height: 70.w,
+                width: iconHeight ?? 70.w,
+                height: iconHeight ?? 70.w,
               ),
-              SizedBox(height: 6.h),
+
+              SizedBox(height: iconHeight == null ? 6.h :  70.w - iconHeight!),
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -49,6 +53,7 @@ class CustomFeatureBox extends StatelessWidget {
 
                   Text(
                     title,
+                    textAlign: TextAlign.center,
                     style: MyColors.l111111_dwhite(context).medium16,
                   ),
                 ],

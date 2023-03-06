@@ -67,6 +67,8 @@ Map<String, String> en = {
   MyStrings.myEmployees: "My Employees",
   MyStrings.invoicePayment: "Invoice & Payment",
   MyStrings.helpSupport: "Help & Support",
+  MyStrings.myDashboard: "My\nDashboard",
+  MyStrings.emergencyCheckInCheckOut: "Emergency\nCheck in/Check out",
   MyStrings.areShowing: " are showing",
   MyStrings.exp: "Exp: ",
   MyStrings.countYears: "@year years",
