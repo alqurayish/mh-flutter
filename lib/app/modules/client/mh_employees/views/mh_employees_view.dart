@@ -35,7 +35,10 @@ class MhEmployeesView extends GetView<MhEmployeesController> {
                 Wrap(
                   crossAxisAlignment: WrapCrossAlignment.center,
                   alignment: WrapAlignment.center,
-                  spacing: 16,
+                  spacing: Get.width - (
+                    20 + 20 // horizontal padding (left + right)
+                    + 182.w + 182.w // item width (2 items)
+                  ),
                   runSpacing: 20,
                   children: [
                     ...controller.appController.allActivePositions.map((e) {

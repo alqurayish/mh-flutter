@@ -158,12 +158,12 @@ class RegisterLastStepController extends GetxController {
           countryName : step2.selectedCountry.value.trim(),
           presentAddress : step2.tecPresentAddress.text.trim(),
           permanentAddress : step2.tecPermanentAddress.text.trim(),
-          language : step2.selectedLanguageList.value,
+          languages : step2.selectedLanguageList.value,
           higherEducation : step3.tecEducation.text.trim(),
           licensesNo : step3.tecLicence.text.trim(),
           emmergencyContact : step3.selectedCountry.dialCode + step3.tecEmergencyContact.text.trim(),
-          skillId : Utils.getPositionId(step3.selectedSkill.value.trim()),
-          sourceFrom : _getSourceId(),
+          skills : Utils.getSkillIds(step3.selectedSkillList.value),
+          sourceId : _getSourceId(),
           referPersonId : _getReferPersonId(),
           employeeExperience : 0,
       );
@@ -186,7 +186,7 @@ class RegisterLastStepController extends GetxController {
 
   Future<void> _afterSuccessfullyRegister(ClientRegistrationResponse clientRegistrationResponse) async {
     if (clientRegistrationResponse.statusCode == 201) {
-      await _appController.afterSuccessRegister(clientRegistrationResponse.token!);
+      await _appController.afterSuccessRegister(clientRegistrationResponse.token ?? "");
     } else if (clientRegistrationResponse.statusCode == 400) {
       String errorTitle = "Invalid Information";
       String msg = "";

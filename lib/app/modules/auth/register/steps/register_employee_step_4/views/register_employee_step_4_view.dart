@@ -64,7 +64,13 @@ class RegisterEmployeeStep4View extends GetView<RegisterEmployeeStep4Controller>
 
           _profileImage,
 
+          SizedBox(height: 3.h),
+
+          _profilePhotoHints,
+
           SizedBox(height: 30.h),
+
+          _cv,
 
           _certificateHeader,
 
@@ -140,6 +146,51 @@ class RegisterEmployeeStep4View extends GetView<RegisterEmployeeStep4Controller>
     ),
   );
 
+  Widget get _cv => Column(
+    children: [
+      Container(
+        margin: EdgeInsets.all(18.w),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+        decoration: BoxDecoration(
+          border: Border.all(width: .5, color: Colors.blue),
+          color: Theme.of(controller.context!).cardColor,
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+            child: Obx(
+              () => Row(
+                children: [
+                  const Icon(Icons.picture_as_pdf),
+                  SizedBox(width: 7.w),
+                  Expanded(
+                    child: Text(
+                      controller.cv.isEmpty
+                          ? "Upload your cv"
+                          : controller.cv.first.path.split("/").last,
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: controller.onCvClick,
+                    child: Icon(
+                      controller.cv.isEmpty? Icons.upload : Icons.cancel,
+                      color: MyColors.c_7B7B7B,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+      Obx(
+        () => Visibility(
+          visible: controller.cv.isNotEmpty && controller.cv.first.path.split(".").last.toLowerCase() != "pdf",
+          child: Text(
+            'CV must be pdf format',
+            style: Colors.redAccent.medium12,
+          ),
+        ),
+      ),
+    ],
+  );
+
   Widget get _certificateHeader => Container(
         margin: EdgeInsets.all(18.w),
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
@@ -174,34 +225,62 @@ class RegisterEmployeeStep4View extends GetView<RegisterEmployeeStep4Controller>
         ),
       );
 
-  Widget get _profileImage => DottedBorder(
-    borderType: BorderType.Circle,
-    dashPattern: const [11],
-    strokeWidth: 2,
-    color: MyColors.c_C6A34F,
-    child: Container(
-          height: 162.w,
-          width: 162.w,
-          margin: const EdgeInsets.all(4),
-          decoration: BoxDecoration(
-            color: MyColors.c_C6A34F_22,
-            shape: BoxShape.circle,
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const Icon(Icons.camera_alt, color: MyColors.c_C6A34F, size: 50),
-              const SizedBox(height: 5),
-              Text(MyStrings.uploadYourPhoto.tr,
-              textAlign: TextAlign.center,
-              style: Theme.of(controller.context!).textTheme.bodyText2!.copyWith(
-                fontSize: 12.sp,
-              ),),
-            ],
+  Widget get _profileImage => GestureDetector(
+        onTap: controller.onProfileImageClick,
+        child: DottedBorder(
+          borderType: BorderType.Circle,
+          dashPattern: const [11],
+          strokeWidth: 2,
+          color: MyColors.c_C6A34F,
+          child: Container(
+            height: 162.w,
+            width: 162.w,
+            margin: const EdgeInsets.all(4),
+            decoration: BoxDecoration(
+              color: MyColors.c_C6A34F_22,
+              shape: BoxShape.circle,
+            ),
+            child: Obx(
+              () => controller.profileImage.isEmpty
+                  ? Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const Icon(
+                          Icons.camera_alt,
+                          color: MyColors.c_C6A34F,
+                          size: 50,
+                        ),
+                        const SizedBox(height: 5),
+                        Text(
+                          MyStrings.uploadYourPhoto.tr,
+                          textAlign: TextAlign.center,
+                          style: MyColors.text.medium12,
+                        ),
+                      ],
+                    )
+                  : ClipRRect(
+                      borderRadius: BorderRadius.circular(162),
+                      child: Image.file(
+                        controller.profileImage.first,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+            ),
           ),
         ),
-  );
+      );
+
+  Widget get _profilePhotoHints => Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20).copyWith(
+          top: 10,
+        ),
+        child: Text(
+          "NB: Please upload passport size photo with white background",
+          textAlign: TextAlign.center,
+          style: Colors.redAccent.medium12,
+        ),
+      );
 
   Widget _certificateItem(
     int index,
@@ -275,7 +354,7 @@ class RegisterEmployeeStep4View extends GetView<RegisterEmployeeStep4Controller>
                                     ),
                                     SizedBox(height: 3),
                                     Text(
-                                      "Only PDF allowed",
+                                      "keep file size less than 2 MB",
                                       style: TextStyle(
                                         color: Colors.blue,
                                         fontSize: 10,
@@ -294,12 +373,12 @@ class RegisterEmployeeStep4View extends GetView<RegisterEmployeeStep4Controller>
                               ],
                             )
                           : Row(
-                              children: const [
-                                Icon(Icons.upload_file_outlined),
-                                SizedBox(width: 12),
-                                Text("Training on manager"),
-                                SizedBox(width: 12),
-                                Icon(Icons.close),
+                              children: [
+                                const Icon(Icons.upload_file_outlined),
+                                const SizedBox(width: 12),
+                                Expanded(child: Text(value.file!.path.split(".").last)),
+                                const SizedBox(width: 12),
+                                const Icon(Icons.close),
                               ],
                             ),
                     ),

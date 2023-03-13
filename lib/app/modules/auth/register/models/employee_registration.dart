@@ -9,12 +9,12 @@ class EmployeeRegistration {
   String countryName;
   String presentAddress;
   String permanentAddress;
-  List<String> language;
+  List<String> languages;
   String higherEducation;
   String licensesNo;
   String emmergencyContact;
-  String skillId;
-  String sourceFrom;
+  List<String> skills;
+  String sourceId;
   String referPersonId;
   int employeeExperience;
 
@@ -28,12 +28,12 @@ class EmployeeRegistration {
     required this.countryName,
     required this.presentAddress,
     required this.permanentAddress,
-    required this.language,
+    required this.languages,
     required this.higherEducation,
     required this.licensesNo,
     required this.emmergencyContact,
-    required this.skillId,
-    required this.sourceFrom,
+    required this.skills,
+    required this.sourceId,
     required this.referPersonId,
     required this.employeeExperience,
   });
@@ -48,12 +48,12 @@ class EmployeeRegistration {
         "countryName": countryName,
         "presentAddress": presentAddress,
         "permanentAddress": permanentAddress,
-        "language": language,
+        "languages": languages,
         "higherEducation": higherEducation,
         "licensesNo": licensesNo,
         "emmergencyContact": emmergencyContact,
-        "skillId": skillId,
-        "sourceFrom": sourceFrom,
+        "skills": skills,
+        "sourceId": sourceId,
         if(referPersonId.isNotEmpty) "referPersonId": referPersonId,
         "employeeExperience": employeeExperience,
       };

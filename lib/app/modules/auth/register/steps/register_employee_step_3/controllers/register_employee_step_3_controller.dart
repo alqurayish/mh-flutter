@@ -1,6 +1,8 @@
 import 'package:intl_phone_field/countries.dart';
+import 'package:mh/app/common/controller/app_controller.dart';
 
 import '../../../../../../common/utils/exports.dart';
+import '../../../../../../common/widgets/custom_dialog.dart';
 import '../../../../../../routes/app_pages.dart';
 
 class RegisterEmployeeStep3Controller extends GetxController {
@@ -8,9 +10,9 @@ class RegisterEmployeeStep3Controller extends GetxController {
 
   final formKey = GlobalKey<FormState>();
 
-  RxString selectedSkill = "".obs;
+  final AppController appController = Get.find();
 
-  Rx<List<String>> selectedLanguageList = Rx<List<String>>([]);
+  Rx<List<String>> selectedSkillList = Rx<List<String>>([]);
 
   TextEditingController tecEducation = TextEditingController();
   TextEditingController tecLicence = TextEditingController();
@@ -23,17 +25,30 @@ class RegisterEmployeeStep3Controller extends GetxController {
     if (formKey.currentState!.validate()) {
       formKey.currentState!.save();
 
-      Get.toNamed(Routes.registerLastStep);
+      if(selectedSkillList.value.isEmpty) {
+        _showDialogForAcceptTermsAndCondition();
+      } else {
+        Get.toNamed(Routes.registerEmployeeStep4);
+      }
+
     }
   }
 
   @override
-  void onSkillChange(String? skill) {
-    selectedSkill.value = skill!;
+  void onSkillChange(List<String> value) {
+    selectedSkillList.value = value;
   }
 
   @override
   void onCountryChange(Country country) {
     selectedCountry = country;
+  }
+
+  void _showDialogForAcceptTermsAndCondition() {
+    CustomDialogue.information(
+      context: context!,
+      description: "At least one skill required",
+      title: 'Invalid input',
+    );
   }
 }
