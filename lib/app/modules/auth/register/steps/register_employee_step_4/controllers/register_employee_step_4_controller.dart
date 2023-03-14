@@ -116,16 +116,30 @@ class RegisterEmployeeStep4Controller extends GetxController implements Register
     }
 
     else if(certificate.isNotEmpty) {
+      String errorText = "";
 
       for(CertificateWithFile certificateWithFile in certificate) {
+
         if (certificateWithFile.certificateNameController.text.trim().isEmpty) {
+          errorText = "Certificate name is required";
+        } else if(certificateWithFile.file == null) {
+          errorText = "Certificate attachment is required";
+        } else if(!(["png", "jpg", "jpeg"].contains(certificateWithFile.file?.path.split(".").last.toLowerCase()))) {
+          errorText = "Certificate attachment support Only PNG and JPG format";
+        }
+
+        if (errorText.isNotEmpty) {
           CustomDialogue.information(
             context: context!,
-            description: "Certificate name and file are required",
+            description: errorText,
             title: 'Invalid Input',
           );
           break;
         }
+      }
+
+      if (errorText.isEmpty) {
+        Get.toNamed(Routes.registerLastStep);
       }
 
     } else {

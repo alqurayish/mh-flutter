@@ -354,7 +354,7 @@ class RegisterEmployeeStep4View extends GetView<RegisterEmployeeStep4Controller>
                                     ),
                                     SizedBox(height: 3),
                                     Text(
-                                      "keep file size less than 2 MB",
+                                      "Only PNG, JPG supported. Max 2 MB",
                                       style: TextStyle(
                                         color: Colors.blue,
                                         fontSize: 10,
@@ -376,7 +376,7 @@ class RegisterEmployeeStep4View extends GetView<RegisterEmployeeStep4Controller>
                               children: [
                                 const Icon(Icons.upload_file_outlined),
                                 const SizedBox(width: 12),
-                                Expanded(child: Text(value.file!.path.split(".").last)),
+                                Expanded(child: Text(value.file!.path.split("/").last)),
                                 const SizedBox(width: 12),
                                 const Icon(Icons.close),
                               ],
