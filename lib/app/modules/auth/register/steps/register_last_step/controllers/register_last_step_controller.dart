@@ -130,7 +130,8 @@ class RegisterLastStepController extends GetxController {
         restaurantName: _registerController.tecRestaurantName.text,
         restaurantAddress: _registerController.tecRestaurantAddress.text,
         email: _registerController.tecEmailAddress.text,
-        phoneNumber: _registerController.selectedClientCountry.dialCode + _registerController.tecPhoneNumber.text,sourceFrom: _getSourceId(),
+        phoneNumber: _registerController.selectedClientCountry.dialCode + _registerController.tecPhoneNumber.text,
+        sourceId: _getSourceId(),
         referPersonId: _getReferPersonId(),
         password: _registerController.tecPassword.text,
       );

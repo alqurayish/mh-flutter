@@ -35,6 +35,14 @@ extension DatetimeFormat on DateTime {
   }
 }
 
+extension ImageUrl on String {
+  String get imageUrl {
+    if (isEmpty) return "https://visualpharm.com/assets/387/Person-595b40b75ba036ed117da139.svg";
+
+    return "https://mh-user-bucket.s3.amazonaws.com/public/users/profile/$this";
+  }
+}
+
 extension TextColor on Color {
 
   TextStyle get regular9 => _textStyle(FontWeight.w400, 9);

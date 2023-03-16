@@ -2,7 +2,7 @@
     package="com.invain.mh">
     <uses-permission android:name="android.permission.INTERNET" />
    <application
-        android:label="mh"
+        android:label="MH"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
