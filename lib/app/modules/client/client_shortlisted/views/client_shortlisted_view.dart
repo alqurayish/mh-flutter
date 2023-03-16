@@ -1,6 +1,7 @@
 import '../../../../common/utils/exports.dart';
 import '../../../../common/widgets/custom_appbar.dart';
 import '../../../../common/widgets/custom_bottombar.dart';
+import '../../../../common/widgets/custom_network_image.dart';
 import '../controllers/client_shortlisted_controller.dart';
 import '../models/shortlisted_employees.dart';
 
@@ -71,7 +72,7 @@ class ClientShortlistedView extends GetView<ClientShortlistedController> {
       ),
       child: Row(
         children: [
-          _image(),
+          _image((employee.employeeDetails?.profilePicture ?? "").imageUrl),
 
           Expanded(
             child: Column(
@@ -89,8 +90,8 @@ class ClientShortlistedView extends GetView<ClientShortlistedController> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              _name(employee.employees?.name ?? "-"),
-                              _rating(employee.employees?.rating ?? 0),
+                              _name(employee.employeeDetails?.name ?? "-"),
+                              _rating(employee.employeeDetails?.rating ?? 0),
                               const Spacer(),
                               Obx(
                                 () => controller.shortlistController.getIcon(
@@ -205,13 +206,17 @@ class ClientShortlistedView extends GetView<ClientShortlistedController> {
     );
   }
 
-  Widget _image() => Container(
+  Widget _image(String profilePicture) => Container(
         margin: const EdgeInsets.fromLTRB(8, 8, 13, 8),
         width: 74.w,
         height: 74.h,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5),
           color: Colors.grey.withOpacity(.1),
+        ),
+        child: CustomNetworkImage(
+          url: profilePicture,
+          radius: 5,
         ),
       );
 

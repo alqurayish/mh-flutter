@@ -50,7 +50,7 @@ class ShortlistedEmployees {
 class ShortList {
   String? sId;
   String? employeeId;
-  Employees? employees;
+  EmployeeDetails? employeeDetails;
   int? feeAmount;
   String? createdBy;
   DateTime? createdAt;
@@ -62,7 +62,7 @@ class ShortList {
   ShortList({
     this.sId,
     this.employeeId,
-    this.employees,
+    this.employeeDetails,
     this.feeAmount,
     this.createdBy,
     this.createdAt,
@@ -75,8 +75,8 @@ class ShortList {
   ShortList.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     employeeId = json['employeeId'];
-    employees = json['employees'] != null
-        ? Employees.fromJson(json['employees'])
+    employeeDetails = json['employeeDetails'] != null
+        ? EmployeeDetails.fromJson(json['employeeDetails'])
         : null;
     feeAmount = json['feeAmount'];
     createdBy = json['createdBy'];
@@ -91,8 +91,8 @@ class ShortList {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['_id'] = sId;
     data['employeeId'] = employeeId;
-    if (employees != null) {
-      data['employees'] = employees!.toJson();
+    if (employeeDetails != null) {
+      data['employeeDetails'] = employeeDetails!.toJson();
     }
     data['feeAmount'] = feeAmount;
     data['createdBy'] = createdBy;
@@ -105,7 +105,7 @@ class ShortList {
   }
 }
 
-class Employees {
+class EmployeeDetails {
   String? employeeId;
   String? name;
   String? positionId;
@@ -116,8 +116,9 @@ class Employees {
   int? totalWorkingHour;
   int? hourlyRate;
   String? sId;
+  String? profilePicture;
 
-  Employees({
+  EmployeeDetails({
     this.employeeId,
     this.name,
     this.positionId,
@@ -128,9 +129,10 @@ class Employees {
     this.totalWorkingHour,
     this.hourlyRate,
     this.sId,
+    this.profilePicture,
   });
 
-  Employees.fromJson(Map<String, dynamic> json) {
+  EmployeeDetails.fromJson(Map<String, dynamic> json) {
     employeeId = json['employeeId'];
     name = json['name'];
     positionId = json['positionId'];
@@ -141,6 +143,7 @@ class Employees {
     totalWorkingHour = json['totalWorkingHour'];
     hourlyRate = json['hourlyRate'];
     sId = json['_id'];
+    sId = json['profilePicture'];
   }
 
   Map<String, dynamic> toJson() {
@@ -155,6 +158,7 @@ class Employees {
     data['totalWorkingHour'] = totalWorkingHour;
     data['hourlyRate'] = hourlyRate;
     data['_id'] = sId;
+    data['profilePicture'] = profilePicture;
     return data;
   }
 }

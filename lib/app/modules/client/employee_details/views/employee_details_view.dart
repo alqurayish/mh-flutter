@@ -1,6 +1,7 @@
 import '../../../../common/utils/exports.dart';
 import '../../../../common/widgets/custom_appbar_back_button.dart';
 import '../../../../common/widgets/custom_bottombar.dart';
+import '../../../../common/widgets/custom_network_image.dart';
 import '../controllers/employee_details_controller.dart';
 
 class EmployeeDetailsView extends GetView<EmployeeDetailsController> {
@@ -61,6 +62,10 @@ class EmployeeDetailsView extends GetView<EmployeeDetailsController> {
             decoration: BoxDecoration(
               color: Colors.grey.withOpacity(.1),
               borderRadius: BorderRadius.circular(20),
+            ),
+            child: CustomNetworkImage(
+              url: (controller.employee.profilePicture ?? "").imageUrl,
+              radius: 20,
             ),
           ),
           const Spacer(),
@@ -255,7 +260,7 @@ class EmployeeDetailsView extends GetView<EmployeeDetailsController> {
         title: MyStrings.language.tr,
         child: Column(
           children: [
-            ...(controller.employee.language ?? []).map((e) {
+            ...(controller.employee.languages ?? []).map((e) {
               return _data(
                 MyAssets.language,
                 e.capitalize ?? "",

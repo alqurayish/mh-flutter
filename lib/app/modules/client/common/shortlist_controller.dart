@@ -45,15 +45,15 @@ class ShortlistController extends GetxService {
   List<String> getUniquePositions() {
     List<String> ids = [];
     for (ShortList element in shortList) {
-      if (!ids.contains(element.employees!.positionId!)) {
-        ids.add(element.employees!.positionId!);
+      if (!ids.contains(element.employeeDetails!.positionId!)) {
+        ids.add(element.employeeDetails!.positionId!);
       }
     }
     return ids;
   }
 
   List<ShortList> getEmployeesBasedOnPosition(String position) {
-    return shortList.where((employee) => employee.employees!.positionId == position).toList();
+    return shortList.where((employee) => employee.employeeDetails!.positionId == position).toList();
   }
 
   Future<void> onBookNowClick(String employeeId) async {

@@ -3,7 +3,7 @@ class ClientRegistration {
   String restaurantAddress;
   String email;
   String phoneNumber;
-  String sourceFrom;
+  String sourceId;
   String referPersonId;
   String password;
 
@@ -12,7 +12,7 @@ class ClientRegistration {
     required this.restaurantAddress,
     required this.email,
     required this.phoneNumber,
-    required this.sourceFrom,
+    required this.sourceId,
     required this.referPersonId,
     required this.password,
   });
@@ -22,7 +22,7 @@ class ClientRegistration {
         "restaurantAddress": restaurantAddress,
         "email": email,
         "phoneNumber": phoneNumber,
-        "sourceFrom": sourceFrom,
+        "sourceId": sourceId,
         if(referPersonId.isNotEmpty) "referPersonId": referPersonId,
         "password": password,
       };

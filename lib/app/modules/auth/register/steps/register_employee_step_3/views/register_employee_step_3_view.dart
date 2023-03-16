@@ -6,6 +6,7 @@ import '../../../../../../common/style/my_decoration.dart';
 import '../../../../../../common/utils/exports.dart';
 import '../../../../../../common/utils/validators.dart';
 import '../../../../../../common/widgets/custom_dropdown.dart';
+import '../../../../../../common/widgets/custom_multi_dropdown.dart';
 import '../../../../../../common/widgets/custom_text_input_field.dart';
 import '../controllers/register_employee_step_3_controller.dart';
 
@@ -127,15 +128,18 @@ class RegisterEmployeeStep3View extends GetView<RegisterEmployeeStep3Controller>
 
         SizedBox(height: 26.h),
 
-        CustomDropdown(
-          prefixIcon: Icons.history_edu,
-          hints: MyStrings.skills.tr,
-          value: controller.selectedSkill.value,
-          items: Data.skills.map((e) => e.name!).toList(),
-          onChange: controller.selectedSkill,
-          validator: (String? value) => Validators.emptyValidator(
-            value,
-            MyStrings.required.tr,
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 18.0.w),
+          child: DropDownMultiSelect(
+            onChanged: controller.onSkillChange,
+            options: (controller.appController.commons?.value.skills ?? []).map((e) => e.name!).toList(),
+            selectedValues: controller.selectedSkillList.value,
+            whenEmpty: MyStrings.skills.tr,
+            decoration: MyDecoration.dropdownDecoration(
+              context: controller.context!,
+              prefixIcon: Icons.translate_rounded,
+              hints: MyStrings.skills.tr,
+            ),
           ),
         ),
 

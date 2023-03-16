@@ -88,4 +88,11 @@ class Utils {
 
     return result.first.id ?? "";
   }
+
+  static List<String> getSkillIds(List<String> skillNames) {
+    var result = (Get.find<AppController>().commons?.value.skills ?? [])
+        .where((element) => skillNames.contains(element.name));
+
+    return result.map((e) => e.id!).toList();
+  }
 }

@@ -58,6 +58,14 @@ class AppController extends GetxService {
   bool _isTokenExpire() => JwtDecoder.isExpired(StorageHelper.getToken);
 
   Future<void> afterSuccessRegister(String token) async {
+    if (token.isEmpty) {
+      user.value.userType = UserType.guest;
+      Get.offAllNamed(Routes.employeeRegisterSuccess);
+      activeShortlistService();
+      return;
+    }
+
+
     Client temp = Client.fromJson(JwtDecoder.decode(token));
 
     if(temp.role == "CLIENT") {
