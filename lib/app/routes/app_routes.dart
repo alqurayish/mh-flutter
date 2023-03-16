@@ -37,6 +37,8 @@ abstract class Routes {
   static const hireStatus = _Paths.hireStatus;
   static const clientNotification = _Paths.clientNotification;
   static const contactUs = _Paths.contactUs;
+
+  static const restaurantLocation = _Paths.restaurantLocation;
 }
 
 abstract class _Paths {
@@ -78,4 +80,6 @@ abstract class _Paths {
   static const mhEmployeesById = '/mh-employees-by-id';
 
   static const contactUs = '/contact-us';
+
+  static const restaurantLocation = '/restaurant-location';
 }

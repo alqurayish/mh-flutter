@@ -371,7 +371,9 @@ class RegisterLastStepController extends GetxController {
         return AlertDialog(
           content: Row(
             children: [
-              const CircularProgressIndicator(),
+              const CircularProgressIndicator(
+                color: MyColors.c_C6A34F,
+              ),
               const SizedBox(width: 20),
               Expanded(
                 child: Column(

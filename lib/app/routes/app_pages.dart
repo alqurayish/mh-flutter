@@ -55,6 +55,8 @@ import '../modules/employee/employee_home/bindings/employee_home_binding.dart';
 import '../modules/employee/employee_home/views/employee_home_view.dart';
 import '../modules/employee/employee_register_success/bindings/employee_register_success_binding.dart';
 import '../modules/employee/employee_register_success/views/employee_register_success_view.dart';
+import '../modules/map/restaurant_location/bindings/restaurant_location_binding.dart';
+import '../modules/map/restaurant_location/views/restaurant_location_view.dart';
 import '../modules/splash/bindings/splash_binding.dart';
 import '../modules/splash/views/splash_view.dart';
 import '../modules/terms_and_condition/bindings/terms_and_condition_binding.dart';
@@ -254,6 +256,11 @@ class AppPages {
       name: _Paths.contactUs,
       page: () => const ContactUsView(),
       binding: ContactUsBinding(),
+    ),
+    GetPage(
+      name: _Paths.restaurantLocation,
+      page: () => const RestaurantLocationView(),
+      binding: RestaurantLocationBinding(),
     ),
   ];
 }

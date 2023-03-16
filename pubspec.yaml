@@ -68,6 +68,9 @@ dependencies:
 
   horizontal_data_table: ^4.1.5
 
+  google_maps_flutter: ^2.2.5
+  geolocator: ^9.0.2
+
   flutter:
     sdk: flutter
 
