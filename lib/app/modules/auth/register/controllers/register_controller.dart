@@ -28,6 +28,10 @@ class RegisterController extends GetxController implements RegisterInterface {
 
   RxBool termsAndConditionCheck = true.obs;
 
+  RxString restaurantAddressFromMap = "".obs;
+  double restaurantLat = 0;
+  double restaurantLong = 0;
+
 
   /// client information
   TextEditingController tecRestaurantName = TextEditingController();
@@ -62,6 +66,11 @@ class RegisterController extends GetxController implements RegisterInterface {
   @override
   void onPageChange(int index) {
     onUserTypeClick(UserType.values[index + 1]);
+  }
+
+  @override
+  void onRestaurantAddressPressed() {
+    Get.toNamed(Routes.restaurantLocation);
   }
 
   @override

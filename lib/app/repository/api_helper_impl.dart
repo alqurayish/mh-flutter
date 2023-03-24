@@ -1,7 +1,11 @@
 import 'dart:convert';
 
 import 'package:dartz/dartz.dart';
+import 'package:mh/app/models/address_to_lat_lng.dart';
+import 'package:mh/app/models/lat_long_to_address.dart';
+import 'package:mh/app/modules/employee/employee_home/models/daily_checkin_checkout_details.dart';
 
+import '../common/controller/app_error_controller.dart';
 import '../common/local_storage/storage_helper.dart';
 import '../common/utils/exports.dart';
 import '../common/utils/logcat.dart';
@@ -59,6 +63,16 @@ class ApiHelperImpl extends GetConnect with ApiHelper {
   }) {
     try {
       if (response == null || response.statusCode == null || response.statusText!.contains("SocketException")) {
+
+        AppErrorController.submitAutomaticError(
+          errorName: "From: api_helper_imp.dart > _convert",
+          description: """
+              response: $response
+              statusCode: ${response?.statusCode}
+              responseStatusText: ${response?.statusText}
+            """,
+        );
+
         return left(CustomError(
           errorCode: response?.statusCode ?? 500,
           errorFrom: ErrorFrom.noInternet,
@@ -68,7 +82,18 @@ class ApiHelperImpl extends GetConnect with ApiHelper {
 
       Either<CustomError, Response> hasError = ApiErrorHandle.checkError(response);
 
-      if (hasError.isLeft()) return left(hasError.asLeft);
+      if (hasError.isLeft()) {
+        AppErrorController.submitAutomaticError(
+          errorName: "From: api_helper_imp.dart > _convert > custom error",
+          description: """
+              errorCode: ${hasError.asLeft.errorCode}
+              errorName: ${hasError.asLeft.errorFrom.name}
+              errorMsg: ${hasError.asLeft.msg}
+            """,
+        );
+
+        return left(hasError.asLeft);
+      }
 
       if (onlyErrorCheck) return right(response as T);
 
@@ -76,6 +101,15 @@ class ApiHelperImpl extends GetConnect with ApiHelper {
     } catch (e, s) {
       Logcat.msg(e.toString());
       Logcat.stack(s);
+
+      AppErrorController.submitAutomaticError(
+        errorName: "From: api_helper_imp.dart > _convert > type conversion",
+        description: """
+              errorCode: 1000
+              error: ${e.toString()}
+              stack: ${s.toString()}
+            """,
+      );
 
       return left(
         CustomError(
@@ -250,6 +284,72 @@ class ApiHelperImpl extends GetConnect with ApiHelper {
   @override
   EitherModel<Response> hireConfirm(Map<String, dynamic> data) async {
     var response = await post("hired-histories/create", jsonEncode(data));
+
+    print(response.body);
+
+    return _convert<Response>(
+      response,
+      (Map<String, dynamic> data) {},
+      onlyErrorCheck: true,
+    ).fold((l) => left(l), (r) => right(r));
+  }
+
+  @override
+  EitherModel<Response> addressToLatLng(String query) async {
+    httpClient.baseUrl = "https://nominatim.openstreetmap.org/";
+    var response = await get("search?q=$query&format=jsonv2");
+    httpClient.baseUrl = _ApiUrls.base;
+
+    return _convert<Response>(
+      response,
+      (Map<String, dynamic> data) {},
+      onlyErrorCheck: true,
+    ).fold((l) => left(l), (r) => right(r));
+  }
+
+  @override
+  EitherModel<LatLngToAddress> latLngToAddress(double lat, double lng) async {
+    httpClient.baseUrl = "https://nominatim.openstreetmap.org/";
+    var response = await get("reverse?lat=$lat&lon=$lng&format=jsonv2");
+    httpClient.baseUrl = _ApiUrls.base;
+
+    return _convert<LatLngToAddress>(
+      response,
+      LatLngToAddress.fromJson,
+    ).fold((l) => left(l), (r) => right(r));
+  }
+
+  @override
+  void submitAppError(Map<String, String> data) {
+    post("app-errors/create", jsonEncode(data));
+  }
+
+  @override
+  EitherModel<DailyCheckinCheckoutDetails> dailyCheckinCheckoutDetails(String employeeId) async {
+    var response = await get("current-hired-employees/details/$employeeId");
+
+    return _convert<DailyCheckinCheckoutDetails>(
+      response,
+      DailyCheckinCheckoutDetails.fromJson,
+    ).fold((l) => left(l), (r) => right(r));
+  }
+
+  @override
+  EitherModel<Response> checkin(Map<String, dynamic> data) async {
+    var response = await post("current-hired-employees/create", jsonEncode(data));
+
+    print(response.body);
+
+    return _convert<Response>(
+      response,
+      (Map<String, dynamic> data) {},
+      onlyErrorCheck: true,
+    ).fold((l) => left(l), (r) => right(r));
+  }
+
+  @override
+  EitherModel<Response> checkout(Map<String, dynamic> data) async {
+    var response = await put("current-hired-employees/update", jsonEncode(data));
 
     print(response.body);
 

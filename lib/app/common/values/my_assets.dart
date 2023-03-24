@@ -50,6 +50,7 @@ class MyAssets {
   static const waiter = "assets/icons/positions/waiter.png";
   static const defaultImage = "assets/icons/positions/default_position.png";
 
+  static const locationPin = "assets/icons/location_pin.png";
 
 }
 

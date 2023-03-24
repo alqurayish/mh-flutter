@@ -20,3 +20,5 @@ void main() {
 /// ERROR CODE
 /// 1000 -> type conversion
 /// 1001 -> unknown api error [ApiErrorHandle]
+/// 1002 -> location service unavailable
+/// 1002 -> location

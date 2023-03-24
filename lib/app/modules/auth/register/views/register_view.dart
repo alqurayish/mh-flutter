@@ -162,13 +162,34 @@ class RegisterView extends GetView<RegisterController> {
 
             SizedBox(height: 26.h),
 
-            CustomTextInputField(
-              controller: controller.tecRestaurantAddress,
-              label: MyStrings.restaurantAddress.tr,
-              prefixIcon: Icons.location_on_rounded,
-              validator: (String? value) => Validators.emptyValidator(
-                value,
-                MyStrings.required.tr,
+            Obx(
+              () => CustomTextInputField(
+                controller: controller.tecRestaurantAddress,
+                label: MyStrings.restaurantAddress.tr,
+                prefixIcon: Icons.location_on_rounded,
+                isMapField: true,
+                onSuffixPressed: controller.onRestaurantAddressPressed,
+                readOnly: controller.restaurantAddressFromMap.value.isEmpty || controller.restaurantLat == 0 || controller.restaurantLong == 0,
+                onTap: (controller.restaurantAddressFromMap.value.isEmpty || controller.restaurantLat == 0 || controller.restaurantLong == 0)
+                    ? controller.onRestaurantAddressPressed
+                    : null,
+                validator: (String? value) => Validators.emptyValidator(
+                  value,
+                  MyStrings.required.tr,
+                ),
+              ),
+            ),
+
+            Obx(
+              () => Visibility(
+                visible: !(controller.restaurantAddressFromMap.value.isEmpty || controller.restaurantLat == 0 || controller.restaurantLong == 0),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 18),
+                  child: Text(
+                    "Confirm your location on map. we follow your employee based on your map location",
+                    style: Colors.redAccent.regular12,
+                  ),
+                ),
               ),
             ),
 

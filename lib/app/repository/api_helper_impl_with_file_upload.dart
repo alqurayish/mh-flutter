@@ -4,6 +4,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:mh/app/repository/server_urls.dart';
 
+import '../common/controller/app_error_controller.dart';
+
 class ApiHelperImplementWithFileUpload {
 
   static void uploadProfileImageAndCv(Map<String, dynamic> data) async {
@@ -101,6 +103,12 @@ class ApiHelperImplementWithFileUpload {
         print(e);
         print(s);
       }
+
+      AppErrorController.submitAutomaticError(
+        errorName: "From: api_helper_imp_with_file_upload.dart > on DioError catch",
+        description: (e.response?.data ?? "").toString(),
+      );
+
       return e.response;
     }
 
