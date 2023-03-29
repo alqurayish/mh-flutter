@@ -15,7 +15,7 @@ abstract class RegisterInterface {
 
   void onPageChange(int index);
 
-  void  onGenderChange(String? gender);
+  // void  onGenderChange(String? gender);
 
   void  onPositionChange(String? position);
 }

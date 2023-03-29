@@ -126,71 +126,71 @@ class RegisterLastStepController extends GetxController {
     if (formKey.currentState!.validate()) {
       formKey.currentState!.save();
 
-      ClientRegistration clientRegistration = ClientRegistration(
-        restaurantName: _registerController.tecRestaurantName.text,
-        restaurantAddress: _registerController.tecRestaurantAddress.text,
-        email: _registerController.tecEmailAddress.text,
-        phoneNumber: _registerController.selectedClientCountry.dialCode + _registerController.tecPhoneNumber.text,
-        sourceId: _getSourceId(),
-        referPersonId: _getReferPersonId(),
-        password: _registerController.tecPassword.text,
-      );
+      // ClientRegistration clientRegistration = ClientRegistration(
+      //   restaurantName: _registerController.tecRestaurantName.text,
+      //   restaurantAddress: _registerController.tecRestaurantAddress.text,
+      //   email: _registerController.tecEmailAddress.text,
+      //   phoneNumber: _registerController.selectedClientCountry.dialCode + _registerController.tecPhoneNumber.text,
+      //   sourceId: _getSourceId(),
+      //   referPersonId: _getReferPersonId(),
+      //   password: _registerController.tecPassword.text,
+      // );
 
-      CustomLoader.show(context!);
-
-      await _apiHelper.clientRegister(clientRegistration).then((response) {
-
-        CustomLoader.hide(context!);
-
-        response.fold((CustomError customError) {
-          Utils.errorDialog(context!, customError..onRetry = _clientRegistration);
-        }, (ClientRegistrationResponse clientRegistrationResponse) async {
-          _afterSuccessfullyRegister(clientRegistrationResponse, true);
-        });
-      });
+      // CustomLoader.show(context!);
+      //
+      // await _apiHelper.clientRegister(clientRegistration).then((response) {
+      //
+      //   CustomLoader.hide(context!);
+      //
+      //   response.fold((CustomError customError) {
+      //     Utils.errorDialog(context!, customError..onRetry = _clientRegistration);
+      //   }, (ClientRegistrationResponse clientRegistrationResponse) async {
+      //     _afterSuccessfullyRegister(clientRegistrationResponse, true);
+      //   });
+      // });
     }
   }
 
   Future<void> _employeeRegistration() async {
-    if (formKey.currentState!.validate()) {
-      formKey.currentState!.save();
-
-      RegisterEmployeeStep2Controller step2 = Get.find();
-      RegisterEmployeeStep3Controller step3 = Get.find();
-
-      EmployeeRegistration employeeRegistration = EmployeeRegistration(
-          name : _registerController.tecEmployeeFullName.text.trim(),
-          positionId : Utils.getPositionId(_registerController.selectedPosition.value.trim()),
-          gender : _registerController.selectedGender.value.trim(),
-          dateOfBirth : _registerController.dateOfBirth.value.toString().split(" ").first,
-          email : _registerController.tecEmployeeEmail.text.trim(),
-          phoneNumber : _registerController.selectedEmployeeCountry.dialCode + _registerController.tecEmployeePhone.text.trim(),
-          countryName : step2.selectedCountry.value.trim(),
-          presentAddress : step2.tecPresentAddress.text.trim(),
-          permanentAddress : step2.tecPermanentAddress.text.trim(),
-          languages : step2.selectedLanguageList.value,
-          higherEducation : step3.tecEducation.text.trim(),
-          licensesNo : step3.tecLicence.text.trim(),
-          emmergencyContact : step3.selectedCountry.dialCode + step3.tecEmergencyContact.text.trim(),
-          skills : Utils.getSkillIds(step3.selectedSkillList.value),
-          sourceId : _getSourceId(),
-          referPersonId : _getReferPersonId(),
-          employeeExperience : 0,
-      );
-
-      CustomLoader.show(context!);
-
-      await _apiHelper.employeeRegister(employeeRegistration).then((response) {
-
-        CustomLoader.hide(context!);
-
-        response.fold((CustomError customError) {
-          Utils.errorDialog(context!, customError..onRetry = _clientRegistration);
-        }, (ClientRegistrationResponse clientRegistrationResponse) async {
-          _afterSuccessfullyRegister(clientRegistrationResponse, false);
-        });
-      });
-    }
+    // if (formKey.currentState!.validate()) {
+    //   formKey.currentState!.save();
+    //
+    //   RegisterEmployeeStep2Controller step2 = Get.find();
+    //   RegisterEmployeeStep3Controller step3 = Get.find();
+    //
+    //   EmployeeRegistration employeeRegistration = EmployeeRegistration(
+    //       name : _registerController.tecEmployeeFullName.text.trim(),
+    //       positionId : Utils.getPositionId(_registerController.selectedPosition.value.trim()),
+    //       gender : _registerController.selectedGender.value.trim(),
+    //       dateOfBirth : _registerController.dateOfBirth.value.toString().split(" ").first,
+    //       email : _registerController.tecEmployeeEmail.text.trim(),
+    //       phoneNumber : _registerController.selectedEmployeeCountry.dialCode + _registerController.tecEmployeePhone.text.trim(),
+    //       countryName : step2.selectedCountry.value.trim(),
+    //       presentAddress : step2.tecPresentAddress.text.trim(),
+    //       permanentAddress : step2.tecPermanentAddress.text.trim(),
+    //       languages : step2.selectedLanguageList.value,
+    //       higherEducation : step3.tecEducation.text.trim(),
+    //       licensesNo : step3.tecLicence.text.trim(),
+    //       emmergencyContact : step3.selectedCountry.dialCode + step3.tecEmergencyContact.text.trim(),
+    //       skills : Utils.getSkillIds(step3.selectedSkillList.value),
+    //       sourceId : _getSourceId(),
+    //       referPersonId : _getReferPersonId(),
+    //       employeeExperience : 0,
+    //   );
+    //
+    //   CustomLoader.show(context!);
+    //
+    //   await _apiHelper.employeeRegister(employeeRegistration).then((response) {
+    //
+    //     CustomLoader.hide(context!);
+    //
+    //     response.fold((CustomError customError) {
+    //       Utils.errorDialog(context!, customError..onRetry = _clientRegistration);
+    //     }, (ClientRegistrationResponse clientRegistrationResponse) async {
+    //       _afterSuccessfullyRegister(clientRegistrationResponse, false);
+    //     });
+    //   });
+    // }
   }
 
 

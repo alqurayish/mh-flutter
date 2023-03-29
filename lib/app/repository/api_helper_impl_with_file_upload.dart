@@ -24,6 +24,18 @@ class ApiHelperImplementWithFileUpload {
     responseSendPort.send({"data" : result?.data});
   }
 
+  static void employeeRegister(Map<String, dynamic> data) async {
+    SendPort responseSendPort = data["responseReceivePort"];
+
+    Response? result = await _uploadData(
+      "${ServerUrls.serverUrlUser}users/employee-register",
+      data,
+      postMethod: true,
+    );
+
+    responseSendPort.send({"data" : result?.data});
+  }
+
   // static void uploadAccessoriesMoreImage(Map<String, dynamic> data) async {
   //   SendPort responseSendPort = data["responseReceivePort"];
   //

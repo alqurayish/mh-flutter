@@ -55,7 +55,8 @@ class MyStrings {
   static const String enterHere = "enterHere";
   static const String refer = "refer";
   static const String uploadYourPhoto = "uploadYourPhoto";
-  static const String fullName = "fullName";
+  static const String firstName = "firstName";
+  static const String lastName = "lastName";
   static const String position = "position";
   static const String gender = "gender";
   static const String dateOfBirth = "dateOfBirth";

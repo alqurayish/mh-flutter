@@ -1,60 +1,26 @@
 class EmployeeRegistration {
-
-  String name;
-  String positionId;
-  String gender;
-  String dateOfBirth;
+  String firstName;
+  String lastName;
   String email;
   String phoneNumber;
   String countryName;
-  String presentAddress;
-  String permanentAddress;
-  List<String> languages;
-  String higherEducation;
-  String licensesNo;
-  String emmergencyContact;
-  List<String> skills;
-  String sourceId;
-  String referPersonId;
-  int employeeExperience;
+  String positionId;
 
   EmployeeRegistration({
-    required this.name,
-    required this.positionId,
-    required this.gender,
-    required this.dateOfBirth,
+    required this.firstName,
+    required this.lastName,
     required this.email,
     required this.phoneNumber,
     required this.countryName,
-    required this.presentAddress,
-    required this.permanentAddress,
-    required this.languages,
-    required this.higherEducation,
-    required this.licensesNo,
-    required this.emmergencyContact,
-    required this.skills,
-    required this.sourceId,
-    required this.referPersonId,
-    required this.employeeExperience,
+    required this.positionId,
   });
 
   Map<String, dynamic> get toJson => {
-        "name": name,
-        "positionId": positionId,
-        "gender": gender,
-        "dateOfBirth": dateOfBirth,
+        "firstName": firstName,
+        "lastName": lastName,
         "email": email,
         "phoneNumber": phoneNumber,
         "countryName": countryName,
-        "presentAddress": presentAddress,
-        "permanentAddress": permanentAddress,
-        "languages": languages,
-        "higherEducation": higherEducation,
-        "licensesNo": licensesNo,
-        "emmergencyContact": emmergencyContact,
-        "skills": skills,
-        "sourceId": sourceId,
-        if(referPersonId.isNotEmpty) "referPersonId": referPersonId,
-        "employeeExperience": employeeExperience,
+        "positionId": positionId,
       };
 }
