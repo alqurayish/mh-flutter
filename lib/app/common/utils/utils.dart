@@ -60,6 +60,12 @@ class Utils {
         context: context,
         onRetry: customError.onRetry,
       );
+    } else if(customError.errorFrom == ErrorFrom.server) {
+      CustomDialogue.serverError(
+        context: context,
+        onRetry: customError.onRetry,
+        msg: customError.msg,
+      );
     }
   }
 

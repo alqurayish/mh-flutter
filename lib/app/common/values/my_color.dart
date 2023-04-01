@@ -57,7 +57,8 @@ class MyColors {
   static const Color c_FFA800 = Color(0xffFFA800);
   static const Color c_DADADA = Color(0xffDADADA);
   static const Color c_858585 = Color(0xff858585);
-  static Color c_00C92C = const Color(0xff00C92C).withOpacity(.1);
+  static Color c_00C92C = const Color(0xff00C92C);
+  static Color c_00C92C_10 = const Color(0xff00C92C).withOpacity(.1);
   static const Color c_F5F5F5 = Color(0xffF5F5F5);
   static const Color c_FF5029 = Color(0xffFF5029);
   static const Color c_C92C1A = Color(0xffC92C1A);

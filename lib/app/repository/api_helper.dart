@@ -11,6 +11,7 @@ import '../modules/auth/login/model/login_response.dart';
 import '../modules/auth/register/models/client_register.dart';
 import '../modules/auth/register/models/client_register_response.dart';
 import '../modules/auth/register/models/employee_registration.dart';
+import '../modules/client/client_dashboard/models/current_hired_employees.dart';
 import '../modules/client/client_shortlisted/models/shortlisted_employees.dart' as shortlistEmployees;
 import '../modules/client/client_terms_condition_for_hire/models/terms_condition_for_hire.dart';
 import '../modules/employee/employee_home/models/daily_checkin_checkout_details.dart';
@@ -43,6 +44,17 @@ abstract class ApiHelper {
     bool? isReferred,
   });
 
+  EitherModel<Employees> getAllUsersFromAdmin({
+    String? positionId,
+    String? rating,
+    String? employeeExperience,
+    String? minTotalHour,
+    String? maxTotalHour,
+    bool? isReferred,
+    String? requestType,
+    bool? active,
+  });
+
   EitherModel<TermsConditionForHire> getTermsConditionForHire();
 
   EitherModel<shortlistEmployees.ShortlistedEmployees> fetchShortlistEmployees();
@@ -68,5 +80,9 @@ abstract class ApiHelper {
   EitherModel<Response> checkin(Map<String, dynamic> data);
 
   EitherModel<Response> checkout(Map<String, dynamic> data);
+
+  EitherModel<Response> deleteAccount(Map<String, dynamic> data);
+
+  EitherModel<CurrentHiredEmployees> getAllCurrentHiredEmployees();
 
 }

@@ -17,8 +17,10 @@ class LoginRegisterHintsViewPhone extends GetView<LoginRegisterHintsController> 
       ),
       body: Column(
         children: [
-          HorizontalDividerWithText(text: MyStrings.premierStaffingSolutions.tr,),
-        ],
+            HorizontalDividerWithText(
+              text: MyStrings.premierStaffingSolutions.tr,
+            ),
+          ],
       )
     );
   }

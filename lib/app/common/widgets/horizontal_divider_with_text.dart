@@ -21,9 +21,7 @@ class HorizontalDividerWithText extends StatelessWidget {
         child ??
             Text(
               text ?? "",
-              style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                fontWeight: FontWeight.w600,
-              ),
+              style: MyColors.text.semiBold15,
             ),
         const SizedBox(width: 5),
         Expanded(child: _divider(context)),

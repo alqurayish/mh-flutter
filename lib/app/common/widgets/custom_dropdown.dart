@@ -8,6 +8,7 @@ class CustomDropdown extends StatelessWidget {
   final List<String> items;
   final Function(String? item) onChange;
   final String? Function(String?)? validator;
+  final EdgeInsets? padding;
 
   const CustomDropdown({
     Key? key,
@@ -17,6 +18,7 @@ class CustomDropdown extends StatelessWidget {
     required this.items,
     required this.onChange,
     this.validator,
+    this.padding,
   }) : super(key: key);
 
   @override
@@ -24,8 +26,9 @@ class CustomDropdown extends StatelessWidget {
     return SizedBox(
       height: 58.h,
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 18.w),
+        padding: padding ?? EdgeInsets.symmetric(horizontal: 18.w),
         child: DropdownButtonFormField(
+          dropdownColor: MyColors.lightCard(context),
           autovalidateMode: AutovalidateMode.onUserInteraction,
           onChanged: onChange,
           validator: validator,

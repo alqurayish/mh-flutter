@@ -13,10 +13,15 @@ class RestaurantLocationView extends GetView<RestaurantLocationController> {
   Widget build(BuildContext context) {
     controller.context = context;
     return Scaffold(
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: controller.onConfirmPressed,
-        backgroundColor: MyColors.c_C6A34F,
-        label: const Text("Confirm"),
+      floatingActionButton: Obx(
+        ()=> Visibility(
+          visible: !controller.fetchCurrentLocation.value && !controller.findAddress.value,
+          child: FloatingActionButton.extended(
+            onPressed: controller.onConfirmPressed,
+            backgroundColor: MyColors.c_C6A34F,
+            label: const Text("Confirm"),
+          ),
+        ),
       ),
       body: Obx(
         () => controller.fetchCurrentLocation.value
@@ -86,10 +91,55 @@ class RestaurantLocationView extends GetView<RestaurantLocationController> {
         ),
       );
 
-  Widget get _locationFetchError => Center(
-        child: Text(
-          controller.locationFetchError.value,
+  Widget get _locationFetchError => Stack(
+    children: [
+      SizedBox(
+        width: double.infinity,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const Icon(
+              Icons.location_off,
+              size: 50,
+              color: MyColors.c_C6A34F,
+            ),
+            const SizedBox(height: 15),
+            Text(
+              controller.locationFetchError.value,
+              style: MyColors.l111111_dwhite(controller.context!).semiBold15,
+            ),
+            const SizedBox(height: 15),
+            Text(
+              "Please turn on you location and try again",
+              style: MyColors.l111111_dwhite(controller.context!).regular12,
+            ),
+          ],
         ),
-      );
-
+      ),
+      Positioned(
+        left: 20,
+        top: 50,
+        child: GestureDetector(
+          onTap: Get.back,
+          child: Container(
+            width: 30,
+            height: 30,
+            decoration: const BoxDecoration(
+              shape: BoxShape.circle,
+              color: MyColors.c_C6A34F,
+            ),
+            child: Transform.translate(
+              offset: const Offset(2, 0),
+              child: const Icon(
+                Icons.arrow_back_ios,
+                size: 16,
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ),
+      ),
+    ],
+  );
 }

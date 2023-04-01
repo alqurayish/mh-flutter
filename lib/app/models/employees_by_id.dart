@@ -47,7 +47,8 @@ class Employees {
 class Employee {
   Employee({
     this.id,
-    this.name,
+    this.firstName,
+    this.lastName,
     this.positionId,
     this.positionName,
     this.gender,
@@ -63,8 +64,6 @@ class Employee {
     this.emmergencyContact,
     this.skills,
     this.countryName,
-    this.password,
-    this.plainPassword,
     this.sourceId,
     this.sourceName,
     this.emailVerified,
@@ -91,10 +90,16 @@ class Employee {
     this.v,
     this.cv,
     this.profilePicture,
+    this.restaurantName,
+    this.restaurantAddress,
+    this.clientDiscount,
+    this.lat,
+    this.long,
   });
 
   final String? id;
-  final String? name;
+  final String? firstName;
+  final String? lastName;
   final String? positionId;
   final String? positionName;
   final String? gender;
@@ -110,8 +115,6 @@ class Employee {
   final String? emmergencyContact;
   final List<Skill>? skills;
   final String? countryName;
-  final String? password;
-  final String? plainPassword;
   final String? sourceId;
   final String? sourceName;
   final bool? emailVerified;
@@ -128,7 +131,7 @@ class Employee {
   final bool? isHired;
   final bool? verified;
   final int? noOfEmployee;
-  final int? employeeExperience;
+  final dynamic employeeExperience;
   final int? rating;
   final int? totalWorkingHour;
   final int? hourlyRate;
@@ -138,6 +141,11 @@ class Employee {
   final int? v;
   final String? cv;
   final String? profilePicture;
+  final String? restaurantName;
+  final String? restaurantAddress;
+  final int? clientDiscount;
+  final String? lat;
+  final String? long;
 
   factory Employee.fromRawJson(String str) => Employee.fromJson(json.decode(str));
 
@@ -145,7 +153,8 @@ class Employee {
 
   factory Employee.fromJson(Map<String, dynamic> json) => Employee(
     id: json["_id"],
-    name: json["name"],
+    firstName: json["firstName"],
+    lastName: json["lastName"],
     positionId: json["positionId"],
     positionName: json["positionName"],
     gender: json["gender"],
@@ -161,8 +170,6 @@ class Employee {
     emmergencyContact: json["emmergencyContact"],
     skills: json["skills"] == null ? [] : List<Skill>.from(json["skills"]!.map((x) => Skill.fromJson(x))),
     countryName: json["countryName"],
-    password: json["password"],
-    plainPassword: json["plainPassword"],
     sourceId: json["sourceId"],
     sourceName: json["sourceName"],
     emailVerified: json["emailVerified"],
@@ -189,11 +196,17 @@ class Employee {
     v: json["__v"],
     cv: json["cv"],
     profilePicture: json["profilePicture"],
+    restaurantName: json["restaurantName"],
+    restaurantAddress: json["restaurantAddress"],
+    clientDiscount: json["clientDiscount"],
+    lat: json["lat"],
+    long: json["long"],
   );
 
   Map<String, dynamic> toJson() => {
     "_id": id,
-    "name": name,
+    "firstName": firstName,
+    "lastName": lastName,
     "positionId": positionId,
     "positionName": positionName,
     "gender": gender,
@@ -209,8 +222,6 @@ class Employee {
     "emmergencyContact": emmergencyContact,
     "skills": skills == null ? [] : List<dynamic>.from(skills!.map((x) => x.toJson())),
     "countryName": countryName,
-    "password": password,
-    "plainPassword": plainPassword,
     "sourceId": sourceId,
     "sourceName": sourceName,
     "emailVerified": emailVerified,
@@ -237,6 +248,11 @@ class Employee {
     "__v": v,
     "cv": cv,
     "profilePicture": profilePicture,
+    "restaurantName": restaurantName,
+    "restaurantAddress": restaurantAddress,
+    "clientDiscount": clientDiscount,
+    "lat": lat,
+    "long": long,
   };
 }
 

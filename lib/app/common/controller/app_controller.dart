@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:mh/app/models/admin.dart';
 
 import '../../enums/user_type.dart';
 import '../../models/client.dart';
@@ -26,6 +27,17 @@ class AppController extends GetxService {
     userType: UserType.guest,
   ).obs;
 
+  void setTokenFromLocal() {
+    _updateUserModel();
+
+    if(user.value.isGuest) {
+      Get.offAndToNamed(Routes.loginRegisterHints);
+    } else {
+      activeShortlistService();
+      Get.offAndToNamed(user.value.userType!.homeRoute);
+    }
+  }
+
   void _updateUserModel() {
     if (StorageHelper.hasToken && StorageHelper.getToken.isNotEmpty) {
       if (!_isTokenExpire()) {
@@ -34,12 +46,13 @@ class AppController extends GetxService {
 
         if(temp.role == "CLIENT") {
           user.value.userType = UserType.client;
-          user.value.client = Client.fromJson(JwtDecoder.decode(StorageHelper.getToken));
+          user.value.client = temp;
         } else if(temp.role == "EMPLOYEE") {
           user.value.userType = UserType.employee;
           user.value.employee = Employee.fromJson(JwtDecoder.decode(StorageHelper.getToken));
-        } else if (user.value.isAdmin) {
+        } else if (temp.role == "ADMIN") {
           user.value.userType = UserType.admin;
+          user.value.admin = Admin.fromJson(JwtDecoder.decode(StorageHelper.getToken));
         } else {
           user.value.userType = UserType.guest;
         }
@@ -146,6 +159,10 @@ class AppController extends GetxService {
   }
 
   void onLogoutClick() {
+    if(Get.isRegistered<ShortlistController>()) {
+      Get.find<ShortlistController>().removeAllSelected();
+    }
+
     StorageHelper.removeToken;
     Get.offAllNamed(Routes.login);
   }

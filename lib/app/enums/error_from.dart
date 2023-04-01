@@ -3,4 +3,5 @@ enum ErrorFrom {
   api,
   typeConversion,
   location,
+  server,
 }

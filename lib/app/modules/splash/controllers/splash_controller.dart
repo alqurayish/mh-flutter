@@ -1,5 +1,4 @@
 import '../../../common/controller/app_controller.dart';
-import '../../../common/helper/auth_helper.dart';
 import '../../../common/utils/exports.dart';
 import '../../../models/commons.dart';
 import '../../../models/custom_error.dart';
@@ -29,22 +28,7 @@ class SplashController extends GetxController {
   }
 
   Future<void> _goToNextPage() async {
-    await _isLocalTokenValid() ? _goToHomePage() : _goToLoginRegisterHintPage();
-  }
-
-  Future<bool> _isLocalTokenValid() async {
-    return await AuthHelper.getUserFromLocal().then((response) {
-      return response.fold((l) => false, (r) => true);
-    });
-  }
-
-  void _goToHomePage() {
-    _appController.activeShortlistService();
-    Get.offAndToNamed(_appController.user.value.userType!.homeRoute);
-  }
-
-  void _goToLoginRegisterHintPage() {
-    Get.offAndToNamed(Routes.loginRegisterHints);
+    _appController.setTokenFromLocal();
   }
 
   Future<void> _getCommonData() async {

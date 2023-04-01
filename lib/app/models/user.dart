@@ -1,4 +1,5 @@
 import '../enums/user_type.dart';
+import 'admin.dart';
 import 'client.dart';
 import 'employee.dart';
 
@@ -7,6 +8,7 @@ class User {
 
   Client? client;
   Employee? employee;
+  Admin? admin;
 
   bool get isClient => userType == UserType.client;
   bool get isEmployee => userType == UserType.employee;
@@ -21,7 +23,7 @@ class User {
     } else if(isEmployee) {
       id = employee?.id ?? "Employee id get failed";
     } else if(isAdmin) {
-      id = "Admin id not set yet";
+      id = admin?.id ?? "Admin id get failed";
     }
 
     return id;

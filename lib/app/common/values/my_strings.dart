@@ -113,4 +113,5 @@ class MyStrings {
 
 class _Arguements {
   String data = "data";
+  String showAsAdmin = "showAsAdmin";
 }

@@ -97,6 +97,10 @@ class RegisterEmployeeStep3View extends GetView<RegisterEmployeeStep3Controller>
             decoration: MyDecoration.inputFieldDecoration(
               context: controller.context!,
               label: MyStrings.emergencyContact.tr,
+            ).copyWith(
+              counterStyle: TextStyle(
+                color: MyColors.l111111_dwhite(controller.context!),
+              ),
             ),
             style: MyColors.l111111_dwhite(controller.context!).regular16_5,
             dropdownTextStyle: MyColors.l111111_dwhite(controller.context!).regular16_5,

@@ -111,7 +111,7 @@ class EmployeeDetails {
   String? positionId;
   String? presentAddress;
   String? permanentAddress;
-  int? employeeExperience;
+  dynamic employeeExperience;
   int? rating;
   int? totalWorkingHour;
   int? hourlyRate;
@@ -143,7 +143,7 @@ class EmployeeDetails {
     totalWorkingHour = json['totalWorkingHour'];
     hourlyRate = json['hourlyRate'];
     sId = json['_id'];
-    sId = json['profilePicture'];
+    profilePicture = json['profilePicture'];
   }
 
   Map<String, dynamic> toJson() {

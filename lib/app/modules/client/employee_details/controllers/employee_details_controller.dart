@@ -10,12 +10,14 @@ class EmployeeDetailsController extends GetxController {
   final AppController _appController = Get.find();
 
   late Employee employee;
+  late bool showAsAdmin;
 
   final ShortlistController shortlistController = Get.find();
 
   @override
   void onInit() {
     employee = Get.arguments[MyStrings.arg.data];
+    showAsAdmin = Get.arguments[MyStrings.arg.showAsAdmin];
     super.onInit();
   }
 
@@ -23,5 +25,9 @@ class EmployeeDetailsController extends GetxController {
     if(!_appController.hasPermission()) return;
 
     Get.toNamed(Routes.clientShortlisted);
+  }
+
+  void onChatClick() {
+    Get.toNamed(Routes.oneToOneChat);
   }
 }

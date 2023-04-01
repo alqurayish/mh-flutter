@@ -1,3 +1,4 @@
+import 'package:dotted_border/dotted_border.dart';
 import 'package:expandable_page_view/expandable_page_view.dart';
 import 'package:flutter/gestures.dart';
 import 'package:intl_phone_field/country_picker_dialog.dart';
@@ -185,14 +186,17 @@ class RegisterView extends GetView<RegisterController> {
               ),
             ),
 
+            SizedBox(height: 5.h),
+
             Obx(
               () => Visibility(
                 visible: !(controller.restaurantAddressFromMap.value.isEmpty || controller.restaurantLat == 0 || controller.restaurantLong == 0),
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 18),
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Text(
                     "Confirm your location on map. we follow your employee based on your map location",
-                    style: Colors.redAccent.regular12,
+                    textAlign: TextAlign.center,
+                    style: Colors.grey.regular12,
                   ),
                 ),
               ),
@@ -217,6 +221,10 @@ class RegisterView extends GetView<RegisterController> {
                 decoration: MyDecoration.inputFieldDecoration(
                   context: controller.context!,
                   label: MyStrings.phoneNumber.tr,
+                ).copyWith(
+                  counterStyle: TextStyle(
+                    color: MyColors.l111111_dwhite(controller.context!),
+                  ),
                 ),
                 style: MyColors.l111111_dwhite(controller.context!).regular16_5,
                 dropdownTextStyle: MyColors.l111111_dwhite(controller.context!).regular16_5,
@@ -297,7 +305,7 @@ class RegisterView extends GetView<RegisterController> {
               prefixIcon: Icons.label,
               hints: null,
               value: controller.selectedRefer,
-              items: (controller.employees?.users ?? []).map((e) => "${e.name} - ${e.userIdNumber}").toList()..add("Other"),
+              items: (controller.employees?.users ?? []).map((e) => "${e.firstName} ${e.lastName} - ${e.userIdNumber}").toList()..add("Other"),
               onChange: controller.onReferChange,
               validator: (String? value) => Validators.emptyValidator(
                 value,
@@ -462,6 +470,10 @@ class RegisterView extends GetView<RegisterController> {
                 decoration: MyDecoration.inputFieldDecoration(
                   context: controller.context!,
                   label: MyStrings.phoneNumber.tr,
+                ).copyWith(
+                  counterStyle: TextStyle(
+                    color: MyColors.l111111_dwhite(controller.context!),
+                  ),
                 ),
                 style: MyColors.l111111_dwhite(controller.context!).regular16_5,
                 dropdownTextStyle: MyColors.l111111_dwhite(controller.context!).regular16_5,
@@ -511,7 +523,17 @@ class RegisterView extends GetView<RegisterController> {
               onChange: controller.onPositionChange,
             ),
 
+            SizedBox(height: 26.h),
+
             _cv,
+
+            SizedBox(height: 26.h),
+
+            _profileImage,
+
+            SizedBox(height: 5.h),
+
+            _profilePhotoHints,
 
             SizedBox(height: 10.h),
           ],
@@ -589,23 +611,24 @@ class RegisterView extends GetView<RegisterController> {
   Widget get _cv => Column(
         children: [
           Container(
-            margin: EdgeInsets.all(18.w),
+            margin: EdgeInsets.symmetric(horizontal: 18.w),
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
             decoration: BoxDecoration(
-              border: Border.all(width: .5, color: Colors.blue),
+              border: Border.all(width: .5, color: MyColors.c_777777),
               color: Theme.of(controller.context!).cardColor,
               borderRadius: BorderRadius.circular(10.0),
             ),
             child: Obx(
               () => Row(
                 children: [
-                  const Icon(Icons.picture_as_pdf),
+                  const Icon(Icons.picture_as_pdf, color: MyColors.c_7B7B7B,),
                   SizedBox(width: 7.w),
                   Expanded(
                     child: Text(
                       controller.cv.isEmpty
                           ? "Upload your cv"
                           : controller.cv.first.path.split("/").last,
+                      style: MyColors.l111111_dwhite(controller.context!).regular16_5,
                     ),
                   ),
                   GestureDetector(
@@ -622,8 +645,7 @@ class RegisterView extends GetView<RegisterController> {
           Obx(
             () => Visibility(
               visible: controller.cv.isNotEmpty &&
-                  controller.cv.first.path.split(".").last.toLowerCase() !=
-                      "pdf",
+                  controller.cv.first.path.split(".").last.toLowerCase() != "pdf",
               child: Text(
                 'CV must be pdf format',
                 style: Colors.redAccent.medium12,
@@ -655,4 +677,61 @@ class RegisterView extends GetView<RegisterController> {
   //     controller.onDatePicked(picked);
   //   }
   // }
+
+  Widget get _profileImage => GestureDetector(
+        onTap: controller.onProfileImageClick,
+        child: DottedBorder(
+          borderType: BorderType.Circle,
+          dashPattern: const [11],
+          strokeWidth: 2,
+          color: MyColors.c_C6A34F,
+          child: Container(
+            height: 162.w,
+            width: 162.w,
+            margin: const EdgeInsets.all(4),
+            decoration: BoxDecoration(
+              color: MyColors.c_C6A34F_22,
+              shape: BoxShape.circle,
+            ),
+            child: Obx(
+              () => controller.profileImage.isEmpty
+                  ? Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const Icon(
+                          Icons.camera_alt,
+                          color: MyColors.c_C6A34F,
+                          size: 50,
+                        ),
+                        const SizedBox(height: 5),
+                        Text(
+                          MyStrings.uploadYourPhoto.tr,
+                          textAlign: TextAlign.center,
+                          style: MyColors.text.medium12,
+                        ),
+                      ],
+                    )
+                  : ClipRRect(
+                      borderRadius: BorderRadius.circular(162),
+                      child: Image.file(
+                        controller.profileImage.first,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+            ),
+          ),
+        ),
+      );
+
+  Widget get _profilePhotoHints => Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20).copyWith(
+          top: 10,
+        ),
+        child: Text(
+          "NB: Please upload passport size photo with white background",
+          textAlign: TextAlign.center,
+          style: Colors.blue.medium12,
+        ),
+      );
 }

@@ -192,4 +192,8 @@ class ShortlistController extends GetxService {
     _removeEmployeeFromFromShortlist(employeeId);
   }
 
+  void removeAllSelected() {
+    selectedForHire..clear()..refresh();
+  }
+
 }

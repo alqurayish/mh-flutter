@@ -92,6 +92,7 @@ class MhEmployeesByIdView extends GetView<MhEmployeesByIdController> {
               onTap: () => CustomFilter.customFilter(
                 controller.context!,
                 controller.onApplyClick,
+                controller.onResetClick,
               ),
               child: Container(
                 width: 36.w,
@@ -136,11 +137,11 @@ class MhEmployeesByIdView extends GetView<MhEmployeesByIdController> {
                 width: 122.w,
                 child: CustomButtons.button(
                   height: 28.w,
-                  text: "Book Now",
+                  text: (user.isHired ?? false) ? "Booked" : "Book Now",
                   margin: EdgeInsets.zero,
                   fontSize: 12,
                   customButtonStyle: CustomButtonStyle.radiusTopBottomCorner,
-                  onTap: () => controller.onBookNowClick(user),
+                  onTap: (user.isHired ?? false) ? null : () => controller.onBookNowClick(user),
                 ),
               ),
             ),
@@ -149,9 +150,12 @@ class MhEmployeesByIdView extends GetView<MhEmployeesByIdController> {
               right: 5,
               top: 3,
               child: Obx(
-                () => controller.shortlistController.getIcon(
-                  user.id!,
-                  controller.shortlistController.isFetching.value,
+                () => Visibility(
+                  visible: !(user.isHired ?? false),
+                  child: controller.shortlistController.getIcon(
+                    user.id!,
+                    controller.shortlistController.isFetching.value,
+                  ),
                 ),
               ),
             ),
@@ -174,7 +178,7 @@ class MhEmployeesByIdView extends GetView<MhEmployeesByIdController> {
                                 SizedBox(height: 16.h),
                                 Row(
                                   children: [
-                                    _name(user.name ?? "-"),
+                                    _name("${user.firstName ?? "-"} ${user.lastName ?? ""}"),
                                     _rating(user.rating ?? 0),
                                   ],
                                 ),
@@ -206,7 +210,7 @@ class MhEmployeesByIdView extends GetView<MhEmployeesByIdController> {
 
                       Row(
                         children: [
-                          _detailsItem(MyAssets.rate, MyStrings.rate.tr, "\$500/hour"),
+                          _detailsItem(MyAssets.rate, MyStrings.rate.tr, "\$${user.hourlyRate ?? 0}"),
                         ],
                       ),
 

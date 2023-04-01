@@ -99,7 +99,7 @@ class RestaurantLocationController extends GetxController {
   }
 
   void onCameraIdle() {
-    tecAddress.text = "${latLng.value.latitude},${latLng.value.longitude}";
+    tecAddress.text = "Fetching address...";
     findAddress.value = true;
     _apiHelper.latLngToAddress(latLng.value.latitude, latLng.value.longitude).then((value) {
       findAddress.value = false;

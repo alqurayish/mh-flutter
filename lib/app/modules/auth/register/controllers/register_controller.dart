@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:isolate';
 
 import 'package:file_picker/file_picker.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl_phone_field/countries.dart';
 
 import '../../../../common/controller/app_controller.dart';
@@ -68,7 +69,7 @@ class RegisterController extends GetxController implements RegisterInterface {
   RxBool loading = true.obs;
 
   /// file upload percent and title
-  RxString uploadTitle = "CV uploading...".obs;
+  RxString uploadTitle = "Creating new account...".obs;
 
   RxInt uploadPercent = 0.obs;
 
@@ -87,6 +88,7 @@ class RegisterController extends GetxController implements RegisterInterface {
 
   RxString selectedPosition = Data.positions.first.name!.obs;
 
+  RxList<File> profileImage = <File>[].obs;
   RxList<File> cv = <File>[].obs;
 
   // phone number country code
@@ -202,10 +204,7 @@ class RegisterController extends GetxController implements RegisterInterface {
     if (formKeyEmployee.currentState!.validate()) {
       formKeyEmployee.currentState!.save();
 
-      if (cv.isEmpty) {
-        _errorDialog("Invalid Input", "CV must Include");
-      }
-      else if (cv.isNotEmpty && cv.last.path.split(".").last.toLowerCase() != "pdf") {
+      if (cv.isNotEmpty && cv.last.path.split(".").last.toLowerCase() != "pdf") {
         _errorDialog("Invalid Input", "CV must be PDF format");
       } else if (!termsAndConditionCheck.value) {
         _errorDialog("Invalid Input", "you must accept our terms and condition");
@@ -236,7 +235,7 @@ class RegisterController extends GetxController implements RegisterInterface {
     if (selectedRefer == "Other") return "";
 
     for (Employee element in (employees?.users ?? [])) {
-      if("${element.name} - ${element.userIdNumber}" == selectedRefer) {
+      if("${element.firstName} ${element.lastName} - ${element.userIdNumber}" == selectedRefer) {
         return element.id!;
       }
     }
@@ -248,7 +247,7 @@ class RegisterController extends GetxController implements RegisterInterface {
     ClientRegistration clientRegistration = ClientRegistration(
       restaurantName: tecRestaurantName.text.trim(),
       restaurantAddress: tecRestaurantAddress.text.trim(),
-      email: tecEmailAddress.text.trim(),
+      email: tecEmailAddress.text.trim().toLowerCase(),
       phoneNumber: selectedClientCountry.dialCode + tecPhoneNumber.text.trim(),
       sourceId: _getSourceId(),
       referPersonId: _getReferPersonId(),
@@ -268,8 +267,10 @@ class RegisterController extends GetxController implements RegisterInterface {
       }, (ClientRegistrationResponse clientRegistrationResponse) async {
         if(clientRegistrationResponse.statusCode == 201) {
           await appController.afterSuccessRegister(clientRegistrationResponse.token!);
+        } else if((clientRegistrationResponse.errors ?? []).isNotEmpty) {
+          _errorDialog("Invalid Input", clientRegistrationResponse.errors?.first.msg ?? "Please check you input field and try again");
         } else {
-          _errorDialog("Something  Wrong", "Failed to Register");
+          _errorDialog("Something  Wrong", clientRegistrationResponse.message ?? "Failed to Register");
         }
       });
     });
@@ -287,13 +288,38 @@ class RegisterController extends GetxController implements RegisterInterface {
 
     dio.FormData formData = dio.FormData.fromMap(employeeRegistration.toJson);
 
-    formData.files.add(MapEntry(
-        "cv",
-        await dio.MultipartFile.fromFile(
-          cv.last.path,
-          filename: cv.last.path.split("/").last,
-          contentType: MediaType("application", "pdf"),
-        )));
+    // update dialogue text
+
+    if(cv.isNotEmpty) {
+      uploadTitle.value = "Uploading CV...";
+    }
+    if(profileImage.isNotEmpty) {
+      uploadTitle.value = "Uploading profile image...";
+    }
+    if(cv.isNotEmpty && profileImage.isNotEmpty) {
+      uploadTitle.value = "Uploading CV and profile image...";
+    }
+
+    if(profileImage.isNotEmpty) {
+      formData.files.add(MapEntry(
+          "profilePicture",
+          await dio.MultipartFile.fromFile(
+            profileImage.last.path,
+            filename: profileImage.last.path.split("/").last,
+            contentType: MediaType("image", "jpeg"),
+          )));
+    }
+
+    if(cv.isNotEmpty) {
+      formData.files.add(MapEntry(
+          "cv",
+          await dio.MultipartFile.fromFile(
+            cv.last.path,
+            filename: cv.last.path.split("/").last,
+            contentType: MediaType("application", "pdf"),
+          )));
+    }
+
 
     // show dialog
     _showPercentIsolate();
@@ -305,11 +331,16 @@ class RegisterController extends GetxController implements RegisterInterface {
       percentReceivePort.close();
       responseReceivePort.close();
 
+      Get.back(); // hide dialog
+
       if (response != null) {
         if ([200, 201].contains(response["data"]["statusCode"])) {
-          Get.back(); // hide dialog
           await appController.afterSuccessRegister("");
+        } else {
+          _errorDialog("Something wrong", response["data"]["message"] ?? "Failed to register. Please check you data and try again");
         }
+      } else {
+        _errorDialog("Server Error", "Failed to register. Please try again");
       }
     });
 
@@ -376,6 +407,22 @@ class RegisterController extends GetxController implements RegisterInterface {
       cv..clear()..add(File(result.files.single.path!));
     } else {
       cv.clear();
+    }
+  }
+
+  @override
+  Future<void> onProfileImageClick() async {
+    final picker = ImagePicker();
+
+    final pickedFile = await picker.pickImage(
+      source: ImageSource.gallery,
+      imageQuality: 100,
+    );
+
+    if (pickedFile != null) {
+      profileImage..clear()..add(File(pickedFile.path));
+    } else {
+      profileImage.clear();
     }
   }
 

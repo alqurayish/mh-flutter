@@ -70,9 +70,15 @@ class EmployeeDetailsView extends GetView<EmployeeDetailsController> {
           ),
           const Spacer(),
           Obx(
-            () => controller.shortlistController.getIcon(
-              controller.employee.id!,
-              controller.shortlistController.isFetching.value,
+            () => Visibility(
+              visible: !controller.showAsAdmin,
+              child: Visibility(
+                visible: !(controller.employee.isHired ?? false),
+                child: controller.shortlistController.getIcon(
+                  controller.employee.id!,
+                  controller.shortlistController.isFetching.value,
+                ),
+              ),
             ),
           ),
         ],
@@ -197,7 +203,7 @@ class EmployeeDetailsView extends GetView<EmployeeDetailsController> {
   );
 
   Widget get _basicInfo => _base(
-        title: controller.employee.name ?? "-",
+        title: "${controller.employee.firstName ?? "-"} ${controller.employee.lastName ?? ""}",
         age: MyStrings.ageWithYears.trParams({"year" : Utils.calculateAge(controller.employee.dateOfBirth) }),
         child: Column(
           children: [
@@ -273,8 +279,8 @@ class EmployeeDetailsView extends GetView<EmployeeDetailsController> {
   Widget _bottomBar(BuildContext context) {
     return CustomBottomBar(
       child: CustomButtons.button(
-        onTap: controller.onBookNowClick,
-        text: "Book Now",
+        onTap: controller.showAsAdmin ? controller.onChatClick : (controller.employee.isHired ?? false) ? null : () => controller.onBookNowClick,
+        text: controller.showAsAdmin ? "Chat" : (controller.employee.isHired ?? false) ? "Booked" : "Book Now",
         height: 52.h,
         customButtonStyle: CustomButtonStyle.radiusTopBottomCorner,
       ),

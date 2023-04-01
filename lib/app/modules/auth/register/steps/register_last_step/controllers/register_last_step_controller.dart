@@ -89,7 +89,7 @@ class RegisterLastStepController extends GetxController {
     if (selectedRefer == "Other") return "";
 
     for (Employee element in (employees?.users ?? [])) {
-      if("${element.name} - ${element.userIdNumber}" == selectedRefer) {
+      if("${element.firstName} ${element.lastName} - ${element.userIdNumber}" == selectedRefer) {
         return element.id!;
       }
     }

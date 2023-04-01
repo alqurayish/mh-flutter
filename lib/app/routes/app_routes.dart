@@ -39,6 +39,7 @@ abstract class Routes {
   static const contactUs = _Paths.contactUs;
 
   static const restaurantLocation = _Paths.restaurantLocation;
+  static const oneToOneChat = _Paths.oneToOneChat;
 }
 
 abstract class _Paths {
@@ -82,4 +83,5 @@ abstract class _Paths {
   static const contactUs = '/contact-us';
 
   static const restaurantLocation = '/restaurant-location';
+  static const oneToOneChat = '/one-to-one-chat';
 }
