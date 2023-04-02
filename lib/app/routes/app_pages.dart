@@ -53,6 +53,8 @@ import '../modules/contact_us/bindings/contact_us_binding.dart';
 import '../modules/contact_us/views/contact_us_view.dart';
 import '../modules/employee/employee_dashboard/bindings/employee_dashboard_binding.dart';
 import '../modules/employee/employee_dashboard/views/employee_dashboard_view.dart';
+import '../modules/employee/employee_emergency_check_in_out/bindings/employee_emergency_check_in_out_binding.dart';
+import '../modules/employee/employee_emergency_check_in_out/views/employee_emergency_check_in_out_view.dart';
 import '../modules/employee/employee_home/bindings/employee_home_binding.dart';
 import '../modules/employee/employee_home/views/employee_home_view.dart';
 import '../modules/employee/employee_register_success/bindings/employee_register_success_binding.dart';
@@ -268,6 +270,11 @@ class AppPages {
       name: _Paths.oneToOneChat,
       page: () => const OneToOneChatView(),
       binding: OneToOneChatBinding(),
+    ),
+    GetPage(
+      name: _Paths.employeeEmergencyCheckInOut,
+      page: () => const EmployeeEmergencyCheckInOutView(),
+      binding: EmployeeEmergencyCheckInOutBinding(),
     ),
   ];
 }

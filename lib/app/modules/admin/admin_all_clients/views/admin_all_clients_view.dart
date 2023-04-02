@@ -14,7 +14,7 @@ class AdminAllClientsView extends GetView<AdminAllClientsController> {
 
     return Scaffold(
       appBar: CustomAppbar.appbar(
-        title: "Employees",
+        title: "Clients",
         context: context,
         centerTitle: true,
       ),

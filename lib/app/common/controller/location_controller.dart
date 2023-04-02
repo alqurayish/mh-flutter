@@ -73,7 +73,7 @@ class LocationController {
     return right(position);
   }
 
-  static calculateDistance({
+  static double calculateDistance({
     required double targetLat,
     required double targetLong,
     required double currentLat,

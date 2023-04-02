@@ -1,3 +1,6 @@
+import 'package:mh/app/common/widgets/custom_dialog.dart';
+
+import '../../../common/app_info/app_info.dart';
 import '../../../common/controller/app_controller.dart';
 import '../../../common/utils/exports.dart';
 import '../../../models/commons.dart';
@@ -40,7 +43,33 @@ class SplashController extends GetxController {
       }, (Commons commons) {
         _appController.setCommons(commons);
 
-        _goToNextPage();
+        if(commons.appVersion!.first.serverMaintenance!) {
+          CustomDialogue.information(
+            context: context!,
+            title: "Server Maintenance",
+            description: commons.appVersion!.first.serverMaintenanceMsg ?? "We will online soon",
+            buttonText: "Exit",
+            onTap: () {
+              Utils.exitApp;
+            },
+          );
+        } else if (commons.appVersion!.first.appVersion != AppInfo.version) {
+          CustomDialogue.information(
+            context: context!,
+            title: "New version Available",
+            description: "New version ${commons.appVersion!.first.appVersion} is released. ${(commons.appVersion!.first.updateRequired ?? false) ? "Please update your app and continue" : "please update your app for better experience"}",
+            buttonText: (commons.appVersion!.first.updateRequired ?? false) ? "Exit" : "I Understand",
+            onTap: () {
+              if ((commons.appVersion!.first.updateRequired ?? false)) {
+                Utils.exitApp;
+              } else {
+                _goToNextPage();
+              }
+            },
+          );
+        } else {
+          _goToNextPage();
+        }
 
       });
     });

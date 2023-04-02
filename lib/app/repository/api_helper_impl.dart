@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:dartz/dartz.dart';
 import 'package:mh/app/models/address_to_lat_lng.dart';
 import 'package:mh/app/models/lat_long_to_address.dart';
+import 'package:mh/app/modules/employee/employee_emergency_check_in_out/today_check_in_out_details.dart';
 import 'package:mh/app/modules/employee/employee_home/models/daily_checkin_checkout_details.dart';
 
 import '../common/controller/app_error_controller.dart';
@@ -440,7 +441,7 @@ class ApiHelperImpl extends GetConnect with ApiHelper {
   }
 
   @override
-  EitherModel<Response> checkin(Map<String, dynamic> data) async {
+  EitherModel<TodayCheckInOutDetails> checkin(Map<String, dynamic> data) async {
     var response = await post("current-hired-employees/create", jsonEncode(data));
     if(response.statusCode == null) response = await post("current-hired-employees/create", jsonEncode(data));
     if(response.statusCode == null) response = await post("current-hired-employees/create", jsonEncode(data));
@@ -448,10 +449,9 @@ class ApiHelperImpl extends GetConnect with ApiHelper {
 
     print(response.body);
 
-    return _convert<Response>(
+    return _convert<TodayCheckInOutDetails>(
       response,
-      (Map<String, dynamic> data) {},
-      onlyErrorCheck: true,
+      TodayCheckInOutDetails.fromJson,
     ).fold((l) => left(l), (r) => right(r));
   }
 
@@ -497,4 +497,18 @@ class ApiHelperImpl extends GetConnect with ApiHelper {
     CurrentHiredEmployees.fromJson,
     ).fold((l) => left(l), (r) => right(r));
   }
+
+  @override
+  EitherModel<TodayCheckInOutDetails> getTodayCheckInOutDetails(String employeeId) async {
+    var response = await get("current-hired-employees/details/$employeeId");
+    if(response.statusCode == null) response = await get("current-hired-employees/details/$employeeId");
+    if(response.statusCode == null) response = await get("current-hired-employees/details/$employeeId");
+    if(response.statusCode == null) response = await get("current-hired-employees/details/$employeeId");
+
+    return _convert<TodayCheckInOutDetails>(
+      response,
+      TodayCheckInOutDetails.fromJson,
+    ).fold((l) => left(l), (r) => right(r));
+  }
+
 }

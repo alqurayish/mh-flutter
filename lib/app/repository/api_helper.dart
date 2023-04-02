@@ -14,6 +14,7 @@ import '../modules/auth/register/models/employee_registration.dart';
 import '../modules/client/client_dashboard/models/current_hired_employees.dart';
 import '../modules/client/client_shortlisted/models/shortlisted_employees.dart' as shortlistEmployees;
 import '../modules/client/client_terms_condition_for_hire/models/terms_condition_for_hire.dart';
+import '../modules/employee/employee_emergency_check_in_out/today_check_in_out_details.dart';
 import '../modules/employee/employee_home/models/daily_checkin_checkout_details.dart';
 
 abstract class ApiHelper {
@@ -77,12 +78,14 @@ abstract class ApiHelper {
 
   EitherModel<DailyCheckinCheckoutDetails> dailyCheckinCheckoutDetails(String employeeId);
 
-  EitherModel<Response> checkin(Map<String, dynamic> data);
+  EitherModel<TodayCheckInOutDetails> checkin(Map<String, dynamic> data);
 
   EitherModel<Response> checkout(Map<String, dynamic> data);
 
   EitherModel<Response> deleteAccount(Map<String, dynamic> data);
 
   EitherModel<CurrentHiredEmployees> getAllCurrentHiredEmployees();
+
+  EitherModel<TodayCheckInOutDetails> getTodayCheckInOutDetails(String employeeId);
 
 }

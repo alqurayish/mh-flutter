@@ -147,6 +147,8 @@ class CustomDialogue {
     required BuildContext context,
     required  String title,
     required String description,
+    Function()? onTap,
+    String buttonText = "I Understand",
   }) => Future.delayed(
     Duration.zero,
         () {
@@ -197,10 +199,13 @@ class CustomDialogue {
 
                       CustomButtons.button(
                         height: 50.h,
-                        text: "I understand",
+                        text: buttonText,
                         customButtonStyle: CustomButtonStyle.radiusTopBottomCorner,
                         onTap: () {
                           CustomLoader.hide(context);
+                          if(onTap != null) {
+                            onTap();
+                          }
                         },
                       ),
                     ],
@@ -223,94 +228,6 @@ class CustomDialogue {
       confirmButtonText: "Exit",
       onConfirm: Utils.exitApp,
     );
-    // Future.delayed(
-    //   Duration.zero,
-    //       () {
-    //     return Get.dialog(
-    //       WillPopScope(
-    //         onWillPop: () async => true,
-    //         child: Align(
-    //           alignment: Alignment.center,
-    //           child: Material(
-    //             type: MaterialType.transparency,
-    //             child: Container(
-    //               height: Get.height * .3,
-    //               width: Get.height * .4,
-    //               decoration: BoxDecoration(
-    //                 color: MyColors.lightCard(context),
-    //                 borderRadius: BorderRadius.circular(20.0),
-    //               ),
-    //               child: Padding(
-    //                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-    //                 child: Column(
-    //                   mainAxisAlignment: MainAxisAlignment.center,
-    //                   children: [
-    //
-    //                     SizedBox(height: 25.h),
-    //
-    //                     Text(
-    //                       "Exit App?",
-    //                       textAlign: TextAlign.center,
-    //                       style: MyColors.l111111_dtext(context).semiBold22,
-    //                     ),
-    //
-    //                     SizedBox(height: 30.h),
-    //
-    //                     Expanded(
-    //                       child: Align(
-    //                         alignment: Alignment.topCenter,
-    //                         child: Text(
-    //                           "Are you sure you want to exit?",
-    //                           textAlign: TextAlign.center,
-    //                           maxLines: 10,
-    //                           overflow: TextOverflow.ellipsis,
-    //                           style: MyColors.l50555C_dtext(context).regular15,
-    //                         ),
-    //                       ),
-    //                     ),
-    //
-    //                     SizedBox(height: 15.h),
-    //
-    //                     Padding(
-    //                       padding: const EdgeInsets.symmetric(horizontal: 20),
-    //                       child: Row(
-    //                         children: [
-    //                           GestureDetector(
-    //                             onTap: () {
-    //                               CustomLoader.hide(context);
-    //                             },
-    //                             child: Text(
-    //                               "CLOSE",
-    //                               style: MyColors.text.semiBold16,
-    //                             ),
-    //                           ),
-    //                           const SizedBox(width: 40),
-    //                           Expanded(
-    //                             child: CustomButtons.button(
-    //                               height: 50.h,
-    //                               text: "Exit",
-    //                               margin: EdgeInsets.zero,
-    //                               customButtonStyle:
-    //                                   CustomButtonStyle.radiusTopBottomCorner,
-    //                               onTap: () {
-    //                                 Utils.exitApp;
-    //                               },
-    //                             ),
-    //                           ),
-    //                         ],
-    //                       ),
-    //                     ),
-    //                   ],
-    //                 ),
-    //               ),
-    //             ),
-    //           ),
-    //         ),
-    //       ),
-    //       barrierDismissible: false,
-    //     );
-    //   },
-    // );
   }
 
   static dynamic confirmation({

@@ -72,7 +72,7 @@ class AdminHomeView extends GetView<AdminHomeController> {
                             Expanded(
                               child: CustomFeatureBox(
                                 title: MyStrings.dashboard.tr,
-                                icon: MyAssets.dashboard,
+                                icon: "Client",
                                 onTap: controller.onClientClick,
                               ),
                             ),

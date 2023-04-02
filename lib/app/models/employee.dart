@@ -15,7 +15,6 @@ class Employee {
     this.dateOfBirth,
     this.presentAddress,
     this.permanentAddress,
-    this.language,
     this.higherEducation,
     this.licensesNo,
     this.emmergencyContact,
@@ -25,6 +24,15 @@ class Employee {
     this.rating,
     this.totalWorkingHour,
     this.isReferPerson,
+    this.isHired,
+    this.hiredFromDate,
+    this.hiredToDate,
+    this.hiredBy,
+    this.isMhEmployee,
+    this.languages,
+    this.clientDiscount,
+    this.hiredByLat,
+    this.hiredByLong,
     this.iat,
     this.exp,
   });
@@ -42,7 +50,6 @@ class Employee {
   final DateTime? dateOfBirth;
   final String? presentAddress;
   final String? permanentAddress;
-  final List<String>? language;
   final String? higherEducation;
   final String? licensesNo;
   final String? emmergencyContact;
@@ -52,6 +59,15 @@ class Employee {
   final int? rating;
   final int? totalWorkingHour;
   final bool? isReferPerson;
+  final bool? isHired;
+  final DateTime? hiredFromDate;
+  final DateTime? hiredToDate;
+  final String? hiredBy;
+  final bool? isMhEmployee;
+  final List<String>? languages;
+  final int? clientDiscount;
+  final String? hiredByLat;
+  final String? hiredByLong;
   final int? iat;
   final int? exp;
 
@@ -73,7 +89,6 @@ class Employee {
     dateOfBirth: json["dateOfBirth"] == null ? null : DateTime.parse(json["dateOfBirth"]),
     presentAddress: json["presentAddress"],
     permanentAddress: json["permanentAddress"],
-    language: json["language"] == null ? [] : List<String>.from(json["language"]!.map((x) => x)),
     higherEducation: json["higherEducation"],
     licensesNo: json["licensesNo"],
     emmergencyContact: json["emmergencyContact"],
@@ -83,6 +98,15 @@ class Employee {
     rating: json["rating"],
     totalWorkingHour: json["totalWorkingHour"],
     isReferPerson: json["isReferPerson"],
+    isHired: json["isHired"],
+    hiredFromDate: json["hiredFromDate"] == null ? null : DateTime.parse(json["hiredFromDate"]),
+    hiredToDate: json["hiredToDate"] == null ? null : DateTime.parse(json["hiredToDate"]),
+    hiredBy: json["hiredBy"],
+    isMhEmployee: json["isMhEmployee"],
+    languages: json["languages"] == null ? [] : List<String>.from(json["languages"]!.map((x) => x)),
+    clientDiscount: json["clientDiscount"],
+    hiredByLat: json["hiredByLat"],
+    hiredByLong: json["hiredByLong"],
     iat: json["iat"],
     exp: json["exp"],
   );
@@ -101,7 +125,6 @@ class Employee {
     "dateOfBirth": dateOfBirth?.toIso8601String(),
     "presentAddress": presentAddress,
     "permanentAddress": permanentAddress,
-    "language": language == null ? [] : List<dynamic>.from(language!.map((x) => x)),
     "higherEducation": higherEducation,
     "licensesNo": licensesNo,
     "emmergencyContact": emmergencyContact,
@@ -111,6 +134,15 @@ class Employee {
     "rating": rating,
     "totalWorkingHour": totalWorkingHour,
     "isReferPerson": isReferPerson,
+    "isHired": isHired,
+    "hiredFromDate": hiredFromDate?.toIso8601String(),
+    "hiredToDate": hiredToDate?.toIso8601String(),
+    "hiredBy": hiredBy,
+    "isMhEmployee": isMhEmployee,
+    "languages": languages == null ? [] : List<dynamic>.from(languages!.map((x) => x)),
+    "clientDiscount": clientDiscount,
+    "hiredByLat": hiredByLat,
+    "hiredByLong": hiredByLong,
     "iat": iat,
     "exp": exp,
   };
