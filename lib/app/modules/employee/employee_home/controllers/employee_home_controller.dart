@@ -10,7 +10,7 @@ import '../../../../common/widgets/custom_dialog.dart';
 import '../../../../models/custom_error.dart';
 import '../../../../repository/api_helper.dart';
 import '../../../../routes/app_pages.dart';
-import '../../employee_emergency_check_in_out/today_check_in_out_details.dart';
+import '../models/today_check_in_out_details.dart';
 
 class EmployeeHomeController extends GetxController {
 
@@ -80,23 +80,17 @@ class EmployeeHomeController extends GetxController {
     return "-:-";
   }
 
-  String get getWorkingHour {
+  int? get getWorkingTimeInMinute {
     if(checkIn.value && !checkOut.value && todayCheckInOutDetails.value.details!.checkInCheckOutDetails!.checkInTime != null) {
-      return (DateTime.now().toLocal().difference(todayCheckInOutDetails.value.details!.checkInCheckOutDetails!.checkInTime!.toLocal()).inMinutes / 60).toStringAsFixed(1);
+      return Utils.getCurrentTime.difference(todayCheckInOutDetails.value.details!.checkInCheckOutDetails!.checkInTime!.toLocal()).inMinutes;
     }
 
     if(checkIn.value && checkOut.value && todayCheckInOutDetails.value.details!.checkInCheckOutDetails!.checkInTime != null && todayCheckInOutDetails.value.details?.checkInCheckOutDetails?.checkOutTime != null) {
       int timeDifference = (todayCheckInOutDetails.value.details!.checkInCheckOutDetails!.checkOutTime!).difference(todayCheckInOutDetails.value.details!.checkInCheckOutDetails!.checkInTime!).inMinutes;
-      return ((timeDifference - (todayCheckInOutDetails.value.details?.checkInCheckOutDetails?.breakTime ?? 0)) / 60).toStringAsFixed(1);
+      return (timeDifference - (todayCheckInOutDetails.value.details?.checkInCheckOutDetails?.breakTime ?? 0));
     }
 
-    return "-";
-  }
-
-  String get getAmount {
-    if(getWorkingHour == "-") return "-";
-
-    return (double.parse(getWorkingHour) * (todayCheckInOutDetails.value.details?.employeeDetails?.hourlyRate ?? 0)).toStringAsFixed(1);
+    return null;
   }
 
   void onCheckInCheckOut() {
@@ -114,8 +108,8 @@ class EmployeeHomeController extends GetxController {
       "checkOut": true,
       if(currentLocation?.latitude != null) "lat": currentLocation!.latitude.toString(),
       if(currentLocation?.longitude != null) "long": currentLocation?.longitude.toString(),
-      "breakTime": (hour * 60) + min,
-      "checkOutDistance": _getDistance,
+      "breakTime": (hour * 60) + (min * 5),
+      "checkOutDistance": getDistance,
     };
 
     CustomLoader.show(context!);
@@ -142,7 +136,7 @@ class EmployeeHomeController extends GetxController {
       "checkIn": true,
       if(currentLocation?.latitude != null) "lat": currentLocation!.latitude.toString(),
       if(currentLocation?.longitude != null) "long": currentLocation?.longitude.toString(),
-      "checkInDistance": _getDistance,
+      "checkInDistance": getDistance,
     };
 
     await _apiHelper.checkin(data).then((response) {
@@ -233,9 +227,9 @@ class EmployeeHomeController extends GetxController {
       }, (Position position) {
         currentLocation = position;
 
-        if(_getDistance > 200) {
+        if(getDistance > 200) {
           showSlider.value = false;
-          errorMsg.value = "You are ${_getDistance.toStringAsFixed(1)}m away from restaurant";
+          errorMsg.value = "You are ${getDistance.toStringAsFixed(1)}m away from restaurant";
         } else {
           showSlider.value = true;
           errorMsg.value = "";
@@ -245,7 +239,7 @@ class EmployeeHomeController extends GetxController {
     });
   }
 
-  double get _getDistance => LocationController.calculateDistance(
+  double get getDistance => LocationController.calculateDistance(
     targetLat: double.parse(appController.user.value.employee!.hiredByLat!),
     targetLong: double.parse(appController.user.value.employee!.hiredByLong!),
     currentLat: 23.7798035, //position.latitude,

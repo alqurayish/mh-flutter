@@ -71,8 +71,8 @@ class AdminHomeView extends GetView<AdminHomeController> {
 
                             Expanded(
                               child: CustomFeatureBox(
-                                title: MyStrings.dashboard.tr,
-                                icon: "Client",
+                                title: "Client",
+                                icon: MyAssets.myEmployees,
                                 onTap: controller.onClientClick,
                               ),
                             ),
@@ -80,6 +80,18 @@ class AdminHomeView extends GetView<AdminHomeController> {
                         ),
 
                         SizedBox(height: 30.h),
+
+                        Row(
+                          children: [
+                            Expanded(
+                              child: CustomFeatureBox(
+                                title: MyStrings.dashboard.tr,
+                                icon: MyAssets.dashboard,
+                                onTap: controller.onAdminDashboardClick,
+                              ),
+                            ),
+                          ],
+                        ),
 
                       ],
                     ),

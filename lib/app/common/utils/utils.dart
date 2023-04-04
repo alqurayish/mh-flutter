@@ -1,4 +1,5 @@
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 
 import '../../enums/error_from.dart';
 import '../../models/custom_error.dart';
@@ -100,5 +101,21 @@ class Utils {
         .where((element) => skillNames.contains(element.name));
 
     return result.map((e) => e.id!).toList();
+  }
+
+  // 24hour format
+  static DateTime get getCurrentTime {
+    // Get the current time
+    DateTime now = DateTime.now();
+
+    // Format the current time in 24-hour format
+    String formattedTime = DateFormat('HH:mm:ss').format(now);
+
+    return DateTime.parse('${now.toString().split(" ").first} $formattedTime');
+  }
+
+  static String minuteToHour(int minute) {
+    if (minute < 60) return '$minute min';
+    return "${(minute / 60).toStringAsFixed(0)} H ${minute % 60} min";
   }
 }

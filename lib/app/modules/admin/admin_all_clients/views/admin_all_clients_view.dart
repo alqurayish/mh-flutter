@@ -54,7 +54,7 @@ class AdminAllClientsView extends GetView<AdminAllClientsController> {
             style: MyColors.c_C6A34F.semiBold16,
           ),
           Text(
-            " Employees are showing",
+            " Clients are showing",
             style: MyColors.l111111_dwhite(controller.context!).semiBold16,
           ),
         ],
@@ -199,7 +199,7 @@ class AdminAllClientsView extends GetView<AdminAllClientsController> {
 
   Widget _name(String name) => Text(
     name,
-    style: MyColors.l111111_dwhite(controller.context!).semiBold18,
+    style: MyColors.c_C6A34F.semiBold18,
   );
 
   Widget _rating(int rating) => Visibility(

@@ -14,11 +14,12 @@ class ClientMyEmployeeView extends GetView<ClientMyEmployeeController> {
         title: MyStrings.myEmployees.tr,
         context: context,
       ),
-      body: controller.isLoading.value
-          ? _loading
-          : (controller.employees.value.currentHiredEmployees ?? []).isEmpty
-              ? _noEmployeeHireYet
-              : _showEmployeeList,
+      body: _noEmployeeHireYet,
+      // body: controller.isLoading.value
+      //     ? _loading
+      //     : (controller.employees.value.currentHiredEmployees ?? []).isEmpty
+      //         ? _noEmployeeHireYet
+      //         : _showEmployeeList,
     );
   }
 

@@ -1,6 +1,7 @@
 import '../common/utils/exports.dart';
 import '../common/utils/type_def.dart';
 import '../models/address_to_lat_lng.dart';
+import '../models/check_in_out_histories.dart';
 import '../models/client_details.dart';
 import '../models/commons.dart';
 import '../models/employees_by_id.dart';
@@ -14,7 +15,7 @@ import '../modules/auth/register/models/employee_registration.dart';
 import '../modules/client/client_dashboard/models/current_hired_employees.dart';
 import '../modules/client/client_shortlisted/models/shortlisted_employees.dart' as shortlistEmployees;
 import '../modules/client/client_terms_condition_for_hire/models/terms_condition_for_hire.dart';
-import '../modules/employee/employee_emergency_check_in_out/today_check_in_out_details.dart';
+import '../modules/employee/employee_home/models/today_check_in_out_details.dart';
 import '../modules/employee/employee_home/models/daily_checkin_checkout_details.dart';
 
 abstract class ApiHelper {
@@ -88,4 +89,12 @@ abstract class ApiHelper {
 
   EitherModel<TodayCheckInOutDetails> getTodayCheckInOutDetails(String employeeId);
 
+  EitherModel<CheckInCheckOutHistory> getCheckInOutHistory({
+    String? filterDate,
+    String? requestType,
+    String? clientId,
+    String? employeeId,
+  });
+
+  EitherModel<CheckInCheckOutHistory> getEmployeeCheckInOutHistory();
 }

@@ -59,7 +59,7 @@ class LoginView extends GetView<LoginController> {
             SizedBox(height: 34.h),
             _passwordField,
             SizedBox(height: 40.h),
-            _forgotPassword,
+            // _forgotPassword,
             SizedBox(height: 57.h),
             CustomButtons.button(
               text: MyStrings.login.tr,

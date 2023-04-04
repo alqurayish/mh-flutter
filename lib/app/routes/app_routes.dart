@@ -16,6 +16,7 @@ abstract class Routes {
   static const adminHome = _Paths.adminHome;
   static const adminAllClients = _Paths.adminAllClients;
   static const adminAllEmployees = _Paths.adminAllEmployees;
+  static const adminDashboard = _Paths.adminDashboard;
 
   static const employeeHome = _Paths.employeeHome;
   static const employeeDashboard = _Paths.employeeDashboard;
@@ -59,6 +60,7 @@ abstract class _Paths {
   static const adminHome = '/admin-home';
   static const adminAllClients = '/admin-all-clients';
   static const adminAllEmployees = '/admin-all-employees';
+  static const adminDashboard = '/admin-dashboard';
 
   static const employeeRegisterSuccess = '/employee-register-success';
   static const employeeHome = '/employee-home';

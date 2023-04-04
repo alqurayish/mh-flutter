@@ -5,6 +5,8 @@ import '../modules/admin/admin_all_clients/bindings/admin_all_clients_binding.da
 import '../modules/admin/admin_all_clients/views/admin_all_clients_view.dart';
 import '../modules/admin/admin_all_employees/bindings/admin_all_employees_binding.dart';
 import '../modules/admin/admin_all_employees/views/admin_all_employees_view.dart';
+import '../modules/admin/admin_dashboard/bindings/admin_dashboard_binding.dart';
+import '../modules/admin/admin_dashboard/views/admin_dashboard_view.dart';
 import '../modules/admin/admin_home/bindings/admin_home_binding.dart';
 import '../modules/admin/admin_home/views/admin_home_view.dart';
 import '../modules/auth/login/bindings/login_binding.dart';
@@ -134,6 +136,14 @@ class AppPages {
       name: _Paths.adminAllEmployees,
       page: () => const AdminAllEmployeesView(),
       binding: AdminAllEmployeesBinding(),
+      middlewares: [
+        AuthMiddleware(),
+      ],
+    ),
+    GetPage(
+      name: _Paths.adminDashboard,
+      page: () => const AdminDashboardView(),
+      binding: AdminDashboardBinding(),
       middlewares: [
         AuthMiddleware(),
       ],
