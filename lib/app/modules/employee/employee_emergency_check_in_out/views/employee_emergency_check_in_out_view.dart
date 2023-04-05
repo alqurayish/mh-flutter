@@ -16,7 +16,7 @@ class EmployeeEmergencyCheckInOutView extends GetView<EmployeeEmergencyCheckInOu
     return Scaffold(
       appBar: CustomAppbar.appbar(
         context: context,
-        title: 'Emergency Check in/out',
+        title: 'Emergency ${controller.getButtonText}',
       ),
       bottomNavigationBar: _bottomBar(context),
       body: Form(
@@ -30,7 +30,7 @@ class EmployeeEmergencyCheckInOutView extends GetView<EmployeeEmergencyCheckInOu
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 14),
               child: Text(
-                  controller.employeeHomeController.todayCheckInOutDetails.value.details?.restaurantDetails?.restaurantName ?? "--",
+                  controller.employeeHomeController.appController.user.value.employee?.hiredByRestaurantName ?? "--",
                 style: MyColors.c_C6A34F.semiBold22,
               ),
             ),
@@ -38,7 +38,7 @@ class EmployeeEmergencyCheckInOutView extends GetView<EmployeeEmergencyCheckInOu
             Padding(
               padding: const EdgeInsets.all(14.0),
               child: Text(
-                  controller.employeeHomeController.todayCheckInOutDetails.value.details?.restaurantDetails?.restaurantAddress ?? "--",
+                controller.employeeHomeController.appController.user.value.employee?.hiredByRestaurantAddress ?? "--",
                   style: MyColors.l7B7B7B_dtext(context).regular16,
               ),
             ),

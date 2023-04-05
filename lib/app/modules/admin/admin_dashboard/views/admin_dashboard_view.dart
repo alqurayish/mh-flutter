@@ -251,18 +251,18 @@ class AdminDashboardView extends GetView<AdminDashboardController> {
       width: 90.w,
       height: 71.h,
       color: Colors.white,
-      child: _cell(width: 90.w, value: controller.getDate(index)),
+      child: _cell(width: 90.w, value: controller.dailyStatistics(index).date),
     );
   }
 
   Widget _generateRightHandSideColumnRow(BuildContext context, int index) {
     return Row(
       children: <Widget>[
-        _cell(width: 100.w, value: controller.getCheckInTime(index)),
-        _cell(width: 100.w, value: controller.getCheckOutTime(index)),
-        _cell(width: 100.w, value: controller.getBreakTime(index)),
-        _cell(width: 100.w, value: Utils.minuteToHour(controller.getWorkingTimeInMinute(index) ?? 0)),
-        _cell(width: 120.w, value: controller.getAmount(index)),
+        _cell(width: 100.w, value: controller.dailyStatistics(index).displayCheckInTime),
+        _cell(width: 100.w, value: controller.dailyStatistics(index).displayCheckOutTime),
+        _cell(width: 100.w, value: controller.dailyStatistics(index).displayBreakTime),
+        _cell(width: 100.w, value: controller.dailyStatistics(index).workingHour),
+        _cell(width: 120.w, value: controller.dailyStatistics(index).amount),
       ],
     );
   }

@@ -2,7 +2,9 @@ import 'package:horizontal_data_table/horizontal_data_table.dart';
 
 import '../../../../common/utils/exports.dart';
 import '../../../../common/widgets/custom_appbar.dart';
+import '../../../../common/widgets/custom_dialog.dart';
 import '../../../../common/widgets/no_item_found.dart';
+import '../../../../models/employee_daily_statistics.dart';
 import '../controllers/employee_dashboard_controller.dart';
 
 class EmployeeDashboardView extends GetView<EmployeeDashboardController> {
@@ -75,35 +77,75 @@ class EmployeeDashboardView extends GetView<EmployeeDashboardController> {
   }
 
   Widget _generateFirstColumnRow(BuildContext context, int index) {
-    return Container(
+    UserDailyStatistics dailyStatistics = Utils.checkInOutToStatistics(controller.history[index]);
+
+    return SizedBox(
       width: 90.w,
       height: 71.h,
-      color: Colors.white,
-      child: _cell(width: 90.w, value: controller.getDate(index)),
+      child: _cell(width: 90.w, value: dailyStatistics.date),
     );
   }
 
   Widget _generateRightHandSideColumnRow(BuildContext context, int index) {
+    UserDailyStatistics dailyStatistics = Utils.checkInOutToStatistics(controller.history[index]);
+
     return Row(
       children: <Widget>[
-        _cell(width: 100.w, value: controller.getCheckInTime(index)),
-        _cell(width: 100.w, value: controller.getCheckOutTime(index)),
-        _cell(width: 100.w, value: controller.getBreakTime(index)),
-        _cell(width: 100.w, value: Utils.minuteToHour(controller.getWorkingTimeInMinute(index) ?? 0)),
-        _cell(width: 120.w, value: "--"),
+        _cell(width: 100.w, value: dailyStatistics.displayCheckInTime, clientUpdatedValue: dailyStatistics.employeeCheckInTime),
+        _cell(width: 100.w, value: dailyStatistics.displayCheckOutTime, clientUpdatedValue: dailyStatistics.employeeCheckOutTime),
+        _cell(width: 100.w, value: dailyStatistics.displayBreakTime, clientUpdatedValue: dailyStatistics.employeeBreakTime),
+        _cell(width: 100.w, value: dailyStatistics.workingHour),
+        _cell(width: 120.w, value: "--", child: _action(index)),
       ],
     );
   }
 
-  Widget _cell({required double width, required String value}) => SizedBox(
+  Widget _cell({
+    required double width,
+    required String value,
+    String? clientUpdatedValue,
+    Widget? child,
+  }) =>
+      SizedBox(
         width: width,
         height: 71.h,
-        child: Center(
-          child: Text(
-            value,
+        child: child ?? Center(
+          child: Text.rich(
+            TextSpan(
+              text: value,
+              children: [
+                TextSpan(
+                  text: (clientUpdatedValue == null) || (clientUpdatedValue == value) ? "" : '\n$clientUpdatedValue',
+                  style: const TextStyle(
+                    decoration: TextDecoration.lineThrough,
+                  )
+                ),
+              ]
+            ),
             textAlign: TextAlign.center,
             style: MyColors.l7B7B7B_dtext(controller.context!).semiBold13,
           ),
         ),
       );
+
+  Widget _action(int index) => controller.getComment(index).isEmpty
+      ? const Icon(
+          Icons.check_circle,
+          color: Colors.green,
+          size: 22,
+        )
+      : GestureDetector(
+          onTap: () {
+            CustomDialogue.information(
+              context: controller.context!,
+              title: "Restaurant Report on You",
+              description: controller.getComment(index),
+            );
+          },
+          child: const Icon(
+            Icons.info,
+            color: Colors.blue,
+            size: 22,
+          ),
+        );
 }

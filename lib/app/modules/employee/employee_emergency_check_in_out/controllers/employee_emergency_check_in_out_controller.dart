@@ -34,7 +34,8 @@ class EmployeeEmergencyCheckInOutController extends GetxController {
   }
 
   String get getButtonText {
-    if(employeeHomeController.todayCheckInOutDetails.value.details?.checkInCheckOutDetails?.checkIn ?? false) {
+    if((employeeHomeController.todayCheckInOutDetails.value.details?.checkInCheckOutDetails?.checkIn ?? false) ||
+        (employeeHomeController.todayCheckInOutDetails.value.details?.checkInCheckOutDetails?.emmergencyCheckIn ?? false)) {
       return "Check Out";
     }
 
@@ -62,12 +63,17 @@ class EmployeeEmergencyCheckInOutController extends GetxController {
       "employeeId": employeeHomeController.appController.user.value.userId,
       "emmergencyCheckIn": true,
       "emmergencyCheckInComment": emergencyReason.text.trim(),
-      if(employeeHomeController.currentLocation?.latitude != null) "lat": employeeHomeController.currentLocation!.latitude.toString(),
+      if(employeeHomeController.currentLocation?.latitude != null) "lat": employeeHomeController.currentLocation?.latitude.toString(),
       if(employeeHomeController.currentLocation?.longitude != null) "long": employeeHomeController.currentLocation?.longitude.toString(),
-      "checkInDistance": employeeHomeController.getDistance,
+      if(employeeHomeController.currentLocation?.latitude != null && employeeHomeController.currentLocation?.longitude != null) "checkInDistance": double.parse(employeeHomeController.getDistance.toStringAsFixed(2)),
     };
 
+    CustomLoader.show(context!);
+
     await _apiHelper.checkin(data).then((response) {
+
+      CustomLoader.hide(context!);
+
       response.fold((CustomError customError) {
         CustomDialogue.information(
           context: context!,
@@ -94,7 +100,7 @@ class EmployeeEmergencyCheckInOutController extends GetxController {
       if(employeeHomeController.currentLocation?.latitude != null) "lat": employeeHomeController.currentLocation!.latitude.toString(),
       if(employeeHomeController.currentLocation?.longitude != null) "long": employeeHomeController.currentLocation?.longitude.toString(),
       "breakTime": (hour * 60) + (min * 5),
-      "checkOutDistance": employeeHomeController.getDistance,
+      if(employeeHomeController.currentLocation?.latitude != null && employeeHomeController.currentLocation?.longitude != null) "checkOutDistance": double.parse(employeeHomeController.getDistance.toStringAsFixed(2)),
     };
 
     CustomLoader.show(context!);

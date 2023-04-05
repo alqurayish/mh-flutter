@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:mh/app/common/controller/app_controller.dart';
 
 import '../../../../common/utils/logcat.dart';
 import '../../../../common/widgets/custom_loader.dart';
@@ -13,6 +14,8 @@ class PaymentForHireController extends GetxController {
   final ShortlistController shortlistController = Get.find();
 
   final ApiHelper _apiHelper = Get.find();
+
+  final AppController appController = Get.find();
 
   @override
   void onInit() {

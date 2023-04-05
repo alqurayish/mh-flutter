@@ -16,7 +16,6 @@ import '../modules/client/client_dashboard/models/current_hired_employees.dart';
 import '../modules/client/client_shortlisted/models/shortlisted_employees.dart' as shortlistEmployees;
 import '../modules/client/client_terms_condition_for_hire/models/terms_condition_for_hire.dart';
 import '../modules/employee/employee_home/models/today_check_in_out_details.dart';
-import '../modules/employee/employee_home/models/daily_checkin_checkout_details.dart';
 
 abstract class ApiHelper {
   EitherModel<Commons> commons();
@@ -77,7 +76,7 @@ abstract class ApiHelper {
 
   void submitAppError(Map<String, String> data);
 
-  EitherModel<DailyCheckinCheckoutDetails> dailyCheckinCheckoutDetails(String employeeId);
+  EitherModel<TodayCheckInOutDetails> dailyCheckinCheckoutDetails(String employeeId);
 
   EitherModel<TodayCheckInOutDetails> checkin(Map<String, dynamic> data);
 

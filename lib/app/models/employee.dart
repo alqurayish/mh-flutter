@@ -25,6 +25,8 @@ class Employee {
     this.totalWorkingHour,
     this.isReferPerson,
     this.isHired,
+    this.hiredByRestaurantName,
+    this.hiredByRestaurantAddress,
     this.hiredFromDate,
     this.hiredToDate,
     this.hiredBy,
@@ -63,6 +65,8 @@ class Employee {
   final DateTime? hiredFromDate;
   final DateTime? hiredToDate;
   final String? hiredBy;
+  final String? hiredByRestaurantName;
+  final String? hiredByRestaurantAddress;
   final bool? isMhEmployee;
   final List<String>? languages;
   final int? clientDiscount;
@@ -102,6 +106,8 @@ class Employee {
     hiredFromDate: json["hiredFromDate"] == null ? null : DateTime.parse(json["hiredFromDate"]),
     hiredToDate: json["hiredToDate"] == null ? null : DateTime.parse(json["hiredToDate"]),
     hiredBy: json["hiredBy"],
+    hiredByRestaurantName: json["hiredByRestaurantName"],
+    hiredByRestaurantAddress: json["hiredByRestaurantAddress"],
     isMhEmployee: json["isMhEmployee"],
     languages: json["languages"] == null ? [] : List<String>.from(json["languages"]!.map((x) => x)),
     clientDiscount: json["clientDiscount"],
@@ -135,6 +141,8 @@ class Employee {
     "totalWorkingHour": totalWorkingHour,
     "isReferPerson": isReferPerson,
     "isHired": isHired,
+    "hiredByRestaurantName": hiredByRestaurantName,
+    "hiredByRestaurantAddress": hiredByRestaurantAddress,
     "hiredFromDate": hiredFromDate?.toIso8601String(),
     "hiredToDate": hiredToDate?.toIso8601String(),
     "hiredBy": hiredBy,

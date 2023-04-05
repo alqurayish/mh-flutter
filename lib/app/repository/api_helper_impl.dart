@@ -5,7 +5,6 @@ import 'package:mh/app/models/address_to_lat_lng.dart';
 import 'package:mh/app/models/check_in_out_histories.dart';
 import 'package:mh/app/models/lat_long_to_address.dart';
 import 'package:mh/app/modules/employee/employee_home/models/today_check_in_out_details.dart';
-import 'package:mh/app/modules/employee/employee_home/models/daily_checkin_checkout_details.dart';
 
 import '../common/controller/app_error_controller.dart';
 import '../common/local_storage/storage_helper.dart';
@@ -429,15 +428,15 @@ class ApiHelperImpl extends GetConnect with ApiHelper {
   }
 
   @override
-  EitherModel<DailyCheckinCheckoutDetails> dailyCheckinCheckoutDetails(String employeeId) async {
+  EitherModel<TodayCheckInOutDetails> dailyCheckinCheckoutDetails(String employeeId) async {
     var response = await get("current-hired-employees/details/$employeeId");
     if (response.statusCode == null) response = await get("current-hired-employees/details/$employeeId");
     if (response.statusCode == null) response = await get("current-hired-employees/details/$employeeId");
     if (response.statusCode == null) response = await get("current-hired-employees/details/$employeeId");
 
-    return _convert<DailyCheckinCheckoutDetails>(
+    return _convert<TodayCheckInOutDetails>(
       response,
-      DailyCheckinCheckoutDetails.fromJson,
+      TodayCheckInOutDetails.fromJson,
     ).fold((l) => left(l), (r) => right(r));
   }
 

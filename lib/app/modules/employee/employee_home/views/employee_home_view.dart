@@ -218,9 +218,9 @@ class EmployeeHomeView extends GetView<EmployeeHomeController> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                _itemValue("Check In", controller.getCheckInTime),
-                _itemValue("Check Out", controller.getCheckOutTime),
-                _itemValue("Break", "${controller.todayCheckInOutDetails.value.details?.checkInCheckOutDetails?.breakTime ?? 0} min"),
+                _itemValue("Check In", controller.dailyStatistics.displayCheckInTime),
+                _itemValue("Check Out", controller.dailyStatistics.displayCheckOutTime),
+                _itemValue("Break", controller.dailyStatistics.displayBreakTime),
               ],
             ),
 
@@ -237,7 +237,8 @@ class EmployeeHomeView extends GetView<EmployeeHomeController> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                _itemValue("Working Time", controller.getWorkingTimeInMinute == null ? "-" : Utils.minuteToHour(controller.getWorkingTimeInMinute ?? 0), valueFontSize: 18),
+                _itemValue("Working Time", controller.dailyStatistics.workingHour, valueFontSize: 18),
+                _itemValue("Date", controller.dailyStatistics.date, valueFontSize: 14),
               ],
             ),
 

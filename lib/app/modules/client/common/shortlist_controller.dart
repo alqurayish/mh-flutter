@@ -19,8 +19,20 @@ class ShortlistController extends GetxService {
 
   String _selectedId = '';
 
-  int getIntroductionFees() {
+  double getIntroductionFeesWithoutDiscount() {
     return selectedForHire.fold(0, (previousValue, element) => previousValue + (element.feeAmount ?? 0));
+  }
+
+  double getIntroductionFeesWithDiscount() {
+    int total = selectedForHire.fold(0, (previousValue, element) => previousValue + (element.feeAmount ?? 0));
+    double discount = _appController.user.value.client?.clientDiscount ?? 0;
+    double discountedAmount = 0;
+
+    if(discount != 0) {
+      discountedAmount = (discount / 100) * getIntroductionFeesWithoutDiscount();
+    }
+
+    return total - discountedAmount;
   }
 
   Future<void> fetchShortListEmployees() async {
