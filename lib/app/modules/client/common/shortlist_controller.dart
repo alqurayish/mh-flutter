@@ -1,4 +1,5 @@
 import 'package:mh/app/common/controller/app_controller.dart';
+import 'package:mh/app/common/widgets/custom_dialog.dart';
 
 import '../../../common/utils/exports.dart';
 import '../../../repository/api_helper.dart';
@@ -16,6 +17,7 @@ class ShortlistController extends GetxService {
   RxInt totalShortlisted = 0.obs;
 
   RxBool isFetching = false.obs;
+  RxBool deleteFromShortlist = false.obs;
 
   String _selectedId = '';
 
@@ -69,6 +71,7 @@ class ShortlistController extends GetxService {
   }
 
   Future<void> onBookNowClick(String employeeId) async {
+    _selectedId = employeeId;
     if (_isEmployeeAddedInShortlist(employeeId)) return;
 
     await _addEmployeeToShortlist(employeeId);
@@ -82,21 +85,32 @@ class ShortlistController extends GetxService {
     await _apiHelper.addToShortlist(data).then((response) {
       response.fold((l) {
         Logcat.msg(l.msg);
+        isFetching.value = false;
       }, (r) {
-        fetchShortListEmployees();
+
+        if(r.statusCode == 200) {
+          fetchShortListEmployees();
+        } else {
+          isFetching.value = false;
+          CustomDialogue.information(
+            context: Get.context!,
+            title: "Error",
+            description: "Employee already hired",
+          );
+        }
       });
     });
 
   }
 
   Future<void> _removeEmployeeFromFromShortlist(String employeeId) async {
-    isFetching.value = true;
+    deleteFromShortlist.value = true;
 
     String shortlistId = shortList.firstWhere((element) => element.employeeId == employeeId).sId!;
 
     await _apiHelper.deleteFromShortlist(shortlistId).then((response) {
 
-      isFetching.value = false;
+      deleteFromShortlist.value = false;
 
       response.fold((l) {
         Logcat.msg(l.msg);
@@ -110,8 +124,6 @@ class ShortlistController extends GetxService {
 
             selectedForHire.removeWhere((element) => element.employeeId == employeeId);
             selectedForHire.refresh();
-
-            isFetching.value = false;
 
             break;
           }
@@ -129,7 +141,7 @@ class ShortlistController extends GetxService {
 
         _onBookmarkClick(employeeId);
       },
-      child: isFetching && employeeId == _selectedId
+      child: (this.isFetching.value || deleteFromShortlist.value) && employeeId == _selectedId
           ? const SizedBox(
               width: 20,
               height: 20,
@@ -201,7 +213,16 @@ class ShortlistController extends GetxService {
   }
 
   void _confirmationForRemoveEmployeeFromShortlist(String employeeId) {
-    _removeEmployeeFromFromShortlist(employeeId);
+    CustomDialogue.confirmation(
+      context: Get.context!,
+      title: "Confirm?",
+      msg: "Are you sure you want to delete employee from shortlist?",
+      confirmButtonText: "Delete",
+      onConfirm: () {
+        Get.back(); // hide dialog
+        _removeEmployeeFromFromShortlist(employeeId);
+      },
+    );
   }
 
   void removeAllSelected() {

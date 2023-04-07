@@ -15,7 +15,7 @@ class HireStatusView extends GetView<HireStatusController> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Lottie.asset(MyAssets.lottie.hireSuccess),
+                Lottie.asset(MyAssets.lottie.registrationDone),
                 Text(
                   "Request Successfully",
                   style: MyColors.l111111_dwhite(context).semiBold22,

@@ -1,6 +1,5 @@
 import 'package:geolocator/geolocator.dart';
-import 'package:mh/app/common/widgets/custom_loader.dart';
-import 'package:mh/app/models/check_in_out_histories.dart';
+import 'package:mh/app/common/widgets/chat_with_user_choose.dart';
 import 'package:slide_to_act/slide_to_act.dart';
 
 import '../../../../common/controller/app_controller.dart';
@@ -8,6 +7,9 @@ import '../../../../common/controller/location_controller.dart';
 import '../../../../common/utils/exports.dart';
 import '../../../../common/widgets/custom_break_time.dart';
 import '../../../../common/widgets/custom_dialog.dart';
+import '../../../../common/widgets/custom_loader.dart';
+import '../../../../enums/chat_with.dart';
+import '../../../../models/check_in_out_histories.dart';
 import '../../../../models/custom_error.dart';
 import '../../../../models/employee_daily_statistics.dart';
 import '../../../../repository/api_helper.dart';
@@ -59,12 +61,30 @@ class EmployeeHomeController extends GetxController {
 
   @override
   void onHelpAndSupportClick() {
-    Get.toNamed(Routes.contactUs);
+    // Get.toNamed(Routes.contactUs);
+    // Get.toNamed(Routes.oneToOneChat);
+    ChatWithUserChoose.show(context!);
   }
 
   @override
   void onNotificationClick() {
     Get.toNamed(Routes.clientNotification);
+  }
+
+  void chatWithAdmin() {
+    Get.back(); // hide dialogue
+
+    Get.toNamed(Routes.oneToOneChat, arguments: {
+      MyStrings.arg.chatWith: ChatWith.admin,
+    });
+  }
+
+  void chatWithRestaurant() {
+    Get.back(); // hide dialogue
+
+    Get.toNamed(Routes.oneToOneChat, arguments: {
+      MyStrings.arg.chatWith: ChatWith.client,
+    });
   }
 
   UserDailyStatistics get dailyStatistics => Utils.checkInOutToStatistics(
@@ -155,6 +175,7 @@ class EmployeeHomeController extends GetxController {
   }
 
   Future<void> _getTodayCheckInOutDetails() async {
+    if(!(appController.user.value.employee?.isHired ?? false)) return;
     if(loading.value) return;
 
     loading.value = true;

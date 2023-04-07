@@ -21,8 +21,10 @@ class EmployeeDetailsController extends GetxController {
     super.onInit();
   }
 
-  void onBookNowClick() {
+  Future<void> onBookNowClick() async {
     if(!_appController.hasPermission()) return;
+
+    await shortlistController.onBookNowClick(employee.id!);
 
     Get.toNamed(Routes.clientShortlisted);
   }

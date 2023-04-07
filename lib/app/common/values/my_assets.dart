@@ -52,6 +52,8 @@ class MyAssets {
 
   static const locationPin = "assets/icons/location_pin.png";
 
+  static const msgSend = "assets/icons/msg_send.png";
+
 }
 
 class _Lottie {

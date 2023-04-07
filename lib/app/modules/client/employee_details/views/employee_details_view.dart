@@ -279,7 +279,7 @@ class EmployeeDetailsView extends GetView<EmployeeDetailsController> {
   Widget _bottomBar(BuildContext context) {
     return CustomBottomBar(
       child: CustomButtons.button(
-        onTap: controller.showAsAdmin ? controller.onChatClick : (controller.employee.isHired ?? false) ? null : () => controller.onBookNowClick,
+        onTap: controller.showAsAdmin ? controller.onChatClick : (controller.employee.isHired ?? false) ? null : controller.onBookNowClick,
         text: controller.showAsAdmin ? "Chat" : (controller.employee.isHired ?? false) ? "Booked" : "Book Now",
         height: 52.h,
         customButtonStyle: CustomButtonStyle.radiusTopBottomCorner,

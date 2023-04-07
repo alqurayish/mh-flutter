@@ -486,15 +486,20 @@ class ApiHelperImpl extends GetConnect with ApiHelper {
   }
 
   @override
-  EitherModel<CurrentHiredEmployees> getAllCurrentHiredEmployees() async {
-    var response = await get("current-hired-employees");
-    if(response.statusCode == null) response = await get("current-hired-employees");
-    if(response.statusCode == null) response = await get("current-hired-employees");
-    if(response.statusCode == null) response = await get("current-hired-employees");
+  EitherModel<HiredEmployeesByDate> getHiredEmployeesByDate({String? date}) async {
+    String url = "hired-histories/employee-list-for-client";
 
-    return _convert<CurrentHiredEmployees>(
+    if (date != null) url += "?filterDate=$date";
+    print(url);
+
+    var response = await get(url);
+    if(response.statusCode == null) response = await get(url);
+    if(response.statusCode == null) response = await get(url);
+    if(response.statusCode == null) response = await get(url);
+
+    return _convert<HiredEmployeesByDate>(
     response,
-    CurrentHiredEmployees.fromJson,
+      HiredEmployeesByDate.fromJson,
     ).fold((l) => left(l), (r) => right(r));
   }
 
@@ -520,7 +525,7 @@ class ApiHelperImpl extends GetConnect with ApiHelper {
   }) async {
     String url = "check-in-check-out-histories?";
 
-    if ((filterDate ?? "").isNotEmpty) url += "&filterDate=$filterDate";
+    if ((filterDate ?? "").isNotEmpty) url += "filterDate=$filterDate";
     if ((requestType ?? "").isNotEmpty) url += "&requestType=$requestType";
     if ((clientId ?? "").isNotEmpty) url += "&clientId=$clientId";
     if ((employeeId ?? "").isNotEmpty) url += "&employeeId=$employeeId";

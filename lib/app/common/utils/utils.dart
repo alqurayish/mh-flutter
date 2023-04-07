@@ -161,7 +161,7 @@ class Utils {
     if(employeeCheckout != null) {
       dailyStatistics.employeeCheckOutTime = "${employeeCheckout.toLocal().hour} : ${employeeCheckout.toLocal().minute}";
     }
-    if(element.checkInCheckOutDetails?.breakTime != null) {
+    if(element.checkInCheckOutDetails?.breakTime != null && element.checkInCheckOutDetails?.breakTime != 0) {
       dailyStatistics.employeeBreakTime = "${element.checkInCheckOutDetails?.breakTime ?? 0} min";
     }
 
@@ -171,7 +171,7 @@ class Utils {
     if(clientCheckOut != null) {
       dailyStatistics.clientCheckOutTime = "${clientCheckOut.toLocal().hour} : ${clientCheckOut.toLocal().minute}";
     }
-    if(element.checkInCheckOutDetails?.breakTime != null) {
+    if(element.checkInCheckOutDetails?.clientBreakTime != null && element.checkInCheckOutDetails?.clientBreakTime != 0) {
       dailyStatistics.clientBreakTime = "${element.checkInCheckOutDetails?.clientBreakTime ?? 0} min";
     }
 

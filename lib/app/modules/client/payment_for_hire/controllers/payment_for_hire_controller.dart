@@ -1,9 +1,7 @@
-import 'package:flutter/cupertino.dart';
-import 'package:get/get.dart';
-import 'package:mh/app/common/controller/app_controller.dart';
-
-import '../../../../common/utils/logcat.dart';
+import '../../../../common/controller/app_controller.dart';
+import '../../../../common/utils/exports.dart';
 import '../../../../common/widgets/custom_loader.dart';
+import '../../../../models/custom_error.dart';
 import '../../../../repository/api_helper.dart';
 import '../../../../routes/app_pages.dart';
 import '../../common/shortlist_controller.dart';
@@ -35,10 +33,13 @@ class PaymentForHireController extends GetxController {
 
       CustomLoader.hide(context!);
 
-      response.fold((l) {
-        Logcat.msg(l.msg);
+      response.fold((CustomError customError) {
+
+        Utils.errorDialog(context!, customError..onRetry = onSubmitRequestClick);
+
       }, (r) {
         shortlistController.fetchShortListEmployees();
+        shortlistController.selectedForHire..clear()..refresh();
         Get.until((route) => Get.currentRoute == Routes.clientHome);
         Get.toNamed(Routes.hireStatus);
       });

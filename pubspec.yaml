@@ -73,6 +73,8 @@ dependencies:
   geocoder2: ^1.4.0
   geocoder_buddy: ^1.0.1
 
+  socket_io_client: ^2.0.1
+
   flutter:
     sdk: flutter
 

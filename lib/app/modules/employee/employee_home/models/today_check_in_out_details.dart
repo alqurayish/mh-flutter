@@ -24,7 +24,7 @@ class TodayCheckInOutDetails {
     status: json["status"],
     statusCode: json["statusCode"],
     message: json["message"],
-    details: json["details"] == null ? null : Details.fromJson(json["details"]),
+    details: (json["details"] == null || json["details"]["_id"] == null) ? null : Details.fromJson(json["details"]),
   );
 
   Map<String, dynamic> toJson() => {

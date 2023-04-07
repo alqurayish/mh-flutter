@@ -96,7 +96,7 @@ class EmployeeHomeView extends GetView<EmployeeHomeController> {
                                         bottom: 0,
                                         child: Obx(
                                           () => Visibility(
-                                            visible: controller.loading.value || controller.loadingCurrentLocation.value || (controller.checkIn.value && controller.checkOut.value),
+                                            visible: (controller.appController.user.value.employee?.isHired ?? false) && (controller.loading.value || controller.loadingCurrentLocation.value || (controller.checkIn.value && controller.checkOut.value)),
                                             child: Container(
                                               decoration: BoxDecoration(
                                                 borderRadius: BorderRadius.circular(10.0),
@@ -202,7 +202,7 @@ class EmployeeHomeView extends GetView<EmployeeHomeController> {
 
   Widget get _todayDashboard => Obx(
     () => Visibility(
-      visible: controller.checkIn.value,
+      visible: controller.checkIn.value && (controller.appController.user.value.employee?.isHired ?? false),
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 12),
         decoration: BoxDecoration(
@@ -266,7 +266,7 @@ class EmployeeHomeView extends GetView<EmployeeHomeController> {
 
   Widget get _checkInCheckout => Obx(
         () => Visibility(
-          visible: !controller.checkIn.value || !controller.checkOut.value,
+          visible: (!controller.checkIn.value || !controller.checkOut.value) && (controller.appController.user.value.employee?.isHired ?? false),
           child: SlideAction(
             key: controller.key,
             height: 74.h,

@@ -84,7 +84,7 @@ abstract class ApiHelper {
 
   EitherModel<Response> deleteAccount(Map<String, dynamic> data);
 
-  EitherModel<CurrentHiredEmployees> getAllCurrentHiredEmployees();
+  EitherModel<HiredEmployeesByDate> getHiredEmployeesByDate({String? date});
 
   EitherModel<TodayCheckInOutDetails> getTodayCheckInOutDetails(String employeeId);
 
