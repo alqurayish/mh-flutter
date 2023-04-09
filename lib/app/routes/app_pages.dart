@@ -37,6 +37,8 @@ import '../modules/client/client_notification/bindings/client_notification_bindi
 import '../modules/client/client_notification/views/client_notification_view.dart';
 import '../modules/client/client_payment_and_invoice/bindings/client_payment_and_invoice_binding.dart';
 import '../modules/client/client_payment_and_invoice/views/client_payment_and_invoice_view.dart';
+import '../modules/client/client_request_for_employee/bindings/client_request_for_employee_binding.dart';
+import '../modules/client/client_request_for_employee/views/client_request_for_employee_view.dart';
 import '../modules/client/client_shortlisted/bindings/client_shortlisted_binding.dart';
 import '../modules/client/client_shortlisted/views/client_shortlisted_view.dart';
 import '../modules/client/client_terms_condition_for_hire/bindings/client_terms_condition_for_hire_binding.dart';
@@ -216,6 +218,14 @@ class AppPages {
       name: _Paths.clientNotification,
       page: () => const ClientNotificationView(),
       binding: ClientNotificationBinding(),
+      middlewares: [
+        AuthMiddleware(),
+      ],
+    ),
+    GetPage(
+      name: _Paths.clientRequestForEmployee,
+      page: () => const ClientRequestForEmployeeView(),
+      binding: ClientRequestForEmployeeBinding(),
       middlewares: [
         AuthMiddleware(),
       ],

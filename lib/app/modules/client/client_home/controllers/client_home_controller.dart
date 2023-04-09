@@ -2,7 +2,9 @@ import 'package:mh/app/common/widgets/custom_dialog.dart';
 
 import '../../../../common/controller/app_controller.dart';
 import '../../../../common/utils/exports.dart';
+import '../../../../common/widgets/client_help_option.dart';
 import '../../../../common/widgets/custom_loader.dart';
+import '../../../../enums/chat_with.dart';
 import '../../../../models/custom_error.dart';
 import '../../../../repository/api_helper.dart';
 import '../../../../routes/app_pages.dart';
@@ -37,12 +39,28 @@ class ClientHomeController extends GetxController {
 
   @override
   void onHelpAndSupportClick() {
-    Get.toNamed(Routes.contactUs);
+    ClientHelpOption.show(context!);
   }
 
   @override
   void onNotificationClick() {
     Get.toNamed(Routes.clientNotification);
+  }
+
+  @override
+  void chatWithAdmin() {
+    Get.back(); // hide dialogue
+
+    Get.toNamed(Routes.oneToOneChat, arguments: {
+      MyStrings.arg.chatWith: ChatWith.admin,
+    });
+  }
+
+  @override
+  void requestEmployees() {
+    Get.back(); // hide dialogue
+
+    Get.toNamed(Routes.clientRequestForEmployee);
   }
 
   void onShortlistClick() {

@@ -27,6 +27,7 @@ abstract class Routes {
   static const clientDashboard = _Paths.clientDashboard;
   static const clientPaymentAndInvoice = _Paths.clientPaymentAndInvoice;
   static const clientShortlisted = _Paths.clientShortlisted;
+  static const clientRequestForEmployee = _Paths.clientRequestForEmployee;
 
   static const mhEmployees = _Paths.mhEmployees;
   static const employeeDetails = _Paths.employeeDetails;
@@ -76,6 +77,8 @@ abstract class _Paths {
   static const paymentForHire = '/payment-for-hire';
   static const hireStatus = '/hire-status';
   static const clientNotification = '/client-notification';
+  static const clientRequestForEmployee = '/client-request-for-employee';
+
 
   static const mhEmployees = '/mh-employees';
   static const employeeDetails = '/employee-details';
