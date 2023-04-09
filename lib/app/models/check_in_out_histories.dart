@@ -51,6 +51,7 @@ class CheckInCheckOutHistoryElement {
   CheckInCheckOutHistoryElement({
     this.id,
     this.employeeId,
+    this.currentHiredEmployeeId,
     this.hiredBy,
     this.employeeDetails,
     this.restaurantDetails,
@@ -66,6 +67,7 @@ class CheckInCheckOutHistoryElement {
 
   final String? id;
   final String? employeeId;
+  final String? currentHiredEmployeeId;
   final String? hiredBy;
   final EmployeeDetails? employeeDetails;
   final RestaurantDetails? restaurantDetails;
@@ -85,6 +87,7 @@ class CheckInCheckOutHistoryElement {
   factory CheckInCheckOutHistoryElement.fromJson(Map<String, dynamic> json) => CheckInCheckOutHistoryElement(
     id: json["_id"],
     employeeId: json["employeeId"],
+    currentHiredEmployeeId: json["currentHiredEmployeeId"],
     hiredBy: json["hiredBy"],
     employeeDetails: json["employeeDetails"] == null ? null : EmployeeDetails.fromJson(json["employeeDetails"]),
     restaurantDetails: json["restaurantDetails"] == null ? null : RestaurantDetails.fromJson(json["restaurantDetails"]),
@@ -101,6 +104,7 @@ class CheckInCheckOutHistoryElement {
   Map<String, dynamic> toJson() => {
     "_id": id,
     "employeeId": employeeId,
+    "currentHiredEmployeeId": currentHiredEmployeeId,
     "hiredBy": hiredBy,
     "employeeDetails": employeeDetails?.toJson(),
     "restaurantDetails": restaurantDetails?.toJson(),

@@ -88,7 +88,7 @@ class ShortlistController extends GetxService {
         isFetching.value = false;
       }, (r) {
 
-        if(r.statusCode == 200) {
+        if([200,201].contains(r.statusCode)) {
           fetchShortListEmployees();
         } else {
           isFetching.value = false;

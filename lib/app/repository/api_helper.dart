@@ -82,6 +82,8 @@ abstract class ApiHelper {
 
   EitherModel<Response> checkout(Map<String, dynamic> data);
 
+  EitherModel<Response> updateCheckInOutByClient(Map<String, dynamic> data);
+
   EitherModel<Response> deleteAccount(Map<String, dynamic> data);
 
   EitherModel<HiredEmployeesByDate> getHiredEmployeesByDate({String? date});

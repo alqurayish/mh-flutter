@@ -472,6 +472,22 @@ class ApiHelperImpl extends GetConnect with ApiHelper {
   }
 
   @override
+  EitherModel<Response> updateCheckInOutByClient(Map<String, dynamic> data) async {
+    var response = await put("current-hired-employees/update-status", jsonEncode(data));
+    if (response.statusCode == null) response = await put("current-hired-employees/update-status", jsonEncode(data));
+    if (response.statusCode == null) response = await put("current-hired-employees/update-status", jsonEncode(data));
+    if (response.statusCode == null) response = await put("current-hired-employees/update-status", jsonEncode(data));
+
+    print(response.body);
+
+    return _convert<Response>(
+      response,
+      (Map<String, dynamic> data) {},
+      onlyErrorCheck: true,
+    ).fold((l) => left(l), (r) => right(r));
+  }
+
+  @override
   EitherModel<Response> deleteAccount(Map<String, dynamic> data) async {
     var response = await put("users/update-status", jsonEncode(data));
     if (response.statusCode == null) response = await put("users/update-status", jsonEncode(data));

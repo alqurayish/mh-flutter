@@ -1,6 +1,10 @@
 import 'package:horizontal_data_table/horizontal_data_table.dart';
+import 'package:mh/app/common/widgets/custom_dropdown.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
+import '../../../../common/style/my_decoration.dart';
 import '../../../../common/utils/exports.dart';
+import '../../../../common/utils/validators.dart';
 import '../../../../common/widgets/custom_appbar.dart';
 import '../../../../common/widgets/custom_dialog.dart';
 import '../../../../common/widgets/custom_network_image.dart';
@@ -85,7 +89,7 @@ class ClientDashboardView extends GetView<ClientDashboardController> {
                       Expanded(
                         child: HorizontalDataTable(
                           leftHandSideColumnWidth: 143.w,
-                          rightHandSideColumnWidth: 400.w,
+                          rightHandSideColumnWidth: 600.w,
                           isFixedHeader: true,
                           headerWidgets: _getTitleWidget(),
                           leftSideItemBuilder: _generateFirstColumnRow,
@@ -144,8 +148,8 @@ class ClientDashboardView extends GetView<ClientDashboardController> {
       _getTitleItemWidget('Check out', 100.w),
       _getTitleItemWidget('Break Time', 100.w),
       _getTitleItemWidget('Total hours', 100.w),
-      // _getTitleItemWidget('Chat', 100.w),
-      // _getTitleItemWidget('Complain', 100.w),
+      _getTitleItemWidget('Chat', 100.w),
+      _getTitleItemWidget('Complain', 100.w),
     ];
   }
 
@@ -211,43 +215,72 @@ class ClientDashboardView extends GetView<ClientDashboardController> {
       );
 
   Widget _generateRightHandSideColumnRow(BuildContext context, int index) {
+
+    if(controller.getCheckInOutDate(index) == null) {
+      return Row(
+        children: <Widget>[
+          _cell(width: 100.w, value: "-"),
+          _cell(width: 100.w, value: "-"),
+          _cell(width: 100.w, value: "-"),
+          _cell(width: 100.w, value: "-"),
+          _cell(width: 100.w, value: "", child: _chat),
+          _cell(width: 100.w, value: "-",),
+        ],
+      );
+    }
+
     UserDailyStatistics dailyStatistics = Utils.checkInOutToStatistics(controller.history[index]);
 
-    // return Row(
-    //   children: <Widget>[
-    //     _cell(width: 100.w, value: dailyStatistics.displayCheckInTime, clientUpdatedValue: dailyStatistics.employeeCheckInTime),
-    //     _cell(width: 100.w, value: dailyStatistics.displayCheckOutTime, clientUpdatedValue: dailyStatistics.employeeCheckOutTime),
-    //     _cell(width: 100.w, value: dailyStatistics.displayBreakTime, clientUpdatedValue: dailyStatistics.employeeBreakTime),
-    //     _cell(width: 100.w, value: dailyStatistics.workingHour),
-    //     _cell(width: 100.w, value: dailyStatistics.workingHour),
-    //     _cell(width: 100.w, value: "--", child: _action(index)),
-    //   ],
-    // );
     return Row(
       children: <Widget>[
         _cell(width: 100.w, value: dailyStatistics.displayCheckInTime, clientUpdatedValue: dailyStatistics.employeeCheckInTime),
         _cell(width: 100.w, value: dailyStatistics.displayCheckOutTime, clientUpdatedValue: dailyStatistics.employeeCheckOutTime),
         _cell(width: 100.w, value: dailyStatistics.displayBreakTime, clientUpdatedValue: dailyStatistics.employeeBreakTime),
         _cell(width: 100.w, value: dailyStatistics.workingHour),
-        // _cell(width: 100.w, value: dailyStatistics.workingHour),
-        // _cell(width: 100.w, value: "--"),
+        _cell(width: 100.w, value: "", child: _chat),
+        _cell(width: 100.w, value: "--", child: _action(index)),
       ],
     );
   }
 
   Widget _action(int index) => controller.getComment(index).isEmpty
-      ? const Icon(
-          Icons.check_circle,
-          color: Colors.green,
-          size: 22,
+      ? GestureDetector(
+          onTap: () {
+            controller.setUpdatedDate(index);
+
+            showMaterialModalBottomSheet(
+              context: controller.context!,
+              builder: (context) => Container(
+                color: MyColors.lightCard(context),
+                child: _updateOption(index),
+              ),
+            );
+          },
+          child: const Icon(
+            Icons.check_circle,
+            color: Colors.green,
+            size: 22,
+          ),
         )
       : GestureDetector(
           onTap: () {
-            CustomDialogue.information(
-              context: controller.context!,
-              title: "Restaurant Report on You",
-              description: controller.getComment(index),
-            );
+            if(controller.clientCommentEnable(index)) {
+              controller.setUpdatedDate(index);
+
+              showMaterialModalBottomSheet(
+                context: controller.context!,
+                builder: (context) => Container(
+                  color: MyColors.lightCard(context),
+                  child: _updateOption(index),
+                ),
+              );
+            } else {
+              CustomDialogue.information(
+                context: controller.context!,
+                title: "Restaurant Report on You",
+                description: controller.getComment(index),
+              );
+            }
           },
           child: const Icon(
             Icons.info,
@@ -312,26 +345,96 @@ class ClientDashboardView extends GetView<ClientDashboardController> {
         color: MyColors.c_C6A34F,
       );
 
-  Widget get _more => Container(
-    width: 95.w,
-    height: 37.h,
-    decoration: BoxDecoration(
-        color: MyColors.lightCard(controller.context!),
-        borderRadius: BorderRadius.circular(5.0),
-        border: Border.all(
-          width: .5,
-          color: MyColors.c_A6A6A6,
-        ),
-    ),
-    child: Row(
+  Widget _updateOption(int index) => Form(
+    key: controller.formKey,
+    child: Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
-        const Expanded(child: Icon(Icons.close_rounded, color: Colors.red,),),
-        Container(
-          height: 25,
-          width: 1,
-          color: MyColors.c_DADADA,
+        SizedBox(height: 19.h),
+
+        Center(
+          child: Container(
+            height: 4.h,
+            width: 80.w,
+            decoration: const BoxDecoration(
+              color: MyColors.c_5C5C5C,
+            ),
+          ),
         ),
-        const Expanded(child: Icon(Icons.check_rounded, color: Colors.green,),),
+
+        SizedBox(height: 30.h),
+
+            Row(
+              children: [
+                Expanded(
+                  flex: 8,
+                  child: CustomDropdown(
+                    prefixIcon: Icons.timelapse,
+                    hints: null,
+                    value: controller.selectedComplainType,
+                    items: controller.complainType,
+                    onChange: (value) {
+                      controller.onComplainTypeChange(index, value);
+                    },
+                  ),
+                ),
+
+                Expanded(
+                  flex: 2,
+                  child: SizedBox(
+                    height: 58.h,
+                    child: TextFormField(
+                      controller: controller.tecTime,
+                      keyboardType: TextInputType.number,
+                      cursorColor: MyColors.c_C6A34F,
+                      decoration: MyDecoration.inputFieldDecoration(
+                        context: controller.context!,
+                        label: "",
+                      ),
+                      validator: (String? value) => Validators.emptyValidator(
+                        value?.trim(),
+                        MyStrings.required.tr,
+                      ),
+                    ),
+                  ),
+                ),
+                const Text("  Min"),
+                const SizedBox(width: 14),
+              ],
+            ),
+
+        SizedBox(height: 30.h),
+
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 14),
+          child: TextFormField(
+            controller: controller.tecComment,
+            keyboardType: TextInputType.multiline,
+            minLines: 5,
+            maxLines: null,
+            cursorColor: MyColors.c_C6A34F,
+            decoration: MyDecoration.inputFieldDecoration(
+              context: controller.context!,
+              label: "Comment",
+            ),
+            validator: (String? value) => Validators.emptyValidator(
+              value?.trim(),
+              MyStrings.required.tr,
+            ),
+          ),
+        ),
+
+        SizedBox(height: 30.h),
+
+        CustomButtons.button(
+          height: 52.h,
+          onTap: () => controller.onUpdatePressed(index),
+          text: "Update",
+          margin: const EdgeInsets.symmetric(horizontal: 14),
+          customButtonStyle: CustomButtonStyle.radiusTopBottomCorner,
+        ),
+
+        SizedBox(height: 30.h),
       ],
     ),
   );
