@@ -6,6 +6,7 @@ import '../models/client_details.dart';
 import '../models/commons.dart';
 import '../models/employees_by_id.dart';
 import '../models/lat_long_to_address.dart';
+import '../models/requested_employees.dart' as requested_employees;
 import '../models/sources.dart';
 import '../modules/auth/login/model/login.dart';
 import '../modules/auth/login/model/login_response.dart';
@@ -98,4 +99,10 @@ abstract class ApiHelper {
   });
 
   EitherModel<CheckInCheckOutHistory> getEmployeeCheckInOutHistory();
+
+  EitherModel<Response> clientRequestForEmployee(Map<String, dynamic> data);
+
+  EitherModel<requested_employees.RequestedEmployees> getRequestedEmployees({String? clientId});
+
+  EitherModel<Response> addEmployeeAsSuggest(Map<String, dynamic> data);
 }

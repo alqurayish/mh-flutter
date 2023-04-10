@@ -1,5 +1,3 @@
-import 'package:mh/app/common/widgets/custom_dropdown.dart';
-
 import '../../../../common/utils/exports.dart';
 import '../../../../common/widgets/custom_appbar.dart';
 import '../../../../common/widgets/custom_bottombar.dart';
@@ -10,6 +8,8 @@ class ClientRequestForEmployeeView extends GetView<ClientRequestForEmployeeContr
 
   @override
   Widget build(BuildContext context) {
+    controller.context = context;
+
     return Scaffold(
       appBar: CustomAppbar.appbar(
         title: "Request Employee",

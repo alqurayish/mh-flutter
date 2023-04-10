@@ -1,15 +1,13 @@
-import 'package:badges/badges.dart' as badge;
-
 import '../../../../common/utils/exports.dart';
 import '../../../../common/widgets/custom_appbar.dart';
 import '../../../../common/widgets/custom_filter.dart';
 import '../../../../common/widgets/custom_network_image.dart';
 import '../../../../common/widgets/no_item_found.dart';
 import '../../../../models/employees_by_id.dart';
-import '../controllers/mh_employees_by_id_controller.dart';
+import '../controllers/admin_client_request_position_employees_controller.dart';
 
-class MhEmployeesByIdView extends GetView<MhEmployeesByIdController> {
-  const MhEmployeesByIdView({Key? key}) : super(key: key);
+class AdminClientRequestPositionEmployeesView extends GetView<AdminClientRequestPositionEmployeesController> {
+  const AdminClientRequestPositionEmployeesView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,39 +15,19 @@ class MhEmployeesByIdView extends GetView<MhEmployeesByIdController> {
 
     return Scaffold(
       appBar: CustomAppbar.appbar(
-        title: controller.position.name ?? "Employees",
         context: context,
-          centerTitle: true,
-          actions: [
-            Obx(
-              () => Visibility(
-                visible: controller.shortlistController.totalShortlisted.value > 0,
-                child: Center(
-                  child: badge.Badge(
-                    position: badge.BadgePosition.topEnd(top: -9, end: -4),
-                    onTap: controller.goToShortListedPage,
-                    ignorePointer: false,
-                    badgeContent: Text(
-                      controller.shortlistController.totalShortlisted.value.toString(),
-                      style: MyColors.white.semiBold12,
-                    ),
-                    badgeStyle: const badge.BadgeStyle(
-                      badgeColor: MyColors.c_C6A34F,
-                      elevation: 0,
-                    ),
-                    child: GestureDetector(
-                      onTap: controller.goToShortListedPage,
-                      child: const Icon(Icons.bookmark_outline_rounded),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(width: 16.w),
-          ]),
+        title: "Employees",
+      ),
       body: Obx(
         () => (controller.employees.value.users ?? []).isEmpty
-            ? controller.isLoading.value ? const SizedBox() : const NoItemFound()
+            ? controller.isLoading.value
+                ? const SizedBox()
+                : Column(
+                  children: [
+                    _resultCountWithFilter(),
+                    const NoItemFound(),
+                  ],
+                )
             : Column(
                 children: [
                   _resultCountWithFilter(),
@@ -80,7 +58,7 @@ class MhEmployeesByIdView extends GetView<MhEmployeesByIdController> {
             style: MyColors.c_C6A34F.semiBold16,
           ),
           Text(
-            " ${controller.position.name ?? "Employees"} are showing",
+            " ${controller.clientRequestDetail.positionName ?? "Employees"} are showing",
             style: MyColors.l111111_dwhite(controller.context!).semiBold16,
           ),
 
@@ -134,25 +112,11 @@ class MhEmployeesByIdView extends GetView<MhEmployeesByIdController> {
                 width: 122.w,
                 child: CustomButtons.button(
                   height: 28.w,
-                  text: (user.isHired ?? false) ? "Booked" : "Book Now",
+                  text: (user.isHired ?? false) ? "Booked" : controller.alreadySuggest(user.id!) ? "Suggested" : "Suggest",
                   margin: EdgeInsets.zero,
                   fontSize: 12,
                   customButtonStyle: CustomButtonStyle.radiusTopBottomCorner,
-                  onTap: (user.isHired ?? false) ? null : () => controller.onBookNowClick(user),
-                ),
-              ),
-            ),
-
-            Positioned(
-              right: 5,
-              top: 3,
-              child: Obx(
-                () => Visibility(
-                  visible: !(user.isHired ?? false),
-                  child: controller.shortlistController.getIcon(
-                    user.id!,
-                    controller.shortlistController.isFetching.value,
-                  ),
+                  onTap: (user.isHired ?? false) || controller.alreadySuggest(user.id!) ? null : () => controller.onSuggestClick(user),
                 ),
               ),
             ),
@@ -223,72 +187,72 @@ class MhEmployeesByIdView extends GetView<MhEmployeesByIdController> {
   }
 
   Widget _image(String profilePicture) => Container(
-        margin: const EdgeInsets.fromLTRB(16, 16, 13, 16),
-        width: 74.w,
-        height: 74.w,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(5),
-          color: Colors.grey.withOpacity(.1),
-        ),
-        child: CustomNetworkImage(
-          url: profilePicture,
-          radius: 5,
-        ),
-      );
+    margin: const EdgeInsets.fromLTRB(16, 16, 13, 16),
+    width: 74.w,
+    height: 74.w,
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(5),
+      color: Colors.grey.withOpacity(.1),
+    ),
+    child: CustomNetworkImage(
+      url: profilePicture,
+      radius: 5,
+    ),
+  );
 
   Widget _name(String name) => Text(
-        name,
-        style: MyColors.l111111_dwhite(controller.context!).medium14,
-      );
+    name,
+    style: MyColors.l111111_dwhite(controller.context!).medium14,
+  );
 
   Widget _rating(int rating) => Visibility(
-        visible: rating > 0,
-        child: Row(
-          children: [
-            SizedBox(width: 10.w),
-            Container(
-              height: 2.h,
-              width: 2.h,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: MyColors.l111111_dwhite(controller.context!),
-              ),
-            ),
-            SizedBox(width: 10.w),
-            const Icon(
-              Icons.star,
-              color: MyColors.c_FFA800,
-              size: 16,
-            ),
-            SizedBox(width: 2.w),
-            Text(
-              rating.toString(),
-              style: MyColors.l111111_dwhite(controller.context!).medium14,
-            ),
-          ],
+    visible: rating > 0,
+    child: Row(
+      children: [
+        SizedBox(width: 10.w),
+        Container(
+          height: 2.h,
+          width: 2.h,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: MyColors.l111111_dwhite(controller.context!),
+          ),
         ),
-      );
+        SizedBox(width: 10.w),
+        const Icon(
+          Icons.star,
+          color: MyColors.c_FFA800,
+          size: 16,
+        ),
+        SizedBox(width: 2.w),
+        Text(
+          rating.toString(),
+          style: MyColors.l111111_dwhite(controller.context!).medium14,
+        ),
+      ],
+    ),
+  );
 
   Widget _detailsItem(String icon, String title, String value) => Expanded(
-        child: Row(
-          children: [
-            Image.asset(
-              icon,
-              width: 14.w,
-              height: 14.w,
-            ),
-            SizedBox(width: 10.w),
-            Text(
-              title,
-              style: MyColors.l7B7B7B_dtext(controller.context!).medium11,
-            ),
-            SizedBox(width: 3.w),
-            Text(
-              value,
-              style: MyColors.l111111_dwhite(controller.context!).medium11,
-            ),
-          ],
+    child: Row(
+      children: [
+        Image.asset(
+          icon,
+          width: 14.w,
+          height: 14.w,
         ),
-      );
+        SizedBox(width: 10.w),
+        Text(
+          title,
+          style: MyColors.l7B7B7B_dtext(controller.context!).medium11,
+        ),
+        SizedBox(width: 3.w),
+        Text(
+          value,
+          style: MyColors.l111111_dwhite(controller.context!).medium11,
+        ),
+      ],
+    ),
+  );
 
 }

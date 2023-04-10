@@ -26,6 +26,11 @@ Future<void> main() async {
     // NotificationRepository().saveUUIDAndFcmToken(token : token);
   });
 
+  FirebaseMessaging.instance.getToken().then((value) {
+    print("=============== FCM TOKEN =================");
+    print(value);
+  });
+
   LocalNotificationService.initialize();
 
   Initializer.instance.init(() {

@@ -5,6 +5,12 @@ import '../modules/admin/admin_all_clients/bindings/admin_all_clients_binding.da
 import '../modules/admin/admin_all_clients/views/admin_all_clients_view.dart';
 import '../modules/admin/admin_all_employees/bindings/admin_all_employees_binding.dart';
 import '../modules/admin/admin_all_employees/views/admin_all_employees_view.dart';
+import '../modules/admin/admin_client_request/bindings/admin_client_request_binding.dart';
+import '../modules/admin/admin_client_request/views/admin_client_request_view.dart';
+import '../modules/admin/admin_client_request_position_employees/bindings/admin_client_request_position_employees_binding.dart';
+import '../modules/admin/admin_client_request_position_employees/views/admin_client_request_position_employees_view.dart';
+import '../modules/admin/admin_client_request_positions/bindings/admin_client_request_positions_binding.dart';
+import '../modules/admin/admin_client_request_positions/views/admin_client_request_positions_view.dart';
 import '../modules/admin/admin_dashboard/bindings/admin_dashboard_binding.dart';
 import '../modules/admin/admin_dashboard/views/admin_dashboard_view.dart';
 import '../modules/admin/admin_home/bindings/admin_home_binding.dart';
@@ -41,6 +47,8 @@ import '../modules/client/client_request_for_employee/bindings/client_request_fo
 import '../modules/client/client_request_for_employee/views/client_request_for_employee_view.dart';
 import '../modules/client/client_shortlisted/bindings/client_shortlisted_binding.dart';
 import '../modules/client/client_shortlisted/views/client_shortlisted_view.dart';
+import '../modules/client/client_suggested_employees/bindings/client_suggested_employees_binding.dart';
+import '../modules/client/client_suggested_employees/views/client_suggested_employees_view.dart';
 import '../modules/client/client_terms_condition_for_hire/bindings/client_terms_condition_for_hire_binding.dart';
 import '../modules/client/client_terms_condition_for_hire/views/client_terms_condition_for_hire_view.dart';
 import '../modules/client/employee_details/bindings/employee_details_binding.dart';
@@ -151,6 +159,30 @@ class AppPages {
       ],
     ),
     GetPage(
+      name: _Paths.adminClientRequest,
+      page: () => const AdminClientRequestView(),
+      binding: AdminClientRequestBinding(),
+      middlewares: [
+        AuthMiddleware(),
+      ],
+    ),
+    GetPage(
+      name: _Paths.adminClientRequestPositions,
+      page: () => const AdminClientRequestPositionsView(),
+      binding: AdminClientRequestPositionsBinding(),
+      middlewares: [
+        AuthMiddleware(),
+      ],
+    ),
+    GetPage(
+      name: _Paths.adminClientRequestPositionEmployees,
+      page: () => const AdminClientRequestPositionEmployeesView(),
+      binding: AdminClientRequestPositionEmployeesBinding(),
+      middlewares: [
+        AuthMiddleware(),
+      ],
+    ),
+    GetPage(
       name: _Paths.employeeHome,
       page: () => const EmployeeHomeView(),
       binding: EmployeeHomeBinding(),
@@ -229,6 +261,11 @@ class AppPages {
       middlewares: [
         AuthMiddleware(),
       ],
+    ),
+    GetPage(
+      name: _Paths.clientSuggestedEmployees,
+      page: () => const ClientSuggestedEmployeesView(),
+      binding: ClientSuggestedEmployeesBinding(),
     ),
     GetPage(
       name: _Paths.paymentForHire,

@@ -1,9 +1,19 @@
-import 'package:get/get.dart';
-import 'package:mh/app/common/controller/app_controller.dart';
+import 'dart:convert';
+
+import 'package:mh/app/common/widgets/custom_loader.dart';
+
+import '../../../../common/controller/app_controller.dart';
+import '../../../../common/utils/exports.dart';
+import '../../../../common/widgets/custom_dialog.dart';
+import '../../../../models/custom_error.dart';
+import '../../../../repository/api_helper.dart';
 
 class ClientRequestForEmployeeController extends GetxController {
 
+  BuildContext? context;
+
   final AppController appController = Get.find();
+  final ApiHelper apiHelper = Get.find();
 
   RxList<int> selectedEmployee = <int>[].obs;
 
@@ -36,8 +46,56 @@ class ClientRequestForEmployeeController extends GetxController {
     selectedEmployee[index] = value;
   }
 
-  void onRequestPressed() {
+  Future<void> onRequestPressed() async {
 
+    List<Map<String, dynamic>> idsWihCount = [];
+
+    for(int i = 0; i < selectedEmployee.length; i++) {
+      if(selectedEmployee[i] > 0) {
+        idsWihCount.add({
+          "positionId": appController.allActivePositions[i].id,
+          "numOfEmployee": selectedEmployee[i]
+        });
+      }
+    }
+
+    Map<String, dynamic> data = {
+      "requestClientId": appController.user.value.userId,
+      "employees": idsWihCount
+    };
+
+    print(data);
+
+
+
+    CustomLoader.show(context!);
+    await apiHelper.clientRequestForEmployee(data).then((response) {
+
+      CustomLoader.hide(context!);
+
+      response.fold((CustomError customError) {
+
+        Utils.errorDialog(context!, customError..onRetry = onRequestPressed);
+
+      }, (r) {
+
+        if([200,201].contains(r.statusCode)) {
+          Get.back();
+          CustomDialogue.information(
+            context: Get.context!,
+            title: "Requested",
+            description: "Your request is placed successfully. You will notify when admin suggest" ,
+          );
+        } else {
+          CustomDialogue.information(
+            context: Get.context!,
+            title: "Error",
+            description: "Something wrong",
+          );
+        }
+
+      });
+    });
   }
 
 }

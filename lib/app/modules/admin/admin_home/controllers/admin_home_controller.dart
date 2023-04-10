@@ -25,6 +25,11 @@ class AdminHomeController extends GetxController {
   }
 
   @override
+  void onRequestClick() {
+    Get.toNamed(Routes.adminClientRequest);
+  }
+
+  @override
   void onAdminDashboardClick() {
     Get.toNamed(Routes.adminDashboard);
   }

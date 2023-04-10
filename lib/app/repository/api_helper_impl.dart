@@ -16,6 +16,7 @@ import '../models/client_details.dart';
 import '../models/commons.dart';
 import '../models/custom_error.dart';
 import '../models/employees_by_id.dart';
+import '../models/requested_employees.dart' as requested_employees;
 import '../models/sources.dart';
 import '../modules/auth/login/model/login.dart';
 import '../modules/auth/login/model/login_response.dart';
@@ -567,6 +568,51 @@ class ApiHelperImpl extends GetConnect with ApiHelper {
     return _convert<CheckInCheckOutHistory>(
       response,
       CheckInCheckOutHistory.fromJson,
+    ).fold((l) => left(l), (r) => right(r));
+  }
+
+  @override
+  EitherModel<Response> clientRequestForEmployee(Map<String, dynamic> data) async {
+    var response = await post("request-employees/create", jsonEncode(data));
+    if (response.statusCode == null) response = await put("request-employees/create", jsonEncode(data));
+    if (response.statusCode == null) response = await put("request-employees/create", jsonEncode(data));
+    if (response.statusCode == null) response = await put("request-employees/create", jsonEncode(data));
+
+    return _convert<Response>(
+      response,
+      (Map<String, dynamic> data) {},
+      onlyErrorCheck: true,
+    ).fold((l) => left(l), (r) => right(r));
+  }
+
+  @override
+  EitherModel<requested_employees.RequestedEmployees> getRequestedEmployees({String? clientId}) async {
+    String url = "request-employees";
+
+    if ((clientId ?? "").isNotEmpty) url += "clientId=$clientId";
+
+    var response = await get(url);
+    if (response.statusCode == null) response = await get(url);
+    if (response.statusCode == null) response = await get(url);
+    if (response.statusCode == null) response = await get(url);
+
+    return _convert<requested_employees.RequestedEmployees>(
+      response,
+      requested_employees.RequestedEmployees.fromJson,
+    ).fold((l) => left(l), (r) => right(r));
+  }
+
+  @override
+  EitherModel<Response> addEmployeeAsSuggest(Map<String, dynamic> data) async {
+    var response = await put("request-employees/update", jsonEncode(data));
+    if (response.statusCode == null) response = await put("request-employees/update", jsonEncode(data));
+    if (response.statusCode == null) response = await put("request-employees/update", jsonEncode(data));
+    if (response.statusCode == null) response = await put("request-employees/update", jsonEncode(data));
+
+    return _convert<Response>(
+      response,
+          (Map<String, dynamic> data) {},
+      onlyErrorCheck: true,
     ).fold((l) => left(l), (r) => right(r));
   }
 

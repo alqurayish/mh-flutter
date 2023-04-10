@@ -58,7 +58,9 @@ class ClientHomeView extends GetView<ClientHomeController> {
 
                         _promotionText,
 
-                        // SizedBox(height: 30.h),
+                        SizedBox(height: 30.h),
+
+                        _suggestedEmployees,
 
                         // _dueInvoice,
 
@@ -197,6 +199,57 @@ class ClientHomeView extends GetView<ClientHomeController> {
           ),
         ),
       );
+
+  Widget get _suggestedEmployees => Obx(
+    () => Visibility(
+          visible: (controller.requestedEmployees.value.requestEmployees ?? []).isNotEmpty,
+          child: GestureDetector(
+            onTap: controller.onSuggestedEmployeesClick,
+            child: Container(
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10.0),
+                color: Colors.purple.withOpacity(.6),
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "${controller.countTotalRequestedEmployees()} Employees are requested",
+                          style: MyColors.white.semiBold16,
+                        ),
+                        SizedBox(height: 7.h),
+                        Text(
+                          "MH suggest you ${controller.countSuggestedEmployees()} employees",
+                          style: MyColors.white.regular12,
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    width: 10.w,
+                  ),
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.purple.withOpacity(.45),
+                    ),
+                    child: const Icon(
+                      Icons.arrow_forward,
+                      color: MyColors.white,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+  );
 
   Widget get _employeeShortlisted => Obx(
     () => Visibility(

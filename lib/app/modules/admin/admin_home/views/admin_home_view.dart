@@ -61,9 +61,9 @@ class AdminHomeView extends GetView<AdminHomeController> {
                           children: [
                             Expanded(
                               child: CustomFeatureBox(
-                                title: MyStrings.employees.tr,
-                                icon: MyAssets.myEmployees,
-                                onTap: controller.onEmployeeClick,
+                                title: MyStrings.dashboard.tr,
+                                icon: MyAssets.dashboard,
+                                onTap: controller.onAdminDashboardClick,
                               ),
                             ),
 
@@ -71,9 +71,9 @@ class AdminHomeView extends GetView<AdminHomeController> {
 
                             Expanded(
                               child: CustomFeatureBox(
-                                title: "Client",
-                                icon: MyAssets.myEmployees,
-                                onTap: controller.onClientClick,
+                                title: "Request",
+                                icon: MyAssets.request,
+                                onTap: controller.onRequestClick,
                               ),
                             ),
                           ],
@@ -85,14 +85,23 @@ class AdminHomeView extends GetView<AdminHomeController> {
                           children: [
                             Expanded(
                               child: CustomFeatureBox(
-                                title: MyStrings.dashboard.tr,
-                                icon: MyAssets.dashboard,
-                                onTap: controller.onAdminDashboardClick,
+                                title: MyStrings.employees.tr,
+                                icon: MyAssets.myEmployees,
+                                onTap: controller.onEmployeeClick,
+                              ),
+                            ),
+
+                            SizedBox(width: 24.w),
+
+                            Expanded(
+                              child: CustomFeatureBox(
+                                title: "Client",
+                                icon: MyAssets.kitchenPorter,
+                                onTap: controller.onClientClick,
                               ),
                             ),
                           ],
                         ),
-
                       ],
                     ),
                   ),

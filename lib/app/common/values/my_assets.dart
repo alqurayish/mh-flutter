@@ -17,6 +17,7 @@ class MyAssets {
   static const myEmployees = "assets/images/my_employees.png";
   static const invoicePayment = "assets/images/invoice_payment.png";
   static const splash = "assets/images/splash.png";
+  static const request = "assets/images/request.jpeg";
 
   static const emergencyCheckInCheckout = "assets/images/emergency_checin_checkout.png";
 
