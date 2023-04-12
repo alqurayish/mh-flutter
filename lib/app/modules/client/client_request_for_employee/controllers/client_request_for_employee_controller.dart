@@ -7,6 +7,7 @@ import '../../../../common/utils/exports.dart';
 import '../../../../common/widgets/custom_dialog.dart';
 import '../../../../models/custom_error.dart';
 import '../../../../repository/api_helper.dart';
+import '../../client_home/controllers/client_home_controller.dart';
 
 class ClientRequestForEmployeeController extends GetxController {
 
@@ -14,6 +15,7 @@ class ClientRequestForEmployeeController extends GetxController {
 
   final AppController appController = Get.find();
   final ApiHelper apiHelper = Get.find();
+  final ClientHomeController clientHomeController = Get.find();
 
   RxList<int> selectedEmployee = <int>[].obs;
 
@@ -80,6 +82,7 @@ class ClientRequestForEmployeeController extends GetxController {
       }, (r) {
 
         if([200,201].contains(r.statusCode)) {
+          clientHomeController.onInit();
           Get.back();
           CustomDialogue.information(
             context: Get.context!,

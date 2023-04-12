@@ -108,15 +108,20 @@ class AdminClientRequestPositionEmployeesView extends GetView<AdminClientRequest
             Positioned(
               right: 0,
               bottom: 0,
-              child: SizedBox(
-                width: 122.w,
-                child: CustomButtons.button(
-                  height: 28.w,
-                  text: (user.isHired ?? false) ? "Booked" : controller.alreadySuggest(user.id!) ? "Suggested" : "Suggest",
-                  margin: EdgeInsets.zero,
-                  fontSize: 12,
-                  customButtonStyle: CustomButtonStyle.radiusTopBottomCorner,
-                  onTap: (user.isHired ?? false) || controller.alreadySuggest(user.id!) ? null : () => controller.onSuggestClick(user),
+              child: Obx(
+                () => SizedBox(
+                  width: 122.w,
+                  child: CustomButtons.button(
+                    height: 28.w,
+                    text: (user.isHired ?? false) ? "Booked"
+                        : (controller.adminClientRequestController.requestedEmployees.value.requestEmployees?[controller.adminClientRequestPositionsController.selectedIndex].suggestedEmployeeDetails ?? [])
+                        .where((element) => element.positionId == controller.clientRequestDetail.positionId).toList().where((element) => element.employeeId == user.id!).isNotEmpty
+                      ? "Suggested" : "Suggest",
+                    margin: EdgeInsets.zero,
+                    fontSize: 12,
+                    customButtonStyle: CustomButtonStyle.radiusTopBottomCorner,
+                    onTap: (user.isHired ?? false) || controller.alreadySuggest(user.id!) ? null : () => controller.onSuggestClick(user),
+                  ),
                 ),
               ),
             ),

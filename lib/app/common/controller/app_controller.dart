@@ -1,6 +1,8 @@
 import 'package:get/get.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:mh/app/common/widgets/custom_loader.dart';
 import 'package:mh/app/models/admin.dart';
+import 'package:mh/app/repository/api_helper.dart';
 
 import '../../enums/user_type.dart';
 import '../../models/client.dart';
@@ -97,6 +99,8 @@ class AppController extends GetxService {
   Future<void> afterSuccessLogin(String token) async {
     await updateToken(token);
 
+    _updateToken();
+
     if(user.value.userType == null) {
 
     } else {
@@ -161,12 +165,20 @@ class AppController extends GetxService {
     Get.toNamed(Routes.mhEmployees);
   }
 
-  void onLogoutClick() {
+  Future<void> onLogoutClick() async {
+
+    CustomLoader.show(Get.context!);
+
     if(Get.isRegistered<ShortlistController>()) {
       Get.find<ShortlistController>().removeAllSelected();
     }
 
+    await _updateToken(isLogin: false);
+
+    CustomLoader.hide(Get.context!);
+
     StorageHelper.removeToken;
+
     Get.offAllNamed(Routes.login);
   }
 
@@ -177,5 +189,11 @@ class AppController extends GetxService {
     }
 
     return true;
+  }
+
+  Future<void> _updateToken({bool isLogin = true}) async {
+    if(Get.isRegistered<ApiHelper>()) {
+      await Get.find<ApiHelper>().updateFcmToken(isLogin: isLogin);
+    }
   }
 }

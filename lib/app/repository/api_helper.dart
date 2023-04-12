@@ -33,6 +33,8 @@ abstract class ApiHelper {
     EmployeeRegistration employeeRegistration,
   );
 
+  EitherModel<Response> updateFcmToken({bool isLogin = true});
+
   EitherModel<ClientDetails> clientDetails(
     String id,
   );

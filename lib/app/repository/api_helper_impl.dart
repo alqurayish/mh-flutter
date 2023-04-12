@@ -1,6 +1,9 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:dartz/dartz.dart';
+import 'package:device_info_plus/device_info_plus.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:mh/app/models/address_to_lat_lng.dart';
 import 'package:mh/app/models/check_in_out_histories.dart';
 import 'package:mh/app/models/lat_long_to_address.dart';
@@ -206,6 +209,50 @@ class ApiHelperImpl extends GetConnect with ApiHelper {
     return _convert<ClientRegistrationResponse>(
       response,
       ClientRegistrationResponse.fromJson,
+    ).fold((l) => left(l), (r) => right(r));
+  }
+
+  @override
+  EitherModel<Response> updateFcmToken({bool isLogin = true}) async {
+    String? token;
+    String? deviceIdentifier;
+
+    if(isLogin) {
+      await FirebaseMessaging.instance.getToken().then((fcmToken) async {
+        token = fcmToken;
+      });
+    }
+
+    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+
+    if (Platform.isAndroid) {
+      AndroidDeviceInfo build = await deviceInfo.androidInfo;
+      deviceIdentifier = build.id; //UUID for Android
+    } else if (Platform.isIOS) {
+      IosDeviceInfo data = await deviceInfo.iosInfo;
+      deviceIdentifier = data.identifierForVendor; //UUID for iOS
+    }
+
+    if (!isLogin || !StorageHelper.hasToken) {
+      token = null;
+    }
+
+    Map<String, dynamic> data = {
+      "uuid": deviceIdentifier ?? "",
+      "fcmToken": token ?? "",
+      "platform": Platform.isAndroid ? "android" : "ios"
+    };
+
+
+    var response = await put("users/push-notification-update", jsonEncode(data));
+    if(response.statusCode == null) response = await put("users/push-notification-update", jsonEncode(data));
+    if(response.statusCode == null) response = await put("users/push-notification-update", jsonEncode(data));
+    if(response.statusCode == null) response = await put("users/push-notification-update", jsonEncode(data));
+
+    return _convert<Response>(
+      response,
+      (Map<String, dynamic> data) {},
+      onlyErrorCheck: true,
     ).fold((l) => left(l), (r) => right(r));
   }
 
@@ -587,7 +634,7 @@ class ApiHelperImpl extends GetConnect with ApiHelper {
 
   @override
   EitherModel<requested_employees.RequestedEmployees> getRequestedEmployees({String? clientId}) async {
-    String url = "request-employees";
+    String url = "request-employees?";
 
     if ((clientId ?? "").isNotEmpty) url += "clientId=$clientId";
 

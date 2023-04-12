@@ -80,7 +80,7 @@ class ClientHomeController extends GetxController {
   }
 
   void _fetchRequestEmployees() {
-    _apiHelper.getRequestedEmployees().then((response) {
+    _apiHelper.getRequestedEmployees(clientId: appController.user.value.userId).then((response) {
       response.fold((CustomError customError) {
         Utils.errorDialog(context!, customError..onRetry = onAccountDeleteClick);
       }, (RequestedEmployees requestedEmployees) async {

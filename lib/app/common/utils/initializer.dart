@@ -7,6 +7,7 @@ import 'package:mh/app/common/controller/app_error_controller.dart';
 import '../../repository/api_helper.dart';
 import '../../repository/api_helper_impl.dart';
 import '../controller/app_controller.dart';
+import '../controller/app_life_cycle_controller.dart';
 import '../widgets/custom_error_widget.dart';
 import 'logcat.dart';
 
@@ -55,6 +56,7 @@ class Initializer {
       _initStorage();
 
       Get.put(AppController());
+      Get.put(AppLifecycleController());
 
     } catch (err) {
       rethrow;

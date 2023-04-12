@@ -49,60 +49,62 @@ class AdminClientRequestPositionsView extends GetView<AdminClientRequestPosition
   }
 
   Widget _item(Position position) {
-    return Container(
-      width: 182.w,
-      height: 112.w,
-      decoration: MyDecoration.cardBoxDecoration(context: controller.context!),
-      child: Material(
-        type: MaterialType.transparency,
-        child: InkWell(
-          borderRadius: BorderRadius.circular(10.0),
-          onTap: () => controller.onPositionClick(position),
-          child: Stack(
-            children: [
-              Positioned(
-                left: 0,
-                right: 0,
-                top: 0,
-                bottom: 0,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                      position.logo!,
-                      width: 50.w,
-                      height: 50.w,
-                    ),
+    return Obx(
+      () => Container(
+        width: 182.w,
+        height: 112.w,
+        decoration: MyDecoration.cardBoxDecoration(context: controller.context!),
+        child: Material(
+          type: MaterialType.transparency,
+          child: InkWell(
+            borderRadius: BorderRadius.circular(10.0),
+            onTap: () => controller.onPositionClick(position),
+            child: Stack(
+              children: [
+                Positioned(
+                  left: 0,
+                  right: 0,
+                  top: 0,
+                  bottom: 0,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        position.logo!,
+                        width: 50.w,
+                        height: 50.w,
+                      ),
 
-                    SizedBox(height: 9.h),
+                      SizedBox(height: 9.h),
 
-                    Text(
-                      position.name ?? "-",
-                      style: MyColors.l111111_dwhite(controller.context!).medium14,
-                    ),
-                  ],
-                ),
-              ),
-              Positioned(
-                right: 0,
-                top: 0,
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(10),
-                      bottomLeft: Radius.circular(10)
-                    ),
-                    color: MyColors.c_C6A34F,
-                  ),
-                  child: Text(
-                    controller.getSuggested(position),
-                    style: MyColors.white.regular12,
+                      Text(
+                        position.name ?? "-",
+                        style: MyColors.l111111_dwhite(controller.context!).medium14,
+                      ),
+                    ],
                   ),
                 ),
-              ),
-            ],
+                Positioned(
+                  right: 0,
+                  top: 0,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+                    decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(10),
+                        bottomLeft: Radius.circular(10)
+                      ),
+                      color: MyColors.c_C6A34F,
+                    ),
+                    child: Text(
+                      controller.getSuggested(position),
+                      style: MyColors.white.regular12,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
