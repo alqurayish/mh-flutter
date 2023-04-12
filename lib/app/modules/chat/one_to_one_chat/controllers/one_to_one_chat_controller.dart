@@ -8,11 +8,13 @@ class OneToOneChatController extends GetxController {
   final String supportUserId = "642db18a895938c9567bccef";
 
   late ChatWith chatWith;
-  late Socket _socket;
+  // late Socket _socket;
 
   TextEditingController tecController = TextEditingController();
 
   bool _connectionError = false;
+
+  List<String> msg = <String>[].obs;
 
   @override
   void onInit() {
@@ -20,38 +22,38 @@ class OneToOneChatController extends GetxController {
       chatWith = Get.arguments[MyStrings.arg.chatWith];
     }
 
-    _socket = io(
-      'http://localhost:3000',
-      OptionBuilder().setTransports(['websocket']).setQuery({
-        'username': "TODO USER NAME HERE",
-      }).build(),
-    );
-
-    _connectSocket();
+    // _socket = io(
+    //   'http://localhost:3000',
+    //   OptionBuilder().setTransports(['websocket']).setQuery({
+    //     'username': "TODO USER NAME HERE",
+    //   }).build(),
+    // );
+    //
+    // _connectSocket();
 
     super.onInit();
   }
 
-  void _connectSocket() {
-    _socket.onConnect((data) {
-      _connectionError = false;
-      print('Connection established');
-    });
-
-    _socket.onConnectError((data) {
-      print('Connect Error: $data');
-      _connectionError = true;
-    });
-
-    _socket.onDisconnect((data) {
-      print('Socket.IO server disconnected');
-      _connectionError = true;
-    });
-    _socket.on(
-      'message',
-      (data) => print("new msg come"),
-    );
-  }
+  // void _connectSocket() {
+  //   _socket.onConnect((data) {
+  //     _connectionError = false;
+  //     print('Connection established');
+  //   });
+  //
+  //   _socket.onConnectError((data) {
+  //     print('Connect Error: $data');
+  //     _connectionError = true;
+  //   });
+  //
+  //   _socket.onDisconnect((data) {
+  //     print('Socket.IO server disconnected');
+  //     _connectionError = true;
+  //   });
+  //   _socket.on(
+  //     'message',
+  //     (data) => print("new msg come"),
+  //   );
+  // }
 
   @override
   void onReady() {
@@ -64,16 +66,19 @@ class OneToOneChatController extends GetxController {
   }
 
   void onSendTap() {
-    if(_connectionError) {
-      print("connection error");
-      return;
-    }
+    // if(_connectionError) {
+    //   print("connection error");
+    //   return;
+    // }
+    //
+    // _socket.emit('message', {
+    //   'message': "hell world",
+    //   'sender': "who am i"
+    // });
 
-    _socket.emit('message', {
-      'message': "hell world",
-      'sender': "who am i"
-    });
+    print("object");
 
+    msg.add(tecController.text.trim());
     tecController.clear();
   }
 }

@@ -156,7 +156,7 @@ class AdminAllEmployeesView extends GetView<AdminAllEmployeesController> {
                                 SizedBox(height: 16.h),
                                 Row(
                                   children: [
-                                    _name("${user.firstName ?? "-"} ${user.lastName ?? ""}"),
+                                    Expanded(child: _name("${user.firstName ?? "-"} ${user.lastName ?? ""}")),
                                     _rating(user.rating ?? 0),
                                   ],
                                 ),
@@ -219,6 +219,8 @@ class AdminAllEmployeesView extends GetView<AdminAllEmployeesController> {
 
   Widget _name(String name) => Text(
     name,
+    maxLines: 1,
+    overflow: TextOverflow.ellipsis,
     style: MyColors.l111111_dwhite(controller.context!).medium14,
   );
 

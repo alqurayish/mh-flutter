@@ -18,11 +18,14 @@ class OneToOneChatView extends GetView<OneToOneChatController> {
       // bottomNavigationBar: _bottomBar(context),
       body: Stack(
         children: [
-          ListView.builder(
-            itemCount: 10,
-            itemBuilder: (index, context) {
-              return Text("hello");
-            },
+          Obx(
+            () => ListView.builder(
+              itemCount: controller.msg.length,
+              padding: EdgeInsets.symmetric(vertical: 10),
+              itemBuilder: (context, index) {
+                return _msg(controller.msg[index]);
+              },
+            ),
           ),
 
           Column(
@@ -66,21 +69,24 @@ class OneToOneChatView extends GetView<OneToOneChatController> {
                         ),
                       ),
                       const SizedBox(width: 7),
-                      Container(
-                        width: 54.w,
-                        height: 54.w,
-                        decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: MyColors.c_C6A34F,
-                        ),
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: Transform.translate(
-                            offset: const Offset(-2, 2),
-                            child: Image.asset(
-                              MyAssets.msgSend,
-                              width: 30,
-                              height: 30,
+                      GestureDetector(
+                        onTap: controller.onSendTap,
+                        child: Container(
+                          width: 54.w,
+                          height: 54.w,
+                          decoration: const BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: MyColors.c_C6A34F,
+                          ),
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: Transform.translate(
+                              offset: const Offset(-2, 2),
+                              child: Image.asset(
+                                MyAssets.msgSend,
+                                width: 30,
+                                height: 30,
+                              ),
                             ),
                           ),
                         ),
@@ -107,6 +113,7 @@ class OneToOneChatView extends GetView<OneToOneChatController> {
                 child: Align(
                   alignment: Alignment.center,
                   child: TextField(
+                    controller: controller.tecController,
                     decoration: InputDecoration(
                       filled: true,
                       border: deco,
@@ -121,21 +128,24 @@ class OneToOneChatView extends GetView<OneToOneChatController> {
 
               const SizedBox(width: 10),
 
-              Container(
-                width: 54.w,
-                height: 54.w,
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: MyColors.c_C6A34F,
-                ),
-                child: Align(
-                  alignment: Alignment.center,
-                  child: Transform.translate(
-                    offset: const Offset(-2, 2),
-                    child: Image.asset(
-                      MyAssets.msgSend,
-                      width: 30,
-                      height: 30,
+              GestureDetector(
+                onTap: controller.onSendTap,
+                child: Container(
+                  width: 54.w,
+                  height: 54.w,
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: MyColors.c_C6A34F,
+                  ),
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: Transform.translate(
+                      offset: const Offset(-2, 2),
+                      child: Image.asset(
+                        MyAssets.msgSend,
+                        width: 30,
+                        height: 30,
+                      ),
                     ),
                   ),
                 ),
@@ -150,4 +160,26 @@ class OneToOneChatView extends GetView<OneToOneChatController> {
           Radius.circular(50.0),
         ),
       );
+
+  Widget _msg(String text) => Align(
+    alignment: Alignment.centerLeft,
+    child: Container(
+      margin: EdgeInsets.symmetric(horizontal: 14).copyWith(
+        top: 5
+      ),
+      padding: EdgeInsets.symmetric(horizontal: 12,vertical: 4),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border.all(color: MyColors.c_C6A34F),
+        borderRadius: const BorderRadius.only(
+          topRight: Radius.circular(12),
+          topLeft: Radius.circular(12),
+          bottomRight: Radius.circular(12),
+        )
+      ),
+          child: Text(
+            text,
+          ),
+        ),
+  );
 }
