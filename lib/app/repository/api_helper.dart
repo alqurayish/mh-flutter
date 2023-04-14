@@ -6,6 +6,7 @@ import '../models/client_details.dart';
 import '../models/commons.dart';
 import '../models/employees_by_id.dart';
 import '../models/lat_long_to_address.dart';
+import '../models/one_to_one_msg.dart';
 import '../models/requested_employees.dart' as requested_employees;
 import '../models/sources.dart';
 import '../modules/auth/login/model/login.dart';
@@ -107,4 +108,8 @@ abstract class ApiHelper {
   EitherModel<requested_employees.RequestedEmployees> getRequestedEmployees({String? clientId});
 
   EitherModel<Response> addEmployeeAsSuggest(Map<String, dynamic> data);
+
+  EitherModel<OneToOneMsg> getMsg(String senderId, String receiverId);
+
+  EitherModel<Response> sendMsg(Map<String, dynamic> data);
 }

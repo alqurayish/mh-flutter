@@ -84,6 +84,7 @@ class EmployeeHomeController extends GetxController {
 
     Get.toNamed(Routes.oneToOneChat, arguments: {
       MyStrings.arg.chatWith: ChatWith.client,
+      MyStrings.arg.data: appController.user.value.employee?.hiredBy ?? "",
     });
   }
 

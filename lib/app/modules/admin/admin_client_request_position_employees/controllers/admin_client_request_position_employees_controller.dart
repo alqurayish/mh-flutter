@@ -26,6 +26,8 @@ class AdminClientRequestPositionEmployeesController extends GetxController {
 
   RxBool isLoading = false.obs;
 
+  RxString hireStatus = "Hired".obs;
+
   @override
   void onInit() {
     clientRequestDetail = Get.arguments[MyStrings.arg.data];

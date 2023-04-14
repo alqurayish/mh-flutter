@@ -19,6 +19,7 @@ import '../models/client_details.dart';
 import '../models/commons.dart';
 import '../models/custom_error.dart';
 import '../models/employees_by_id.dart';
+import '../models/one_to_one_msg.dart';
 import '../models/requested_employees.dart' as requested_employees;
 import '../models/sources.dart';
 import '../modules/auth/login/model/login.dart';
@@ -655,6 +656,35 @@ class ApiHelperImpl extends GetConnect with ApiHelper {
     if (response.statusCode == null) response = await put("request-employees/update", jsonEncode(data));
     if (response.statusCode == null) response = await put("request-employees/update", jsonEncode(data));
     if (response.statusCode == null) response = await put("request-employees/update", jsonEncode(data));
+
+    return _convert<Response>(
+      response,
+          (Map<String, dynamic> data) {},
+      onlyErrorCheck: true,
+    ).fold((l) => left(l), (r) => right(r));
+  }
+
+  @override
+  EitherModel<OneToOneMsg> getMsg(String senderId, String receiverId) async {
+    var response = await get("messages?receiverId=$receiverId&senderId=$senderId");
+    if (response.statusCode == null) response = await get("messages?receiverId=$receiverId&senderId=$senderId");
+    if (response.statusCode == null) response = await get("messages?receiverId=$receiverId&senderId=$senderId");
+    if (response.statusCode == null) response = await get("messages?receiverId=$receiverId&senderId=$senderId");
+
+    return _convert<OneToOneMsg>(
+      response,
+      OneToOneMsg.fromJson,
+    ).fold((l) => left(l), (r) => right(r));
+
+
+  }
+
+  @override
+  EitherModel<Response> sendMsg(Map<String, dynamic> data) async {
+    var response = await post("messages/create", jsonEncode(data));
+    if (response.statusCode == null) response = await put("messages/create", jsonEncode(data));
+    if (response.statusCode == null) response = await put("messages/create", jsonEncode(data));
+    if (response.statusCode == null) response = await put("messages/create", jsonEncode(data));
 
     return _convert<Response>(
       response,

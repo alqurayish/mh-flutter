@@ -7,18 +7,18 @@ class AppErrorController {
     if(Get.isRegistered<ApiHelper>()) {
 
       String userId = "";
-      // if(Get.isRegistered<AppController>()) {
-      //   AppController appController = Get.find();
-      //   userId = appController.user.value.userId;
-      // }
+      if(Get.isRegistered<AppController>()) {
+        AppController appController = Get.find();
+        userId = appController.user.value.userId;
+      }
 
-      // final ApiHelper apiHelper = Get.find();
-      //
-      // apiHelper.submitAppError({
-      //   "name" : errorName,
-      //   "userId": userId,
-      //   'description' : description,
-      // });
+      final ApiHelper apiHelper = Get.find();
+
+      apiHelper.submitAppError({
+        "name" : errorName,
+        "userId": userId,
+        'description' : description,
+      });
     }
   }
 }

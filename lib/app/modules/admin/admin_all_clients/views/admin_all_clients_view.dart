@@ -159,6 +159,7 @@ class AdminAllClientsView extends GetView<AdminAllClientsController> {
                               user.restaurantAddress ?? "No address found",
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
+                              style: MyColors.l111111_dwhite(controller.context!).regular14,
                             ),
                           ),
                           const SizedBox(width: 7),

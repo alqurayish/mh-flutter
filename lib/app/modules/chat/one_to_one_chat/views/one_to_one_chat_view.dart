@@ -1,3 +1,5 @@
+import 'package:mh/app/models/one_to_one_msg.dart';
+
 import '../../../../common/utils/exports.dart';
 import '../../../../common/widgets/custom_appbar.dart';
 import '../../../../common/widgets/custom_bottombar.dart';
@@ -161,25 +163,51 @@ class OneToOneChatView extends GetView<OneToOneChatController> {
         ),
       );
 
-  Widget _msg(String text) => Align(
+  Widget _msg(Message msg) => msg.senderId == controller.senderId
+      ? _senderMsg(msg.text ?? "-")
+      : _receiverMsg(msg.text ?? "--");
+
+  Widget _senderMsg(String msg) => Align(
     alignment: Alignment.centerLeft,
     child: Container(
-      margin: EdgeInsets.symmetric(horizontal: 14).copyWith(
-        top: 5
+      margin: const EdgeInsets.symmetric(horizontal: 14).copyWith(
+          top: 5
       ),
-      padding: EdgeInsets.symmetric(horizontal: 12,vertical: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 12,vertical: 4),
       decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border.all(color: MyColors.c_C6A34F),
-        borderRadius: const BorderRadius.only(
-          topRight: Radius.circular(12),
-          topLeft: Radius.circular(12),
-          bottomRight: Radius.circular(12),
-        )
+          color: MyColors.c_C6A34F,
+          border: Border.all(color: MyColors.c_C6A34F),
+          borderRadius: const BorderRadius.only(
+            topRight: Radius.circular(12),
+            topLeft: Radius.circular(12),
+            bottomLeft: Radius.circular(12),
+          )
       ),
-          child: Text(
-            text,
-          ),
-        ),
+      child: Text(
+        msg,
+      ),
+    ),
+  );
+
+  Widget _receiverMsg(String msg) => Align(
+    alignment: Alignment.centerLeft,
+    child: Container(
+      margin: const EdgeInsets.symmetric(horizontal: 14).copyWith(
+          top: 5
+      ),
+      padding: const EdgeInsets.symmetric(horizontal: 12,vertical: 4),
+      decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border.all(color: MyColors.c_C6A34F),
+          borderRadius: const BorderRadius.only(
+            topRight: Radius.circular(12),
+            topLeft: Radius.circular(12),
+            bottomRight: Radius.circular(12),
+          )
+      ),
+      child: Text(
+        msg,
+      ),
+    ),
   );
 }
