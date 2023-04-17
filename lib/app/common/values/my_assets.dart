@@ -17,6 +17,7 @@ class MyAssets {
   static const myEmployees = "assets/images/my_employees.png";
   static const invoicePayment = "assets/images/invoice_payment.png";
   static const splash = "assets/images/splash.png";
+  static const request = "assets/images/request.jpeg";
 
   static const emergencyCheckInCheckout = "assets/images/emergency_checin_checkout.png";
 
@@ -50,6 +51,9 @@ class MyAssets {
   static const waiter = "assets/icons/positions/waiter.png";
   static const defaultImage = "assets/icons/positions/default_position.png";
 
+  static const locationPin = "assets/icons/location_pin.png";
+
+  static const msgSend = "assets/icons/msg_send.png";
 
 }
 

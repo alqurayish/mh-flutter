@@ -42,13 +42,13 @@ class ClientTermsConditionForHireView extends GetView<ClientTermsConditionForHir
 
   Widget _bottomBar(BuildContext context) {
     return controller.obx(
-      (state) => CustomBottomBar(
-        child: CustomButtons.button(
-          onTap: controller.onMakePaymentClick,
-          text: "I Agree & Make Payment",
-          customButtonStyle: CustomButtonStyle.radiusTopBottomCorner,
+        (state) => CustomBottomBar(
+          child: CustomButtons.button(
+            onTap: controller.onMakePaymentClick,
+            text: "I Agree & Make Payment",
+            customButtonStyle: CustomButtonStyle.radiusTopBottomCorner,
+          ),
         ),
-      ),
 
       onLoading: CustomBottomBar(
         child: CustomButtons.button(

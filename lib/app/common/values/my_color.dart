@@ -7,6 +7,7 @@ class MyColors {
 
   static Color l111111_dbox(BuildContext context) => _isLight(context) ? c_111111 : box;
   static Color l111111_dwhite(BuildContext context) => l111111_dffffff(context);
+  static Color lwhite_d111111(BuildContext context) => _isLight(context) ? c_FFFFFF : c_111111;
   static Color l111111_dffffff(BuildContext context) => _isLight(context) ? c_111111 : c_FFFFFF;
   static Color l111111_dtext(BuildContext context) => _isLight(context) ? c_111111 : text;
   static Color lffffff_dbox(BuildContext context) => _isLight(context) ? c_FFFFFF : box;
@@ -24,6 +25,7 @@ class MyColors {
   static Color lD9D9D9_dstock(BuildContext context) => _isLight(context) ? c_D9D9D9 : stock;
   static Color lFAFAFA_dframeBg(BuildContext context) => _isLight(context) ? c_FAFAFA : frameBg;
   static Color l5C5C5C_dwhite(BuildContext context) => _isLight(context) ? c_5C5C5C : white;
+  static Color? lnull_d111111(BuildContext context) => _isLight(context) ? null : c_111111;
 
   static Color lightCard(BuildContext context) => lffffff_dbox(context);
   static Color darkCard(BuildContext context) => lbox_dffffff(context);
@@ -57,7 +59,8 @@ class MyColors {
   static const Color c_FFA800 = Color(0xffFFA800);
   static const Color c_DADADA = Color(0xffDADADA);
   static const Color c_858585 = Color(0xff858585);
-  static Color c_00C92C = const Color(0xff00C92C).withOpacity(.1);
+  static Color c_00C92C = const Color(0xff00C92C);
+  static Color c_00C92C_10 = const Color(0xff00C92C).withOpacity(.1);
   static const Color c_F5F5F5 = Color(0xffF5F5F5);
   static const Color c_FF5029 = Color(0xffFF5029);
   static const Color c_C92C1A = Color(0xffC92C1A);

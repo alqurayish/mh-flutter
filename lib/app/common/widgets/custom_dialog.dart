@@ -27,7 +27,7 @@ class CustomDialogue {
         context: context,
         onRetry: onRetry,
         logo: MyAssets.lottie.serverError,
-        title: "Server Error $errorCode",
+        title: "Error $errorCode",
         details: msg ?? "Something happen with our server. Please try again or keep patient for some time",
       );
 
@@ -41,6 +41,19 @@ class CustomDialogue {
         logo: MyAssets.lottie.error,
         title: "OOPS!",
         details: "Something mismatch! Please try again or contact with our customer care",
+      );
+
+  static Future serverError({
+    required BuildContext context,
+    Function()? onRetry,
+    String msg = "Something wrong",
+  }) =>
+      _errorDialog(
+        context: context,
+        onRetry: onRetry,
+        logo: MyAssets.lottie.error,
+        title: "Server error!",
+        details: msg,
       );
 
   static Future _errorDialog({
@@ -134,6 +147,8 @@ class CustomDialogue {
     required BuildContext context,
     required  String title,
     required String description,
+    Function()? onTap,
+    String buttonText = "I Understand",
   }) => Future.delayed(
     Duration.zero,
         () {
@@ -184,10 +199,13 @@ class CustomDialogue {
 
                       CustomButtons.button(
                         height: 50.h,
-                        text: "I understand",
+                        text: buttonText,
                         customButtonStyle: CustomButtonStyle.radiusTopBottomCorner,
                         onTap: () {
                           CustomLoader.hide(context);
+                          if(onTap != null) {
+                            onTap();
+                          }
                         },
                       ),
                     ],
@@ -203,6 +221,22 @@ class CustomDialogue {
   );
 
   static dynamic appExit(BuildContext context) {
+    confirmation(
+      context: context,
+      title: "Exit App?",
+      msg: "Are you sure you want to exit?",
+      confirmButtonText: "Exit",
+      onConfirm: Utils.exitApp,
+    );
+  }
+
+  static dynamic confirmation({
+    required BuildContext context,
+    required String title,
+    required String msg,
+    required String confirmButtonText,
+    required Function() onConfirm,
+  }) {
     Future.delayed(
       Duration.zero,
           () {
@@ -229,7 +263,7 @@ class CustomDialogue {
                         SizedBox(height: 25.h),
 
                         Text(
-                          "Exit App?",
+                          title,
                           textAlign: TextAlign.center,
                           style: MyColors.l111111_dtext(context).semiBold22,
                         ),
@@ -240,7 +274,7 @@ class CustomDialogue {
                           child: Align(
                             alignment: Alignment.topCenter,
                             child: Text(
-                              "Are you sure you want to exit?",
+                              msg,
                               textAlign: TextAlign.center,
                               maxLines: 10,
                               overflow: TextOverflow.ellipsis,
@@ -268,13 +302,11 @@ class CustomDialogue {
                               Expanded(
                                 child: CustomButtons.button(
                                   height: 50.h,
-                                  text: "Exit",
+                                  text: confirmButtonText,
                                   margin: EdgeInsets.zero,
                                   customButtonStyle:
-                                      CustomButtonStyle.radiusTopBottomCorner,
-                                  onTap: () {
-                                    Utils.exitApp;
-                                  },
+                                  CustomButtonStyle.radiusTopBottomCorner,
+                                  onTap: onConfirm,
                                 ),
                               ),
                             ],

@@ -5,6 +5,14 @@ import '../modules/admin/admin_all_clients/bindings/admin_all_clients_binding.da
 import '../modules/admin/admin_all_clients/views/admin_all_clients_view.dart';
 import '../modules/admin/admin_all_employees/bindings/admin_all_employees_binding.dart';
 import '../modules/admin/admin_all_employees/views/admin_all_employees_view.dart';
+import '../modules/admin/admin_client_request/bindings/admin_client_request_binding.dart';
+import '../modules/admin/admin_client_request/views/admin_client_request_view.dart';
+import '../modules/admin/admin_client_request_position_employees/bindings/admin_client_request_position_employees_binding.dart';
+import '../modules/admin/admin_client_request_position_employees/views/admin_client_request_position_employees_view.dart';
+import '../modules/admin/admin_client_request_positions/bindings/admin_client_request_positions_binding.dart';
+import '../modules/admin/admin_client_request_positions/views/admin_client_request_positions_view.dart';
+import '../modules/admin/admin_dashboard/bindings/admin_dashboard_binding.dart';
+import '../modules/admin/admin_dashboard/views/admin_dashboard_view.dart';
 import '../modules/admin/admin_home/bindings/admin_home_binding.dart';
 import '../modules/admin/admin_home/views/admin_home_view.dart';
 import '../modules/auth/login/bindings/login_binding.dart';
@@ -23,6 +31,8 @@ import '../modules/auth/register/steps/register_last_step/views/register_last_st
 import '../modules/auth/register/views/register_view.dart';
 import '../modules/block_user/bindings/block_user_binding.dart';
 import '../modules/block_user/views/block_user_view.dart';
+import '../modules/chat/one_to_one_chat/bindings/one_to_one_chat_binding.dart';
+import '../modules/chat/one_to_one_chat/views/one_to_one_chat_view.dart';
 import '../modules/client/client_dashboard/bindings/client_dashboard_binding.dart';
 import '../modules/client/client_dashboard/views/client_dashboard_view.dart';
 import '../modules/client/client_home/bindings/client_home_binding.dart';
@@ -33,8 +43,12 @@ import '../modules/client/client_notification/bindings/client_notification_bindi
 import '../modules/client/client_notification/views/client_notification_view.dart';
 import '../modules/client/client_payment_and_invoice/bindings/client_payment_and_invoice_binding.dart';
 import '../modules/client/client_payment_and_invoice/views/client_payment_and_invoice_view.dart';
+import '../modules/client/client_request_for_employee/bindings/client_request_for_employee_binding.dart';
+import '../modules/client/client_request_for_employee/views/client_request_for_employee_view.dart';
 import '../modules/client/client_shortlisted/bindings/client_shortlisted_binding.dart';
 import '../modules/client/client_shortlisted/views/client_shortlisted_view.dart';
+import '../modules/client/client_suggested_employees/bindings/client_suggested_employees_binding.dart';
+import '../modules/client/client_suggested_employees/views/client_suggested_employees_view.dart';
 import '../modules/client/client_terms_condition_for_hire/bindings/client_terms_condition_for_hire_binding.dart';
 import '../modules/client/client_terms_condition_for_hire/views/client_terms_condition_for_hire_view.dart';
 import '../modules/client/employee_details/bindings/employee_details_binding.dart';
@@ -51,10 +65,14 @@ import '../modules/contact_us/bindings/contact_us_binding.dart';
 import '../modules/contact_us/views/contact_us_view.dart';
 import '../modules/employee/employee_dashboard/bindings/employee_dashboard_binding.dart';
 import '../modules/employee/employee_dashboard/views/employee_dashboard_view.dart';
+import '../modules/employee/employee_emergency_check_in_out/bindings/employee_emergency_check_in_out_binding.dart';
+import '../modules/employee/employee_emergency_check_in_out/views/employee_emergency_check_in_out_view.dart';
 import '../modules/employee/employee_home/bindings/employee_home_binding.dart';
 import '../modules/employee/employee_home/views/employee_home_view.dart';
 import '../modules/employee/employee_register_success/bindings/employee_register_success_binding.dart';
 import '../modules/employee/employee_register_success/views/employee_register_success_view.dart';
+import '../modules/map/restaurant_location/bindings/restaurant_location_binding.dart';
+import '../modules/map/restaurant_location/views/restaurant_location_view.dart';
 import '../modules/splash/bindings/splash_binding.dart';
 import '../modules/splash/views/splash_view.dart';
 import '../modules/terms_and_condition/bindings/terms_and_condition_binding.dart';
@@ -133,6 +151,38 @@ class AppPages {
       ],
     ),
     GetPage(
+      name: _Paths.adminDashboard,
+      page: () => const AdminDashboardView(),
+      binding: AdminDashboardBinding(),
+      middlewares: [
+        AuthMiddleware(),
+      ],
+    ),
+    GetPage(
+      name: _Paths.adminClientRequest,
+      page: () => const AdminClientRequestView(),
+      binding: AdminClientRequestBinding(),
+      middlewares: [
+        AuthMiddleware(),
+      ],
+    ),
+    GetPage(
+      name: _Paths.adminClientRequestPositions,
+      page: () => const AdminClientRequestPositionsView(),
+      binding: AdminClientRequestPositionsBinding(),
+      middlewares: [
+        AuthMiddleware(),
+      ],
+    ),
+    GetPage(
+      name: _Paths.adminClientRequestPositionEmployees,
+      page: () => const AdminClientRequestPositionEmployeesView(),
+      binding: AdminClientRequestPositionEmployeesBinding(),
+      middlewares: [
+        AuthMiddleware(),
+      ],
+    ),
+    GetPage(
       name: _Paths.employeeHome,
       page: () => const EmployeeHomeView(),
       binding: EmployeeHomeBinding(),
@@ -205,6 +255,19 @@ class AppPages {
       ],
     ),
     GetPage(
+      name: _Paths.clientRequestForEmployee,
+      page: () => const ClientRequestForEmployeeView(),
+      binding: ClientRequestForEmployeeBinding(),
+      middlewares: [
+        AuthMiddleware(),
+      ],
+    ),
+    GetPage(
+      name: _Paths.clientSuggestedEmployees,
+      page: () => const ClientSuggestedEmployeesView(),
+      binding: ClientSuggestedEmployeesBinding(),
+    ),
+    GetPage(
       name: _Paths.paymentForHire,
       page: () => const PaymentForHireView(),
       binding: PaymentForHireBinding(),
@@ -254,6 +317,21 @@ class AppPages {
       name: _Paths.contactUs,
       page: () => const ContactUsView(),
       binding: ContactUsBinding(),
+    ),
+    GetPage(
+      name: _Paths.restaurantLocation,
+      page: () => const RestaurantLocationView(),
+      binding: RestaurantLocationBinding(),
+    ),
+    GetPage(
+      name: _Paths.oneToOneChat,
+      page: () => const OneToOneChatView(),
+      binding: OneToOneChatBinding(),
+    ),
+    GetPage(
+      name: _Paths.employeeEmergencyCheckInOut,
+      page: () => const EmployeeEmergencyCheckInOutView(),
+      binding: EmployeeEmergencyCheckInOutBinding(),
     ),
   ];
 }

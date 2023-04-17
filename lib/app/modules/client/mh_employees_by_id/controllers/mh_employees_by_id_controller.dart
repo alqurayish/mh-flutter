@@ -47,6 +47,7 @@ class MhEmployeesByIdController extends GetxController {
   void onEmployeeClick(Employee employee) {
     Get.toNamed(Routes.employeeDetails, arguments: {
       MyStrings.arg.data : employee,
+      MyStrings.arg.showAsAdmin : false,
     });
   }
 
@@ -86,12 +87,23 @@ class MhEmployeesByIdController extends GetxController {
     });
   }
 
-  void onApplyClick(String selectedRating, String selectedExp, String minTotalHour, String maxTotalHour) {
+  void onApplyClick(
+    String selectedRating,
+    String selectedExp,
+    String minTotalHour,
+    String maxTotalHour,
+    String positionId,
+  ) {
     _getEmployees(
       rating: selectedRating,
       experience: selectedExp,
       minTotalHour: minTotalHour,
       maxTotalHour: maxTotalHour,
     );
+  }
+
+  void onResetClick() {
+    Get.back(); // hide dialog
+    _getEmployees();
   }
 }

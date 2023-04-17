@@ -1,3 +1,5 @@
+import 'package:jwt_decoder/jwt_decoder.dart';
+
 import '../../../../common/controller/app_controller.dart';
 import '../../../../common/utils/exports.dart';
 import '../../../../common/widgets/custom_dialog.dart';
@@ -69,6 +71,8 @@ class LoginController extends GetxController implements LoginViewInterface {
             errorTitle = "Invalid Email";
           } else if ((loginResponse.message ?? "").contains("password")) {
             errorTitle = "Wrong Password";
+          } else {
+            errorTitle = "Something wrong! Please contact to support";
           }
 
           CustomDialogue.information(

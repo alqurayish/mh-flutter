@@ -71,40 +71,38 @@ class MhEmployeesByIdView extends GetView<MhEmployeesByIdController> {
   }
 
   Widget _resultCountWithFilter() {
-    return Visibility(
-      visible: (controller.employees.value.users ?? []).isNotEmpty,
-      child: Padding(
-        padding: EdgeInsets.fromLTRB(23.w, 10.h, 23.w, 0),
-        child: Row(
-          children: [
-            Text(
-              (controller.employees.value.users?.length ?? 0).toString(),
-              style: MyColors.c_C6A34F.semiBold16,
-            ),
-            Text(
-              " ${controller.position.name ?? "Employees"} are showing",
-              style: MyColors.l111111_dwhite(controller.context!).semiBold16,
-            ),
+    return Padding(
+      padding: EdgeInsets.fromLTRB(23.w, 10.h, 23.w, 0),
+      child: Row(
+        children: [
+          Text(
+            (controller.employees.value.users?.length ?? 0).toString(),
+            style: MyColors.c_C6A34F.semiBold16,
+          ),
+          Text(
+            " ${controller.position.name ?? "Employees"} are showing",
+            style: MyColors.l111111_dwhite(controller.context!).semiBold16,
+          ),
 
-            const Spacer(),
+          const Spacer(),
 
-            GestureDetector(
-              onTap: () => CustomFilter.customFilter(
-                controller.context!,
-                controller.onApplyClick,
-              ),
-              child: Container(
-                width: 36.w,
-                height: 36.w,
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: MyColors.c_DDBD68,
-                ),
-                child: const Icon(Icons.filter_list_rounded, color: Colors.white,),
-              ),
+          GestureDetector(
+            onTap: () => CustomFilter.customFilter(
+              controller.context!,
+              controller.onApplyClick,
+              controller.onResetClick,
             ),
-          ],
-        ),
+            child: Container(
+              width: 36.w,
+              height: 36.w,
+              decoration: const BoxDecoration(
+                shape: BoxShape.circle,
+                color: MyColors.c_DDBD68,
+              ),
+              child: const Icon(Icons.filter_list_rounded, color: Colors.white,),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -136,11 +134,11 @@ class MhEmployeesByIdView extends GetView<MhEmployeesByIdController> {
                 width: 122.w,
                 child: CustomButtons.button(
                   height: 28.w,
-                  text: "Book Now",
+                  text: (user.isHired ?? false) ? "Booked" : "Book Now",
                   margin: EdgeInsets.zero,
                   fontSize: 12,
                   customButtonStyle: CustomButtonStyle.radiusTopBottomCorner,
-                  onTap: () => controller.onBookNowClick(user),
+                  onTap: (user.isHired ?? false) ? null : () => controller.onBookNowClick(user),
                 ),
               ),
             ),
@@ -149,9 +147,12 @@ class MhEmployeesByIdView extends GetView<MhEmployeesByIdController> {
               right: 5,
               top: 3,
               child: Obx(
-                () => controller.shortlistController.getIcon(
-                  user.id!,
-                  controller.shortlistController.isFetching.value,
+                () => Visibility(
+                  visible: !(user.isHired ?? false),
+                  child: controller.shortlistController.getIcon(
+                    user.id!,
+                    controller.shortlistController.isFetching.value,
+                  ),
                 ),
               ),
             ),
@@ -174,7 +175,7 @@ class MhEmployeesByIdView extends GetView<MhEmployeesByIdController> {
                                 SizedBox(height: 16.h),
                                 Row(
                                   children: [
-                                    _name(user.name ?? "-"),
+                                    Expanded(child: _name("${user.firstName ?? "-"} ${user.lastName ?? ""}")),
                                     _rating(user.rating ?? 0),
                                   ],
                                 ),
@@ -206,7 +207,7 @@ class MhEmployeesByIdView extends GetView<MhEmployeesByIdController> {
 
                       Row(
                         children: [
-                          _detailsItem(MyAssets.rate, MyStrings.rate.tr, "\$500/hour"),
+                          _detailsItem(MyAssets.rate, MyStrings.rate.tr, "\$${user.hourlyRate ?? 0}"),
                         ],
                       ),
 
@@ -237,6 +238,8 @@ class MhEmployeesByIdView extends GetView<MhEmployeesByIdController> {
 
   Widget _name(String name) => Text(
         name,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
         style: MyColors.l111111_dwhite(controller.context!).medium14,
       );
 

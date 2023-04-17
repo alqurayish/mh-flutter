@@ -1,5 +1,7 @@
+import 'package:mh/app/common/widgets/custom_dialog.dart';
+
+import '../../../common/app_info/app_info.dart';
 import '../../../common/controller/app_controller.dart';
-import '../../../common/helper/auth_helper.dart';
 import '../../../common/utils/exports.dart';
 import '../../../models/commons.dart';
 import '../../../models/custom_error.dart';
@@ -29,22 +31,7 @@ class SplashController extends GetxController {
   }
 
   Future<void> _goToNextPage() async {
-    await _isLocalTokenValid() ? _goToHomePage() : _goToLoginRegisterHintPage();
-  }
-
-  Future<bool> _isLocalTokenValid() async {
-    return await AuthHelper.getUserFromLocal().then((response) {
-      return response.fold((l) => false, (r) => true);
-    });
-  }
-
-  void _goToHomePage() {
-    _appController.activeShortlistService();
-    Get.offAndToNamed(_appController.user.value.userType!.homeRoute);
-  }
-
-  void _goToLoginRegisterHintPage() {
-    Get.offAndToNamed(Routes.loginRegisterHints);
+    _appController.setTokenFromLocal();
   }
 
   Future<void> _getCommonData() async {
@@ -56,7 +43,33 @@ class SplashController extends GetxController {
       }, (Commons commons) {
         _appController.setCommons(commons);
 
-        _goToNextPage();
+        if(commons.appVersion!.first.serverMaintenance!) {
+          CustomDialogue.information(
+            context: context!,
+            title: "Server Maintenance",
+            description: commons.appVersion!.first.serverMaintenanceMsg ?? "We will online soon",
+            buttonText: "Exit",
+            onTap: () {
+              Utils.exitApp;
+            },
+          );
+        } else if (commons.appVersion!.first.appVersion != AppInfo.version) {
+          CustomDialogue.information(
+            context: context!,
+            title: "New version Available",
+            description: "New version ${commons.appVersion!.first.appVersion} is released. ${(commons.appVersion!.first.updateRequired ?? false) ? "Please update your app and continue" : "please update your app for better experience"}",
+            buttonText: (commons.appVersion!.first.updateRequired ?? false) ? "Exit" : "I Understand",
+            onTap: () {
+              if ((commons.appVersion!.first.updateRequired ?? false)) {
+                Utils.exitApp;
+              } else {
+                _goToNextPage();
+              }
+            },
+          );
+        } else {
+          _goToNextPage();
+        }
 
       });
     });

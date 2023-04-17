@@ -1,3 +1,5 @@
+import '../../../../models/employee_details.dart';
+
 class ShortlistedEmployees {
   String? status;
   int? statusCode;
@@ -101,64 +103,6 @@ class ShortList {
     data['__v'] = iV;
     data['fromDate'] = fromDate;
     data['toDate'] = toDate;
-    return data;
-  }
-}
-
-class EmployeeDetails {
-  String? employeeId;
-  String? name;
-  String? positionId;
-  String? presentAddress;
-  String? permanentAddress;
-  int? employeeExperience;
-  int? rating;
-  int? totalWorkingHour;
-  int? hourlyRate;
-  String? sId;
-  String? profilePicture;
-
-  EmployeeDetails({
-    this.employeeId,
-    this.name,
-    this.positionId,
-    this.presentAddress,
-    this.permanentAddress,
-    this.employeeExperience,
-    this.rating,
-    this.totalWorkingHour,
-    this.hourlyRate,
-    this.sId,
-    this.profilePicture,
-  });
-
-  EmployeeDetails.fromJson(Map<String, dynamic> json) {
-    employeeId = json['employeeId'];
-    name = json['name'];
-    positionId = json['positionId'];
-    presentAddress = json['presentAddress'];
-    permanentAddress = json['permanentAddress'];
-    employeeExperience = json['employeeExperience'];
-    rating = json['rating'];
-    totalWorkingHour = json['totalWorkingHour'];
-    hourlyRate = json['hourlyRate'];
-    sId = json['_id'];
-    sId = json['profilePicture'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['employeeId'] = employeeId;
-    data['name'] = name;
-    data['positionId'] = positionId;
-    data['presentAddress'] = presentAddress;
-    data['permanentAddress'] = permanentAddress;
-    data['employeeExperience'] = employeeExperience;
-    data['rating'] = rating;
-    data['totalWorkingHour'] = totalWorkingHour;
-    data['hourlyRate'] = hourlyRate;
-    data['_id'] = sId;
-    data['profilePicture'] = profilePicture;
     return data;
   }
 }

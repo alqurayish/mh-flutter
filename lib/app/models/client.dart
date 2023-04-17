@@ -10,13 +10,16 @@ class Client {
     this.verified,
     this.active,
     this.client,
-    this.sourceFrom,
+    this.sourceId,
     this.restaurantName,
     this.restaurantAddress,
     this.rating,
     this.isReferPerson,
     this.iat,
     this.exp,
+    this.clientDiscount,
+    this.lat,
+    this.long,
   });
 
   final String? id;
@@ -27,13 +30,16 @@ class Client {
   final bool? verified;
   final bool? active;
   final bool? client;
-  final String? sourceFrom;
+  final String? sourceId;
   final String? restaurantName;
   final String? restaurantAddress;
   final int? rating;
   final bool? isReferPerson;
   final int? iat;
   final int? exp;
+  final double? clientDiscount;
+  final String? lat;
+  final String? long;
 
   factory Client.fromRawJson(String str) => Client.fromJson(json.decode(str));
 
@@ -48,13 +54,16 @@ class Client {
     verified: json["verified"],
     active: json["active"],
     client: json["client"],
-    sourceFrom: json["sourceFrom"],
+    sourceId: json["sourceId"],
     restaurantName: json["restaurantName"],
     restaurantAddress: json["restaurantAddress"],
     rating: json["rating"],
     isReferPerson: json["isReferPerson"],
     iat: json["iat"],
     exp: json["exp"],
+    clientDiscount: double.parse(json["clientDiscount"].toString()),
+    lat: json["lat"],
+    long: json["long"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -66,12 +75,15 @@ class Client {
     "verified": verified,
     "active": active,
     "client": client,
-    "sourceFrom": sourceFrom,
+    "sourceFrom": sourceId,
     "restaurantName": restaurantName,
     "restaurantAddress": restaurantAddress,
     "rating": rating,
     "isReferPerson": isReferPerson,
     "iat": iat,
     "exp": exp,
+    "clientDiscount": clientDiscount,
+    "lat": lat,
+    "long": long,
   };
 }

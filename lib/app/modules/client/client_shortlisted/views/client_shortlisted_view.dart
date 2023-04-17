@@ -2,6 +2,7 @@ import '../../../../common/utils/exports.dart';
 import '../../../../common/widgets/custom_appbar.dart';
 import '../../../../common/widgets/custom_bottombar.dart';
 import '../../../../common/widgets/custom_network_image.dart';
+import '../../../../common/widgets/no_item_found.dart';
 import '../controllers/client_shortlisted_controller.dart';
 import '../models/shortlisted_employees.dart';
 
@@ -19,15 +20,18 @@ class ClientShortlistedView extends GetView<ClientShortlistedController> {
       ),
       bottomNavigationBar: _bottomBar(context),
       body: Obx(
-        () => Column(
-          children: [
-            SizedBox(height: 22.h),
-
-            ...controller.shortlistController.getUniquePositions().map((e) {
-              return _employeeInSamePosition(e);
-            }),
-          ],
-        ),
+        () => controller.shortlistController.isFetching.value
+            ? const Center(child: CircularProgressIndicator(color: MyColors.c_C6A34F))
+            : controller.shortlistController.shortList.isEmpty
+                ? const NoItemFound()
+                : Column(
+                    children: [
+                      SizedBox(height: 22.h),
+                      ...controller.shortlistController.getUniquePositions().map((e) {
+                        return _employeeInSamePosition(e);
+                      }),
+                    ],
+                  ),
       ),
     );
   }

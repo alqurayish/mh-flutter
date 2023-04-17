@@ -37,7 +37,7 @@ extension DatetimeFormat on DateTime {
 
 extension ImageUrl on String {
   String get imageUrl {
-    if (isEmpty) return "https://visualpharm.com/assets/387/Person-595b40b75ba036ed117da139.svg";
+    if (isEmpty) return "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png";
 
     return "https://mh-user-bucket.s3.amazonaws.com/public/users/profile/$this";
   }

@@ -1,23 +1,36 @@
-import 'package:get/get.dart';
+import '../../../../common/controller/app_controller.dart';
+import '../../../../common/utils/exports.dart';
+import '../../../../repository/api_helper.dart';
+import '../../../../routes/app_pages.dart';
 
 class AdminHomeController extends GetxController {
-  //TODO: Implement AdminHomeController
+  BuildContext? context;
 
-  final count = 0.obs;
+  final AppController appController = Get.find();
+  final ApiHelper _apiHelper = Get.find();
+
   @override
   void onInit() {
     super.onInit();
   }
 
   @override
-  void onReady() {
-    super.onReady();
+  void onEmployeeClick() {
+    Get.toNamed(Routes.adminAllEmployees);
   }
 
   @override
-  void onClose() {
-    super.onClose();
+  void onClientClick() {
+    Get.toNamed(Routes.adminAllClients);
   }
 
-  void increment() => count.value++;
+  @override
+  void onRequestClick() {
+    Get.toNamed(Routes.adminClientRequest);
+  }
+
+  @override
+  void onAdminDashboardClick() {
+    Get.toNamed(Routes.adminDashboard);
+  }
 }

@@ -16,15 +16,23 @@ abstract class Routes {
   static const adminHome = _Paths.adminHome;
   static const adminAllClients = _Paths.adminAllClients;
   static const adminAllEmployees = _Paths.adminAllEmployees;
+  static const adminDashboard = _Paths.adminDashboard;
+  static const adminClientRequest = _Paths.adminClientRequest;
+  static const adminClientRequestPositions = _Paths.adminClientRequestPositions;
+  static const adminClientRequestPositionEmployees =
+      _Paths.adminClientRequestPositionEmployees;
 
   static const employeeHome = _Paths.employeeHome;
   static const employeeDashboard = _Paths.employeeDashboard;
+  static const employeeEmergencyCheckInOut = _Paths.employeeEmergencyCheckInOut;
 
   static const clientHome = _Paths.clientHome;
   static const clientMyEmployee = _Paths.clientMyEmployee;
   static const clientDashboard = _Paths.clientDashboard;
   static const clientPaymentAndInvoice = _Paths.clientPaymentAndInvoice;
   static const clientShortlisted = _Paths.clientShortlisted;
+  static const clientRequestForEmployee = _Paths.clientRequestForEmployee;
+  static const clientSuggestedEmployees = _Paths.clientSuggestedEmployees;
 
   static const mhEmployees = _Paths.mhEmployees;
   static const employeeDetails = _Paths.employeeDetails;
@@ -37,6 +45,9 @@ abstract class Routes {
   static const hireStatus = _Paths.hireStatus;
   static const clientNotification = _Paths.clientNotification;
   static const contactUs = _Paths.contactUs;
+
+  static const restaurantLocation = _Paths.restaurantLocation;
+  static const oneToOneChat = _Paths.oneToOneChat;
 }
 
 abstract class _Paths {
@@ -55,10 +66,13 @@ abstract class _Paths {
   static const adminHome = '/admin-home';
   static const adminAllClients = '/admin-all-clients';
   static const adminAllEmployees = '/admin-all-employees';
+  static const adminDashboard = '/admin-dashboard';
+  static const adminClientRequest = '/admin-client-request';
 
   static const employeeRegisterSuccess = '/employee-register-success';
   static const employeeHome = '/employee-home';
   static const employeeDashboard = '/employee-dashboard';
+  static const employeeEmergencyCheckInOut = '/employee-emergency-check-in-out';
 
   static const clientHome = '/client-home';
   static const clientMyEmployee = '/client-my-employee';
@@ -69,6 +83,8 @@ abstract class _Paths {
   static const paymentForHire = '/payment-for-hire';
   static const hireStatus = '/hire-status';
   static const clientNotification = '/client-notification';
+  static const clientRequestForEmployee = '/client-request-for-employee';
+  static const clientSuggestedEmployees = '/client-suggested-employees';
 
   static const mhEmployees = '/mh-employees';
   static const employeeDetails = '/employee-details';
@@ -78,4 +94,9 @@ abstract class _Paths {
   static const mhEmployeesById = '/mh-employees-by-id';
 
   static const contactUs = '/contact-us';
+
+  static const restaurantLocation = '/restaurant-location';
+  static const oneToOneChat = '/one-to-one-chat';
+  static const adminClientRequestPositions = '/admin-client-request-positions';
+  static const adminClientRequestPositionEmployees = '/admin-client-request-position-employees';
 }

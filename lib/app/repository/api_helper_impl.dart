@@ -1,7 +1,15 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:dartz/dartz.dart';
+import 'package:device_info_plus/device_info_plus.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:mh/app/models/address_to_lat_lng.dart';
+import 'package:mh/app/models/check_in_out_histories.dart';
+import 'package:mh/app/models/lat_long_to_address.dart';
+import 'package:mh/app/modules/employee/employee_home/models/today_check_in_out_details.dart';
 
+import '../common/controller/app_error_controller.dart';
 import '../common/local_storage/storage_helper.dart';
 import '../common/utils/exports.dart';
 import '../common/utils/logcat.dart';
@@ -11,12 +19,15 @@ import '../models/client_details.dart';
 import '../models/commons.dart';
 import '../models/custom_error.dart';
 import '../models/employees_by_id.dart';
+import '../models/one_to_one_msg.dart';
+import '../models/requested_employees.dart' as requested_employees;
 import '../models/sources.dart';
 import '../modules/auth/login/model/login.dart';
 import '../modules/auth/login/model/login_response.dart';
 import '../modules/auth/register/models/client_register.dart';
 import '../modules/auth/register/models/client_register_response.dart';
 import '../modules/auth/register/models/employee_registration.dart';
+import '../modules/client/client_dashboard/models/current_hired_employees.dart';
 import '../modules/client/client_shortlisted/models/shortlisted_employees.dart' as shortlistEmployees;
 import '../modules/client/client_terms_condition_for_hire/models/terms_condition_for_hire.dart';
 import 'api_error_handel.dart';
@@ -58,17 +69,58 @@ class ApiHelperImpl extends GetConnect with ApiHelper {
     bool onlyErrorCheck = false,
   }) {
     try {
-      if (response == null || response.statusCode == null || response.statusText!.contains("SocketException")) {
+
+      print(response?.body);
+
+      if((response?.statusText ?? "").contains("SocketException")) {
+        AppErrorController.submitAutomaticError(
+          errorName: "From: api_helper_imp.dart > _convert",
+          description: """
+              response: $response
+              statusCode: ${response?.statusCode}
+              responseStatusText: ${response?.statusText}
+            """,
+        );
+
         return left(CustomError(
           errorCode: response?.statusCode ?? 500,
           errorFrom: ErrorFrom.noInternet,
           msg: "No internet connection",
         ));
       }
+      else if (response == null || response.statusCode == null) {
+        AppErrorController.submitAutomaticError(
+          errorName: "From: api_helper_imp.dart > _convert",
+          description: """
+              response: $response
+              statusCode: ${response?.statusCode}
+              responseStatusText: ${response?.statusText}
+            """,
+        );
+
+        return left(CustomError(
+          errorCode: response?.statusCode ?? 500,
+          errorFrom: ErrorFrom.server,
+          msg: "Server Error",
+        ));
+      }
+
+      print("overload");
 
       Either<CustomError, Response> hasError = ApiErrorHandle.checkError(response);
 
-      if (hasError.isLeft()) return left(hasError.asLeft);
+      if (hasError.isLeft()) {
+        AppErrorController.submitAutomaticError(
+          errorName: "From: api_helper_imp.dart > _convert > custom error",
+          description: """
+              errorCode: ${hasError.asLeft.errorCode}
+              errorName: ${hasError.asLeft.errorFrom.name}
+              errorMsg: ${hasError.asLeft.msg}
+            """,
+        );
+
+        return left(hasError.asLeft);
+      }
 
       if (onlyErrorCheck) return right(response as T);
 
@@ -76,6 +128,15 @@ class ApiHelperImpl extends GetConnect with ApiHelper {
     } catch (e, s) {
       Logcat.msg(e.toString());
       Logcat.stack(s);
+
+      AppErrorController.submitAutomaticError(
+        errorName: "From: api_helper_imp.dart > _convert > type conversion",
+        description: """
+              errorCode: 1000
+              error: ${e.toString()}
+              stack: ${s.toString()}
+            """,
+      );
 
       return left(
         CustomError(
@@ -91,6 +152,10 @@ class ApiHelperImpl extends GetConnect with ApiHelper {
   EitherModel<Commons> commons() async {
     var response = await get("commons");
 
+    if(response.statusCode == null) response = await get("commons");
+    if(response.statusCode == null) response = await get("commons");
+    if(response.statusCode == null) response = await get("commons");
+
     return _convert<Commons>(
       response,
       Commons.fromJson,
@@ -102,6 +167,10 @@ class ApiHelperImpl extends GetConnect with ApiHelper {
     Login login,
   ) async {
     var response = await post("users/login", jsonEncode(login.toJson));
+
+    if(response.statusCode == null) response = await post("users/login", jsonEncode(login.toJson));
+    if(response.statusCode == null) response = await post("users/login", jsonEncode(login.toJson));
+    if(response.statusCode == null) response = await post("users/login", jsonEncode(login.toJson));
 
     return _convert<LoginResponse>(
       response,
@@ -115,6 +184,9 @@ class ApiHelperImpl extends GetConnect with ApiHelper {
   ) async {
     print(clientRegistration.toJson);
     var response = await post("users/client-register", jsonEncode(clientRegistration.toJson));
+    if(response.statusCode == null) await post("users/client-register", jsonEncode(clientRegistration.toJson));
+    if(response.statusCode == null) await post("users/client-register", jsonEncode(clientRegistration.toJson));
+    if(response.statusCode == null) await post("users/client-register", jsonEncode(clientRegistration.toJson));
 
     print(response.body);
 
@@ -129,6 +201,9 @@ class ApiHelperImpl extends GetConnect with ApiHelper {
     EmployeeRegistration employeeRegistration,
   ) async {
     var response = await post("users/employee-register", jsonEncode(employeeRegistration.toJson));
+    if(response.statusCode == null) response = await post("users/employee-register", jsonEncode(employeeRegistration.toJson));
+    if(response.statusCode == null) response = await post("users/employee-register", jsonEncode(employeeRegistration.toJson));
+    if(response.statusCode == null) response = await post("users/employee-register", jsonEncode(employeeRegistration.toJson));
 
     print(response.body);
 
@@ -139,10 +214,57 @@ class ApiHelperImpl extends GetConnect with ApiHelper {
   }
 
   @override
+  EitherModel<Response> updateFcmToken({bool isLogin = true}) async {
+    String? token;
+    String? deviceIdentifier;
+
+    if(isLogin) {
+      await FirebaseMessaging.instance.getToken().then((fcmToken) async {
+        token = fcmToken;
+      });
+    }
+
+    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+
+    if (Platform.isAndroid) {
+      AndroidDeviceInfo build = await deviceInfo.androidInfo;
+      deviceIdentifier = build.id; //UUID for Android
+    } else if (Platform.isIOS) {
+      IosDeviceInfo data = await deviceInfo.iosInfo;
+      deviceIdentifier = data.identifierForVendor; //UUID for iOS
+    }
+
+    if (!isLogin || !StorageHelper.hasToken) {
+      token = null;
+    }
+
+    Map<String, dynamic> data = {
+      "uuid": deviceIdentifier ?? "",
+      "fcmToken": token ?? "",
+      "platform": Platform.isAndroid ? "android" : "ios"
+    };
+
+
+    var response = await put("users/push-notification-update", jsonEncode(data));
+    if(response.statusCode == null) response = await put("users/push-notification-update", jsonEncode(data));
+    if(response.statusCode == null) response = await put("users/push-notification-update", jsonEncode(data));
+    if(response.statusCode == null) response = await put("users/push-notification-update", jsonEncode(data));
+
+    return _convert<Response>(
+      response,
+      (Map<String, dynamic> data) {},
+      onlyErrorCheck: true,
+    ).fold((l) => left(l), (r) => right(r));
+  }
+
+  @override
   EitherModel<ClientDetails> clientDetails(
     String id,
   ) async {
     var response = await get("users/$id");
+    if(response.statusCode == null) response = await get("users/$id");
+    if(response.statusCode == null) response = await get("users/$id");
+    if(response.statusCode == null) response = await get("users/$id");
 
     return _convert<ClientDetails>(
       response,
@@ -169,6 +291,9 @@ class ApiHelperImpl extends GetConnect with ApiHelper {
     if (isReferred ?? false) url += "&isReferPerson=${isReferred!.toApiFormat}";
 
     var response = await get(url);
+    if(response.statusCode == null) response = await get(url);
+    if(response.statusCode == null) response = await get(url);
+    if(response.statusCode == null) response = await get(url);
 
     print(response.body);
 
@@ -179,8 +304,44 @@ class ApiHelperImpl extends GetConnect with ApiHelper {
   }
 
   @override
+  EitherModel<Employees> getAllUsersFromAdmin({
+    String? positionId,
+    String? rating,
+    String? employeeExperience,
+    String? minTotalHour,
+    String? maxTotalHour,
+    bool? isReferred,
+    String? requestType,
+    bool? active,
+  }) async {
+    String url = "users?requestType=$requestType";
+
+    if ((positionId ?? "").isNotEmpty) url += "&positionId=$positionId";
+    if ((rating ?? "").isNotEmpty) url += "&rating=$rating";
+    if ((employeeExperience ?? "").isNotEmpty) url += "&employeeExperience=$employeeExperience";
+    if ((minTotalHour ?? "").isNotEmpty) url += "&minTotalHour=$minTotalHour";
+    if ((maxTotalHour ?? "").isNotEmpty) url += "&maxTotalHour=$maxTotalHour";
+    if (isReferred ?? false) url += "&isReferPerson=${isReferred!.toApiFormat}";
+    if (active ?? false) url += "&active=${active!.toApiFormat}";
+
+    var response = await get(url);
+    if(response.statusCode == null) response = await get(url);
+    if(response.statusCode == null) response = await get(url);
+    if(response.statusCode == null) response = await get(url);
+
+
+    return _convert<Employees>(
+      response,
+      Employees.fromJson,
+    ).fold((l) => left(l), (r) => right(r));
+  }
+
+  @override
   EitherModel<TermsConditionForHire> getTermsConditionForHire() async {
     var response = await get("terms-conditions");
+    if(response.statusCode == null) response = await get("terms-conditions");
+    if(response.statusCode == null) response = await get("terms-conditions");
+    if(response.statusCode == null) response = await get("terms-conditions");
 
     return _convert<TermsConditionForHire>(
       response,
@@ -191,6 +352,9 @@ class ApiHelperImpl extends GetConnect with ApiHelper {
   @override
   EitherModel<shortlistEmployees.ShortlistedEmployees> fetchShortlistEmployees() async {
     var response = await get("short-list");
+    if(response.statusCode == null) response = await get("short-list");
+    if(response.statusCode == null) response = await get("short-list");
+    if(response.statusCode == null) response = await get("short-list");
 
     print(response.body);
 
@@ -205,6 +369,9 @@ class ApiHelperImpl extends GetConnect with ApiHelper {
     Map<String, dynamic> data,
   ) async {
     var response = await post("short-list/create", jsonEncode(data));
+    if(response.statusCode == null) response = await post("short-list/create", jsonEncode(data));
+    if(response.statusCode == null) response = await post("short-list/create", jsonEncode(data));
+    if(response.statusCode == null) response = await post("short-list/create", jsonEncode(data));
 
     return _convert<Response>(
       response,
@@ -216,6 +383,9 @@ class ApiHelperImpl extends GetConnect with ApiHelper {
   @override
   EitherModel<Sources> fetchSources() async {
     var response = await get("sources/list-for-dropdown");
+    if(response.statusCode == null) response = await get("sources/list-for-dropdown");
+    if(response.statusCode == null) response = await get("sources/list-for-dropdown");
+    if(response.statusCode == null) response = await get("sources/list-for-dropdown");
 
     return _convert<Sources>(
       response,
@@ -226,6 +396,9 @@ class ApiHelperImpl extends GetConnect with ApiHelper {
   @override
   EitherModel<Response> updateShortlistItem(Map<String, dynamic> data) async {
     var response = await put("short-list/update", jsonEncode(data));
+    if(response.statusCode == null) response = await put("short-list/update", jsonEncode(data));
+    if(response.statusCode == null) response = await put("short-list/update", jsonEncode(data));
+    if(response.statusCode == null) response = await put("short-list/update", jsonEncode(data));
 
     return _convert<Response>(
       response,
@@ -237,6 +410,9 @@ class ApiHelperImpl extends GetConnect with ApiHelper {
   @override
   EitherModel<Response> deleteFromShortlist(String shortlistId) async {
     var response = await delete("short-list/delete/$shortlistId");
+    if(response.statusCode == null) response = await delete("short-list/delete/$shortlistId");
+    if(response.statusCode == null) response = await delete("short-list/delete/$shortlistId");
+    if(response.statusCode == null) response = await delete("short-list/delete/$shortlistId");
 
     print(response.body);
 
@@ -250,6 +426,9 @@ class ApiHelperImpl extends GetConnect with ApiHelper {
   @override
   EitherModel<Response> hireConfirm(Map<String, dynamic> data) async {
     var response = await post("hired-histories/create", jsonEncode(data));
+    if(response.statusCode == null) response = await post("hired-histories/create", jsonEncode(data));
+    if(response.statusCode == null) response = await post("hired-histories/create", jsonEncode(data));
+    if(response.statusCode == null) response = await post("hired-histories/create", jsonEncode(data));
 
     print(response.body);
 
@@ -259,4 +438,259 @@ class ApiHelperImpl extends GetConnect with ApiHelper {
       onlyErrorCheck: true,
     ).fold((l) => left(l), (r) => right(r));
   }
+
+  @override
+  EitherModel<Response> addressToLatLng(String query) async {
+    httpClient.baseUrl = "https://nominatim.openstreetmap.org/";
+    var response = await get("search?q=$query&format=jsonv2");
+    if(response.statusCode == null) response = await get("search?q=$query&format=jsonv2");
+    if(response.statusCode == null) response = await get("search?q=$query&format=jsonv2");
+    if(response.statusCode == null) response = await get("search?q=$query&format=jsonv2");
+    httpClient.baseUrl = _ApiUrls.base;
+
+    return _convert<Response>(
+      response,
+      (Map<String, dynamic> data) {},
+      onlyErrorCheck: true,
+    ).fold((l) => left(l), (r) => right(r));
+  }
+
+  @override
+  EitherModel<LatLngToAddress> latLngToAddress(double lat, double lng) async {
+    httpClient.baseUrl = "https://nominatim.openstreetmap.org/";
+    var response = await get("reverse?lat=$lat&lon=$lng&format=jsonv2");
+    if (response.statusCode == null) response = await get("reverse?lat=$lat&lon=$lng&format=jsonv2");
+    if (response.statusCode == null) response = await get("reverse?lat=$lat&lon=$lng&format=jsonv2");
+    if (response.statusCode == null) response = await get("reverse?lat=$lat&lon=$lng&format=jsonv2");
+    httpClient.baseUrl = _ApiUrls.base;
+
+    return _convert<LatLngToAddress>(
+      response,
+      LatLngToAddress.fromJson,
+    ).fold((l) => left(l), (r) => right(r));
+  }
+
+  @override
+  Future<void> submitAppError(Map<String, String> data) async {
+    var response = await post("app-errors/create", jsonEncode(data));
+    if(response.statusCode == null) response = await post("app-errors/create", jsonEncode(data));
+  }
+
+  @override
+  EitherModel<TodayCheckInOutDetails> dailyCheckinCheckoutDetails(String employeeId) async {
+    var response = await get("current-hired-employees/details/$employeeId");
+    if (response.statusCode == null) response = await get("current-hired-employees/details/$employeeId");
+    if (response.statusCode == null) response = await get("current-hired-employees/details/$employeeId");
+    if (response.statusCode == null) response = await get("current-hired-employees/details/$employeeId");
+
+    return _convert<TodayCheckInOutDetails>(
+      response,
+      TodayCheckInOutDetails.fromJson,
+    ).fold((l) => left(l), (r) => right(r));
+  }
+
+  @override
+  EitherModel<TodayCheckInOutDetails> checkin(Map<String, dynamic> data) async {
+    var response = await post("current-hired-employees/create", jsonEncode(data));
+    if (response.statusCode == null) response = await post("current-hired-employees/create", jsonEncode(data));
+    if (response.statusCode == null) response = await post("current-hired-employees/create", jsonEncode(data));
+    if (response.statusCode == null) response = await post("current-hired-employees/create", jsonEncode(data));
+
+    print(response.body);
+
+    return _convert<TodayCheckInOutDetails>(
+      response,
+      TodayCheckInOutDetails.fromJson,
+    ).fold((l) => left(l), (r) => right(r));
+  }
+
+  @override
+  EitherModel<Response> checkout(Map<String, dynamic> data) async {
+    var response = await put("current-hired-employees/update", jsonEncode(data));
+    if (response.statusCode == null) response = await put("current-hired-employees/update", jsonEncode(data));
+    if (response.statusCode == null) response = await put("current-hired-employees/update", jsonEncode(data));
+    if (response.statusCode == null) response = await put("current-hired-employees/update", jsonEncode(data));
+
+    print(response.body);
+
+    return _convert<Response>(
+      response,
+      (Map<String, dynamic> data) {},
+      onlyErrorCheck: true,
+    ).fold((l) => left(l), (r) => right(r));
+  }
+
+  @override
+  EitherModel<Response> updateCheckInOutByClient(Map<String, dynamic> data) async {
+    var response = await put("current-hired-employees/update-status", jsonEncode(data));
+    if (response.statusCode == null) response = await put("current-hired-employees/update-status", jsonEncode(data));
+    if (response.statusCode == null) response = await put("current-hired-employees/update-status", jsonEncode(data));
+    if (response.statusCode == null) response = await put("current-hired-employees/update-status", jsonEncode(data));
+
+    print(response.body);
+
+    return _convert<Response>(
+      response,
+      (Map<String, dynamic> data) {},
+      onlyErrorCheck: true,
+    ).fold((l) => left(l), (r) => right(r));
+  }
+
+  @override
+  EitherModel<Response> deleteAccount(Map<String, dynamic> data) async {
+    var response = await put("users/update-status", jsonEncode(data));
+    if (response.statusCode == null) response = await put("users/update-status", jsonEncode(data));
+    if (response.statusCode == null) response = await put("users/update-status", jsonEncode(data));
+    if (response.statusCode == null) response = await put("users/update-status", jsonEncode(data));
+
+    return _convert<Response>(
+      response,
+      (Map<String, dynamic> data) {},
+      onlyErrorCheck: true,
+    ).fold((l) => left(l), (r) => right(r));
+  }
+
+  @override
+  EitherModel<HiredEmployeesByDate> getHiredEmployeesByDate({String? date}) async {
+    String url = "hired-histories/employee-list-for-client";
+
+    if (date != null) url += "?filterDate=$date";
+    print(url);
+
+    var response = await get(url);
+    if(response.statusCode == null) response = await get(url);
+    if(response.statusCode == null) response = await get(url);
+    if(response.statusCode == null) response = await get(url);
+
+    return _convert<HiredEmployeesByDate>(
+    response,
+      HiredEmployeesByDate.fromJson,
+    ).fold((l) => left(l), (r) => right(r));
+  }
+
+  @override
+  EitherModel<TodayCheckInOutDetails> getTodayCheckInOutDetails(String employeeId) async {
+    var response = await get("current-hired-employees/details/$employeeId");
+    if(response.statusCode == null) response = await get("current-hired-employees/details/$employeeId");
+    if(response.statusCode == null) response = await get("current-hired-employees/details/$employeeId");
+    if(response.statusCode == null) response = await get("current-hired-employees/details/$employeeId");
+
+    return _convert<TodayCheckInOutDetails>(
+      response,
+      TodayCheckInOutDetails.fromJson,
+    ).fold((l) => left(l), (r) => right(r));
+  }
+
+  @override
+  EitherModel<CheckInCheckOutHistory> getCheckInOutHistory({
+    String? filterDate,
+    String? requestType,
+    String? clientId,
+    String? employeeId,
+  }) async {
+    String url = "check-in-check-out-histories?";
+
+    if ((filterDate ?? "").isNotEmpty) url += "filterDate=$filterDate";
+    if ((requestType ?? "").isNotEmpty) url += "&requestType=$requestType";
+    if ((clientId ?? "").isNotEmpty) url += "&clientId=$clientId";
+    if ((employeeId ?? "").isNotEmpty) url += "&employeeId=$employeeId";
+
+    var response = await get(url);
+    if (response.statusCode == null) response = await get(url);
+    if (response.statusCode == null) response = await get(url);
+    if (response.statusCode == null) response = await get(url);
+
+    return _convert<CheckInCheckOutHistory>(
+      response,
+      CheckInCheckOutHistory.fromJson,
+    ).fold((l) => left(l), (r) => right(r));
+  }
+
+  @override
+  EitherModel<CheckInCheckOutHistory> getEmployeeCheckInOutHistory() async {
+    var response = await get("check-in-check-out-histories/list");
+    if (response.statusCode == null) response = await get("check-in-check-out-histories/list");
+    if (response.statusCode == null) response = await get("check-in-check-out-histories/list");
+    if (response.statusCode == null) response = await get("check-in-check-out-histories/list");
+
+    return _convert<CheckInCheckOutHistory>(
+      response,
+      CheckInCheckOutHistory.fromJson,
+    ).fold((l) => left(l), (r) => right(r));
+  }
+
+  @override
+  EitherModel<Response> clientRequestForEmployee(Map<String, dynamic> data) async {
+    var response = await post("request-employees/create", jsonEncode(data));
+    if (response.statusCode == null) response = await put("request-employees/create", jsonEncode(data));
+    if (response.statusCode == null) response = await put("request-employees/create", jsonEncode(data));
+    if (response.statusCode == null) response = await put("request-employees/create", jsonEncode(data));
+
+    return _convert<Response>(
+      response,
+      (Map<String, dynamic> data) {},
+      onlyErrorCheck: true,
+    ).fold((l) => left(l), (r) => right(r));
+  }
+
+  @override
+  EitherModel<requested_employees.RequestedEmployees> getRequestedEmployees({String? clientId}) async {
+    String url = "request-employees?";
+
+    if ((clientId ?? "").isNotEmpty) url += "clientId=$clientId";
+
+    var response = await get(url);
+    if (response.statusCode == null) response = await get(url);
+    if (response.statusCode == null) response = await get(url);
+    if (response.statusCode == null) response = await get(url);
+
+    return _convert<requested_employees.RequestedEmployees>(
+      response,
+      requested_employees.RequestedEmployees.fromJson,
+    ).fold((l) => left(l), (r) => right(r));
+  }
+
+  @override
+  EitherModel<Response> addEmployeeAsSuggest(Map<String, dynamic> data) async {
+    var response = await put("request-employees/update", jsonEncode(data));
+    if (response.statusCode == null) response = await put("request-employees/update", jsonEncode(data));
+    if (response.statusCode == null) response = await put("request-employees/update", jsonEncode(data));
+    if (response.statusCode == null) response = await put("request-employees/update", jsonEncode(data));
+
+    return _convert<Response>(
+      response,
+          (Map<String, dynamic> data) {},
+      onlyErrorCheck: true,
+    ).fold((l) => left(l), (r) => right(r));
+  }
+
+  @override
+  EitherModel<OneToOneMsg> getMsg(String senderId, String receiverId) async {
+    var response = await get("messages?receiverId=$receiverId&senderId=$senderId");
+    if (response.statusCode == null) response = await get("messages?receiverId=$receiverId&senderId=$senderId");
+    if (response.statusCode == null) response = await get("messages?receiverId=$receiverId&senderId=$senderId");
+    if (response.statusCode == null) response = await get("messages?receiverId=$receiverId&senderId=$senderId");
+
+    return _convert<OneToOneMsg>(
+      response,
+      OneToOneMsg.fromJson,
+    ).fold((l) => left(l), (r) => right(r));
+
+
+  }
+
+  @override
+  EitherModel<Response> sendMsg(Map<String, dynamic> data) async {
+    var response = await post("messages/create", jsonEncode(data));
+    if (response.statusCode == null) response = await put("messages/create", jsonEncode(data));
+    if (response.statusCode == null) response = await put("messages/create", jsonEncode(data));
+    if (response.statusCode == null) response = await put("messages/create", jsonEncode(data));
+
+    return _convert<Response>(
+      response,
+          (Map<String, dynamic> data) {},
+      onlyErrorCheck: true,
+    ).fold((l) => left(l), (r) => right(r));
+  }
+
 }

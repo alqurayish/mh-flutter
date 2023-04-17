@@ -96,7 +96,7 @@ class RegisterLastStepView extends GetView<RegisterLastStepController> {
               prefixIcon: Icons.label,
               hints: null,
               value: controller.selectedRefer,
-              items: (controller.employees?.users ?? []).map((e) => "${e.name} - ${e.userIdNumber}").toList()..add("Other"),
+              items: (controller.employees?.users ?? []).map((e) => "${e.firstName} ${e.lastName} - ${e.userIdNumber}").toList()..add("Other"),
               onChange: controller.onReferChange,
               validator: (String? value) => Validators.emptyValidator(
                 value,

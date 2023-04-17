@@ -55,18 +55,32 @@ class PaymentForHireView extends GetView<PaymentForHireController> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                '${controller.shortlistController.getIntroductionFees()}',
-                style: MyColors.white.semiBold22.copyWith(fontSize: 52),
+                '\$',
+                style: MyColors.white.medium12.copyWith(fontSize: 45),
               ),
 
               SizedBox(width: 10.w),
 
               Text(
-                'USD',
-                style: MyColors.white.medium12.copyWith(fontSize: 45),
+                controller.shortlistController.getIntroductionFeesWithDiscount().toStringAsFixed(2),
+                style: MyColors.white.semiBold22.copyWith(fontSize: 45),
               ),
             ],
           ),
+
+          Visibility(
+            visible: controller.shortlistController.getIntroductionFeesWithDiscount() != controller.shortlistController.getIntroductionFeesWithoutDiscount(),
+            child: Text(
+              controller.shortlistController.getIntroductionFeesWithoutDiscount().toStringAsFixed(2),
+              style: MyColors.white.semiBold22.copyWith(fontSize: 20).copyWith(
+                decoration: TextDecoration.lineThrough,
+              ),
+            ),
+          ),
+
+          Visibility(
+              visible: controller.shortlistController.getIntroductionFeesWithDiscount() != controller.shortlistController.getIntroductionFeesWithoutDiscount(),
+              child: Text("Discount ${controller.appController.user.value.client?.clientDiscount ??0}%")),
         ],
       ),
     );

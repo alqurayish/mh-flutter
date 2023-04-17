@@ -43,6 +43,26 @@ class ClientShortlistedController extends GetxController {
       ),
       firstDate: DateTime.now(),
       lastDate: DateTime.now().add(const Duration(days: 1000)),
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).brightness == Brightness.light
+              ? ThemeData.light().copyWith(
+                  colorScheme: ColorScheme.light(
+                    primary: MyColors.c_C6A34F,
+                    onPrimary: Colors.white,
+                    onSurface: MyColors.l111111_dwhite(context),
+                  ),
+                )
+              : ThemeData.dark().copyWith(
+                  colorScheme: ColorScheme.light(
+                    primary: MyColors.c_C6A34F,
+                    onPrimary: Colors.white,
+                    onSurface: MyColors.l111111_dwhite(context),
+                  ),
+                ),
+          child: child!,
+        );
+      },
     );
 
     if(selectedRange != null) {
@@ -62,7 +82,14 @@ class ClientShortlistedController extends GetxController {
   }
 
   void onBookAllClick() {
-    if(shortlistController.isDateRangeSetForSelectedUser()) {
+    if(shortlistController.shortList.isEmpty) {
+      CustomDialogue.information(
+        context: context!,
+        title: "Empty Shortlist",
+        description: "Please add employee to shortlist then continue",
+      );
+    }
+    else if(shortlistController.isDateRangeSetForSelectedUser()) {
       Get.toNamed(Routes.clientTermsConditionForHire);
     } else {
       CustomDialogue.information(

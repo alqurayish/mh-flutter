@@ -1,3 +1,4 @@
+import 'package:dotted_border/dotted_border.dart';
 import 'package:expandable_page_view/expandable_page_view.dart';
 import 'package:flutter/gestures.dart';
 import 'package:intl_phone_field/country_picker_dialog.dart';
@@ -22,25 +23,30 @@ class RegisterView extends GetView<RegisterController> {
     Utils.setStatusBarColorColor(Theme.of(context).brightness);
 
     return Scaffold(
-      body: SizedBox(
-        height: double.infinity,
-        child: Stack(
-          children: [
-            Positioned(
-              left: -65.w,
-              top: -100.h,
-              child: _topLeftBg,
-            ),
-
-            Positioned(
-              right: -75.w,
-              bottom: -130.h,
-              child: _bottomRightBg,
-            ),
-
-            _mainContent,
-          ],
-        ),
+      body: Obx(
+        () => controller.loading.value
+            ? const Center(
+                child: CircularProgressIndicator(
+                color: MyColors.c_C6A34F,
+              ))
+            : SizedBox(
+                height: double.infinity,
+                child: Stack(
+                  children: [
+                    Positioned(
+                      left: -65.w,
+                      top: -100.h,
+                      child: _topLeftBg,
+                    ),
+                    Positioned(
+                      right: -75.w,
+                      bottom: -130.h,
+                      child: _bottomRightBg,
+                    ),
+                    _mainContent,
+                  ],
+                ),
+              ),
       ),
     );
   }
@@ -78,7 +84,7 @@ class RegisterView extends GetView<RegisterController> {
             SizedBox(height: 37.h),
 
             CustomButtons.button(
-              text: MyStrings.continue_.tr,
+              text: MyStrings.register.tr,
               onTap: controller.onContinuePressed,
               margin: const EdgeInsets.symmetric(horizontal: 18),
             ),
@@ -162,13 +168,37 @@ class RegisterView extends GetView<RegisterController> {
 
             SizedBox(height: 26.h),
 
-            CustomTextInputField(
-              controller: controller.tecRestaurantAddress,
-              label: MyStrings.restaurantAddress.tr,
-              prefixIcon: Icons.location_on_rounded,
-              validator: (String? value) => Validators.emptyValidator(
-                value,
-                MyStrings.required.tr,
+            Obx(
+              () => CustomTextInputField(
+                controller: controller.tecRestaurantAddress,
+                label: MyStrings.restaurantAddress.tr,
+                prefixIcon: Icons.location_on_rounded,
+                isMapField: true,
+                onSuffixPressed: controller.onRestaurantAddressPressed,
+                readOnly: controller.restaurantAddressFromMap.value.isEmpty || controller.restaurantLat == 0 || controller.restaurantLong == 0,
+                onTap: (controller.restaurantAddressFromMap.value.isEmpty || controller.restaurantLat == 0 || controller.restaurantLong == 0)
+                    ? controller.onRestaurantAddressPressed
+                    : null,
+                validator: (String? value) => Validators.emptyValidator(
+                  value,
+                  MyStrings.required.tr,
+                ),
+              ),
+            ),
+
+            SizedBox(height: 5.h),
+
+            Obx(
+              () => Visibility(
+                visible: !(controller.restaurantAddressFromMap.value.isEmpty || controller.restaurantLat == 0 || controller.restaurantLong == 0),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Text(
+                    "Confirm your location on map. we follow your employee based on your map location",
+                    textAlign: TextAlign.center,
+                    style: Colors.grey.regular12,
+                  ),
+                ),
               ),
             ),
 
@@ -191,6 +221,10 @@ class RegisterView extends GetView<RegisterController> {
                 decoration: MyDecoration.inputFieldDecoration(
                   context: controller.context!,
                   label: MyStrings.phoneNumber.tr,
+                ).copyWith(
+                  counterStyle: TextStyle(
+                    color: MyColors.l111111_dwhite(controller.context!),
+                  ),
                 ),
                 style: MyColors.l111111_dwhite(controller.context!).regular16_5,
                 dropdownTextStyle: MyColors.l111111_dwhite(controller.context!).regular16_5,
@@ -243,10 +277,151 @@ class RegisterView extends GetView<RegisterController> {
               ),
             ),
 
+            SizedBox(height: 26.h),
+
+            _extraInfoHeading(MyStrings.howYouKnowAboutUs.tr),
+
+            SizedBox(height: 18.h),
+
+            CustomDropdown(
+              prefixIcon: Icons.bookmark,
+              hints: null,
+              value: null,
+              items: (controller.sources?.sources! ?? []).map((e) => e.name).toList(),
+              onChange: controller.onSourceChange,
+              validator: (String? value) => Validators.emptyValidator(
+                value,
+                MyStrings.required.tr,
+              ),
+            ),
+
+            SizedBox(height: 20.h),
+
+            _extraInfoHeading(MyStrings.refer.tr),
+
+            SizedBox(height: 18.h),
+
+            CustomDropdown(
+              prefixIcon: Icons.label,
+              hints: null,
+              value: controller.selectedRefer,
+              items: (controller.employees?.users ?? []).map((e) => "${e.firstName} ${e.lastName} - ${e.userIdNumber}").toList()..add("Other"),
+              onChange: controller.onReferChange,
+              validator: (String? value) => Validators.emptyValidator(
+                value,
+                MyStrings.required.tr,
+              ),
+            ),
+
+
             SizedBox(height: 10.h),
           ],
         ),
       );
+
+  /// new employee field is add in tue-28-mar-2023
+  // Widget get _employeeInputFields => Form(
+  //       key: controller.formKeyEmployee,
+  //       child: Column(
+  //         children: [
+  //           SizedBox(height: 10.h),
+  //
+  //           CustomTextInputField(
+  //             controller: controller.tecEmployeeFullName,
+  //             label: MyStrings.fullName.tr,
+  //             prefixIcon: Icons.person,
+  //             validator: (String? value) => Validators.emptyValidator(
+  //               value,
+  //               MyStrings.required.tr,
+  //             ),
+  //           ),
+  //
+  //           SizedBox(height: 26.h),
+  //
+  //           CustomTextInputField(
+  //             controller: controller.tecEmployeeDob,
+  //             label: MyStrings.dateOfBirth.tr,
+  //             prefixIcon: Icons.calendar_month,
+  //             readOnly: true,
+  //             onTap: () => _selectDate(controller.context!),
+  //             validator: (String? value) => Validators.emptyValidator(
+  //               value,
+  //               MyStrings.required.tr,
+  //             ),
+  //           ),
+  //
+  //           SizedBox(height: 26.h),
+  //
+  //           CustomTextInputField(
+  //             controller: controller.tecEmployeeEmail,
+  //             textInputType: TextInputType.emailAddress,
+  //             label: MyStrings.emailAddress.tr,
+  //             prefixIcon: Icons.email_rounded,
+  //             validator: (String? value) => Validators.emailValidator(value),
+  //           ),
+  //
+  //           SizedBox(height: 26.h),
+  //
+  //           Padding(
+  //             padding: EdgeInsets.symmetric(horizontal: 18.0.w),
+  //             child: IntlPhoneField(
+  //               controller: controller.tecEmployeePhone,
+  //               decoration: MyDecoration.inputFieldDecoration(
+  //                 context: controller.context!,
+  //                 label: MyStrings.phoneNumber.tr,
+  //               ),
+  //               style: MyColors.l111111_dwhite(controller.context!).regular16_5,
+  //               dropdownTextStyle: MyColors.l111111_dwhite(controller.context!).regular16_5,
+  //               pickerDialogStyle: PickerDialogStyle(
+  //                 backgroundColor: MyColors.lightCard(controller.context!),
+  //                 countryCodeStyle: MyColors.l111111_dwhite(controller.context!).regular16_5,
+  //                 countryNameStyle: MyColors.l111111_dwhite(controller.context!).regular16_5,
+  //                 searchFieldCursorColor: MyColors.c_C6A34F,
+  //                 searchFieldInputDecoration: const InputDecoration(
+  //                   suffixIcon: Icon(Icons.search),
+  //                   labelText: "Search Country",
+  //                   labelStyle: TextStyle(
+  //                     fontFamily: MyAssets.fontMontserrat,
+  //                     fontWeight: FontWeight.w400,
+  //                     color: MyColors.c_7B7B7B,
+  //                   ),
+  //                   floatingLabelStyle: TextStyle(
+  //                     fontFamily: MyAssets.fontMontserrat,
+  //                     fontWeight: FontWeight.w600,
+  //                     color: MyColors.c_C6A34F,
+  //                   ),
+  //                 ),
+  //               ),
+  //               initialCountryCode: controller.selectedEmployeeCountry.code,
+  //               onCountryChanged: controller.onEmployeeCountryChange,
+  //               autovalidateMode: AutovalidateMode.onUserInteraction,
+  //             ),
+  //           ),
+  //
+  //           SizedBox(height: 26.h),
+  //
+  //           CustomDropdown(
+  //             prefixIcon: Icons.sell,
+  //             hints: MyStrings.gender.tr,
+  //             value: controller.selectedGender.value,
+  //             items: Data.genders.map((e) => e.name!).toList(),
+  //             onChange: controller.onGenderChange,
+  //           ),
+  //
+  //           SizedBox(height: 26.h),
+  //
+  //           CustomDropdown(
+  //             prefixIcon: Icons.business_center,
+  //             hints: MyStrings.position.tr,
+  //             value: controller.selectedPosition.value,
+  //             items: controller.appController.allActivePositions.map((e) => e.name!).toList(),
+  //             onChange: controller.onPositionChange,
+  //           ),
+  //
+  //           SizedBox(height: 10.h),
+  //         ],
+  //       ),
+  // );
 
   Widget get _employeeInputFields => Form(
         key: controller.formKeyEmployee,
@@ -255,8 +430,8 @@ class RegisterView extends GetView<RegisterController> {
             SizedBox(height: 10.h),
 
             CustomTextInputField(
-              controller: controller.tecEmployeeFullName,
-              label: MyStrings.fullName.tr,
+              controller: controller.tecEmployeeFirstName,
+              label: MyStrings.firstName.tr,
               prefixIcon: Icons.person,
               validator: (String? value) => Validators.emptyValidator(
                 value,
@@ -267,11 +442,9 @@ class RegisterView extends GetView<RegisterController> {
             SizedBox(height: 26.h),
 
             CustomTextInputField(
-              controller: controller.tecEmployeeDob,
-              label: MyStrings.dateOfBirth.tr,
-              prefixIcon: Icons.calendar_month,
-              readOnly: true,
-              onTap: () => _selectDate(controller.context!),
+              controller: controller.tecEmployeeLastName,
+              label: MyStrings.lastName.tr,
+              prefixIcon: Icons.person,
               validator: (String? value) => Validators.emptyValidator(
                 value,
                 MyStrings.required.tr,
@@ -297,6 +470,10 @@ class RegisterView extends GetView<RegisterController> {
                 decoration: MyDecoration.inputFieldDecoration(
                   context: controller.context!,
                   label: MyStrings.phoneNumber.tr,
+                ).copyWith(
+                  counterStyle: TextStyle(
+                    color: MyColors.l111111_dwhite(controller.context!),
+                  ),
                 ),
                 style: MyColors.l111111_dwhite(controller.context!).regular16_5,
                 dropdownTextStyle: MyColors.l111111_dwhite(controller.context!).regular16_5,
@@ -329,11 +506,11 @@ class RegisterView extends GetView<RegisterController> {
             SizedBox(height: 26.h),
 
             CustomDropdown(
-              prefixIcon: Icons.sell,
-              hints: MyStrings.gender.tr,
-              value: controller.selectedGender.value,
-              items: Data.genders.map((e) => e.name!).toList(),
-              onChange: controller.onGenderChange,
+              prefixIcon: Icons.flag,
+              hints: MyStrings.country.tr,
+              value: controller.selectedCountry.value,
+              items: Data.getAllCountry.map((e) => e.name).toList(),
+              onChange: controller.onCountryChange,
             ),
 
             SizedBox(height: 26.h),
@@ -345,6 +522,18 @@ class RegisterView extends GetView<RegisterController> {
               items: controller.appController.allActivePositions.map((e) => e.name!).toList(),
               onChange: controller.onPositionChange,
             ),
+
+            SizedBox(height: 26.h),
+
+            _cv,
+
+            SizedBox(height: 26.h),
+
+            _profileImage,
+
+            SizedBox(height: 5.h),
+
+            _profilePhotoHints,
 
             SizedBox(height: 10.h),
           ],
@@ -419,15 +608,130 @@ class RegisterView extends GetView<RegisterController> {
         ),
       );
 
-  Future<void> _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: controller.dateOfBirth.value,
-      firstDate: DateTime(2015, 8),
-      lastDate: DateTime(2101),
-    );
-    if (picked != null && picked != controller.dateOfBirth.value) {
-      controller.onDatePicked(picked);
-    }
-  }
+  Widget get _cv => Column(
+        children: [
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 18.w),
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+            decoration: BoxDecoration(
+              border: Border.all(width: .5, color: MyColors.c_777777),
+              color: Theme.of(controller.context!).cardColor,
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            child: Obx(
+              () => Row(
+                children: [
+                  const Icon(Icons.picture_as_pdf, color: MyColors.c_7B7B7B,),
+                  SizedBox(width: 7.w),
+                  Expanded(
+                    child: Text(
+                      controller.cv.isEmpty
+                          ? "Upload your cv"
+                          : controller.cv.first.path.split("/").last,
+                      style: MyColors.l111111_dwhite(controller.context!).regular16_5,
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: controller.onCvClick,
+                    child: Icon(
+                      controller.cv.isEmpty ? Icons.upload : Icons.cancel,
+                      color: MyColors.c_7B7B7B,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Obx(
+            () => Visibility(
+              visible: controller.cv.isNotEmpty &&
+                  controller.cv.first.path.split(".").last.toLowerCase() != "pdf",
+              child: Text(
+                'CV must be pdf format',
+                style: Colors.redAccent.medium12,
+              ),
+            ),
+          ),
+        ],
+      );
+
+  Widget _extraInfoHeading(String text) => Align(
+        alignment: Alignment.centerLeft,
+        child: Padding(
+          padding: const EdgeInsets.only(left: 18),
+          child: Text(
+            text,
+            style: MyColors.c_C6A34F.medium14,
+          ),
+        ),
+      );
+
+  // Future<void> _selectDate(BuildContext context) async {
+  //   final DateTime? picked = await showDatePicker(
+  //     context: context,
+  //     initialDate: controller.dateOfBirth.value,
+  //     firstDate: DateTime(2015, 8),
+  //     lastDate: DateTime(2101),
+  //   );
+  //   if (picked != null && picked != controller.dateOfBirth.value) {
+  //     controller.onDatePicked(picked);
+  //   }
+  // }
+
+  Widget get _profileImage => GestureDetector(
+        onTap: controller.onProfileImageClick,
+        child: DottedBorder(
+          borderType: BorderType.Circle,
+          dashPattern: const [11],
+          strokeWidth: 2,
+          color: MyColors.c_C6A34F,
+          child: Container(
+            height: 162.w,
+            width: 162.w,
+            margin: const EdgeInsets.all(4),
+            decoration: BoxDecoration(
+              color: MyColors.c_C6A34F_22,
+              shape: BoxShape.circle,
+            ),
+            child: Obx(
+              () => controller.profileImage.isEmpty
+                  ? Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const Icon(
+                          Icons.camera_alt,
+                          color: MyColors.c_C6A34F,
+                          size: 50,
+                        ),
+                        const SizedBox(height: 5),
+                        Text(
+                          MyStrings.uploadYourPhoto.tr,
+                          textAlign: TextAlign.center,
+                          style: MyColors.text.medium12,
+                        ),
+                      ],
+                    )
+                  : ClipRRect(
+                      borderRadius: BorderRadius.circular(162),
+                      child: Image.file(
+                        controller.profileImage.first,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+            ),
+          ),
+        ),
+      );
+
+  Widget get _profilePhotoHints => Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20).copyWith(
+          top: 10,
+        ),
+        child: Text(
+          "NB: Please upload passport size photo with white background",
+          textAlign: TextAlign.center,
+          style: Colors.blue.medium12,
+        ),
+      );
 }

@@ -1,9 +1,21 @@
-import 'package:get/get.dart';
+import '../../../../common/controller/app_controller.dart';
+import '../../../../common/utils/exports.dart';
+import '../../../../common/widgets/custom_loader.dart';
+import '../../../../models/custom_error.dart';
+import '../../../../models/employees_by_id.dart';
+import '../../../../repository/api_helper.dart';
+import '../../../../routes/app_pages.dart';
 
 class AdminAllEmployeesController extends GetxController {
-  //TODO: Implement AdminAllEmployeesController
+  BuildContext? context;
 
-  final count = 0.obs;
+  final AppController appController = Get.find();
+  final ApiHelper _apiHelper = Get.find();
+
+  Rx<Employees> employees = Employees().obs;
+
+  RxBool isLoading = false.obs;
+
   @override
   void onInit() {
     super.onInit();
@@ -11,6 +23,7 @@ class AdminAllEmployeesController extends GetxController {
 
   @override
   void onReady() {
+    _getEmployees();
     super.onReady();
   }
 
@@ -19,5 +32,77 @@ class AdminAllEmployeesController extends GetxController {
     super.onClose();
   }
 
-  void increment() => count.value++;
+  void onEmployeeClick(Employee employee) {
+    Get.toNamed(Routes.employeeDetails, arguments: {
+      MyStrings.arg.data : employee,
+      MyStrings.arg.showAsAdmin : true,
+    });
+  }
+
+  void onChatClick(Employee employee) {
+    Get.toNamed(Routes.oneToOneChat);
+  }
+
+  String getPositionLogo(String positionId) {
+    return appController.allActivePositions.firstWhere((element) => element.id == positionId).logo!;
+  }
+
+  void onApplyClick(
+    String selectedRating,
+    String selectedExp,
+    String minTotalHour,
+    String maxTotalHour,
+    String positionId,
+  ) {
+    _getEmployees(
+      rating: selectedRating,
+      experience: selectedExp,
+      minTotalHour: minTotalHour,
+      maxTotalHour: maxTotalHour,
+      positionId: positionId
+    );
+  }
+
+  void onResetClick() {
+    Get.back(); // hide modal
+    _getEmployees();
+  }
+
+  Future<void> _getEmployees({
+    String? rating,
+    String? experience,
+    String? minTotalHour,
+    String? maxTotalHour,
+    String? positionId,
+  }) async {
+    if (isLoading.value) return;
+
+    isLoading.value = true;
+
+    CustomLoader.show(context!);
+
+    await _apiHelper.getAllUsersFromAdmin(
+      positionId: positionId,
+      rating: rating,
+      employeeExperience: experience,
+      minTotalHour: minTotalHour,
+      maxTotalHour: maxTotalHour,
+      requestType: "EMPLOYEE",
+    ).then((response) {
+
+      isLoading.value = false;
+      CustomLoader.hide(context!);
+
+      response.fold((CustomError customError) {
+
+        Utils.errorDialog(context!, customError..onRetry = _getEmployees);
+
+      }, (Employees employees) {
+
+        this.employees.value = employees;
+        this.employees.refresh();
+
+      });
+    });
+  }
 }

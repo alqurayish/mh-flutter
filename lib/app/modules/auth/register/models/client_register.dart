@@ -6,6 +6,8 @@ class ClientRegistration {
   String sourceId;
   String referPersonId;
   String password;
+  String lat;
+  String long;
 
   ClientRegistration({
     required this.restaurantName,
@@ -15,6 +17,8 @@ class ClientRegistration {
     required this.sourceId,
     required this.referPersonId,
     required this.password,
+    required this.lat,
+    required this.long,
   });
 
   Map<String, dynamic> get toJson => {
@@ -25,5 +29,7 @@ class ClientRegistration {
         "sourceId": sourceId,
         if(referPersonId.isNotEmpty) "referPersonId": referPersonId,
         "password": password,
+        "lat": lat,
+        "long": long,
       };
 }

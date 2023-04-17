@@ -1,5 +1,8 @@
 import 'package:get/get.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:mh/app/common/widgets/custom_loader.dart';
+import 'package:mh/app/models/admin.dart';
+import 'package:mh/app/repository/api_helper.dart';
 
 import '../../enums/user_type.dart';
 import '../../models/client.dart';
@@ -26,6 +29,17 @@ class AppController extends GetxService {
     userType: UserType.guest,
   ).obs;
 
+  void setTokenFromLocal() {
+    _updateUserModel();
+
+    if(user.value.isGuest) {
+      Get.offAndToNamed(Routes.loginRegisterHints);
+    } else {
+      activeShortlistService();
+      Get.offAndToNamed(user.value.userType!.homeRoute);
+    }
+  }
+
   void _updateUserModel() {
     if (StorageHelper.hasToken && StorageHelper.getToken.isNotEmpty) {
       if (!_isTokenExpire()) {
@@ -34,12 +48,13 @@ class AppController extends GetxService {
 
         if(temp.role == "CLIENT") {
           user.value.userType = UserType.client;
-          user.value.client = Client.fromJson(JwtDecoder.decode(StorageHelper.getToken));
+          user.value.client = temp;
         } else if(temp.role == "EMPLOYEE") {
           user.value.userType = UserType.employee;
           user.value.employee = Employee.fromJson(JwtDecoder.decode(StorageHelper.getToken));
-        } else if (user.value.isAdmin) {
+        } else if (temp.role == "ADMIN") {
           user.value.userType = UserType.admin;
+          user.value.admin = Admin.fromJson(JwtDecoder.decode(StorageHelper.getToken));
         } else {
           user.value.userType = UserType.guest;
         }
@@ -58,28 +73,33 @@ class AppController extends GetxService {
   bool _isTokenExpire() => JwtDecoder.isExpired(StorageHelper.getToken);
 
   Future<void> afterSuccessRegister(String token) async {
-    if (token.isEmpty) {
-      user.value.userType = UserType.guest;
-      Get.offAllNamed(Routes.employeeRegisterSuccess);
-      activeShortlistService();
-      return;
-    }
+    // if (token.isEmpty) {
+    //   user.value.userType = UserType.guest;
+    //   Get.offAllNamed(Routes.employeeRegisterSuccess);
+    //   activeShortlistService();
+    //   return;
+    // }
+    //
+    //
+    // Client temp = Client.fromJson(JwtDecoder.decode(token));
+    //
+    // if(temp.role == "CLIENT") {
+    //   await updateToken(token);
+    //   activeShortlistService();
+    // } else {
+    //   user.value.userType = UserType.guest;
+    // }
 
-
-    Client temp = Client.fromJson(JwtDecoder.decode(token));
-
-    if(temp.role == "CLIENT") {
-      await updateToken(token);
-      activeShortlistService();
-    } else {
-      user.value.userType = UserType.guest;
-    }
+    activeShortlistService();
+    user.value.userType = UserType.guest;
 
     Get.offAllNamed(Routes.employeeRegisterSuccess);
   }
 
   Future<void> afterSuccessLogin(String token) async {
     await updateToken(token);
+
+    _updateToken();
 
     if(user.value.userType == null) {
 
@@ -145,8 +165,20 @@ class AppController extends GetxService {
     Get.toNamed(Routes.mhEmployees);
   }
 
-  void onLogoutClick() {
+  Future<void> onLogoutClick() async {
+
+    CustomLoader.show(Get.context!);
+
+    if(Get.isRegistered<ShortlistController>()) {
+      Get.find<ShortlistController>().removeAllSelected();
+    }
+
+    await _updateToken(isLogin: false);
+
+    CustomLoader.hide(Get.context!);
+
     StorageHelper.removeToken;
+
     Get.offAllNamed(Routes.login);
   }
 
@@ -157,5 +189,11 @@ class AppController extends GetxService {
     }
 
     return true;
+  }
+
+  Future<void> _updateToken({bool isLogin = true}) async {
+    if(Get.isRegistered<ApiHelper>()) {
+      await Get.find<ApiHelper>().updateFcmToken(isLogin: isLogin);
+    }
   }
 }
