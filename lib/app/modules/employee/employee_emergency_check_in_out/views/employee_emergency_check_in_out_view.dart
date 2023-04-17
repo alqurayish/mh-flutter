@@ -50,6 +50,7 @@ class EmployeeEmergencyCheckInOutView extends GetView<EmployeeEmergencyCheckInOu
                 minLines: 5,
                 maxLines: null,
                 cursorColor: MyColors.c_C6A34F,
+                style: MyColors.l111111_dwhite(context).regular16,
                 decoration: MyDecoration.inputFieldDecoration(
                   context: context,
                   label: "Why Emergency",

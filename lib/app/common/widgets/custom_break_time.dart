@@ -76,8 +76,9 @@ class  CustomBreakTime {
 
                       Transform.translate(
                         offset: const Offset(0, -13),
-                        child: const Text(
+                        child: Text(
                           "Hour",
+                          style: MyColors.l111111_dwhite(context).regular14,
                         ),
                       ),
 
@@ -103,8 +104,9 @@ class  CustomBreakTime {
 
                       Transform.translate(
                         offset: const Offset(0, -13),
-                        child: const Text(
+                        child: Text(
                           "Min",
+                          style: MyColors.l111111_dwhite(context).regular14,
                         ),
                       ),
                     ],
@@ -140,6 +142,6 @@ class  CustomBreakTime {
 
   static Widget _value(BuildContext context, int value) => Text(
         value.toString(),
-        style: MyColors.black.semiBold22,
+        style: MyColors.l111111_dwhite(context).semiBold22,
       );
 }

@@ -54,17 +54,20 @@ class OneToOneChatView extends GetView<OneToOneChatController> {
                               ),
                             ],
                             borderRadius: BorderRadius.circular(25),
+                            color: MyColors.lnull_d111111(context),
                           ),
                           child: Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 14),
                             child: TextField(
                               controller: controller.tecController,
-                              cursorColor: Colors.black,
+                              cursorColor: MyColors.l111111_dwhite(context),
                               keyboardType: TextInputType.multiline,
                               maxLines: null,
-                              decoration: const InputDecoration(
+                              style: MyColors.l111111_dwhite(context).regular16,
+                              decoration: InputDecoration(
                                 border: InputBorder.none,
                                 hintText: "Message",
+                                hintStyle: MyColors.text.regular16,
                               ),
                             ),
                           ),
