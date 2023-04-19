@@ -53,7 +53,7 @@ class SplashController extends GetxController {
               Utils.exitApp;
             },
           );
-        } else if (commons.appVersion!.first.appVersion != AppInfo.version) {
+        } else if ((commons.appVersion!.first.showUpdateDialog ?? false) && (commons.appVersion!.first.appVersion != AppInfo.version)) {
           CustomDialogue.information(
             context: context!,
             title: "New version Available",
