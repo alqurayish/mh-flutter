@@ -57,24 +57,36 @@ class ClientRequestForEmployeeView extends GetView<ClientRequestForEmployeeContr
               ),
 
               const SizedBox(width: 12),
-
-              Text(controller.appController.allActivePositions[index].name!),
-
-              const Spacer(),
+                  Text(
+                    controller.appController.allActivePositions[index].name!,
+                    style: MyColors.l111111_dwhite(controller.context!).regular14,
+                  ),
+                  const Spacer(),
 
               SizedBox(
                 height: 40,
                 width: 80,
                 child: DropdownButtonFormField<int>(
+                  dropdownColor: MyColors.lightCard(controller.context!),
                       value: controller.selectedEmployee[index],
                       icon: const Icon(Icons.arrow_drop_down),
                       isDense: true,
-                      decoration: const InputDecoration(
-                        contentPadding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                        border: OutlineInputBorder(
+                      style: MyColors.l111111_dwhite(controller.context!).regular14,
+                      decoration: InputDecoration(
+                        contentPadding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                        border: const OutlineInputBorder(
                           borderRadius: BorderRadius.all(
                             Radius.circular(10.0),
                           ),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(width: .5, color: MyColors.c_777777),
+                          borderRadius: BorderRadius.circular(10.73),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(width: 1, color: MyColors.c_C6A34F),
+                          borderRadius: BorderRadius.circular(10.73),
+                          gapPadding: 10,
                         ),
                       ),
                       onChanged: (int? newValue) {
@@ -83,7 +95,7 @@ class ClientRequestForEmployeeView extends GetView<ClientRequestForEmployeeContr
                       items: controller.dropdownValues.map<DropdownMenuItem<int>>((int value) {
                         return DropdownMenuItem<int>(
                           value: value,
-                          child: Text(value.toString()),
+                          child: Text(value.toString(),style: MyColors.l111111_dwhite(controller.context!).regular16_5,),
                         );
                       }).toList(),
                     ),

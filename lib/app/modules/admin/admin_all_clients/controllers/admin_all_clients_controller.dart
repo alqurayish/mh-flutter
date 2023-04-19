@@ -1,6 +1,7 @@
 import '../../../../common/controller/app_controller.dart';
 import '../../../../common/utils/exports.dart';
 import '../../../../common/widgets/custom_loader.dart';
+import '../../../../enums/chat_with.dart';
 import '../../../../models/custom_error.dart';
 import '../../../../models/employees_by_id.dart';
 import '../../../../repository/api_helper.dart';
@@ -60,6 +61,9 @@ class AdminAllClientsController extends GetxController {
   }
 
   void onChatClick(Employee employee) {
-    Get.toNamed(Routes.oneToOneChat);
+    Get.toNamed(Routes.oneToOneChat, arguments: {
+      MyStrings.arg.chatWith: ChatWith.client,
+      MyStrings.arg.data: employee.id ?? "",
+    });
   }
 }

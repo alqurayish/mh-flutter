@@ -9,13 +9,14 @@ import '../../../../models/custom_error.dart';
 import '../../../../models/one_to_one_msg.dart';
 
 class OneToOneChatController extends GetxController {
-  final String supportUserId = "642db18a895938c9567bccef";
+  BuildContext? context;
+  final String supportUserId = "6412b261b4706c4eb2163d47";
 
   final AppController appController = Get.find();
   final ApiHelper apiHelper = Get.find();
 
   late ChatWith chatWith;
-  late Socket _socket;
+  // late Socket _socket;
 
   TextEditingController tecController = TextEditingController();
 
@@ -26,57 +27,63 @@ class OneToOneChatController extends GetxController {
   late String senderId;
   late String? receiverId;
 
+  bool loadFirstTime = true;
+
+  String currentMsgShowDate = "";
+
   @override
   void onInit() {
     if(Get.arguments != null) {
       chatWith = Get.arguments[MyStrings.arg.chatWith];
+      receiverId = Get.arguments[MyStrings.arg.data];
     }
 
     senderId = appController.user.value.userId;
-    receiverId = Get.arguments[MyStrings.arg.data];
 
     receiverId = chatWith == ChatWith.admin ? supportUserId : receiverId;
 
-    _socket = io(
-      'http://44.204.212.181:8000',
-      OptionBuilder().setTransports(['websocket']).setQuery({
-        "senderId": senderId,
-        "receiverId": receiverId,
-      }).build(),
-    );
+    // _socket = io(
+    //   'http://44.204.212.181:8000',
+    //   OptionBuilder().setTransports(['websocket']).setQuery({
+    //     "senderId": senderId,
+    //     "receiverId": receiverId,
+    //   }).build(),
+    // );
+    //
+    // _connectSocket();
 
-    _connectSocket();
+    _getMsgTap();
 
     super.onInit();
   }
 
-  void _connectSocket() {
-    _socket.onConnect((data) {
-      _connectionError = false;
-      print('Connection established');
-    });
-
-    _socket.onConnectError((data) {
-      print('Connect Error: $data');
-      _connectionError = true;
-    });
-
-    _socket.onDisconnect((data) {
-      print('Socket.IO server disconnected');
-      _connectionError = true;
-    });
-    _socket.on(
-      'message',
-      (data) {
-        print("new msg come");
-        print(data);
-
-        msg.add(Message.fromJson(data));
-        msg.refresh();
-
-      },
-    );
-  }
+  // void _connectSocket() {
+  //   _socket.onConnect((data) {
+  //     _connectionError = false;
+  //     print('Connection established');
+  //   });
+  //
+  //   _socket.onConnectError((data) {
+  //     print('Connect Error: $data');
+  //     _connectionError = true;
+  //   });
+  //
+  //   _socket.onDisconnect((data) {
+  //     print('Socket.IO server disconnected');
+  //     _connectionError = true;
+  //   });
+  //   _socket.on(
+  //     'message',
+  //     (data) {
+  //       print("new msg come");
+  //       print(data);
+  //
+  //       msg.add(Message.fromJson(data));
+  //       msg.refresh();
+  //
+  //     },
+  //   );
+  // }
 
   @override
   void onReady() {
@@ -85,9 +92,61 @@ class OneToOneChatController extends GetxController {
 
   @override
   void onClose() {
-    _socket.disconnect();
+    // _socket.disconnect();
     super.onClose();
   }
+
+  String getMsgDate(DateTime msgDate) {
+    if(currentMsgShowDate == msgDate.toLocal().toString().split(" ").first) {
+      return "";
+    }
+
+    currentMsgShowDate = msgDate.toLocal().toString().split(" ").first;
+    return currentMsgShowDate;
+  }
+
+  Future<void> _getMsgTap() async {
+    await apiHelper.getMsg(senderId, receiverId!).then((response) {
+      response.fold((CustomError customError) {
+      }, (OneToOneMsg oneToOneMsg) async {
+
+        if(loadFirstTime) {
+          msg.addAll(oneToOneMsg.messages ?? []);
+          // msg.value = List.from(msg.reversed);
+          msg.refresh();
+          loadFirstTime = false;
+
+          await Future.delayed(const Duration(seconds: 3), () {
+            _getMsgTap();
+          });
+
+          return;
+        }
+
+        for( Message message in oneToOneMsg.messages ?? [] ) {
+
+          bool found = false;
+
+          for(Message m in msg) {
+            if(message.id == m.id) {
+              found = true;
+              break;
+            }
+          }
+
+          if(!found) {
+            msg..insert(0, message)..refresh();
+          }
+
+        }
+
+        await Future.delayed(const Duration(seconds: 3), () {
+          _getMsgTap();
+        });
+      });
+    });
+  }
+
 
   Future<void> onSendTap() async {
     if(_connectionError) {
@@ -95,8 +154,6 @@ class OneToOneChatController extends GetxController {
       return;
     }
 
-    print(senderId);
-    print(receiverId);
 
     Map<String, dynamic> data = {
       "senderId": senderId,
@@ -104,25 +161,21 @@ class OneToOneChatController extends GetxController {
       "text": tecController.text.trim(),
     };
 
-    // await apiHelper.sendMsg(data).then((response) {
-    //   response.fold((CustomError customError) {
-    //
-    //     print("msg send error");
-    //
-    //     // Utils.errorDialog(context!, customError..onRetry = _getClients);
-    //
-    //   }, (r) {
-    //
-    //     print(r.body);
-    //
-    //   });
-    // });
+    tecController.clear();
 
-    _socket.emit('new_message', {
-      "message": data,
+    await apiHelper.sendMsg(data).then((response) {
+      response.fold((CustomError customError) {
+      }, (r) {
+        Message message = Message.fromJson(r.body["details"]);
+        msg..insert(0, message)..refresh();
+
+      });
     });
 
+    // _socket.emit('new_message', {
+    //   "message": data,
+    // });
+
     // msg.add(tecController.text.trim());
-    tecController.clear();
   }
 }

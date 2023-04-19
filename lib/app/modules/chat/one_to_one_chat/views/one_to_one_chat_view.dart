@@ -10,6 +10,8 @@ class OneToOneChatView extends GetView<OneToOneChatController> {
 
   @override
   Widget build(BuildContext context) {
+    controller.context = context;
+
     return Scaffold(
       // resizeToAvoidBottomInset: false,
       appBar: CustomAppbar.appbar(
@@ -23,9 +25,11 @@ class OneToOneChatView extends GetView<OneToOneChatController> {
           Obx(
             () => ListView.builder(
               itemCount: controller.msg.length,
-              padding: EdgeInsets.symmetric(vertical: 10),
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              reverse: true,
+              shrinkWrap: true,
               itemBuilder: (context, index) {
-                return _msg(controller.msg[index]);
+                return _msg(controller.msg[index], index == 0);
               },
             ),
           ),
@@ -107,58 +111,6 @@ class OneToOneChatView extends GetView<OneToOneChatController> {
     );
   }
 
-  Widget _bottomBar(BuildContext context) => CustomBottomBar(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 14.0),
-          child: Row(
-            children: [
-
-              Expanded(child: SizedBox(
-                height: 54,
-                child: Align(
-                  alignment: Alignment.center,
-                  child: TextField(
-                    controller: controller.tecController,
-                    decoration: InputDecoration(
-                      filled: true,
-                      border: deco,
-                      focusedBorder: deco,
-                      enabledBorder: deco,
-                      errorBorder: deco,
-                      disabledBorder: deco,
-                    ),
-                  ),
-                ),
-              ),),
-
-              const SizedBox(width: 10),
-
-              GestureDetector(
-                onTap: controller.onSendTap,
-                child: Container(
-                  width: 54.w,
-                  height: 54.w,
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: MyColors.c_C6A34F,
-                  ),
-                  child: Align(
-                    alignment: Alignment.center,
-                    child: Transform.translate(
-                      offset: const Offset(-2, 2),
-                      child: Image.asset(
-                        MyAssets.msgSend,
-                        width: 30,
-                        height: 30,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      );
 
   OutlineInputBorder get deco => const OutlineInputBorder(
         borderRadius: BorderRadius.all(
@@ -166,12 +118,44 @@ class OneToOneChatView extends GetView<OneToOneChatController> {
         ),
       );
 
-  Widget _msg(Message msg) => msg.senderId == controller.senderId
-      ? _senderMsg(msg.text ?? "-")
-      : _receiverMsg(msg.text ?? "--");
+  Widget _msg(Message msg, bool lastItem) {
+    return Column(
+      children: [
+        // _msgDate(msg.createdAt!),
+
+        msg.senderId == controller.senderId
+            ? _senderMsg(msg.text ?? "-")
+            : _receiverMsg(msg.text ?? "--"),
+
+        Visibility(
+          visible: lastItem,
+          child: const SizedBox(
+            height: 100,
+          ),
+        )
+      ],
+    );
+  }
+
+  Widget _msgDate(DateTime createdAt) {
+    String date = controller.getMsgDate(createdAt);
+    return Visibility(
+      visible: date.isNotEmpty,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 20),
+        child: Align(
+          alignment: Alignment.center,
+          child: Text(
+            date,
+            style:  MyColors.l111111_dwhite(controller.context!).regular10,
+          ),
+        ),
+      ),
+    );
+  }
 
   Widget _senderMsg(String msg) => Align(
-    alignment: Alignment.centerLeft,
+    alignment: Alignment.centerRight,
     child: Container(
       margin: const EdgeInsets.symmetric(horizontal: 14).copyWith(
           top: 5
@@ -188,6 +172,7 @@ class OneToOneChatView extends GetView<OneToOneChatController> {
       ),
       child: Text(
         msg,
+        style: MyColors.white.regular14,
       ),
     ),
   );
@@ -200,7 +185,7 @@ class OneToOneChatView extends GetView<OneToOneChatController> {
       ),
       padding: const EdgeInsets.symmetric(horizontal: 12,vertical: 4),
       decoration: BoxDecoration(
-          color: Colors.white,
+          color: MyColors.lightCard(controller.context!),
           border: Border.all(color: MyColors.c_C6A34F),
           borderRadius: const BorderRadius.only(
             topRight: Radius.circular(12),
@@ -210,6 +195,7 @@ class OneToOneChatView extends GetView<OneToOneChatController> {
       ),
       child: Text(
         msg,
+        style: MyColors.l111111_dwhite(controller.context!).regular14,
       ),
     ),
   );
