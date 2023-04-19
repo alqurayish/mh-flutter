@@ -29,7 +29,7 @@ class OneToOneChatView extends GetView<OneToOneChatController> {
               reverse: true,
               shrinkWrap: true,
               itemBuilder: (context, index) {
-                return _msg(controller.msg[index], index == 0);
+                return _msg(index, controller.msg[index], index == 0);
               },
             ),
           ),
@@ -118,14 +118,14 @@ class OneToOneChatView extends GetView<OneToOneChatController> {
         ),
       );
 
-  Widget _msg(Message msg, bool lastItem) {
+  Widget _msg(int index, Message msg, bool lastItem) {
     return Column(
       children: [
         // _msgDate(msg.createdAt!),
 
         msg.senderId == controller.senderId
-            ? _senderMsg(msg.text ?? "-")
-            : _receiverMsg(msg.text ?? "--"),
+            ? _senderMsg(index, msg.text ?? "-")
+            : _receiverMsg(index, msg.text ?? "--"),
 
         Visibility(
           visible: lastItem,
@@ -154,11 +154,12 @@ class OneToOneChatView extends GetView<OneToOneChatController> {
     );
   }
 
-  Widget _senderMsg(String msg) => Align(
+  Widget _senderMsg(int index, String msg) => Align(
     alignment: Alignment.centerRight,
     child: Container(
       margin: const EdgeInsets.symmetric(horizontal: 14).copyWith(
-          top: 5
+          bottom: 5,
+          top: controller.getVerticalMargin(index)
       ),
       padding: const EdgeInsets.symmetric(horizontal: 12,vertical: 4),
       decoration: BoxDecoration(
@@ -177,11 +178,12 @@ class OneToOneChatView extends GetView<OneToOneChatController> {
     ),
   );
 
-  Widget _receiverMsg(String msg) => Align(
+  Widget _receiverMsg(int index, String msg) => Align(
     alignment: Alignment.centerLeft,
     child: Container(
       margin: const EdgeInsets.symmetric(horizontal: 14).copyWith(
-          top: 5
+          bottom: 5,
+        top: controller.getVerticalMargin(index)
       ),
       padding: const EdgeInsets.symmetric(horizontal: 12,vertical: 4),
       decoration: BoxDecoration(

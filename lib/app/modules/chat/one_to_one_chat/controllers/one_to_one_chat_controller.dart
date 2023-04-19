@@ -105,6 +105,16 @@ class OneToOneChatController extends GetxController {
     return currentMsgShowDate;
   }
 
+  double getVerticalMargin(int index) {
+    print(index);
+    print(msg[index].text);
+    if((index + 1 < msg.length) && (msg[index].senderId != msg[index + 1].senderId)) {
+      return 20;
+    }
+
+    return 0;
+  }
+
   Future<void> _getMsgTap() async {
     await apiHelper.getMsg(senderId, receiverId!).then((response) {
       response.fold((CustomError customError) {
