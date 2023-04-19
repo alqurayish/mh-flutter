@@ -6,6 +6,7 @@ class AppVersion {
     this.id,
     this.appVersion,
     this.updateRequired,
+    this.showUpdateDialog,
     this.updatedAt,
     this.appStoreLink,
     this.playStoreLink,
@@ -17,6 +18,7 @@ class AppVersion {
   final String? id;
   final String? appVersion;
   final bool? updateRequired;
+  final bool? showUpdateDialog;
   final DateTime? updatedAt;
   final String? appStoreLink;
   final String? playStoreLink;
@@ -32,6 +34,7 @@ class AppVersion {
     id: json["_id"],
     appVersion: json["appVersion"],
     updateRequired: json["updateRequired"],
+    showUpdateDialog: json["showUpdateDialog"],
     updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
     appStoreLink: json["appStoreLink"],
     playStoreLink: json["playStoreLink"],
@@ -44,6 +47,7 @@ class AppVersion {
     "_id": id,
     "appVersion": appVersion,
     "updateRequired": updateRequired,
+    "showUpdateDialog": showUpdateDialog,
     "updatedAt": updatedAt?.toIso8601String(),
     "appStoreLink": appStoreLink,
     "playStoreLink": playStoreLink,
