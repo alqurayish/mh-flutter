@@ -33,8 +33,10 @@ class AppController extends GetxService {
     _updateUserModel();
 
     if(user.value.isGuest) {
+      _updateFCMToken(isLogin: false);
       Get.offAndToNamed(Routes.loginRegisterHints);
     } else {
+      _updateFCMToken();
       activeShortlistService();
       Get.offAndToNamed(user.value.userType!.homeRoute);
     }
@@ -99,7 +101,7 @@ class AppController extends GetxService {
   Future<void> afterSuccessLogin(String token) async {
     await updateToken(token);
 
-    _updateToken();
+    _updateFCMToken();
 
     if(user.value.userType == null) {
 
@@ -173,7 +175,7 @@ class AppController extends GetxService {
       Get.find<ShortlistController>().removeAllSelected();
     }
 
-    await _updateToken(isLogin: false);
+    await _updateFCMToken(isLogin: false);
 
     CustomLoader.hide(Get.context!);
 
@@ -191,7 +193,7 @@ class AppController extends GetxService {
     return true;
   }
 
-  Future<void> _updateToken({bool isLogin = true}) async {
+  Future<void> _updateFCMToken({bool isLogin = true}) async {
     if(Get.isRegistered<ApiHelper>()) {
       await Get.find<ApiHelper>().updateFcmToken(isLogin: isLogin);
     }

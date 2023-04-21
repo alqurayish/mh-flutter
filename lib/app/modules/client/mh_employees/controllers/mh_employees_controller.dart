@@ -9,6 +9,11 @@ class MhEmployeesController extends GetxController {
   final AppController appController = Get.find();
 
   void onPositionClick(Position position) {
+    if(appController.user.value.isGuest) {
+      Get.toNamed(Routes.login);
+      return;
+    }
+
     Get.toNamed(Routes.mhEmployeesById, arguments: {
       MyStrings.arg.data: position,
     });

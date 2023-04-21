@@ -292,6 +292,9 @@ class AppPages {
       name: _Paths.mhEmployeesById,
       page: () => const MhEmployeesByIdView(),
       binding: MhEmployeesByIdBinding(),
+      middlewares: [
+        AuthMiddleware(),
+      ],
     ),
     GetPage(
       name: _Paths.employeeDetails,

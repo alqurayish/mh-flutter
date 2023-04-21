@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:mh/app/common/controller/app_controller.dart';
 import 'package:mh/app/repository/api_helper.dart';
 import 'package:socket_io_client/socket_io_client.dart';
@@ -31,6 +33,8 @@ class OneToOneChatController extends GetxController {
 
   String currentMsgShowDate = "";
 
+  Timer? msgRefreshTimer;
+
   @override
   void onInit() {
     if(Get.arguments != null) {
@@ -51,6 +55,10 @@ class OneToOneChatController extends GetxController {
     // );
     //
     // _connectSocket();
+
+    msgRefreshTimer = Timer.periodic(const Duration(seconds: 3), (timer) {
+      _getMsgTap();
+    });
 
     _getMsgTap();
 
@@ -93,6 +101,7 @@ class OneToOneChatController extends GetxController {
   @override
   void onClose() {
     // _socket.disconnect();
+    msgRefreshTimer?.cancel();
     super.onClose();
   }
 
@@ -106,8 +115,6 @@ class OneToOneChatController extends GetxController {
   }
 
   double getVerticalMargin(int index) {
-    print(index);
-    print(msg[index].text);
     if((index + 1 < msg.length) && (msg[index].senderId != msg[index + 1].senderId)) {
       return 20;
     }
@@ -125,10 +132,6 @@ class OneToOneChatController extends GetxController {
           // msg.value = List.from(msg.reversed);
           msg.refresh();
           loadFirstTime = false;
-
-          await Future.delayed(const Duration(seconds: 3), () {
-            _getMsgTap();
-          });
 
           return;
         }
@@ -150,9 +153,6 @@ class OneToOneChatController extends GetxController {
 
         }
 
-        await Future.delayed(const Duration(seconds: 3), () {
-          _getMsgTap();
-        });
       });
     });
   }
