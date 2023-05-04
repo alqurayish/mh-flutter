@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:mh/app/common/widgets/chat_with_user_choose.dart';
 import 'package:slide_to_act/slide_to_act.dart';
@@ -42,8 +43,14 @@ class EmployeeHomeController extends GetxController {
 
   Rx<TodayCheckInOutDetails> todayCheckInOutDetails = TodayCheckInOutDetails().obs;
 
+  // unread msg track
+  CollectionReference onUnreadCollection = FirebaseFirestore.instance.collection('unreadMsg');
+  RxList<dynamic> unreadFromAdmin = [].obs;
+  RxList<dynamic> unreadFromClient = [].obs;
+
   @override
   void onInit() {
+    _trackUnreadMsg();
     _getTodayCheckInOutDetails();
     super.onInit();
   }
@@ -61,14 +68,20 @@ class EmployeeHomeController extends GetxController {
 
   @override
   void onHelpAndSupportClick() {
-    // Get.toNamed(Routes.contactUs);
-    // Get.toNamed(Routes.oneToOneChat);
-    ChatWithUserChoose.show(context!);
+    ChatWithUserChoose.show(
+      context!,
+      msgFromAdmin: unreadFromAdmin.length,
+      msgFromClient: unreadFromClient.length,
+    );
   }
 
   @override
   void onNotificationClick() {
     Get.toNamed(Routes.clientNotification);
+  }
+
+  void onProfileClick() {
+    Get.toNamed(Routes.employeeSelfProfile);
   }
 
   void chatWithAdmin() {
@@ -79,12 +92,23 @@ class EmployeeHomeController extends GetxController {
     });
   }
 
+  void chatWithClient() {
+    Get.back(); // hide dialogue
+
+    Get.toNamed(Routes.oneToOneChat, arguments: {
+      MyStrings.arg.chatWith: ChatWith.employee,
+      MyStrings.arg.receiverId: appController.user.value.employee?.hiredBy ?? "",
+      MyStrings.arg.receiverName: appController.user.value.employee?.hiredByRestaurantName ?? "-",
+    });
+  }
+
   void chatWithRestaurant() {
     Get.back(); // hide dialogue
 
     Get.toNamed(Routes.oneToOneChat, arguments: {
       MyStrings.arg.chatWith: ChatWith.client,
-      MyStrings.arg.data: appController.user.value.employee?.hiredBy ?? "",
+      MyStrings.arg.receiverId: appController.user.value.employee?.hiredBy ?? "",
+      MyStrings.arg.receiverName: appController.user.value.employee?.hiredByRestaurantName ?? "-",
     });
   }
 
@@ -248,5 +272,16 @@ class EmployeeHomeController extends GetxController {
     currentLat: currentLocation!.latitude,
     currentLong: currentLocation!.longitude,
   );
+
+  void _trackUnreadMsg() {
+    onUnreadCollection.doc(appController.user.value.userId).snapshots().listen((DocumentSnapshot doc) {
+      Map<String, dynamic> data = doc.data()! as Map<String, dynamic>;
+      unreadFromAdmin.value = data["admin"];
+      unreadFromClient.value = data["client"];
+
+      unreadFromAdmin.refresh();
+      unreadFromClient.refresh();
+    });
+  }
 
 }

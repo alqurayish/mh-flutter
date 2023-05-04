@@ -101,12 +101,14 @@ class AdminAllClientsView extends GetView<AdminAllClientsController> {
             Positioned(
               right: 10,
               top: 7,
-              child: GestureDetector(
-                onTap: () => controller.onChatClick(user),
-                child: const Icon(
-                  Icons.chat,
-                  size: 20,
-                  color: MyColors.stock,
+              child: Obx(
+                () => GestureDetector(
+                  onTap: () => controller.onChatClick(user),
+                  child: Icon(
+                    Icons.chat,
+                    size: 20,
+                    color: controller.adminHomeController.unreadFromClient.contains(user.id) ? MyColors.c_C6A34F : MyColors.stock,
+                  ),
                 ),
               ),
             ),

@@ -17,16 +17,10 @@ class AdminClientRequestView extends GetView<AdminClientRequestController> {
         title: 'Request',
       ),
       body: Obx(
-        () => controller.loading.value
-            ? const Center(
-                child: CircularProgressIndicator(
-                  color: MyColors.c_C6A34F,
-                ),
-              )
-            : (controller.requestedEmployees.value.requestEmployees ?? []).isEmpty ? const NoItemFound() :
+        () => (controller.adminHomeController.requestedEmployees.value.requestEmployees ?? []).isEmpty ? const NoItemFound() :
 
         ListView.builder(
-                itemCount: (controller.requestedEmployees.value.requestEmployees ?? []).length,
+                itemCount: (controller.adminHomeController.requestedEmployees.value.requestEmployees ?? []).length,
                 itemBuilder: (context, index) {
                   return _item(index);
                 },

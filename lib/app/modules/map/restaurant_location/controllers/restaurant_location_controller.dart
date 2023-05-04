@@ -11,6 +11,7 @@ import '../../../../common/utils/exports.dart';
 import '../../../../models/address_to_lat_lng.dart';
 import '../../../../models/lat_long_to_address.dart';
 import '../../../auth/register/controllers/register_controller.dart';
+import '../../../client/client_self_profile/controllers/client_self_profile_controller.dart';
 
 class RestaurantLocationController extends GetxController {
 
@@ -29,7 +30,6 @@ class RestaurantLocationController extends GetxController {
 
   RxBool findAddress = false.obs;
 
-  final RegisterController _registerController = Get.find();
   final ApiHelper _apiHelper = Get.find();
 
   /// default mh lat long
@@ -84,10 +84,23 @@ class RestaurantLocationController extends GetxController {
   }
 
   void onConfirmPressed() {
-    _registerController.restaurantLat = latLng.value.latitude;
-    _registerController.restaurantLong = latLng.value.longitude;
-    _registerController.restaurantAddressFromMap.value = tecAddress.text.trim();
-    _registerController.tecRestaurantAddress.text = tecAddress.text.trim();
+    if(Get.isRegistered<RegisterController>()) {
+      final RegisterController registerController = Get.find();
+
+      registerController.restaurantLat = latLng.value.latitude;
+      registerController.restaurantLong = latLng.value.longitude;
+      registerController.restaurantAddressFromMap.value = tecAddress.text.trim();
+      registerController.tecRestaurantAddress.text = tecAddress.text.trim();
+    }
+    else if(Get.isRegistered<ClientSelfProfileController>()) {
+      final ClientSelfProfileController profileController = Get.find();
+
+      profileController.restaurantLat = latLng.value.latitude;
+      profileController.restaurantLong = latLng.value.longitude;
+      profileController.restaurantAddressFromMap.value = tecAddress.text.trim();
+      profileController.tecRestaurantAddress.text = tecAddress.text.trim();
+    }
+
     Get.back();
   }
 

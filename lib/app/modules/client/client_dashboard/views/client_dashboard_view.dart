@@ -216,6 +216,8 @@ class ClientDashboardView extends GetView<ClientDashboardController> {
 
   Widget _generateRightHandSideColumnRow(BuildContext context, int index) {
 
+    HiredHistory hiredHistory = controller.hiredEmployeesByDate.value.hiredHistories![index];
+
     if(controller.getCheckInOutDate(index) == null) {
       return Row(
         children: <Widget>[
@@ -223,7 +225,7 @@ class ClientDashboardView extends GetView<ClientDashboardController> {
           _cell(width: 100.w, value: "-"),
           _cell(width: 100.w, value: "-"),
           _cell(width: 100.w, value: "-"),
-          _cell(width: 100.w, value: "", child: _chat),
+          _cell(width: 100.w, value: "", child: _chat(hiredHistory)),
           _cell(width: 100.w, value: "-",),
         ],
       );
@@ -237,7 +239,7 @@ class ClientDashboardView extends GetView<ClientDashboardController> {
         _cell(width: 100.w, value: dailyStatistics.displayCheckOutTime, clientUpdatedValue: dailyStatistics.employeeCheckOutTime),
         _cell(width: 100.w, value: dailyStatistics.displayBreakTime, clientUpdatedValue: dailyStatistics.employeeBreakTime),
         _cell(width: 100.w, value: dailyStatistics.workingHour),
-        _cell(width: 100.w, value: "", child: _chat),
+        _cell(width: 100.w, value: "", child: _chat(hiredHistory)),
         _cell(width: 100.w, value: "--", child: _action(index)),
       ],
     );
@@ -340,9 +342,12 @@ class ClientDashboardView extends GetView<ClientDashboardController> {
     );
   }
 
-  Widget get _chat => const Icon(
-        Icons.message,
-        color: MyColors.c_C6A34F,
+  Widget _chat (HiredHistory hiredHistory) => GestureDetector(
+        onTap: () => controller.chatWithEmployee(hiredHistory),
+        child: const Icon(
+          Icons.message,
+          color: MyColors.c_C6A34F,
+        ),
       );
 
   Widget _updateOption(int index) => Form(

@@ -57,7 +57,7 @@ class EmployeeRegisterSuccessView extends GetView<EmployeeRegisterSuccessControl
                       Text(
                         controller.appController.user.value.isClient
                             ? "Welcome to MH premier staffing solution"
-                            : "Our HR contact with you within 72 Hours",
+                            : "Our HR contact with you within 24 Hours",
                         textAlign: TextAlign.center,
                         style: MyColors.l7B7B7B_dtext(context).regular15,
                       ),

@@ -48,6 +48,8 @@ abstract class Routes {
 
   static const restaurantLocation = _Paths.restaurantLocation;
   static const oneToOneChat = _Paths.oneToOneChat;
+  static const employeeSelfProfile = _Paths.employeeSelfProfile;
+  static const clientSelfProfile = _Paths.clientSelfProfile;
 }
 
 abstract class _Paths {
@@ -73,6 +75,7 @@ abstract class _Paths {
   static const employeeHome = '/employee-home';
   static const employeeDashboard = '/employee-dashboard';
   static const employeeEmergencyCheckInOut = '/employee-emergency-check-in-out';
+  static const employeeSelfProfile = '/employee-self-profile';
 
   static const clientHome = '/client-home';
   static const clientMyEmployee = '/client-my-employee';
@@ -85,6 +88,7 @@ abstract class _Paths {
   static const clientNotification = '/client-notification';
   static const clientRequestForEmployee = '/client-request-for-employee';
   static const clientSuggestedEmployees = '/client-suggested-employees';
+  static const clientSelfProfile = '/client-self-profile';
 
   static const mhEmployees = '/mh-employees';
   static const employeeDetails = '/employee-details';

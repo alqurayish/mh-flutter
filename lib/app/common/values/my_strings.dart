@@ -115,4 +115,6 @@ class _Arguements {
   String data = "data";
   String showAsAdmin = "showAsAdmin";
   String chatWith = "chatWith";
+  String receiverName = "receiverName";
+  String receiverId = "receiverId";
 }

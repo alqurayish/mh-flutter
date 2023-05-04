@@ -1,3 +1,5 @@
+import 'package:mh/app/modules/admin/admin_home/controllers/admin_home_controller.dart';
+
 import '../../../../common/controller/app_controller.dart';
 import '../../../../common/utils/exports.dart';
 import '../../../../common/widgets/custom_loader.dart';
@@ -11,6 +13,7 @@ class AdminAllClientsController extends GetxController {
   BuildContext? context;
 
   final AppController appController = Get.find();
+  final AdminHomeController adminHomeController = Get.find();
   final ApiHelper _apiHelper = Get.find();
 
   Rx<Employees> clients = Employees().obs;
@@ -63,7 +66,8 @@ class AdminAllClientsController extends GetxController {
   void onChatClick(Employee employee) {
     Get.toNamed(Routes.oneToOneChat, arguments: {
       MyStrings.arg.chatWith: ChatWith.client,
-      MyStrings.arg.data: employee.id ?? "",
+      MyStrings.arg.receiverId: employee.id ?? "",
+      MyStrings.arg.receiverName: employee.restaurantName ?? "-",
     });
   }
 }

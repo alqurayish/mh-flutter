@@ -6,11 +6,13 @@ import '../../../../models/custom_error.dart';
 import '../../../../models/employees_by_id.dart';
 import '../../../../repository/api_helper.dart';
 import '../../../../routes/app_pages.dart';
+import '../../admin_home/controllers/admin_home_controller.dart';
 
 class AdminAllEmployeesController extends GetxController {
   BuildContext? context;
 
   final AppController appController = Get.find();
+  final AdminHomeController adminHomeController = Get.find();
   final ApiHelper _apiHelper = Get.find();
 
   Rx<Employees> employees = Employees().obs;
@@ -43,7 +45,8 @@ class AdminAllEmployeesController extends GetxController {
   void onChatClick(Employee employee) {
     Get.toNamed(Routes.oneToOneChat, arguments: {
       MyStrings.arg.chatWith: ChatWith.employee,
-      MyStrings.arg.data: employee.id ?? "",
+      MyStrings.arg.receiverId: employee.id ?? "",
+      MyStrings.arg.receiverName: employee.firstName ?? "-",
     });
   }
 

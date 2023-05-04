@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
+import 'notification_click_helper.dart';
+
 class LocalNotificationService {
   static final FlutterLocalNotificationsPlugin _notificationsPlugin = FlutterLocalNotificationsPlugin();
 
@@ -22,9 +24,10 @@ class LocalNotificationService {
       onSelectNotification: (String? payload) async {
         print("onSelectNotification");
 
-        // if (payload!.isNotEmpty) {
-        //   NotificationClickHelper.goToRoute(payload);
-        // }
+        // when app running click
+        if (payload!.isNotEmpty) {
+          NotificationClickHelper.goToRoute(payload);
+        }
       },
     );
 
@@ -52,9 +55,9 @@ class LocalNotificationService {
       (message) {
         print("FirebaseMessaging.onMessage.listen");
         if (message.notification != null) {
-          print(message.notification?.title);
-          print(message.notification?.body);
-          print("message.data ${message.data}");
+          // print(message.notification?.title);
+          // print(message.notification?.body);
+          // print("message.data ${message.data}");
 
           LocalNotificationService.showNotification(message);
         }
@@ -65,11 +68,11 @@ class LocalNotificationService {
     FirebaseMessaging.onMessageOpenedApp.listen((message) {
       print("FirebaseMessaging.onMessageOpenedApp.listen");
       if (message.notification != null) {
-        print(message.notification?.title);
-        print(message.notification?.body);
-        print("message.data22 ${message.data}");
+        // print(message.notification?.title);
+        // print(message.notification?.body);
+        // print("message.data22 ${message.data}");
 
-        // NotificationClickHelper.goToRoute(jsonEncode(message.data));
+        NotificationClickHelper.goToRoute(jsonEncode(message.data));
       }
     },
     );

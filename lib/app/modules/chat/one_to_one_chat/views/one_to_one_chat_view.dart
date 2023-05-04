@@ -2,6 +2,7 @@ import 'package:mh/app/models/one_to_one_msg.dart';
 
 import '../../../../common/utils/exports.dart';
 import '../../../../common/widgets/custom_appbar.dart';
+import '../../../../common/widgets/custom_appbar_back_button.dart';
 import '../../../../common/widgets/custom_bottombar.dart';
 import '../controllers/one_to_one_chat_controller.dart';
 
@@ -14,10 +15,50 @@ class OneToOneChatView extends GetView<OneToOneChatController> {
 
     return Scaffold(
       // resizeToAvoidBottomInset: false,
-      appBar: CustomAppbar.appbar(
-        title: "Help & Support",
-        context: context,
-        centerTitle: true,
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(54.h),
+        child: Container(
+          decoration: BoxDecoration(boxShadow: [
+            BoxShadow(
+              color: const Color(0XFF000000).withOpacity(.08),
+              offset: Offset(0, 3.h),
+              blurRadius: 10.0,
+            )
+          ]),
+          child: AppBar(
+            backgroundColor: MyColors.lightCard(context),
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.vertical(
+                bottom: Radius.circular(10.0),
+              ),
+            ),
+            elevation: 0,
+            leading: const Align(child: CustomAppbarBackButton()),
+            title: Obx(
+              () => Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    controller.receiverName.isEmpty ? "Help & Support" : controller.receiverName,
+                    style: MyColors.l111111_dwhite(context).semiBold18,
+                  ),
+                  Visibility(
+                      visible: controller.isReceiverOnline.value,
+                      child: Container(
+                        height: 10,
+                        width: 10,
+                        margin: const EdgeInsets.only(left: 5),
+                        decoration: const BoxDecoration(
+                          color: Colors.green,
+                          shape: BoxShape.circle,
+                        ),
+                      )),
+                ],
+              ),
+            ),
+          ),
+        ),
       ),
       // bottomNavigationBar: _bottomBar(context),
       body: Stack(

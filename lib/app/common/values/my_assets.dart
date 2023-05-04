@@ -33,6 +33,8 @@ class MyAssets {
   static const language = "assets/images/language.png";
   static const calender = "assets/images/calender.png";
 
+  static const clientFixedLogo = "assets/images/client_fixed_logo.png";
+
   // position
   static const barista = "assets/icons/positions/barista.png";
   static const chef = "assets/icons/positions/chef.png";

@@ -222,7 +222,7 @@ class EmployeeDetailsView extends GetView<EmployeeDetailsController> {
 
             Row(
               children: [
-                _detailsItem(MyAssets.totalHour, MyStrings.totalHour.tr, "${(controller.employee.rating ?? 0)} H"),
+                _detailsItem(MyAssets.totalHour, MyStrings.totalHour.tr, "${(controller.employee.totalWorkingHour ?? 0)} H"),
                 const Spacer(),
                 _detailsItem(MyAssets.review, MyStrings.review.tr, "1 time"),
               ],
@@ -266,6 +266,12 @@ class EmployeeDetailsView extends GetView<EmployeeDetailsController> {
         title: MyStrings.language.tr,
         child: Column(
           children: [
+            if((controller.employee.languages ?? []).isEmpty)
+              Text(
+                "No Data Found",
+                style: MyColors.l7B7B7B_dtext(controller.context!).regular12,
+              )
+            else
             ...(controller.employee.languages ?? []).map((e) {
               return _data(
                 MyAssets.language,

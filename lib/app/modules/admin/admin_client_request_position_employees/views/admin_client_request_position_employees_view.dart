@@ -114,7 +114,7 @@ class AdminClientRequestPositionEmployeesView extends GetView<AdminClientRequest
                   () => CustomButtons.button(
                     height: 28.w,
                     text: (user.isHired ?? false) ? controller.hireStatus.value
-                        : (controller.adminClientRequestController.requestedEmployees.value.requestEmployees?[controller.adminClientRequestPositionsController.selectedIndex].suggestedEmployeeDetails ?? [])
+                        : (controller.adminHomeController.requestedEmployees.value.requestEmployees?[controller.adminClientRequestPositionsController.selectedIndex].suggestedEmployeeDetails ?? [])
                         .where((element) => element.positionId == controller.clientRequestDetail.positionId).toList().where((element) => element.employeeId == user.id!).isNotEmpty
                         ? "Suggested" : "Suggest",
                     margin: EdgeInsets.zero,

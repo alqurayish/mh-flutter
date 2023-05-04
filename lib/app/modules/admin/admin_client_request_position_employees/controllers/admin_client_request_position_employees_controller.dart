@@ -7,15 +7,15 @@ import '../../../../models/employees_by_id.dart';
 import '../../../../models/requested_employees.dart';
 import '../../../../repository/api_helper.dart';
 import '../../../../routes/app_pages.dart';
-import '../../admin_client_request/controllers/admin_client_request_controller.dart';
 import '../../admin_client_request_positions/controllers/admin_client_request_positions_controller.dart';
+import '../../admin_home/controllers/admin_home_controller.dart';
 
 class AdminClientRequestPositionEmployeesController extends GetxController {
 
   BuildContext? context;
 
   final AppController appController = Get.find();
-  final AdminClientRequestController adminClientRequestController = Get.find();
+  final AdminHomeController adminHomeController = Get.find();
   final AdminClientRequestPositionsController adminClientRequestPositionsController = Get.find();
 
   late ClientRequestDetail clientRequestDetail;
@@ -53,7 +53,7 @@ class AdminClientRequestPositionEmployeesController extends GetxController {
   }
 
   List<SuggestedEmployeeDetail> suggestedEmployees() {
-    return (adminClientRequestController.requestedEmployees.value.requestEmployees?[adminClientRequestPositionsController.selectedIndex].suggestedEmployeeDetails ?? []).where((element) => element.positionId == clientRequestDetail.positionId).toList();
+    return (adminHomeController.requestedEmployees.value.requestEmployees?[adminClientRequestPositionsController.selectedIndex].suggestedEmployeeDetails ?? []).where((element) => element.positionId == clientRequestDetail.positionId).toList();
   }
 
   bool alreadySuggest(String employeeId) {
@@ -67,7 +67,7 @@ class AdminClientRequestPositionEmployeesController extends GetxController {
   }
 
   Future<void> onSuggestClick(Employee employee) async {
-    int total = (adminClientRequestController.requestedEmployees.value.requestEmployees?[adminClientRequestPositionsController.selectedIndex].clientRequestDetails ?? []).firstWhere((element) => element.positionId == clientRequestDetail.positionId).numOfEmployee ?? 0;
+    int total = (adminHomeController.requestedEmployees.value.requestEmployees?[adminClientRequestPositionsController.selectedIndex].clientRequestDetails ?? []).firstWhere((element) => element.positionId == clientRequestDetail.positionId).numOfEmployee ?? 0;
     int suggested = suggestedEmployees().length;
 
     if(total == suggested) {
@@ -81,7 +81,7 @@ class AdminClientRequestPositionEmployeesController extends GetxController {
       CustomLoader.show(context!);
 
       Map<String, dynamic> data = {
-        "id": adminClientRequestController.requestedEmployees.value.requestEmployees![adminClientRequestPositionsController.selectedIndex].id,
+        "id": adminHomeController.requestedEmployees.value.requestEmployees![adminClientRequestPositionsController.selectedIndex].id,
         "employeeIds": [
           employee.id
         ]
@@ -96,7 +96,7 @@ class AdminClientRequestPositionEmployeesController extends GetxController {
         }, (r) async {
 
           if([200, 201].contains(r.statusCode)) {
-            await adminClientRequestController.reloadPage();
+            await adminHomeController.reloadPage();
             CustomLoader.hide(context!);
           }
 

@@ -1,5 +1,6 @@
 import '../../../../common/utils/exports.dart';
 import '../../../../common/widgets/custom_appbar.dart';
+import '../../../../common/widgets/custom_badge.dart';
 import '../../../../common/widgets/custom_feature_box.dart';
 import '../../../../common/widgets/custom_help_support.dart';
 import '../../../../common/widgets/custom_menu.dart';
@@ -21,15 +22,18 @@ class ClientHomeView extends GetView<ClientHomeController> {
           centerTitle: false,
           visibleBack: false,
           actions: [
-            IconButton(
-              onPressed: controller.onNotificationClick,
-              icon: const Icon(
-                Icons.notifications_outlined,
-              ),
-            ),
+            // IconButton(
+            //   onPressed: controller.onNotificationClick,
+            //   icon: const Icon(
+            //     Icons.notifications_outlined,
+            //   ),
+            // ),
             IconButton(
               onPressed: () {
-                CustomMenu.accountMenu(context);
+                CustomMenu.accountMenu(
+                  context,
+                  onProfileTap: controller.onProfileClick,
+                );
               },
               icon: const Icon(
                 Icons.person_outline_rounded,
@@ -131,8 +135,25 @@ class ClientHomeView extends GetView<ClientHomeController> {
 
                 SizedBox(height: 30.h),
 
-                CustomHelpSupport(
-                  onTap: controller.onHelpAndSupportClick,
+                Stack(
+                  children: [
+                    CustomHelpSupport(
+                      onTap: controller.onHelpAndSupportClick,
+                    ),
+
+                    Obx(
+                      () => Positioned(
+                        top: 0,
+                        right: 5,
+                        child: Visibility(
+                          visible: controller.unreadFromAdmin.isNotEmpty,
+                          child: CustomBadge(
+                            controller.unreadFromAdmin.length.toString(),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
 
                 SizedBox(height: 30.h),

@@ -5,8 +5,10 @@ import 'package:mh/app/modules/client/common/shortlist_controller.dart';
 import 'package:mh/app/repository/api_helper.dart';
 
 import '../../../../common/utils/exports.dart';
+import '../../../../enums/chat_with.dart';
 import '../../../../models/check_in_out_histories.dart';
 import '../../../../models/custom_error.dart';
+import '../../../../routes/app_pages.dart';
 import '../models/current_hired_employees.dart';
 import 'package:intl/intl.dart';
 
@@ -227,6 +229,14 @@ class ClientDashboardController extends GetxController {
 
 
     }
+  }
+
+  void chatWithEmployee(HiredHistory hiredHistory) {
+    Get.toNamed(Routes.oneToOneChat, arguments: {
+      MyStrings.arg.chatWith: ChatWith.employee,
+      MyStrings.arg.receiverId: hiredHistory.employeeDetails?.employeeId ?? "",
+      MyStrings.arg.receiverName: hiredHistory.employeeDetails?.name ?? "-",
+    });
   }
 
 

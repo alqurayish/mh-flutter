@@ -1,3 +1,5 @@
+import 'package:mh/app/common/widgets/custom_badge.dart';
+
 import '../../../../common/utils/exports.dart';
 import '../../../../common/widgets/custom_appbar.dart';
 import '../../../../common/widgets/custom_feature_box.dart';
@@ -70,10 +72,27 @@ class AdminHomeView extends GetView<AdminHomeController> {
                             SizedBox(width: 24.w),
 
                             Expanded(
-                              child: CustomFeatureBox(
-                                title: "Request",
-                                icon: MyAssets.request,
-                                onTap: controller.onRequestClick,
+                              child: Obx(
+                                () => Stack(
+                                  clipBehavior: Clip.none,
+                                  children: [
+                                    CustomFeatureBox(
+                                      title: "Request",
+                                      icon: MyAssets.request,
+                                      loading: controller.loading.value,
+                                      onTap: controller.onRequestClick,
+                                    ),
+
+                                    Positioned(
+                                      top: 4,
+                                      right: 5,
+                                      child: Visibility(
+                                        visible: controller.getTotalSuggestLeft > 0,
+                                        child: CustomBadge(controller.getTotalSuggestLeft.toString()),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ],
@@ -84,20 +103,50 @@ class AdminHomeView extends GetView<AdminHomeController> {
                         Row(
                           children: [
                             Expanded(
-                              child: CustomFeatureBox(
-                                title: MyStrings.employees.tr,
-                                icon: MyAssets.myEmployees,
-                                onTap: controller.onEmployeeClick,
+                              child: Obx(
+                                () => Stack(
+                                  children: [
+                                    CustomFeatureBox(
+                                      title: MyStrings.employees.tr,
+                                      icon: MyAssets.myEmployees,
+                                      onTap: controller.onEmployeeClick,
+                                    ),
+
+                                    Positioned(
+                                      top: 4,
+                                      right: 5,
+                                      child: Visibility(
+                                        visible: controller.unreadFromEmployee.isNotEmpty,
+                                        child: CustomBadge(controller.unreadFromEmployee.length.toString()),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
 
                             SizedBox(width: 24.w),
 
                             Expanded(
-                              child: CustomFeatureBox(
-                                title: "Client",
-                                icon: MyAssets.kitchenPorter,
-                                onTap: controller.onClientClick,
+                              child: Obx(
+                                () => Stack(
+                                  children: [
+                                    CustomFeatureBox(
+                                      title: "Client",
+                                      icon: MyAssets.kitchenPorter,
+                                      onTap: controller.onClientClick,
+                                    ),
+
+                                    Positioned(
+                                      top: 4,
+                                      right: 5,
+                                      child: Visibility(
+                                        visible: controller.unreadFromClient.isNotEmpty,
+                                        child: CustomBadge(controller.unreadFromClient.length.toString()),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ],

@@ -4,6 +4,7 @@ import '../models/address_to_lat_lng.dart';
 import '../models/check_in_out_histories.dart';
 import '../models/client_details.dart';
 import '../models/commons.dart';
+import '../models/employee_full_details.dart';
 import '../models/employees_by_id.dart';
 import '../models/lat_long_to_address.dart';
 import '../models/one_to_one_msg.dart';
@@ -15,6 +16,7 @@ import '../modules/auth/register/models/client_register.dart';
 import '../modules/auth/register/models/client_register_response.dart';
 import '../modules/auth/register/models/employee_registration.dart';
 import '../modules/client/client_dashboard/models/current_hired_employees.dart';
+import '../modules/client/client_self_profile/model/client_profile_update.dart';
 import '../modules/client/client_shortlisted/models/shortlisted_employees.dart' as shortlistEmployees;
 import '../modules/client/client_terms_condition_for_hire/models/terms_condition_for_hire.dart';
 import '../modules/employee/employee_home/models/today_check_in_out_details.dart';
@@ -112,4 +114,8 @@ abstract class ApiHelper {
   EitherModel<OneToOneMsg> getMsg(String senderId, String receiverId);
 
   EitherModel<Response> sendMsg(Map<String, dynamic> data);
+
+  EitherModel<EmployeeFullDetails> employeeFullDetails(String id);
+
+  EitherModel<ClientRegistrationResponse> updateClientProfile(ClientProfileUpdate clientProfileUpdate);
 }

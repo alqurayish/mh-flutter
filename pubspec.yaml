@@ -1,5 +1,5 @@
 name: mh
-version: 1.0.2+6
+version: 1.0.3+7
 publish_to: none
 description: A new Flutter project.
 environment:
@@ -76,10 +76,11 @@ dependencies:
   socket_io_client: ^2.0.1
 
   firebase_core: any
-  firebase_crashlytics: ^3.1.0
-  firebase_in_app_messaging: ^0.7.1
-  firebase_messaging: ^14.4.0
+  firebase_crashlytics: ^3.1.2
+  firebase_in_app_messaging: ^0.7.1+1
+  firebase_messaging: ^14.4.1
   flutter_local_notifications: ^9.7.0
+  cloud_firestore: ^4.5.3
   device_info_plus: ^8.2.0
 
   flutter:

@@ -17,7 +17,7 @@ class HireStatusView extends GetView<HireStatusController> {
               children: [
                 Lottie.asset(MyAssets.lottie.registrationDone),
                 Text(
-                  "Request Successfully",
+                  "Payment Successfully",
                   style: MyColors.l111111_dwhite(context).semiBold22,
                 ),
                 SizedBox(height: 15.h),

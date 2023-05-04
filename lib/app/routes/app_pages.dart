@@ -45,6 +45,8 @@ import '../modules/client/client_payment_and_invoice/bindings/client_payment_and
 import '../modules/client/client_payment_and_invoice/views/client_payment_and_invoice_view.dart';
 import '../modules/client/client_request_for_employee/bindings/client_request_for_employee_binding.dart';
 import '../modules/client/client_request_for_employee/views/client_request_for_employee_view.dart';
+import '../modules/client/client_self_profile/bindings/client_self_profile_binding.dart';
+import '../modules/client/client_self_profile/views/client_self_profile_view.dart';
 import '../modules/client/client_shortlisted/bindings/client_shortlisted_binding.dart';
 import '../modules/client/client_shortlisted/views/client_shortlisted_view.dart';
 import '../modules/client/client_suggested_employees/bindings/client_suggested_employees_binding.dart';
@@ -71,6 +73,8 @@ import '../modules/employee/employee_home/bindings/employee_home_binding.dart';
 import '../modules/employee/employee_home/views/employee_home_view.dart';
 import '../modules/employee/employee_register_success/bindings/employee_register_success_binding.dart';
 import '../modules/employee/employee_register_success/views/employee_register_success_view.dart';
+import '../modules/employee/employee_self_profile/bindings/employee_self_profile_binding.dart';
+import '../modules/employee/employee_self_profile/views/employee_self_profile_view.dart';
 import '../modules/map/restaurant_location/bindings/restaurant_location_binding.dart';
 import '../modules/map/restaurant_location/views/restaurant_location_view.dart';
 import '../modules/splash/bindings/splash_binding.dart';
@@ -247,6 +251,14 @@ class AppPages {
       ],
     ),
     GetPage(
+      name: _Paths.clientSelfProfile,
+      page: () => const ClientSelfProfileView(),
+      binding: ClientSelfProfileBinding(),
+      middlewares: [
+        AuthMiddleware(),
+      ],
+    ),
+    GetPage(
       name: _Paths.clientNotification,
       page: () => const ClientNotificationView(),
       binding: ClientNotificationBinding(),
@@ -305,6 +317,14 @@ class AppPages {
       name: _Paths.employeeRegisterSuccess,
       page: () => const EmployeeRegisterSuccessView(),
       binding: EmployeeRegisterSuccessBinding(),
+    ),
+    GetPage(
+      name: _Paths.employeeSelfProfile,
+      page: () => const EmployeeSelfProfileView(),
+      binding: EmployeeSelfProfileBinding(),
+      middlewares: [
+        AuthMiddleware(),
+      ],
     ),
     GetPage(
       name: _Paths.termsAndCondition,

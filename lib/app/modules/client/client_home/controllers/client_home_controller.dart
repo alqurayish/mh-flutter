@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import '../../../../common/controller/app_controller.dart';
 import '../../../../common/utils/exports.dart';
 import '../../../../common/widgets/client_help_option.dart';
@@ -19,8 +21,14 @@ class ClientHomeController extends GetxController {
 
   Rx<RequestedEmployees> requestedEmployees = RequestedEmployees().obs;
 
+  // unread msg track
+  CollectionReference onUnreadCollection = FirebaseFirestore.instance.collection('unreadMsg');
+  RxList<dynamic> unreadFromAdmin = [].obs;
+  RxList<dynamic> unreadFromEmployee = [].obs;
+
   @override
   void onInit() {
+    _trackUnreadMsg();
     _fetchRequestEmployees();
     super.onInit();
   }
@@ -47,12 +55,19 @@ class ClientHomeController extends GetxController {
 
   @override
   void onHelpAndSupportClick() {
-    ClientHelpOption.show(context!);
+    ClientHelpOption.show(
+      context!,
+      msgFromAdmin: unreadFromAdmin.length,
+    );
   }
 
   @override
   void onNotificationClick() {
     Get.toNamed(Routes.clientNotification);
+  }
+
+  void onProfileClick() {
+    Get.toNamed(Routes.clientSelfProfile);
   }
 
   @override
@@ -141,6 +156,17 @@ class ClientHomeController extends GetxController {
       },
     );
 
+  }
+
+  void _trackUnreadMsg() {
+    onUnreadCollection.doc(appController.user.value.userId).snapshots().listen((DocumentSnapshot doc) {
+      Map<String, dynamic> data = doc.data()! as Map<String, dynamic>;
+      unreadFromAdmin.value = data["admin"];
+      unreadFromEmployee.value = data["employee"];
+
+      unreadFromAdmin.refresh();
+      unreadFromEmployee.refresh();
+    });
   }
 
 }

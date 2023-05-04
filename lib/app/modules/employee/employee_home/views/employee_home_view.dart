@@ -3,6 +3,7 @@ import 'package:slide_to_act/slide_to_act.dart';
 
 import '../../../../common/utils/exports.dart';
 import '../../../../common/widgets/custom_appbar.dart';
+import '../../../../common/widgets/custom_badge.dart';
 import '../../../../common/widgets/custom_feature_box.dart';
 import '../../../../common/widgets/custom_help_support.dart';
 import '../../../../common/widgets/custom_menu.dart';
@@ -24,15 +25,18 @@ class EmployeeHomeView extends GetView<EmployeeHomeController> {
           centerTitle: false,
           visibleBack: false,
           actions: [
-            IconButton(
-              onPressed: controller.onNotificationClick,
-              icon: const Icon(
-                Icons.notifications_outlined,
-              ),
-            ),
+            // IconButton(
+            //   onPressed: controller.onNotificationClick,
+            //   icon: const Icon(
+            //     Icons.notifications_outlined,
+            //   ),
+            // ),
             IconButton(
               onPressed: () {
-                CustomMenu.accountMenu(context);
+                CustomMenu.accountMenu(
+                  context,
+                  onProfileTap: controller.onProfileClick,
+                );
               },
               icon: const Icon(
                 Icons.person_outline_rounded,
@@ -58,9 +62,11 @@ class EmployeeHomeView extends GetView<EmployeeHomeController> {
 
                           children: [
                             SizedBox(height: 29.h),
-                            _restaurantName(MyStrings.hiRestaurant.trParams({
-                              "restaurantName": controller.appController.user.value.client?.restaurantName ?? "owner of the",
-                            })),
+                            // _restaurantName(MyStrings.hiRestaurant.trParams({
+                            //   "restaurantName": controller.appController.user.value.client?.restaurantName ?? "owner of the",
+                            // })),
+                            _restaurantName("Hi, ${controller.appController.user.value.employee?.name ?? "-"}"),
+
                             SizedBox(height: 20.h),
 
                             _promotionText,
@@ -114,10 +120,25 @@ class EmployeeHomeView extends GetView<EmployeeHomeController> {
 
                             SizedBox(height: 30.h),
 
-                            CustomHelpSupport(
-                              onTap: controller.onHelpAndSupportClick,
+                            Stack(
+                              children: [
+                                CustomHelpSupport(
+                                  onTap: controller.onHelpAndSupportClick,
+                                ),
+                                Obx(
+                                  () => Positioned(
+                                    top: 0,
+                                    right: 5,
+                                    child: Visibility(
+                                      visible: (controller.unreadFromAdmin.length + controller.unreadFromClient.length) > 0,
+                                      child: CustomBadge(
+                                        (controller.unreadFromAdmin.length + controller.unreadFromClient.length).toString(),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-
                           ],
                         ),
                       ),

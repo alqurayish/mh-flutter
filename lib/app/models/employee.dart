@@ -8,6 +8,8 @@ class Employee {
     this.userIdNumber,
     this.phoneNumber,
     this.role,
+    this.profilePicture,
+    this.cv,
     this.verified,
     this.active,
     this.employee,
@@ -45,6 +47,8 @@ class Employee {
   final String? userIdNumber;
   final String? phoneNumber;
   final String? role;
+  final String? profilePicture;
+  final String? cv;
   final bool? verified;
   final bool? active;
   final bool? employee;
@@ -86,6 +90,8 @@ class Employee {
     userIdNumber: json["userIdNumber"],
     phoneNumber: json["phoneNumber"],
     role: json["role"],
+    profilePicture: json["profilePicture"],
+    cv: json["cv"],
     verified: json["verified"],
     active: json["active"],
     employee: json["employee"],
@@ -124,6 +130,8 @@ class Employee {
     "userIdNumber": userIdNumber,
     "phoneNumber": phoneNumber,
     "role": role,
+    "profilePicture": profilePicture,
+    "cv": cv,
     "verified": verified,
     "active": active,
     "employee": employee,

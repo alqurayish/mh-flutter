@@ -6,7 +6,10 @@ import '../controller/app_controller.dart';
 import '../utils/exports.dart';
 
 class CustomMenu {
-  static accountMenu(BuildContext context) {
+  static accountMenu(
+    BuildContext context, {
+    Function()? onProfileTap,
+  }) {
     showMaterialModalBottomSheet(
       context: context,
       builder: (context) => Container(
@@ -14,6 +17,14 @@ class CustomMenu {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            _menuItem(
+              context,
+              [UserType.client, UserType.employee],
+              Icons.person,
+              "Profile",
+              onProfileTap ?? () {},
+            ),
+            const Divider(height: 1),
             _menuItem(
               context,
               [UserType.client, UserType.employee, UserType.admin],

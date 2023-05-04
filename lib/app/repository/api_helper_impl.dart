@@ -7,6 +7,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:mh/app/models/address_to_lat_lng.dart';
 import 'package:mh/app/models/check_in_out_histories.dart';
 import 'package:mh/app/models/lat_long_to_address.dart';
+import 'package:mh/app/modules/client/client_self_profile/model/client_profile_update.dart';
 import 'package:mh/app/modules/employee/employee_home/models/today_check_in_out_details.dart';
 
 import '../common/controller/app_error_controller.dart';
@@ -18,6 +19,7 @@ import '../enums/error_from.dart';
 import '../models/client_details.dart';
 import '../models/commons.dart';
 import '../models/custom_error.dart';
+import '../models/employee_full_details.dart';
 import '../models/employees_by_id.dart';
 import '../models/one_to_one_msg.dart';
 import '../models/requested_employees.dart' as requested_employees;
@@ -104,8 +106,6 @@ class ApiHelperImpl extends GetConnect with ApiHelper {
           msg: "Server Error",
         ));
       }
-
-      print("overload");
 
       Either<CustomError, Response> hasError = ApiErrorHandle.checkError(response);
 
@@ -314,7 +314,7 @@ class ApiHelperImpl extends GetConnect with ApiHelper {
     String? requestType,
     bool? active,
   }) async {
-    String url = "users?requestType=$requestType";
+    String url = "users?skipLimit=YES&requestType=$requestType";
 
     if ((positionId ?? "").isNotEmpty) url += "&positionId=$positionId";
     if ((rating ?? "").isNotEmpty) url += "&rating=$rating";
@@ -690,6 +690,34 @@ class ApiHelperImpl extends GetConnect with ApiHelper {
       response,
           (Map<String, dynamic> data) {},
       onlyErrorCheck: true,
+    ).fold((l) => left(l), (r) => right(r));
+  }
+
+  @override
+  EitherModel<EmployeeFullDetails> employeeFullDetails(String id) async {
+    String url = "users/$id";
+
+    var response = await get(url);
+    if (response.statusCode == null) response = await get(url);
+    if (response.statusCode == null) response = await get(url);
+    if (response.statusCode == null) response = await get(url);
+
+    return _convert<EmployeeFullDetails>(
+      response,
+      EmployeeFullDetails.fromJson,
+    ).fold((l) => left(l), (r) => right(r));
+  }
+
+  @override
+  EitherModel<ClientRegistrationResponse> updateClientProfile(ClientProfileUpdate clientProfileUpdate) async {
+    var response = await put("users/update-client", jsonEncode(clientProfileUpdate.toJson));
+    if(response.statusCode == null) response = await put("users/update-client", jsonEncode(clientProfileUpdate.toJson));
+    if(response.statusCode == null) response = await put("users/update-client", jsonEncode(clientProfileUpdate.toJson));
+    if(response.statusCode == null) response = await put("users/update-client", jsonEncode(clientProfileUpdate.toJson));
+
+    return _convert<ClientRegistrationResponse>(
+      response,
+      ClientRegistrationResponse.fromJson,
     ).fold((l) => left(l), (r) => right(r));
   }
 

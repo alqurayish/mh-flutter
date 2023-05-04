@@ -78,4 +78,5 @@ class MyColors {
   static const Color c_FEC9A3 = Color(0xffFEC9A3);
   static Color c_FF5029_10 = const Color(0xffFF5029).withOpacity(.1);
   static const Color c_F6F6F6 = Color(0xffF6F6F6);
+  static const Color c_909090 = Color(0xff909090);
 }
