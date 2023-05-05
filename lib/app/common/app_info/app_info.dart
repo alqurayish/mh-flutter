@@ -6,10 +6,10 @@ class AppInfo {
 
   static const String appName = "Mirco Hospitality";
 
-  static const String version = "1.0.3";
+  static const String version = "1.0.4";
 
   /// it must change [releaseMode] when release
-  static const ReleaseMode releaseMode = ReleaseMode.debug;
+  static const ReleaseMode releaseMode = ReleaseMode.release;
 
   /// change [serverUrl] based on testing
   static const ServerUrl serverUrl = ServerUrl.production;

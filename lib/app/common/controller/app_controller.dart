@@ -95,7 +95,7 @@ class AppController extends GetxService {
     activeShortlistService();
     user.value.userType = UserType.guest;
 
-    Get.offAllNamed(Routes.employeeRegisterSuccess);
+    Get.offNamed(Routes.employeeRegisterSuccess);
   }
 
   Future<void> afterSuccessLogin(String token) async {
