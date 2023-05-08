@@ -30,6 +30,8 @@
 	<true/>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>We need you location for check you are in correct place</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>We need you location for check you are in correct place</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>We use Photo Library to take user profile photos.</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
