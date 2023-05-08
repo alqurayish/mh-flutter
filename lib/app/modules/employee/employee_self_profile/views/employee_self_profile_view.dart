@@ -19,7 +19,7 @@ class EmployeeSelfProfileView extends GetView<EmployeeSelfProfileController> {
     return Scaffold(
       backgroundColor: MyColors.lFAFAFA_dframeBg(context),
       appBar: CustomAppbar.appbar(title: "My Profile", context: context),
-      bottomNavigationBar: _bottomBar(context),
+      // bottomNavigationBar: _bottomBar(context),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(21, 0, 21, 20),
@@ -95,7 +95,7 @@ class EmployeeSelfProfileView extends GetView<EmployeeSelfProfileController> {
                         value: e,
                         child: Text(
                           e,
-                          style: MyColors.l111111_dwhite(context).regular12,
+                          style: MyColors.l111111_dwhite(context).regular14,
                         ),
                       );
                     }).toList(),
@@ -189,9 +189,11 @@ class EmployeeSelfProfileView extends GetView<EmployeeSelfProfileController> {
               width: 2.5,
               color: MyColors.c_C6A34F,
             )),
-        child: CustomNetworkImage(
-          url: (controller.employee.value.details?.profilePicture ?? "").imageUrl,
-          radius: 130,
+        child: Obx(
+          () => CustomNetworkImage(
+            url: (controller.employee.value.details?.profilePicture ?? "").imageUrl,
+            radius: 130,
+          ),
         ),
       ),
       const Spacer(),
@@ -204,7 +206,7 @@ class EmployeeSelfProfileView extends GetView<EmployeeSelfProfileController> {
     required String fieldName,
     TextEditingController? textEditingController,
     String? Function(String?)? validator,
-    bool readOnly = false,
+    bool readOnly = true,
     GestureTapCallback? onTap,
     Function()? onSuffixPressed,
     Widget? child,

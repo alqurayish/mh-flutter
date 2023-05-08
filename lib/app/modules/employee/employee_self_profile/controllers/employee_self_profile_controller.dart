@@ -56,6 +56,16 @@ class EmployeeSelfProfileController extends GetxController {
       }, (r) {
         employee.value = r;
         employee.refresh();
+
+        tecFirstName.text = employee.value.details?.firstName ?? "";
+        tecLastName.text = employee.value.details?.lastName ?? "";
+        tecDob.text = employee.value.details?.dateOfBirth == null ? "" : employee.value.details!.dateOfBirth.toString().split(" ").first;
+        tecPhoneNumber.text = employee.value.details?.phoneNumber ?? "";
+        tecEmail.text = employee.value.details?.email ?? "";
+        tecPresentAddress.text = employee.value.details?.presentAddress ?? "";
+        tecPermanentAddress.text = employee.value.details?.permanentAddress ?? "";
+        tecEmergencyContact.text = employee.value.details?.phoneNumber ?? "";
+
       });
 
     });
