@@ -40,6 +40,10 @@ class Validators {
     return (value ?? "").trim().isEmpty ? msg : null;
   }
 
+  static firstNameLastNameValidator(String? value, String formatInvalidMsg, String emptyMsg) {
+    return emptyValidator(value, emptyMsg) == null ? (RegExp(r'^[A-Za-z.]+$').hasMatch((value ?? "").trim())) ? null : formatInvalidMsg : emptyMsg;
+  }
+
   // static String? termsAndConditionValidator(bool isAcceptedCondition) {
   //   return isAcceptedCondition
   //       ? null
