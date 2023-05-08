@@ -433,8 +433,9 @@ class RegisterView extends GetView<RegisterController> {
               controller: controller.tecEmployeeFirstName,
               label: MyStrings.firstName.tr,
               prefixIcon: Icons.person,
-              validator: (String? value) => Validators.emptyValidator(
+              validator: (String? value) => Validators.firstNameLastNameValidator(
                 value,
+                "Only letters and . allowed",
                 MyStrings.required.tr,
               ),
             ),
@@ -445,8 +446,9 @@ class RegisterView extends GetView<RegisterController> {
               controller: controller.tecEmployeeLastName,
               label: MyStrings.lastName.tr,
               prefixIcon: Icons.person,
-              validator: (String? value) => Validators.emptyValidator(
+              validator: (String? value) => Validators.firstNameLastNameValidator(
                 value,
+                "Only letters and . allowed",
                 MyStrings.required.tr,
               ),
             ),
