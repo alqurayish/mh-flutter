@@ -19,7 +19,7 @@ class CustomMenu {
           children: [
             _menuItem(
               context,
-              [UserType.client],
+              [UserType.client, UserType.employee,],
               Icons.person,
               "Profile",
               onProfileTap ?? () {},
