@@ -18,9 +18,10 @@ class AdminHomeController extends GetxController {
   Rx<RequestedEmployees> requestedEmployees = RequestedEmployees().obs;
 
   // unread msg track
-  CollectionReference onUnreadCollection = FirebaseFirestore.instance.collection('unreadMsg');
-  RxList<dynamic> unreadFromClient = [].obs;
-  RxList<dynamic> unreadFromEmployee = [].obs;
+  RxInt unreadMsgFromEmployee = 0.obs;
+  RxInt unreadMsgFromClient = 0.obs;
+
+  RxList<String> chatUserIds = <String>[].obs;
 
   @override
   void onInit() {
@@ -91,13 +92,26 @@ class AdminHomeController extends GetxController {
   }
 
   void _trackUnreadMsg() {
-    onUnreadCollection.doc(appController.user.value.userId).snapshots().listen((DocumentSnapshot doc) {
-      Map<String, dynamic> data = doc.data()! as Map<String, dynamic>;
-      unreadFromClient.value = data["client"];
-      unreadFromEmployee.value = data["employee"];
 
-      unreadFromClient.refresh();
-      unreadFromEmployee.refresh();
+    FirebaseFirestore.instance.collection('support_chat').where("allAdmin_unread", isGreaterThan: 0).snapshots().listen((QuerySnapshot<Map<String, dynamic>> event) {
+
+      unreadMsgFromEmployee.value = 0;
+      unreadMsgFromClient.value = 0;
+      chatUserIds.clear();
+
+      for (QueryDocumentSnapshot<Map<String, dynamic>> element in event.docs) {
+        Map<String, dynamic> data = element.data();
+        if(data["role"] == "CLIENT") {
+          unreadMsgFromClient.value += data["allAdmin_unread"] as int;
+        }
+        else if(data["role"] == "EMPLOYEE") {
+          unreadMsgFromEmployee.value += data["allAdmin_unread"] as int;
+        }
+
+        chatUserIds.add(element.id);
+      }
+
+      chatUserIds.refresh();
     });
   }
 }

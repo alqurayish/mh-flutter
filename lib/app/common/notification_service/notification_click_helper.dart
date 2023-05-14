@@ -11,16 +11,21 @@ class NotificationClickHelper {
     if(payload != null) {
       Map<String, dynamic> data = jsonDecode(payload);
 
-      if (data["click_action"] == "ONE_TO_ONE_CHAT") {
-        // Utils.navigatorKey.currentState?.pushNamed(
-        //     Routes.singleBillDetails,
-        //     arguments: data["id"]
-        // );
-
-        Get.toNamed(Routes.oneToOneChat, arguments: {
-          MyStrings.arg.chatWith: data["chat_with"] == "ADMIN" ? ChatWith.admin : data["chat_with"] == "CLIENT" ? ChatWith.client : ChatWith.employee,
-          MyStrings.arg.receiverId: data["send_from"],
-          MyStrings.arg.receiverName: data["sender_name"],
+      if (data["click_action"] == MyStrings.payloadScreen.clientEmployeeChat) {
+        Get.toNamed(Routes.clientEmployeeChat, arguments: {
+          MyStrings.arg.receiverName: data[MyStrings.arg.receiverName],
+          MyStrings.arg.fromId: data[MyStrings.arg.fromId],
+          MyStrings.arg.toId: data[MyStrings.arg.toId],
+          MyStrings.arg.clientId: data[MyStrings.arg.clientId],
+          MyStrings.arg.employeeId: data[MyStrings.arg.employeeId],
+        });
+      }
+      else if (data["click_action"] == MyStrings.payloadScreen.supportChat) {
+        Get.toNamed(Routes.supportChat, arguments: {
+          MyStrings.arg.receiverName: data[MyStrings.arg.receiverName],
+          MyStrings.arg.fromId: data[MyStrings.arg.fromId],
+          MyStrings.arg.toId: data[MyStrings.arg.toId],
+          MyStrings.arg.supportChatDocId: data[MyStrings.arg.supportChatDocId],
         });
       }
     } else {

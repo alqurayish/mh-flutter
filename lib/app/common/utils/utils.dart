@@ -148,6 +148,7 @@ class Utils {
       employeeBreakTime: "-",
       workingHour: "-",
       amount: "-",
+      totalWorkingTimeInMinute: 0,
     );
 
     DateTime? employeeCheckin = element.checkInCheckOutDetails?.checkInTime;
@@ -195,6 +196,7 @@ class Utils {
 
     // working time and amount
     if(tempWorkingTimeInMinute != null) {
+      dailyStatistics.totalWorkingTimeInMinute = tempWorkingTimeInMinute;
       dailyStatistics.workingHour = minuteToHour(tempWorkingTimeInMinute);
       dailyStatistics.amount = ((tempWorkingTimeInMinute / 60) * (element.employeeDetails?.hourlyRate ?? 0)).toStringAsFixed(1);
     }

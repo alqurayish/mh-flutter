@@ -44,9 +44,8 @@ class EmployeeHomeController extends GetxController {
   Rx<TodayCheckInOutDetails> todayCheckInOutDetails = TodayCheckInOutDetails().obs;
 
   // unread msg track
-  CollectionReference onUnreadCollection = FirebaseFirestore.instance.collection('unreadMsg');
-  RxList<dynamic> unreadFromAdmin = [].obs;
-  RxList<dynamic> unreadFromClient = [].obs;
+  RxInt unreadMsgFromClient = 0.obs;
+  RxInt unreadMsgFromAdmin = 0.obs;
 
   @override
   void onInit() {
@@ -70,8 +69,8 @@ class EmployeeHomeController extends GetxController {
   void onHelpAndSupportClick() {
     ChatWithUserChoose.show(
       context!,
-      msgFromAdmin: unreadFromAdmin.length,
-      msgFromClient: unreadFromClient.length,
+      msgFromAdmin: unreadMsgFromAdmin.value,
+      msgFromClient: unreadMsgFromClient.value,
     );
   }
 
@@ -87,28 +86,23 @@ class EmployeeHomeController extends GetxController {
   void chatWithAdmin() {
     Get.back(); // hide dialogue
 
-    Get.toNamed(Routes.oneToOneChat, arguments: {
-      MyStrings.arg.chatWith: ChatWith.admin,
+    Get.toNamed(Routes.supportChat, arguments: {
+      MyStrings.arg.fromId: appController.user.value.userId,
+      MyStrings.arg.toId: "allAdmin",
+      MyStrings.arg.supportChatDocId: appController.user.value.userId,
+      MyStrings.arg.receiverName: "Support",
     });
   }
 
   void chatWithClient() {
     Get.back(); // hide dialogue
 
-    Get.toNamed(Routes.oneToOneChat, arguments: {
-      MyStrings.arg.chatWith: ChatWith.employee,
-      MyStrings.arg.receiverId: appController.user.value.employee?.hiredBy ?? "",
+    Get.toNamed(Routes.clientEmployeeChat, arguments: {
       MyStrings.arg.receiverName: appController.user.value.employee?.hiredByRestaurantName ?? "-",
-    });
-  }
-
-  void chatWithRestaurant() {
-    Get.back(); // hide dialogue
-
-    Get.toNamed(Routes.oneToOneChat, arguments: {
-      MyStrings.arg.chatWith: ChatWith.client,
-      MyStrings.arg.receiverId: appController.user.value.employee?.hiredBy ?? "",
-      MyStrings.arg.receiverName: appController.user.value.employee?.hiredByRestaurantName ?? "-",
+      MyStrings.arg.fromId: appController.user.value.userId,
+      MyStrings.arg.toId: appController.user.value.employee?.hiredBy ?? "",
+      MyStrings.arg.clientId: appController.user.value.employee?.hiredBy ?? "",
+      MyStrings.arg.employeeId: appController.user.value.userId,
     });
   }
 
@@ -274,14 +268,21 @@ class EmployeeHomeController extends GetxController {
   );
 
   void _trackUnreadMsg() {
-    onUnreadCollection.doc(appController.user.value.userId).snapshots().listen((DocumentSnapshot doc) {
-      Map<String, dynamic> data = doc.data()! as Map<String, dynamic>;
-      unreadFromAdmin.value = data["admin"];
-      unreadFromClient.value = data["client"];
+    if(appController.user.value.employee?.isHired ?? false) {
+      FirebaseFirestore.instance.collection('employee_client_chat').where("employeeId", isEqualTo: appController.user.value.userId).where("clientId", isEqualTo: appController.user.value.employee!.hiredBy!).snapshots().listen((QuerySnapshot<Map<String, dynamic>> event) {
+        Map<String, dynamic> data = event.docs.first.data();
 
-      unreadFromAdmin.refresh();
-      unreadFromClient.refresh();
+        unreadMsgFromClient.value = data["${appController.user.value.userId}_unread"];
+      });
+    }
+
+    FirebaseFirestore.instance.collection('support_chat').doc(appController.user.value.userId).snapshots().listen((event) {
+      if(event.exists) {
+        Map<String, dynamic> data = event.data()!;
+        unreadMsgFromAdmin.value = data["${appController.user.value.userId}_unread"];
+      }
     });
+
   }
 
 }

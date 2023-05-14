@@ -130,9 +130,9 @@ class EmployeeHomeView extends GetView<EmployeeHomeController> {
                                     top: 0,
                                     right: 5,
                                     child: Visibility(
-                                      visible: (controller.unreadFromAdmin.length + controller.unreadFromClient.length) > 0,
+                                      visible: (controller.unreadMsgFromClient.value + controller.unreadMsgFromAdmin.value) > 0,
                                       child: CustomBadge(
-                                        (controller.unreadFromAdmin.length + controller.unreadFromClient.length).toString(),
+                                        (controller.unreadMsgFromClient.value + controller.unreadMsgFromAdmin.value).toString(),
                                       ),
                                     ),
                                   ),

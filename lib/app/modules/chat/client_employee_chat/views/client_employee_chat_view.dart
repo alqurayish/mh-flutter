@@ -1,20 +1,19 @@
-import 'package:mh/app/models/one_to_one_msg.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../../../../common/utils/exports.dart';
-import '../../../../common/widgets/custom_appbar.dart';
 import '../../../../common/widgets/custom_appbar_back_button.dart';
 import '../../../../common/widgets/custom_bottombar.dart';
-import '../controllers/one_to_one_chat_controller.dart';
+import '../controllers/client_employee_chat_controller.dart';
 
-class OneToOneChatView extends GetView<OneToOneChatController> {
-  const OneToOneChatView({Key? key}) : super(key: key);
+class ClientEmployeeChatView extends GetView<ClientEmployeeChatController> {
+  const ClientEmployeeChatView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+
     controller.context = context;
 
     return Scaffold(
-      // resizeToAvoidBottomInset: false,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(54.h),
         child: Container(
@@ -40,7 +39,7 @@ class OneToOneChatView extends GetView<OneToOneChatController> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    controller.receiverName.isEmpty ? "Help & Support" : controller.receiverName,
+                    controller.receiverName,
                     style: MyColors.l111111_dwhite(context).semiBold18,
                   ),
                   Visibility(
@@ -60,21 +59,76 @@ class OneToOneChatView extends GetView<OneToOneChatController> {
           ),
         ),
       ),
-      // bottomNavigationBar: _bottomBar(context),
       body: Stack(
         children: [
           Obx(
-            () => ListView.builder(
-              itemCount: controller.msg.length,
-              padding: const EdgeInsets.symmetric(vertical: 10),
-              reverse: true,
-              shrinkWrap: true,
-              itemBuilder: (context, index) {
-                return _msg(index, controller.msg[index], index == 0);
+            () => controller.loading.value
+                ? const Center(
+                    child: CircularProgressIndicator(
+                      color: MyColors.c_C6A34F,
+                    ),
+                  )
+                :
+            StreamBuilder<QuerySnapshot>(
+              stream: controller.massageCollection.orderBy('time').snapshots(),
+              builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                if (snapshot.hasError) {
+                  return const Center(child: Text('Something went wrong'));
+                }
+
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  const Center(
+                    child: CircularProgressIndicator(
+                      color: MyColors.c_C6A34F,
+                    ),
+                  );
+                }
+
+                if((snapshot.data?.docs ?? []).isEmpty) {
+                  return Center(
+                    child: Text("No Massage", style: MyColors.text.regular14,),
+                  );
+                }
+
+                      return ListView.builder(
+                        controller: controller.scrollController,
+                        itemCount: (snapshot.data?.docs ?? []).length,
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        // reverse: true,
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          Map<String, dynamic> data = snapshot.data!.docs[index].data()! as Map<String, dynamic>;
+
+                          double topMargin = 0;
+
+                          if(index > 0) {
+                            Map<String, dynamic> previousData = snapshot.data!.docs[index - 1].data()! as Map<String, dynamic>;
+                            if(previousData["fromId"] != data["fromId"]) {
+                              topMargin = 20;
+                            }
+                          }
+
+                          WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+                            controller.scrollController.animateTo(
+                              controller.scrollController.position.maxScrollExtent,
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.easeOut,
+                            );
+                          });
+
+                          return _msg(
+                            fromId: data["fromId"],
+                            text: data["text"],
+                            lastItem: (snapshot.data?.docs ?? []).length - 1 == index,
+                            topMargin: topMargin,
+                          );
+                        },
+                      );
+
               },
             ),
-          ),
 
+          ),
           Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
@@ -90,7 +144,7 @@ class OneToOneChatView extends GetView<OneToOneChatController> {
                           decoration: BoxDecoration(
                             boxShadow: const [
                               BoxShadow(
-                                color: Color.fromRGBO(8, 56, 73, 0.5)
+                                  color: Color.fromRGBO(8, 56, 73, 0.5)
                               ),
                               BoxShadow(
                                 offset: Offset(0, .5),
@@ -152,21 +206,19 @@ class OneToOneChatView extends GetView<OneToOneChatController> {
     );
   }
 
-
-  OutlineInputBorder get deco => const OutlineInputBorder(
-        borderRadius: BorderRadius.all(
-          Radius.circular(50.0),
-        ),
-      );
-
-  Widget _msg(int index, Message msg, bool lastItem) {
+  Widget _msg({
+    required String fromId,
+    required String text,
+    required bool lastItem,
+    required double topMargin,
+  }) {
     return Column(
       children: [
         // _msgDate(msg.createdAt!),
 
-        msg.senderId == controller.senderId
-            ? _senderMsg(index, msg.text ?? "-")
-            : _receiverMsg(index, msg.text ?? "--"),
+        fromId == controller.fromId
+            ? _senderMsg(text, topMargin)
+            : _receiverMsg(text, topMargin),
 
         Visibility(
           visible: lastItem,
@@ -178,67 +230,52 @@ class OneToOneChatView extends GetView<OneToOneChatController> {
     );
   }
 
-  Widget _msgDate(DateTime createdAt) {
-    String date = controller.getMsgDate(createdAt);
-    return Visibility(
-      visible: date.isNotEmpty,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 20),
-        child: Align(
-          alignment: Alignment.center,
-          child: Text(
-            date,
-            style:  MyColors.l111111_dwhite(controller.context!).regular10,
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _senderMsg(int index, String msg) => Align(
+  Widget _senderMsg(String msg, double topMargin) => Align(
     alignment: Alignment.centerRight,
     child: Container(
       margin: const EdgeInsets.symmetric(horizontal: 14).copyWith(
           bottom: 5,
-          top: controller.getVerticalMargin(index)
+          left: Get.width * .2,
+        top: topMargin,
       ),
-      padding: const EdgeInsets.symmetric(horizontal: 12,vertical: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 15,vertical: 8),
       decoration: BoxDecoration(
           color: MyColors.c_C6A34F,
           border: Border.all(color: MyColors.c_C6A34F),
           borderRadius: const BorderRadius.only(
-            topRight: Radius.circular(12),
-            topLeft: Radius.circular(12),
-            bottomLeft: Radius.circular(12),
+            topRight: Radius.circular(20),
+            topLeft: Radius.circular(20),
+            bottomLeft: Radius.circular(20),
           )
       ),
       child: Text(
         msg,
-        style: MyColors.white.regular14,
+        style: MyColors.white.regular15,
       ),
     ),
   );
 
-  Widget _receiverMsg(int index, String msg) => Align(
+  Widget _receiverMsg(String msg, double topMargin) => Align(
     alignment: Alignment.centerLeft,
     child: Container(
       margin: const EdgeInsets.symmetric(horizontal: 14).copyWith(
           bottom: 5,
-        top: controller.getVerticalMargin(index)
+        right: Get.width * .2,
+          top: topMargin,
       ),
-      padding: const EdgeInsets.symmetric(horizontal: 12,vertical: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 15,vertical: 8),
       decoration: BoxDecoration(
           color: MyColors.lightCard(controller.context!),
           border: Border.all(color: MyColors.c_C6A34F),
           borderRadius: const BorderRadius.only(
-            topRight: Radius.circular(12),
-            topLeft: Radius.circular(12),
-            bottomRight: Radius.circular(12),
+            topRight: Radius.circular(20),
+            topLeft: Radius.circular(20),
+            bottomRight: Radius.circular(20),
           )
       ),
       child: Text(
         msg,
-        style: MyColors.l111111_dwhite(controller.context!).regular14,
+        style: MyColors.l111111_dwhite(controller.context!).regular15,
       ),
     ),
   );

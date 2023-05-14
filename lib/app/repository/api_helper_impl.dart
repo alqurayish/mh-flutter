@@ -16,6 +16,7 @@ import '../common/utils/exports.dart';
 import '../common/utils/logcat.dart';
 import '../common/utils/type_def.dart';
 import '../enums/error_from.dart';
+import '../models/all_admins.dart';
 import '../models/client_details.dart';
 import '../models/commons.dart';
 import '../models/custom_error.dart';
@@ -333,6 +334,20 @@ class ApiHelperImpl extends GetConnect with ApiHelper {
     return _convert<Employees>(
       response,
       Employees.fromJson,
+    ).fold((l) => left(l), (r) => right(r));
+  }
+
+  @override
+  EitherModel<AllAdmins> getAllAdmins() async {
+    String url = "users/mh-employee-list?requestType=ADMIN&skipLimit=YES";
+    var response = await get(url);
+    if(response.statusCode == null) response = await get(url);
+    if(response.statusCode == null) response = await get(url);
+    if(response.statusCode == null) response = await get(url);
+
+    return _convert<AllAdmins>(
+      response,
+      AllAdmins.fromJson,
     ).fold((l) => left(l), (r) => right(r));
   }
 

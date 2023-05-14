@@ -19,166 +19,170 @@ class AdminDashboardView extends GetView<AdminDashboardController> {
         context: context,
         title: 'Dashboard',
       ),
-      body: Column(
-        children: [
+      body: Obx(
+        () => controller.historyLoading.value ? const Center(child: CircularProgressIndicator(
+          color: MyColors.c_C6A34F,
+        )) : Column(
+          children: [
 
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                GestureDetector(
-                  onTap: () => _selectDate(context),
-                  child: Row(
-                    children: [
-                      Obx(
-                            () => Text(controller.dashboardDate.value.EdMMMy,
-                          style: MyColors.l111111_dwhite(context).medium16,),
-                      ),
-                      const SizedBox(width: 5,),
-                      const Icon(Icons.arrow_drop_down_circle, size: 16,),
-                    ],
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  GestureDetector(
+                    onTap: () => _selectDate(context),
+                    child: Row(
+                      children: [
+                        Obx(
+                              () => Text(controller.dashboardDate.value.EdMMMy,
+                            style: MyColors.l111111_dwhite(context).medium16,),
+                        ),
+                        const SizedBox(width: 5,),
+                        const Icon(Icons.arrow_drop_down_circle, size: 16,),
+                      ],
+                    ),
                   ),
-                ),
 
-                Expanded(
-                  child: SizedBox(
-                    height: 40.h,
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 18.w),
-                      child: Obx(
-                        () => DropdownButtonFormField<String>(
-                          dropdownColor: MyColors.lightCard(context),
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                          onChanged: controller.onClientChange,
-                          isExpanded: true,
-                          itemHeight: 58.h,
-                          isDense: false,
-                          hint: Text(controller.clientLoading.value ? "Loading..." : "Select Client",
-                            style: MyColors.l7B7B7B_dtext(context).regular18,
-                          ),
-                          value: "ALL",
-                          items: controller.restaurants.map((e) {
-                            return DropdownMenuItem(
-                              value: e,
-                              child: Text(
-                                e,
-                                style: MyColors.l111111_dwhite(context).regular16_5,
+                  Expanded(
+                    child: SizedBox(
+                      height: 40.h,
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 18.w),
+                        child: Obx(
+                          () => DropdownButtonFormField<String>(
+                            dropdownColor: MyColors.lightCard(context),
+                            autovalidateMode: AutovalidateMode.onUserInteraction,
+                            onChanged: controller.onClientChange,
+                            isExpanded: true,
+                            itemHeight: 58.h,
+                            isDense: false,
+                            hint: Text(controller.clientLoading.value ? "Loading..." : "Select Client",
+                              style: MyColors.l7B7B7B_dtext(context).regular18,
+                            ),
+                            value: "ALL",
+                            items: controller.restaurants.map((e) {
+                              return DropdownMenuItem(
+                                value: e,
+                                child: Text(
+                                  e,
+                                  style: MyColors.l111111_dwhite(context).regular16_5,
+                                ),
+                              );
+                            }).toList(),
+                            decoration: InputDecoration(
+                              filled: true,
+                              fillColor: Theme.of(context).cardColor,
+                              // contentPadding: const EdgeInsets.fromLTRB(0, 4, 8, 4),
+                              floatingLabelStyle: const TextStyle(
+                                fontFamily: MyAssets.fontMontserrat,
+                                fontWeight: FontWeight.w600,
+                                color: MyColors.c_C6A34F,
                               ),
-                            );
-                          }).toList(),
-                          decoration: InputDecoration(
-                            filled: true,
-                            fillColor: Theme.of(context).cardColor,
-                            // contentPadding: const EdgeInsets.fromLTRB(0, 4, 8, 4),
-                            floatingLabelStyle: const TextStyle(
-                              fontFamily: MyAssets.fontMontserrat,
-                              fontWeight: FontWeight.w600,
-                              color: MyColors.c_C6A34F,
+                              contentPadding: const EdgeInsets.fromLTRB(10, 0, 5, 5),
+                              border: OutlineInputBorder(
+                                borderSide: const BorderSide(width: 1),
+                                borderRadius: BorderRadius.circular(10.73),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(width: .5, color: MyColors.c_777777),
+                                borderRadius: BorderRadius.circular(10.73),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(width: 1, color: MyColors.c_C6A34F),
+                                borderRadius: BorderRadius.circular(10.73),
+                                gapPadding: 10,
+                              ),
+                              errorBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(width: 1, color: Colors.redAccent),
+                                borderRadius: BorderRadius.circular(10.73),
+                              ),
+                              hintMaxLines: 1,
                             ),
-                            contentPadding: const EdgeInsets.fromLTRB(10, 0, 5, 5),
-                            border: OutlineInputBorder(
-                              borderSide: const BorderSide(width: 1),
-                              borderRadius: BorderRadius.circular(10.73),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(width: .5, color: MyColors.c_777777),
-                              borderRadius: BorderRadius.circular(10.73),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(width: 1, color: MyColors.c_C6A34F),
-                              borderRadius: BorderRadius.circular(10.73),
-                              gapPadding: 10,
-                            ),
-                            errorBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(width: 1, color: Colors.redAccent),
-                              borderRadius: BorderRadius.circular(10.73),
-                            ),
-                            hintMaxLines: 1,
                           ),
                         ),
                       ),
                     ),
-                  ),
-                )
-              ],
+                  )
+                ],
+              ),
             ),
-          ),
 
-          Obx(
-            () => Visibility(
-              visible: (controller.checkInCheckOutHistory.value.checkInCheckOutHistory ?? []).isNotEmpty,
-              child: Container(
-                margin: const EdgeInsets.all(12),
-                padding: const EdgeInsets.symmetric(vertical: 17),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10.0),
-                  border: Border.all(
-                    width: .5,
-                    color: MyColors.c_A6A6A6,
+            Obx(
+              () => Visibility(
+                visible: (controller.checkInCheckOutHistory.value.checkInCheckOutHistory ?? []).isNotEmpty,
+                child: Container(
+                  margin: const EdgeInsets.all(12),
+                  padding: const EdgeInsets.symmetric(vertical: 17),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10.0),
+                    border: Border.all(
+                      width: .5,
+                      color: MyColors.c_A6A6A6,
+                    ),
+                    color: MyColors.lightCard(controller.context!),
                   ),
-                  color: MyColors.lightCard(controller.context!),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Expanded(child: _itemValue("Clients", "78")),
-                    _vDivider,
-                    Expanded(child: _itemValue("Hours", controller.hours.value.toString())),
-                    _vDivider,
-                    Expanded(child: _itemValue("Amount", "\$15677")),
-                  ],
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Expanded(child: _itemValue("Clients", controller.uniqueClient.value.toString())),
+                      _vDivider,
+                      Expanded(child: _itemValue("Hours", (controller.totalWorkingTimeInMinutes.value / 60).toStringAsFixed(1))),
+                      _vDivider,
+                      Expanded(child: _itemValue("Amount", "\$${controller.amount.value}")),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
 
-          Obx(
-            () => Visibility(
-              visible: (controller.checkInCheckOutHistory.value.checkInCheckOutHistory ?? []).isNotEmpty,
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 10),
-                child: Text(
-                  "${controller.history.length} Employees Active",
-                  style: MyColors.c_C6A34F.semiBold16,
-                ),
-              ),
-            ),
-          ),
-          Obx(
-            () => Visibility(
-              visible: (controller.checkInCheckOutHistory.value.checkInCheckOutHistory ?? []).isEmpty,
-              child: controller.historyLoading.value
-                  ? const CircularProgressIndicator(
-                      color: MyColors.c_C6A34F,
-                    )
-                  : const NoItemFound(),
-            ),
-          ),
-
-          Obx(
-            () => Visibility(
-              visible: (controller.checkInCheckOutHistory.value.checkInCheckOutHistory ?? []).isNotEmpty,
-              child: Expanded(
-                child: HorizontalDataTable(
-                  leftHandSideColumnWidth: 90.w,
-                  rightHandSideColumnWidth: 520.w,
-                  isFixedHeader: true,
-                  headerWidgets: _getTitleWidget(),
-                  leftSideItemBuilder: _generateFirstColumnRow,
-                  rightSideItemBuilder: _generateRightHandSideColumnRow,
-                  itemCount: (controller.checkInCheckOutHistory.value.checkInCheckOutHistory ?? []).length,
-                  rowSeparatorWidget: Container(
-                    height: 6.h,
-                    color: MyColors.lFAFAFA_dframeBg(context),
+            Obx(
+              () => Visibility(
+                visible: (controller.checkInCheckOutHistory.value.checkInCheckOutHistory ?? []).isNotEmpty,
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 10),
+                  child: Text(
+                    "${controller.history.length} Employees Active",
+                    style: MyColors.c_C6A34F.semiBold16,
                   ),
-                  leftHandSideColBackgroundColor: MyColors.lffffff_dbox(context),
-                  rightHandSideColBackgroundColor: MyColors.lffffff_dbox(context),
                 ),
               ),
             ),
-          ),
-        ],
+            Obx(
+              () => Visibility(
+                visible: (controller.checkInCheckOutHistory.value.checkInCheckOutHistory ?? []).isEmpty,
+                child: controller.historyLoading.value
+                    ? const CircularProgressIndicator(
+                        color: MyColors.c_C6A34F,
+                      )
+                    : const NoItemFound(),
+              ),
+            ),
+
+            Obx(
+              () => Visibility(
+                visible: (controller.checkInCheckOutHistory.value.checkInCheckOutHistory ?? []).isNotEmpty,
+                child: Expanded(
+                  child: HorizontalDataTable(
+                    leftHandSideColumnWidth: 90.w,
+                    rightHandSideColumnWidth: 520.w,
+                    isFixedHeader: true,
+                    headerWidgets: _getTitleWidget(),
+                    leftSideItemBuilder: _generateFirstColumnRow,
+                    rightSideItemBuilder: _generateRightHandSideColumnRow,
+                    itemCount: (controller.checkInCheckOutHistory.value.checkInCheckOutHistory ?? []).length,
+                    rowSeparatorWidget: Container(
+                      height: 6.h,
+                      color: MyColors.lFAFAFA_dframeBg(context),
+                    ),
+                    leftHandSideColBackgroundColor: MyColors.lffffff_dbox(context),
+                    rightHandSideColBackgroundColor: MyColors.lffffff_dbox(context),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

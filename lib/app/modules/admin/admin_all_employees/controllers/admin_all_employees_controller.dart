@@ -43,15 +43,20 @@ class AdminAllEmployeesController extends GetxController {
   }
 
   void onChatClick(Employee employee) {
-    Get.toNamed(Routes.oneToOneChat, arguments: {
-      MyStrings.arg.chatWith: ChatWith.employee,
-      MyStrings.arg.receiverId: employee.id ?? "",
+    Get.toNamed(Routes.supportChat, arguments: {
+      MyStrings.arg.fromId: appController.user.value.userId,
+      MyStrings.arg.toId: employee.id ?? "",
+      MyStrings.arg.supportChatDocId: employee.id ?? "",
       MyStrings.arg.receiverName: employee.firstName ?? "-",
     });
   }
 
   String getPositionLogo(String positionId) {
-    return appController.allActivePositions.firstWhere((element) => element.id == positionId).logo!;
+    var positions = appController.allActivePositions.where((element) => element.id == positionId);
+
+    if(positions.isEmpty) return MyAssets.defaultImage;
+
+    return positions.first.logo!;
   }
 
   void onApplyClick(

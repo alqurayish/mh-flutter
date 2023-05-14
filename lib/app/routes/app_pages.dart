@@ -31,8 +31,10 @@ import '../modules/auth/register/steps/register_last_step/views/register_last_st
 import '../modules/auth/register/views/register_view.dart';
 import '../modules/block_user/bindings/block_user_binding.dart';
 import '../modules/block_user/views/block_user_view.dart';
-import '../modules/chat/one_to_one_chat/bindings/one_to_one_chat_binding.dart';
-import '../modules/chat/one_to_one_chat/views/one_to_one_chat_view.dart';
+import '../modules/chat/client_employee_chat/bindings/client_employee_chat_binding.dart';
+import '../modules/chat/client_employee_chat/views/client_employee_chat_view.dart';
+import '../modules/chat/support_chat/bindings/support_chat_binding.dart';
+import '../modules/chat/support_chat/views/support_chat_view.dart';
 import '../modules/client/client_dashboard/bindings/client_dashboard_binding.dart';
 import '../modules/client/client_dashboard/views/client_dashboard_view.dart';
 import '../modules/client/client_home/bindings/client_home_binding.dart';
@@ -327,6 +329,11 @@ class AppPages {
       ],
     ),
     GetPage(
+      name: _Paths.employeeEmergencyCheckInOut,
+      page: () => const EmployeeEmergencyCheckInOutView(),
+      binding: EmployeeEmergencyCheckInOutBinding(),
+    ),
+    GetPage(
       name: _Paths.termsAndCondition,
       page: () => const TermsAndConditionView(),
       binding: TermsAndConditionBinding(),
@@ -347,14 +354,14 @@ class AppPages {
       binding: RestaurantLocationBinding(),
     ),
     GetPage(
-      name: _Paths.oneToOneChat,
-      page: () => const OneToOneChatView(),
-      binding: OneToOneChatBinding(),
+      name: _Paths.clientEmployeeChat,
+      page: () => const ClientEmployeeChatView(),
+      binding: ClientEmployeeChatBinding(),
     ),
     GetPage(
-      name: _Paths.employeeEmergencyCheckInOut,
-      page: () => const EmployeeEmergencyCheckInOutView(),
-      binding: EmployeeEmergencyCheckInOutBinding(),
+      name: _Paths.supportChat,
+      page: () => const SupportChatView(),
+      binding: SupportChatBinding(),
     ),
   ];
 }

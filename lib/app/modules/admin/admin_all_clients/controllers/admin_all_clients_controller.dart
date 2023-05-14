@@ -64,9 +64,10 @@ class AdminAllClientsController extends GetxController {
   }
 
   void onChatClick(Employee employee) {
-    Get.toNamed(Routes.oneToOneChat, arguments: {
-      MyStrings.arg.chatWith: ChatWith.client,
-      MyStrings.arg.receiverId: employee.id ?? "",
+    Get.toNamed(Routes.supportChat, arguments: {
+      MyStrings.arg.fromId: appController.user.value.userId,
+      MyStrings.arg.toId: employee.id ?? "",
+      MyStrings.arg.supportChatDocId: employee.id ?? "",
       MyStrings.arg.receiverName: employee.restaurantName ?? "-",
     });
   }

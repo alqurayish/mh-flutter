@@ -8,6 +8,7 @@ class MyStrings {
   MyStrings._();
 
   static _Arguements get arg => _Arguements();
+  static _PayloadScreen get payloadScreen => _PayloadScreen();
 
   // validation
   static const String required = "required";
@@ -115,6 +116,18 @@ class _Arguements {
   String data = "data";
   String showAsAdmin = "showAsAdmin";
   String chatWith = "chatWith";
-  String receiverName = "receiverName";
   String receiverId = "receiverId";
+
+
+  String receiverName = "receiverName";
+  String fromId = "fromId";
+  String toId = "toId";
+  String clientId = "clientId";
+  String employeeId = "employeeId";
+  String supportChatDocId = "supportChatDocId";
+}
+
+class _PayloadScreen {
+  String clientEmployeeChat = "ClientEmployeeChat";
+  String supportChat = "supportChat";
 }

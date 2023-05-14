@@ -6,6 +6,7 @@ import '../../../../common/style/my_decoration.dart';
 import '../../../../common/utils/exports.dart';
 import '../../../../common/utils/validators.dart';
 import '../../../../common/widgets/custom_appbar.dart';
+import '../../../../common/widgets/custom_badge.dart';
 import '../../../../common/widgets/custom_dialog.dart';
 import '../../../../common/widgets/custom_network_image.dart';
 import '../../../../common/widgets/no_item_found.dart';
@@ -178,6 +179,7 @@ class ClientDashboardView extends GetView<ClientDashboardController> {
         width: 143.w,
         value: '-',
         child: _employeeDetails(
+          hiredHistory.employeeDetails?.employeeId ?? "",
           hiredHistory.employeeDetails?.name ?? "-",
           Utils.getPositionName(hiredHistory.employeeDetails!.positionId!),
           hiredHistory.employeeDetails?.profilePicture ?? "",
@@ -231,7 +233,7 @@ class ClientDashboardView extends GetView<ClientDashboardController> {
       );
     }
 
-    UserDailyStatistics dailyStatistics = Utils.checkInOutToStatistics(controller.history[index]);
+    UserDailyStatistics dailyStatistics = Utils.checkInOutToStatistics(controller.getCheckInOutDate(index)!);
 
     return Row(
       children: <Widget>[
@@ -253,6 +255,9 @@ class ClientDashboardView extends GetView<ClientDashboardController> {
             showMaterialModalBottomSheet(
               context: controller.context!,
               builder: (context) => Container(
+                padding: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).viewInsets.bottom,
+                ),
                 color: MyColors.lightCard(context),
                 child: _updateOption(index),
               ),
@@ -272,6 +277,9 @@ class ClientDashboardView extends GetView<ClientDashboardController> {
               showMaterialModalBottomSheet(
                 context: controller.context!,
                 builder: (context) => Container(
+                  padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).viewInsets.bottom,
+                  ),
                   color: MyColors.lightCard(context),
                   child: _updateOption(index),
                 ),
@@ -291,7 +299,7 @@ class ClientDashboardView extends GetView<ClientDashboardController> {
           ),
         );
 
-  Widget _employeeDetails(String name, String positionName, String image, ) {
+  Widget _employeeDetails(String id, String name, String positionName, String image, ) {
     return Container(
       width: 143.w,
       padding: const EdgeInsets.all(7.0),
@@ -307,14 +315,30 @@ class ClientDashboardView extends GetView<ClientDashboardController> {
         children: [
           Row(
             children: [
-              Container(
-                height: 24.h,
-                width: 24.h,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8.0),
-                  color: Colors.grey.withOpacity(.3),
-                ),
-                child: CustomNetworkImage(url: image.imageUrl,radius: 8.0,),
+              Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  Container(
+                    height: 24.h,
+                    width: 24.h,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8.0),
+                      color: Colors.grey.withOpacity(.3),
+                    ),
+                    child: CustomNetworkImage(url: image.imageUrl,radius: 8.0,),
+                  ),
+
+                  Positioned(
+                    top: -15,
+                    right: -3,
+                    child: Obx(
+                      () => Visibility(
+                        visible: controller.clientHomeController.employeeChatDetails.where((data) => data["employeeId"] == id && data["${controller.appController.user.value.userId}_unread"] > 0).isNotEmpty,
+                        child: const CustomBadge(""),
+                      ),
+                    ),
+                  ),
+                ],
               ),
 
               SizedBox(width: 10.w),
@@ -344,9 +368,29 @@ class ClientDashboardView extends GetView<ClientDashboardController> {
 
   Widget _chat (HiredHistory hiredHistory) => GestureDetector(
         onTap: () => controller.chatWithEmployee(hiredHistory),
-        child: const Icon(
-          Icons.message,
-          color: MyColors.c_C6A34F,
+        child: Center(
+          child: Stack(
+            clipBehavior: Clip.none,
+            children: [
+              const Icon(
+                Icons.message,
+                color: MyColors.c_C6A34F,
+              ),
+
+              Positioned(
+                top: -15,
+                right: -10,
+                child: Obx(
+                      () {
+                        var result = controller.clientHomeController.employeeChatDetails.where((data) => data["employeeId"] == hiredHistory.employeeDetails!.employeeId! && data["${controller.appController.user.value.userId}_unread"] > 0);
+
+                        if(result.isEmpty) return Container();
+                        return CustomBadge(result.first["${controller.appController.user.value.userId}_unread"].toString());
+                      },
+                ),
+              ),
+            ],
+          ),
         ),
       );
 
@@ -369,7 +413,7 @@ class ClientDashboardView extends GetView<ClientDashboardController> {
 
         SizedBox(height: 30.h),
 
-            Row(
+        Row(
               children: [
                 Expanded(
                   flex: 8,

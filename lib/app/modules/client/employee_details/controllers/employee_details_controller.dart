@@ -30,9 +30,13 @@ class EmployeeDetailsController extends GetxController {
     Get.toNamed(Routes.clientShortlisted);
   }
 
+  // only admin chat with employee
   void onChatClick() {
-    Get.toNamed(Routes.oneToOneChat, arguments: {
-      MyStrings.arg.chatWith: ChatWith.employee,
+    Get.toNamed(Routes.supportChat, arguments: {
+      MyStrings.arg.fromId: _appController.user.value.userId,
+      MyStrings.arg.toId: employee.id ?? "",
+      MyStrings.arg.supportChatDocId: employee.id ?? "",
+      MyStrings.arg.receiverName: employee.firstName ?? "-",
     });
   }
 }

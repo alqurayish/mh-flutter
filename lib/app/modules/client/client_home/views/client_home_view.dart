@@ -95,10 +95,26 @@ class ClientHomeView extends GetView<ClientHomeController> {
                             SizedBox(width: 24.w),
 
                             Expanded(
-                              child: CustomFeatureBox(
-                                title: MyStrings.dashboard.tr,
-                                icon: MyAssets.dashboard,
-                                onTap: controller.onDashboardClick,
+                              child: Obx(
+                                () => Stack(
+                                  clipBehavior: Clip.none,
+                                  children: [
+                                    CustomFeatureBox(
+                                      title: MyStrings.dashboard.tr,
+                                      icon: MyAssets.dashboard,
+                                      onTap: controller.onDashboardClick,
+                                    ),
+
+                                    Positioned(
+                                      top: 4,
+                                      right: 5,
+                                      child: Visibility(
+                                        visible: controller.unreadMsgFromEmployee > 0,
+                                        child: CustomBadge(controller.unreadMsgFromEmployee.value.toString()),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ],
@@ -146,9 +162,9 @@ class ClientHomeView extends GetView<ClientHomeController> {
                         top: 0,
                         right: 5,
                         child: Visibility(
-                          visible: controller.unreadFromAdmin.isNotEmpty,
+                          visible: controller.unreadMsgFromAdmin.value != 0,
                           child: CustomBadge(
-                            controller.unreadFromAdmin.length.toString(),
+                            controller.unreadMsgFromAdmin.value.toString(),
                           ),
                         ),
                       ),

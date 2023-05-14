@@ -1,5 +1,3 @@
-import 'package:intl/intl.dart';
-
 import '../../../../common/controller/app_controller.dart';
 import '../../../../common/utils/exports.dart';
 import '../../../../models/check_in_out_histories.dart';
@@ -15,6 +13,7 @@ class AdminDashboardController extends GetxController {
   final ApiHelper _apiHelper = Get.find();
 
   RxInt uniqueClient = 0.obs;
+
   RxBool historyLoading = true.obs;
   RxBool clientLoading = true.obs;
 
@@ -30,7 +29,7 @@ class AdminDashboardController extends GetxController {
   Rx<Employees> clients = Employees().obs;
   RxList<String> restaurants = ["ALL"].obs;
 
-  RxInt hours = 0.obs;
+  RxInt totalWorkingTimeInMinutes = 0.obs;
   RxDouble amount = 0.0.obs;
 
   @override
@@ -85,8 +84,9 @@ class AdminDashboardController extends GetxController {
       }, (CheckInCheckOutHistory checkInCheckOutHistory) async {
 
         this.checkInCheckOutHistory.value = checkInCheckOutHistory;
-        history.addAll(checkInCheckOutHistory.checkInCheckOutHistory ?? []);
+        history..clear()..addAll(checkInCheckOutHistory.checkInCheckOutHistory ?? []);
 
+        _updateSummary();
       });
     });
   }
@@ -115,4 +115,21 @@ class AdminDashboardController extends GetxController {
     });
   }
 
+  void _updateSummary() {
+    var uniqueRestaurant = <String>{};
+
+    for(int i = 0; i < history.length; i++) {
+      CheckInCheckOutHistoryElement element = history[i];
+      uniqueRestaurant.add(element.hiredBy!);
+
+      UserDailyStatistics s = dailyStatistics(i);
+
+      totalWorkingTimeInMinutes.value += s.totalWorkingTimeInMinute;
+      amount.value += double.parse(s.amount);
+
+    }
+
+
+    uniqueClient.value = uniqueRestaurant.length;
+  }
 }

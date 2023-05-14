@@ -22,9 +22,10 @@ class ClientHomeController extends GetxController {
   Rx<RequestedEmployees> requestedEmployees = RequestedEmployees().obs;
 
   // unread msg track
-  CollectionReference onUnreadCollection = FirebaseFirestore.instance.collection('unreadMsg');
-  RxList<dynamic> unreadFromAdmin = [].obs;
-  RxList<dynamic> unreadFromEmployee = [].obs;
+  RxInt unreadMsgFromEmployee = 0.obs;
+  RxInt unreadMsgFromAdmin = 0.obs;
+
+  RxList<Map<String, dynamic>> employeeChatDetails = <Map<String, dynamic>>[].obs;
 
   @override
   void onInit() {
@@ -57,7 +58,7 @@ class ClientHomeController extends GetxController {
   void onHelpAndSupportClick() {
     ClientHelpOption.show(
       context!,
-      msgFromAdmin: unreadFromAdmin.length,
+      msgFromAdmin: unreadMsgFromAdmin.value,
     );
   }
 
@@ -74,8 +75,11 @@ class ClientHomeController extends GetxController {
   void chatWithAdmin() {
     Get.back(); // hide dialogue
 
-    Get.toNamed(Routes.oneToOneChat, arguments: {
-      MyStrings.arg.chatWith: ChatWith.admin,
+    Get.toNamed(Routes.supportChat, arguments: {
+      MyStrings.arg.fromId: appController.user.value.userId,
+      MyStrings.arg.toId: "allAdmin",
+      MyStrings.arg.supportChatDocId: appController.user.value.userId,
+      MyStrings.arg.receiverName: "Support",
     });
   }
 
@@ -159,13 +163,27 @@ class ClientHomeController extends GetxController {
   }
 
   void _trackUnreadMsg() {
-    onUnreadCollection.doc(appController.user.value.userId).snapshots().listen((DocumentSnapshot doc) {
-      Map<String, dynamic> data = doc.data()! as Map<String, dynamic>;
-      unreadFromAdmin.value = data["admin"];
-      unreadFromEmployee.value = data["employee"];
+    // employee massage
+    FirebaseFirestore.instance.collection('employee_client_chat').where("clientId", isEqualTo: appController.user.value.userId).snapshots().listen((QuerySnapshot<Map<String, dynamic>> event) {
 
-      unreadFromAdmin.refresh();
-      unreadFromEmployee.refresh();
+      unreadMsgFromEmployee.value = 0;
+      employeeChatDetails.clear();
+
+      for (var element in event.docs) {
+        Map<String, dynamic> data = element.data();
+        unreadMsgFromEmployee.value += data["${appController.user.value.userId}_unread"] as int;
+        employeeChatDetails.add(data);
+      }
+
+      employeeChatDetails.refresh();
+    });
+
+    // admin massage
+    FirebaseFirestore.instance.collection("support_chat").doc(appController.user.value.userId).snapshots().listen((DocumentSnapshot<Map<String, dynamic>> event) {
+      if(event.exists) {
+        Map<String, dynamic> data = event.data()!;
+        unreadMsgFromAdmin.value = data["${appController.user.value.userId}_unread"];
+      }
     });
   }
 

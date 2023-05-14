@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:mh/app/common/controller/app_controller.dart';
 
-import '../../modules/chat/one_to_one_chat/controllers/one_to_one_chat_controller.dart';
+import '../../modules/chat/client_employee_chat/controllers/client_employee_chat_controller.dart';
+import '../../modules/chat/support_chat/controllers/support_chat_controller.dart';
+import 'app_controller.dart';
+
 
 class AppLifecycleController extends GetxController with WidgetsBindingObserver {
 
@@ -28,20 +30,27 @@ class AppLifecycleController extends GetxController with WidgetsBindingObserver 
         // priority 3
         print('App resumed');
 
-        if(Get.isRegistered<OneToOneChatController>()) {
+        if(Get.isRegistered<ClientEmployeeChatController>()) {
+          _updateActiveStatus(true);
+        }
+        else if(Get.isRegistered<SupportChatController>()) {
           _updateActiveStatus(true);
         }
 
         break;
+
       case AppLifecycleState.paused:
         // priority 2
         print('App paused');
         break;
+
       case AppLifecycleState.inactive:
         // priority 1 // call offline true
         print('App inactive');
+
         _updateActiveStatus(false);
         break;
+
       case AppLifecycleState.detached:
         print('App detached');
         break;

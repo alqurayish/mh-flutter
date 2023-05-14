@@ -19,8 +19,7 @@ abstract class Routes {
   static const adminDashboard = _Paths.adminDashboard;
   static const adminClientRequest = _Paths.adminClientRequest;
   static const adminClientRequestPositions = _Paths.adminClientRequestPositions;
-  static const adminClientRequestPositionEmployees =
-      _Paths.adminClientRequestPositionEmployees;
+  static const adminClientRequestPositionEmployees = _Paths.adminClientRequestPositionEmployees;
 
   static const employeeHome = _Paths.employeeHome;
   static const employeeDashboard = _Paths.employeeDashboard;
@@ -47,9 +46,10 @@ abstract class Routes {
   static const contactUs = _Paths.contactUs;
 
   static const restaurantLocation = _Paths.restaurantLocation;
-  static const oneToOneChat = _Paths.oneToOneChat;
   static const employeeSelfProfile = _Paths.employeeSelfProfile;
   static const clientSelfProfile = _Paths.clientSelfProfile;
+  static const clientEmployeeChat = _Paths.clientEmployeeChat;
+  static const supportChat = _Paths.supportChat;
 }
 
 abstract class _Paths {
@@ -100,7 +100,8 @@ abstract class _Paths {
   static const contactUs = '/contact-us';
 
   static const restaurantLocation = '/restaurant-location';
-  static const oneToOneChat = '/one-to-one-chat';
   static const adminClientRequestPositions = '/admin-client-request-positions';
   static const adminClientRequestPositionEmployees = '/admin-client-request-position-employees';
+  static const clientEmployeeChat = '/client-employee-chat';
+  static const supportChat = '/support-chat';
 }

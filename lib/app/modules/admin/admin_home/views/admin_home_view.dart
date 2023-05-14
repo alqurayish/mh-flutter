@@ -116,8 +116,8 @@ class AdminHomeView extends GetView<AdminHomeController> {
                                       top: 4,
                                       right: 5,
                                       child: Visibility(
-                                        visible: controller.unreadFromEmployee.isNotEmpty,
-                                        child: CustomBadge(controller.unreadFromEmployee.length.toString()),
+                                        visible: controller.unreadMsgFromEmployee.value != 0,
+                                        child: CustomBadge(controller.unreadMsgFromEmployee.value.toString()),
                                       ),
                                     ),
                                   ],
@@ -141,8 +141,8 @@ class AdminHomeView extends GetView<AdminHomeController> {
                                       top: 4,
                                       right: 5,
                                       child: Visibility(
-                                        visible: controller.unreadFromClient.isNotEmpty,
-                                        child: CustomBadge(controller.unreadFromClient.length.toString()),
+                                        visible: controller.unreadMsgFromClient.value != 0,
+                                        child: CustomBadge(controller.unreadMsgFromClient.value.toString()),
                                       ),
                                     ),
                                   ],

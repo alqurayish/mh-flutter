@@ -9,6 +9,7 @@ import '../../../../enums/chat_with.dart';
 import '../../../../models/check_in_out_histories.dart';
 import '../../../../models/custom_error.dart';
 import '../../../../routes/app_pages.dart';
+import '../../client_home/controllers/client_home_controller.dart';
 import '../models/current_hired_employees.dart';
 import 'package:intl/intl.dart';
 
@@ -18,6 +19,8 @@ class ClientDashboardController extends GetxController {
   final ApiHelper _apiHelper = Get.find();
 
   final AppController appController = Get.find();
+
+  final ClientHomeController clientHomeController = Get.find();
 
   final List<Map<String, dynamic>> fields = [
     {"name": "Employee", "width": 143.0},
@@ -52,7 +55,7 @@ class ClientDashboardController extends GetxController {
 
   Rx<CheckInCheckOutHistory> checkInCheckOutHistory = CheckInCheckOutHistory().obs;
 
-  RxList<CheckInCheckOutHistoryElement> history = <CheckInCheckOutHistoryElement>[].obs;
+  // RxList<CheckInCheckOutHistoryElement> history = <CheckInCheckOutHistoryElement>[].obs;
 
   @override
   void onInit() {
@@ -73,13 +76,13 @@ class ClientDashboardController extends GetxController {
   }
 
   String getComment(int index) {
-    return history[index].checkInCheckOutDetails?.clientComment ?? "";
+    return getCheckInOutDate(index)?.checkInCheckOutDetails?.clientComment ?? "";
   }
 
   CheckInCheckOutHistoryElement? getCheckInOutDate(int index) {
     String id = hiredEmployeesByDate.value.hiredHistories![index].employeeDetails!.employeeId!;
 
-    for (var element in history) {
+    for (var element in checkInCheckOutHistory.value.checkInCheckOutHistory ?? []) {
       if(element.employeeDetails!.employeeId! == id) {
         return element;
       }
@@ -111,14 +114,61 @@ class ClientDashboardController extends GetxController {
       tecComment.text = element.checkInCheckOutDetails?.clientComment ?? "";
       tecTime.clear();
 
+      complainType = [
+        "Check In Before",
+        "Check In After",
+      ];
+
+      if(element.checkInCheckOutDetails?.checkOutTime != null) {
+        complainType = [
+          "Check In Before",
+          "Check In After",
+          "Check Out Before",
+          "Check Out After",
+          "Break Time",
+        ];
+      }
+
       if(selectedComplainType == complainType[0] || selectedComplainType == complainType[1]) {
         if(element.checkInCheckOutDetails?.clientCheckInTime != null) {
-          tecTime.text = element.checkInCheckOutDetails!.clientCheckInTime!.difference(element.checkInCheckOutDetails!.checkInTime!).inMinutes.abs().toString();
+
+          var dif = element.checkInCheckOutDetails!.clientCheckInTime!.difference(element.checkInCheckOutDetails!.checkInTime!).inMinutes;
+
+          if(selectedComplainType == complainType[0]) {
+            if(dif < 0) {
+              tecTime.text = dif.abs().toString();
+            } else {
+              tecTime.text = "";
+            }
+          } else {
+            if(dif > 0) {
+              tecTime.text = dif.abs().toString();
+            } else {
+              tecTime.text = "";
+            }
+          }
+
         }
       }
       else if(selectedComplainType == complainType[2] || selectedComplainType == complainType[3]) {
         if(element.checkInCheckOutDetails?.clientCheckOutTime != null) {
-          tecTime.text = element.checkInCheckOutDetails!.clientCheckOutTime!.difference(element.checkInCheckOutDetails!.checkOutTime!).inMinutes.abs().toString();
+
+          var dif = element.checkInCheckOutDetails!.clientCheckOutTime!.difference(element.checkInCheckOutDetails!.checkOutTime!).inMinutes;
+
+          if(selectedComplainType == complainType[2]) {
+            if(dif < 0) {
+              tecTime.text = dif.abs().toString();
+            } else {
+              tecTime.text = "";
+            }
+          } else {
+            if(dif > 0) {
+              tecTime.text = dif.abs().toString();
+            } else {
+              tecTime.text = "";
+            }
+          }
+
         }
       }
       else if(selectedComplainType == complainType.last) {
@@ -181,7 +231,7 @@ class ClientDashboardController extends GetxController {
       }, (CheckInCheckOutHistory checkInCheckOutHistory) async {
 
         this.checkInCheckOutHistory.value = checkInCheckOutHistory;
-        history..clear()..addAll(checkInCheckOutHistory.checkInCheckOutHistory ?? []);
+        // history..clear()..addAll(checkInCheckOutHistory.checkInCheckOutHistory ?? []);
 
       });
     });
@@ -232,10 +282,12 @@ class ClientDashboardController extends GetxController {
   }
 
   void chatWithEmployee(HiredHistory hiredHistory) {
-    Get.toNamed(Routes.oneToOneChat, arguments: {
-      MyStrings.arg.chatWith: ChatWith.employee,
-      MyStrings.arg.receiverId: hiredHistory.employeeDetails?.employeeId ?? "",
+    Get.toNamed(Routes.clientEmployeeChat, arguments: {
       MyStrings.arg.receiverName: hiredHistory.employeeDetails?.name ?? "-",
+      MyStrings.arg.fromId: appController.user.value.userId,
+      MyStrings.arg.toId: hiredHistory.employeeDetails?.employeeId ?? "",
+      MyStrings.arg.clientId: appController.user.value.userId,
+      MyStrings.arg.employeeId: hiredHistory.employeeDetails?.employeeId ?? "",
     });
   }
 

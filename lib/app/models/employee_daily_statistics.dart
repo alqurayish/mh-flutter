@@ -11,6 +11,7 @@ class UserDailyStatistics {
   String employeeBreakTime;
   String workingHour;
   String amount;
+  int totalWorkingTimeInMinute = 0;
 
   UserDailyStatistics({
     required this.date,
@@ -25,5 +26,6 @@ class UserDailyStatistics {
     required this.employeeBreakTime,
     required this.workingHour,
     required this.amount,
+    required this.totalWorkingTimeInMinute,
   });
 }

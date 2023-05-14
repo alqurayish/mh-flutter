@@ -107,7 +107,7 @@ class AdminAllClientsView extends GetView<AdminAllClientsController> {
                   child: Icon(
                     Icons.chat,
                     size: 20,
-                    color: controller.adminHomeController.unreadFromClient.contains(user.id) ? MyColors.c_C6A34F : MyColors.stock,
+                    color: controller.adminHomeController.chatUserIds.contains(user.id) ? MyColors.c_C6A34F : MyColors.stock,
                   ),
                 ),
               ),

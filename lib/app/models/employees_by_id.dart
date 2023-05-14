@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'push_notification_details.dart';
+
 class Employees {
   Employees({
     this.status,
@@ -95,6 +97,7 @@ class Employee {
     this.clientDiscount,
     this.lat,
     this.long,
+    this.pushNotificationDetails,
   });
 
   final String? id;
@@ -146,6 +149,7 @@ class Employee {
   final int? clientDiscount;
   final String? lat;
   final String? long;
+  final PushNotificationDetails? pushNotificationDetails;
 
   factory Employee.fromRawJson(String str) => Employee.fromJson(json.decode(str));
 
@@ -201,6 +205,7 @@ class Employee {
     clientDiscount: json["clientDiscount"],
     lat: json["lat"],
     long: json["long"],
+    pushNotificationDetails: json["pushNotificationDetails"] == null ? null : PushNotificationDetails.fromJson(json["pushNotificationDetails"]),
   );
 
   Map<String, dynamic> toJson() => {
@@ -253,6 +258,7 @@ class Employee {
     "clientDiscount": clientDiscount,
     "lat": lat,
     "long": long,
+    "pushNotificationDetails": pushNotificationDetails?.toJson(),
   };
 }
 

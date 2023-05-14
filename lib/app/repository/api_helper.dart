@@ -1,3 +1,5 @@
+import 'package:mh/app/models/all_admins.dart';
+
 import '../common/utils/exports.dart';
 import '../common/utils/type_def.dart';
 import '../models/address_to_lat_lng.dart';
@@ -61,6 +63,8 @@ abstract class ApiHelper {
     String? requestType,
     bool? active,
   });
+
+  EitherModel<AllAdmins> getAllAdmins();
 
   EitherModel<TermsConditionForHire> getTermsConditionForHire();
 

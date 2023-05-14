@@ -134,7 +134,7 @@ class AdminAllEmployeesView extends GetView<AdminAllEmployeesController> {
                   child: Icon(
                     Icons.chat,
                     size: 20,
-                    color: controller.adminHomeController.unreadFromEmployee.contains(user.id) ? MyColors.c_C6A34F : MyColors.stock,
+                    color: controller.adminHomeController.chatUserIds.contains(user.id) ? MyColors.c_C6A34F : MyColors.stock,
                   ),
                 ),
               ),

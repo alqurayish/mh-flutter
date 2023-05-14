@@ -17,16 +17,18 @@ class ClientSuggestedEmployeesView extends GetView<ClientSuggestedEmployeesContr
         context: context,
         title: 'Requested Employees',
       ),
-      body: Obx(
-        () => Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(height: 22.h),
-            ...controller.getUniquePositions().map((e) {
-              return _employeeInSamePosition(e);
-            }),
-          ],
+      body: SingleChildScrollView(
+        child: Obx(
+          () => Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: 22.h),
+              ...controller.getUniquePositions().map((e) {
+                return _employeeInSamePosition(e);
+              }),
+            ],
+          ),
         ),
       ),
     );
