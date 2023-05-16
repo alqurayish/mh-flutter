@@ -229,8 +229,7 @@ class SupportChatController extends GetxController {
 
       if(adminTokens.isNotEmpty) {
         SendPush.sendMsgNotification(
-          // deviceTokens: adminTokens,
-          deviceTokens: ["6412b261b4706c4eb2163d47"],
+          deviceTokens: adminTokens,
           title: '${appController.user.value.userName} send a massage',
           body: text,
           payload: <String, dynamic>{

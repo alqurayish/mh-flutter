@@ -58,8 +58,10 @@ class AppLifecycleController extends GetxController with WidgetsBindingObserver 
   }
 
   void _updateActiveStatus(bool active) {
-    FirebaseFirestore.instance.collection('onChatScreen').doc(_appController.user.value.userId).set({
-      "active" : active,
-    });
+    if((_appController.user.value.userId).isNotEmpty) {
+      FirebaseFirestore.instance.collection('onChatScreen').doc(_appController.user.value.userId).set({
+        "active" : active,
+      });
+    }
   }
 }
