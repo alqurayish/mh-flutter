@@ -8,15 +8,28 @@ import 'notification_click_helper.dart';
 class LocalNotificationService {
   static final FlutterLocalNotificationsPlugin _notificationsPlugin = FlutterLocalNotificationsPlugin();
 
-  static void initialize() {
+  static Future<void> initialize() async {
+    NotificationSettings settings = await FirebaseMessaging.instance.requestPermission(
+      alert: true,
+      badge: true,
+      provisional: false,
+      sound: true,
+    );
+
     const InitializationSettings initializationSettings = InitializationSettings(
       android: AndroidInitializationSettings("@drawable/icon_notification"),
       iOS: IOSInitializationSettings(
         requestAlertPermission: true,
-        requestBadgePermission: false,
-        requestSoundPermission: false,
+        requestBadgePermission: true,
+        requestSoundPermission: true,
         defaultPresentSound: true,
       ),
+    );
+
+    await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+      alert: true,
+      badge: true,
+      sound: true,
     );
 
     _notificationsPlugin.initialize(
@@ -56,7 +69,7 @@ class LocalNotificationService {
         print("FirebaseMessaging.onMessage.listen");
         if (message.notification != null) {
           // print(message.notification?.title);
-          // print(message.notification?.body);
+          // print(message.notification?.body);f
           // print("message.data ${message.data}");
 
           LocalNotificationService.showNotification(message);

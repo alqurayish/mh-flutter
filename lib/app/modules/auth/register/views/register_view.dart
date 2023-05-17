@@ -435,7 +435,7 @@ class RegisterView extends GetView<RegisterController> {
               prefixIcon: Icons.person,
               validator: (String? value) => Validators.firstNameLastNameValidator(
                 value,
-                "Only letters and . allowed",
+                "Only letters, space and . allowed",
                 MyStrings.required.tr,
               ),
             ),

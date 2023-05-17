@@ -181,7 +181,7 @@ class AppController extends GetxService {
 
     StorageHelper.removeToken;
 
-    Get.offAllNamed(Routes.login);
+    Get.offAllNamed(Routes.loginRegisterHints);
   }
 
   bool hasPermission() {

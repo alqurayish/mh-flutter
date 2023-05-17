@@ -41,7 +41,7 @@ class Validators {
   }
 
   static firstNameLastNameValidator(String? value, String formatInvalidMsg, String emptyMsg) {
-    return emptyValidator(value, emptyMsg) == null ? (RegExp(r'^[A-Za-z.]+$').hasMatch((value ?? "").trim())) ? null : formatInvalidMsg : emptyMsg;
+    return emptyValidator(value, emptyMsg) == null ? (RegExp(r'^[A-Za-z. ]+$').hasMatch((value ?? "").trim())) ? null : formatInvalidMsg : emptyMsg;
   }
 
   // static String? termsAndConditionValidator(bool isAcceptedCondition) {
