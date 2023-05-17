@@ -277,8 +277,6 @@ class RegisterController extends GetxController implements RegisterInterface {
   }
 
   Future<void> _employeeRegister() async {
-    appController.afterSuccessRegister("");
-    return;
     EmployeeRegistration employeeRegistration = EmployeeRegistration(
       firstName: tecEmployeeFirstName.text.trim(),
       lastName: tecEmployeeLastName.text.trim(),
