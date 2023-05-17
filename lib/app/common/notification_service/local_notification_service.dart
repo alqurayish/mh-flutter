@@ -2,7 +2,10 @@ import 'dart:convert';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:mh/app/common/controller/app_controller.dart';
 
+import '../../modules/admin/admin_home/controllers/admin_home_controller.dart';
+import '../utils/exports.dart';
 import 'notification_click_helper.dart';
 
 class LocalNotificationService {
@@ -71,6 +74,16 @@ class LocalNotificationService {
           // print(message.notification?.title);
           // print(message.notification?.body);f
           // print("message.data ${message.data}");
+
+          if((message.notification?.title ?? "").toLowerCase().contains("employee request")) {
+            if(Get.isRegistered<AppController>()) {
+              if(Get.find<AppController>().user.value.isAdmin) {
+                if(Get.isRegistered<AdminHomeController>()) {
+                  Get.find<AdminHomeController>().reloadPage();
+                }
+              }
+            }
+          }
 
           LocalNotificationService.showNotification(message);
         }
