@@ -18,8 +18,8 @@ class Initializer {
 
   const Initializer._internal();
 
-  void init(VoidCallback runApp) {
-    runZonedGuarded(() async {
+  Future<void> init() async {
+    await runZonedGuarded(() async {
       WidgetsFlutterBinding.ensureInitialized();
 
       FlutterError.onError = (details) {
@@ -42,8 +42,6 @@ class Initializer {
       };
 
       await _initServices();
-      runApp();
-
     }, (error, StackTrace stackTrace) {
       Logcat.msg('runZonedGuarded: $error');
       Logcat.stack(stackTrace);

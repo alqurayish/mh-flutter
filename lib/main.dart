@@ -1,12 +1,15 @@
+import 'dart:ui';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'app/common/notification_service/local_notification_service.dart';
 import 'app/common/utils/initializer.dart';
 import 'app/mirko_hospitality.dart';
 
-import 'package:device_preview/device_preview.dart';
+// import 'package:device_preview/device_preview.dart';
 
 Future<void> backgroundHandler(RemoteMessage message) async {
   print("=============== backgroundHandler =================");
@@ -33,13 +36,17 @@ Future<void> main() async {
 
   LocalNotificationService.initialize();
 
-  Initializer.instance.init(() {
-    // runApp(DevicePreview(
-    //   enabled: !kReleaseMode,
-    //   builder: (context) => const MirkoHospitality(),
-    // ));
+  Initializer.instance.init().then((value) {
     runApp(const MirkoHospitality());
   });
+
+  // Initializer.instance.init(() {
+  //   // runApp(DevicePreview(
+  //   //   enabled: !kReleaseMode,
+  //   //   builder: (context) => const MirkoHospitality(),
+  //   // ));
+  //   runApp(const MirkoHospitality());
+  // });
 }
 
 
