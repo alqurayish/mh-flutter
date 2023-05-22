@@ -45,6 +45,8 @@ class SupportChatController extends GetxController {
 
   Rx<AllAdmins> allAdmins = AllAdmins().obs;
 
+  bool firstTimeScrollToBottomComplete = false;
+
   @override
   Future<void> onInit() async {
 
@@ -96,6 +98,28 @@ class SupportChatController extends GetxController {
   void onClose() {
     _updateChatScreenStatus(false);
     super.onClose();
+  }
+
+  void setMassagePosition() {
+    if(firstTimeScrollToBottomComplete) {
+
+      if((scrollController.position.maxScrollExtent - scrollController.offset) < 100) {
+        scrollToBottom();
+      }
+
+    } else {
+      scrollToBottom();
+
+      firstTimeScrollToBottomComplete = true;
+    }
+  }
+
+  void scrollToBottom() {
+    scrollController.animateTo(
+      scrollController.position.maxScrollExtent,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeOut,
+    );
   }
 
   Future<void> _getAllAdmins() async {

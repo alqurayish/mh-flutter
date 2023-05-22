@@ -90,6 +90,10 @@ class ClientEmployeeChatView extends GetView<ClientEmployeeChatController> {
                   );
                 }
 
+                WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+                  controller.setMassagePosition();
+                });
+
                       return ListView.builder(
                         controller: controller.scrollController,
                         itemCount: (snapshot.data?.docs ?? []).length,
@@ -107,14 +111,6 @@ class ClientEmployeeChatView extends GetView<ClientEmployeeChatController> {
                               topMargin = 20;
                             }
                           }
-
-                          WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-                            controller.scrollController.animateTo(
-                              controller.scrollController.position.maxScrollExtent,
-                              duration: const Duration(milliseconds: 300),
-                              curve: Curves.easeOut,
-                            );
-                          });
 
                           return _msg(
                             fromId: data["fromId"],

@@ -36,6 +36,8 @@ class ClientEmployeeChatController extends GetxController {
   TextEditingController tecController = TextEditingController();
   late ScrollController scrollController;
 
+  bool firstTimeScrollToBottomComplete = false;
+
   @override
   void onInit() {
 
@@ -82,6 +84,28 @@ class ClientEmployeeChatController extends GetxController {
   void onClose() {
     _updateChatScreenStatus(false);
     super.onClose();
+  }
+
+  void setMassagePosition() {
+    if(firstTimeScrollToBottomComplete) {
+
+      if((scrollController.position.maxScrollExtent - scrollController.offset) < 100) {
+        scrollToBottom();
+      }
+
+    } else {
+      scrollToBottom();
+
+      firstTimeScrollToBottomComplete = true;
+    }
+  }
+
+  void scrollToBottom() {
+    scrollController.animateTo(
+      scrollController.position.maxScrollExtent,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeOut,
+    );
   }
 
   void _updateReadAllMsg(String docId) {
@@ -140,6 +164,8 @@ class ClientEmployeeChatController extends GetxController {
     };
 
     tecController.clear();
+
+    scrollToBottom();
 
     massageCollection.add(data).then((value) {
       _sendNotification(data["text"]);
