@@ -156,8 +156,10 @@ class _CustomPaymentMethodState extends State<CustomPaymentMethod> {
               ),
               const SizedBox(width: 10),
 
-              Text(name),
-
+              Text(
+                name,
+                style: MyColors.l111111_dffffff(context).semiBold14,
+              ),
               const Spacer(),
 
               Image.asset(
