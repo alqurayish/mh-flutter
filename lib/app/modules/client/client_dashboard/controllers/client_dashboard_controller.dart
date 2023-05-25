@@ -8,6 +8,7 @@ import '../../../../common/utils/exports.dart';
 import '../../../../enums/chat_with.dart';
 import '../../../../models/check_in_out_histories.dart';
 import '../../../../models/custom_error.dart';
+import '../../../../models/employee_daily_statistics.dart';
 import '../../../../routes/app_pages.dart';
 import '../../client_home/controllers/client_home_controller.dart';
 import '../models/current_hired_employees.dart';
@@ -246,14 +247,20 @@ class ClientDashboardController extends GetxController {
 
       CheckInCheckOutHistoryElement element = getCheckInOutDate(index)!;
 
+      int checkInDiff = element.checkInCheckOutDetails!.clientCheckInTime!.difference(element.checkInCheckOutDetails!.checkInTime!).inMinutes;
+      int checkOutDiff = element.checkInCheckOutDetails!.clientCheckOutTime!.difference(element.checkInCheckOutDetails!.checkOutTime!).inMinutes;
+
+      print(checkInDiff);
+      print(checkOutDiff);
+
       Map<String, dynamic> data = {
         "id": element.currentHiredEmployeeId,
         "checkIn": (element.checkInCheckOutDetails?.checkIn ?? false) || (element.checkInCheckOutDetails?.emmergencyCheckIn ?? false),
         "checkOut": (element.checkInCheckOutDetails?.checkOut ?? false) || (element.checkInCheckOutDetails?.emmergencyCheckOut ?? false),
         if(tecComment.text.isNotEmpty) "clientComment": tecComment.text,
         "clientBreakTime": selectedComplainType == complainType.last ? int.parse(tecTime.text) : 0,
-        "clientCheckInTime": complainType[0] == selectedComplainType ? -(int.parse(tecTime.text)) : complainType[1] == selectedComplainType ? int.parse(tecTime.text) : 0,
-        "clientCheckOutTime": complainType.length > 2 ? complainType[2] == selectedComplainType ? -(int.parse(tecTime.text)) : complainType[3] == selectedComplainType ? int.parse(tecTime.text) : 0 : 0,
+        "clientCheckInTime": complainType[0] == selectedComplainType ? -(int.parse(tecTime.text)) : complainType[1] == selectedComplainType ? int.parse(tecTime.text) : checkInDiff,
+        "clientCheckOutTime": complainType.length > 2 ? complainType[2] == selectedComplainType ? -(int.parse(tecTime.text)) : complainType[3] == selectedComplainType ? int.parse(tecTime.text) : checkOutDiff : 0,
       };
 
       print(data);

@@ -436,6 +436,7 @@ class ClientDashboardView extends GetView<ClientDashboardController> {
                       controller: controller.tecTime,
                       keyboardType: TextInputType.number,
                       cursorColor: MyColors.c_C6A34F,
+                      style: MyColors.l111111_dwhite(controller.context!).regular14,
                       decoration: MyDecoration.inputFieldDecoration(
                         context: controller.context!,
                         label: "",
@@ -462,6 +463,7 @@ class ClientDashboardView extends GetView<ClientDashboardController> {
             minLines: 5,
             maxLines: null,
             cursorColor: MyColors.c_C6A34F,
+            style: MyColors.l111111_dwhite(controller.context!).regular14,
             decoration: MyDecoration.inputFieldDecoration(
               context: controller.context!,
               label: "Comment",
