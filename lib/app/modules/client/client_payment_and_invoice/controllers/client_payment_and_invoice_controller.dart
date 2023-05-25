@@ -17,4 +17,8 @@ class ClientPaymentAndInvoiceController extends GetxController {
   void onClose() {
     super.onClose();
   }
+
+  void onPaymentSuccess() {
+
+  }
 }

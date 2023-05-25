@@ -73,9 +73,8 @@ class _Lottie {
 }
 
 class _PaymentMethod {
-  String amex = "assets/payment/amex.png";
-  String bitcoin = "assets/payment/bitcoin.png";
-  String mastercard = "assets/payment/mastercard.png";
-  String paypal = "assets/payment/paypal.png";
-  String visa = "assets/payment/visa.png";
+  String visaSelect = "assets/payment/visa_select.png";
+  String visaUnSelect = "assets/payment/visa_unselect.png";
+  String bankSelect = "assets/payment/bank_select.png";
+  String bankUnSelect = "assets/payment/bank_unselect.png";
 }

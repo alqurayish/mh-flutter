@@ -1,10 +1,13 @@
 import '../../../../common/controller/app_controller.dart';
+import '../../../../common/controller/payment_controller.dart';
 import '../../../../common/utils/exports.dart';
 import '../../../../common/widgets/custom_loader.dart';
+import '../../../../enums/selected_payment_method.dart';
 import '../../../../models/custom_error.dart';
 import '../../../../repository/api_helper.dart';
 import '../../../../routes/app_pages.dart';
 import '../../common/shortlist_controller.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 
 class PaymentForHireController extends GetxController {
   BuildContext? context;
@@ -15,12 +18,28 @@ class PaymentForHireController extends GetxController {
 
   final AppController appController = Get.find();
 
+  SelectedPaymentMethod? selectedPaymentMethod;
+
   @override
   void onInit() {
     super.onInit();
   }
 
+  void onPaymentMethodChange(SelectedPaymentMethod paymentMethod) {
+    selectedPaymentMethod = paymentMethod;
+  }
+
   Future<void> onSubmitRequestClick() async {
+    // if no introduction fee then just place order
+    if(shortlistController.getIntroductionFeesWithDiscount() == 0) {
+      hireConfirm();
+    } else {
+      if(selectedPaymentMethod!.isCard) _cardPayment();
+      if(selectedPaymentMethod!.isBank) _bankPayment();
+    }
+  }
+
+  Future<void> hireConfirm() async {
     List<String> shortlistIds = [];
 
     for (var element in shortlistController.selectedForHire) {
@@ -44,6 +63,19 @@ class PaymentForHireController extends GetxController {
         Get.toNamed(Routes.hireStatus);
       });
     });
+  }
+
+  Future<void> _cardPayment() async {
+    final PaymentController paymentController = Get.put(PaymentController());
+    paymentController.makePayment(
+      amount: shortlistController.getIntroductionFeesWithDiscount(),
+      currency: "EUR",
+      customerName: appController.user.value.userName,
+    );
+  }
+
+  void _bankPayment() {
+
   }
 
 }

@@ -83,6 +83,8 @@ dependencies:
   cloud_firestore: ^4.5.3
   device_info_plus: ^8.2.0
 
+  flutter_stripe: ^9.2.0
+
   flutter:
     sdk: flutter
 

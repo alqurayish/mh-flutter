@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:intl/intl.dart';
 
+import '../../enums/selected_payment_method.dart';
 import '../utils/exports.dart';
 
 extension EitherX<L, R> on Either<L, R> {
@@ -41,6 +42,12 @@ extension ImageUrl on String {
 
     return "https://mh-user-bucket.s3.amazonaws.com/public/users/profile/$this";
   }
+}
+
+extension PaymentMethods on SelectedPaymentMethod {
+  bool get isCard => this == SelectedPaymentMethod.card;
+
+  bool get isBank => this == SelectedPaymentMethod.bank;
 }
 
 extension TextColor on Color {

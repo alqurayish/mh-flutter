@@ -1,10 +1,9 @@
-import 'dart:ui';
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 
+import 'app/common/app_info/app_credentials.dart';
 import 'app/common/notification_service/local_notification_service.dart';
 import 'app/common/utils/initializer.dart';
 import 'app/mirko_hospitality.dart';
@@ -22,6 +21,8 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   FirebaseMessaging.onBackgroundMessage(backgroundHandler);
+
+  Stripe.publishableKey = AppCredentials.stripePublishableKey;
 
   FirebaseMessaging.instance.onTokenRefresh.listen((token) {
     print("=============== REFRESHED FCM TOKEN =================");

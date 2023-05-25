@@ -1,6 +1,8 @@
 import '../../../../common/utils/exports.dart';
 import '../../../../common/widgets/custom_appbar.dart';
 import '../../../../common/widgets/custom_bottombar.dart';
+import '../../../../common/widgets/custom_payment_method.dart';
+import '../../../../enums/selected_payment_method.dart';
 import '../controllers/payment_for_hire_controller.dart';
 
 class PaymentForHireView extends GetView<PaymentForHireController> {
@@ -87,53 +89,12 @@ class PaymentForHireView extends GetView<PaymentForHireController> {
   }
 
   Widget get _availablePaymentMethod {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 23.w),
-      padding: EdgeInsets.symmetric(horizontal: 23.w, vertical: 20.h),
-      decoration: BoxDecoration(
-        color: MyColors.lightCard(controller.context!),
-        borderRadius: BorderRadius.circular(10.0),
-        border: Border.all(
-          width: .5,
-          color: MyColors.c_A6A6A6,
-        )
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-
-          Text(
-            "Payment Options",
-            style: MyColors.l111111_dwhite(controller.context!).semiBold18,
-          ),
-
-          SizedBox(height: 15.h,),
-
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              _paymentMethodItem(MyAssets.paymentMethod.amex),
-              _paymentMethodItem(MyAssets.paymentMethod.bitcoin),
-              _paymentMethodItem(MyAssets.paymentMethod.mastercard),
-              _paymentMethodItem(MyAssets.paymentMethod.paypal),
-              _paymentMethodItem(MyAssets.paymentMethod.visa),
-            ],
-          ),
-
-          SizedBox(height: 20.h),
-
-          _paymentUnavailable,
-
-          SizedBox(height: 30.h),
-
-          Text(
-            "Please submit your request. we will contact with you within 24 hours",
-            textAlign: TextAlign.center,
-            style: MyColors.text.regular15,
-          ),
-        ],
-      ),
+    return CustomPaymentMethod(
+      availablePaymentMethods: const [
+        SelectedPaymentMethod.card,
+        // PaymentMethod.bank,
+      ],
+      onChange: controller.onPaymentMethodChange,
     );
   }
 
@@ -168,7 +129,7 @@ class PaymentForHireView extends GetView<PaymentForHireController> {
     return CustomBottomBar(
         child: CustomButtons.button(
           onTap: controller.onSubmitRequestClick,
-          text: "Submit Request",
+          text: controller.shortlistController.getIntroductionFeesWithDiscount() == 0 ? "Submit Request" : "Pay",
           customButtonStyle: CustomButtonStyle.radiusTopBottomCorner,
         ));
   }
