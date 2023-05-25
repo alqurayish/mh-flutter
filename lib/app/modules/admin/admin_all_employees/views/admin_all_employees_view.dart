@@ -116,7 +116,7 @@ class AdminAllEmployeesView extends GetView<AdminAllEmployeesController> {
                 width: 122.w,
                 child: CustomButtons.button(
                   height: 28.w,
-                  text: "\$${user.hourlyRate ?? 0} / hour",
+                  text: "€${user.hourlyRate ?? 0} / hour",
                   margin: EdgeInsets.zero,
                   fontSize: 12,
                   customButtonStyle: CustomButtonStyle.radiusTopBottomCorner,

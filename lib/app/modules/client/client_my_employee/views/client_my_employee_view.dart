@@ -82,7 +82,7 @@ class ClientMyEmployeeView extends GetView<ClientMyEmployeeController> {
                 width: 122.w,
                 child: CustomButtons.button(
                   height: 28.w,
-                  text: "\$${hiredHistory.employeeDetails?.hourlyRate ?? 0} /h",
+                  text: "€${hiredHistory.employeeDetails?.hourlyRate ?? 0} /h",
                   margin: EdgeInsets.zero,
                   fontSize: 12,
                   customButtonStyle: CustomButtonStyle.radiusTopBottomCorner,

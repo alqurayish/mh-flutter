@@ -57,7 +57,7 @@ class PaymentForHireView extends GetView<PaymentForHireController> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                '\$',
+                '€',
                 style: MyColors.white.medium12.copyWith(fontSize: 45),
               ),
 
