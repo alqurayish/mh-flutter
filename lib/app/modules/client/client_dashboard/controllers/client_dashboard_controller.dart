@@ -253,7 +253,7 @@ class ClientDashboardController extends GetxController {
         if(tecComment.text.isNotEmpty) "clientComment": tecComment.text,
         "clientBreakTime": selectedComplainType == complainType.last ? int.parse(tecTime.text) : 0,
         "clientCheckInTime": complainType[0] == selectedComplainType ? -(int.parse(tecTime.text)) : complainType[1] == selectedComplainType ? int.parse(tecTime.text) : 0,
-        "clientCheckOutTime": complainType[2] == selectedComplainType ? -(int.parse(tecTime.text)) : complainType[3] == selectedComplainType ? int.parse(tecTime.text) : 0,
+        "clientCheckOutTime": complainType.length > 2 ? complainType[2] == selectedComplainType ? -(int.parse(tecTime.text)) : complainType[3] == selectedComplainType ? int.parse(tecTime.text) : 0 : 0,
       };
 
       print(data);
