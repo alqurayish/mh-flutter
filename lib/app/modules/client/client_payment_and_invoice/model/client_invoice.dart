@@ -47,7 +47,7 @@ class ClientInvoice {
 class Invoice {
   final String? id;
   final int? totalEmployee;
-  final int? amount;
+  final double? amount;
   final DateTime? fromWeekDate;
   final DateTime? toWeekDate;
   final DateTime? invoiceDate;
@@ -84,7 +84,7 @@ class Invoice {
   factory Invoice.fromJson(Map<String, dynamic> json) => Invoice(
     id: json["_id"],
     totalEmployee: json["totalEmployee"],
-    amount: json["amount"],
+    amount: double.parse(json["amount"].toString()),
     fromWeekDate: json["fromWeekDate"] == null ? null : DateTime.parse(json["fromWeekDate"]),
     toWeekDate: json["toWeekDate"] == null ? null : DateTime.parse(json["toWeekDate"]),
     invoiceDate: json["invoiceDate"] == null ? null : DateTime.parse(json["invoiceDate"]),

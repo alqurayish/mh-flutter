@@ -1,6 +1,7 @@
-import 'package:mh/app/common/controller/app_controller.dart';
-
+import '../../../../common/controller/app_controller.dart';
+import '../../../../common/controller/payment_controller.dart';
 import '../../../../common/utils/exports.dart';
+import '../../../../common/widgets/custom_loader.dart';
 import '../../../../models/custom_error.dart';
 import '../../../../repository/api_helper.dart';
 import '../model/client_invoice.dart';
@@ -13,6 +14,8 @@ class ClientPaymentAndInvoiceController extends GetxController {
   Rx<ClientInvoice> clientInvoice = ClientInvoice().obs;
 
   RxBool isLoading = true.obs;
+
+  String _selectedInvoiceId = "";
 
   @override
   void onInit() {
@@ -52,10 +55,40 @@ class ClientPaymentAndInvoiceController extends GetxController {
   }
 
   void onPayClick(int index) {
-
+    _selectedInvoiceId = clientInvoice.value.invoices![index].id ?? "";
+    _cardPayment(clientInvoice.value.invoices![index].amount ?? 0);
   }
 
-  void onPaymentSuccess() {
+  Future<void> _cardPayment(double amount) async {
+    final PaymentController paymentController = Get.put(PaymentController());
+    paymentController.makePayment(
+      amount: amount,
+      currency: "EUR",
+      customerName: _appController.user.value.userName,
+    );
+  }
 
+  Future<void> onPaymentSuccess() async {
+    CustomLoader.show(context!);
+
+    Map<String, dynamic> data = {
+      "id": _selectedInvoiceId,
+      "status": "PAID"
+    };
+
+    await _apiHelper.updatePaymentStatus(data).then((response) {
+      CustomLoader.hide(context!);
+
+      response.fold((CustomError customError) {
+
+        Utils.errorDialog(context!, customError..onRetry = _getClientInvoice);
+
+      }, (Response response) {
+
+        _getClientInvoice();
+
+      });
+
+    });
   }
 }
