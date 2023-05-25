@@ -129,7 +129,7 @@ class AdminDashboardView extends GetView<AdminDashboardController> {
                       _vDivider,
                       Expanded(child: _itemValue("Hours", (controller.totalWorkingTimeInMinutes.value / 60).toStringAsFixed(1))),
                       _vDivider,
-                      Expanded(child: _itemValue("Amount", "€${controller.amount.value}")),
+                      Expanded(child: _itemValue("Amount", "£${controller.amount.value}")),
                     ],
                   ),
                 ),

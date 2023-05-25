@@ -129,7 +129,7 @@ class ClientSuggestedEmployeesView extends GetView<ClientSuggestedEmployeesContr
 
                 Row(
                   children: [
-                    _detailsItem(MyAssets.exp, MyStrings.rate.tr, MyStrings.ratePerHour.trParams({"rate": "€${(employee.hourlyRate ?? 0)}"})),
+                    _detailsItem(MyAssets.exp, MyStrings.rate.tr, MyStrings.ratePerHour.trParams({"rate": "£${(employee.hourlyRate ?? 0)}"})),
                     _detailsItem(MyAssets.totalHour, MyStrings.totalHour.tr, (employee.totalWorkingHour ?? 0).toString()),
                   ],
                 ),
