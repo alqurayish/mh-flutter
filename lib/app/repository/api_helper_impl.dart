@@ -9,6 +9,7 @@ import 'package:mh/app/models/check_in_out_histories.dart';
 import 'package:mh/app/models/lat_long_to_address.dart';
 import 'package:mh/app/modules/client/client_self_profile/model/client_profile_update.dart';
 import 'package:mh/app/modules/employee/employee_home/models/today_check_in_out_details.dart';
+import 'package:mh/app/repository/server_urls.dart';
 
 import '../common/controller/app_error_controller.dart';
 import '../common/local_storage/storage_helper.dart';
@@ -36,12 +37,10 @@ import '../modules/client/client_terms_condition_for_hire/models/terms_condition
 import 'api_error_handel.dart';
 import 'api_helper.dart';
 
-part 'api_urls.dart';
-
 class ApiHelperImpl extends GetConnect with ApiHelper {
   @override
   void onInit() {
-    httpClient.baseUrl = _ApiUrls.base;
+    httpClient.baseUrl = ServerUrls.serverUrlUser;
     httpClient.timeout = const Duration(seconds: 120);
 
     httpClient.addRequestModifier<dynamic>((request) {
@@ -461,7 +460,7 @@ class ApiHelperImpl extends GetConnect with ApiHelper {
     if(response.statusCode == null) response = await get("search?q=$query&format=jsonv2");
     if(response.statusCode == null) response = await get("search?q=$query&format=jsonv2");
     if(response.statusCode == null) response = await get("search?q=$query&format=jsonv2");
-    httpClient.baseUrl = _ApiUrls.base;
+    httpClient.baseUrl = ServerUrls.serverUrlUser;
 
     return _convert<Response>(
       response,
@@ -477,7 +476,7 @@ class ApiHelperImpl extends GetConnect with ApiHelper {
     if (response.statusCode == null) response = await get("reverse?lat=$lat&lon=$lng&format=jsonv2");
     if (response.statusCode == null) response = await get("reverse?lat=$lat&lon=$lng&format=jsonv2");
     if (response.statusCode == null) response = await get("reverse?lat=$lat&lon=$lng&format=jsonv2");
-    httpClient.baseUrl = _ApiUrls.base;
+    httpClient.baseUrl = ServerUrls.serverUrlUser;
 
     return _convert<LatLngToAddress>(
       response,

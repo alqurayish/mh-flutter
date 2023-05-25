@@ -15,10 +15,10 @@ class ServerUrls {
   }
 
   /// server urls
-  static String serverUrlUser = '${_getBaseServerUrl}44.204.212.181:8000/$_apiVersion/';
+  static String serverUrlUser = '$_getBaseServerUrl$_apiVersion/';
 
   static String get _getBaseServerUrl {
-    const String prodUrl = "http://";
+    const String prodUrl = "https://server.mhpremierstaffingsolutions.com/";
 
     return _url(prodUrl);
   }
