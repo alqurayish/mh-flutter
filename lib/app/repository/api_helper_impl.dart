@@ -7,6 +7,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:mh/app/models/address_to_lat_lng.dart';
 import 'package:mh/app/models/check_in_out_histories.dart';
 import 'package:mh/app/models/lat_long_to_address.dart';
+import 'package:mh/app/modules/client/client_payment_and_invoice/model/client_invoice.dart';
 import 'package:mh/app/modules/client/client_self_profile/model/client_profile_update.dart';
 import 'package:mh/app/modules/employee/employee_home/models/today_check_in_out_details.dart';
 import 'package:mh/app/repository/server_urls.dart';
@@ -732,6 +733,35 @@ class ApiHelperImpl extends GetConnect with ApiHelper {
     return _convert<ClientRegistrationResponse>(
       response,
       ClientRegistrationResponse.fromJson,
+    ).fold((l) => left(l), (r) => right(r));
+  }
+
+  @override
+  EitherModel<ClientInvoice> getClientInvoice(String clientId) async {
+    String url = "invoices?clientId=$clientId";
+
+    var response = await get(url);
+    if (response.statusCode == null) response = await get(url);
+    if (response.statusCode == null) response = await get(url);
+    if (response.statusCode == null) response = await get(url);
+
+    return _convert<ClientInvoice>(
+      response,
+      ClientInvoice.fromJson,
+    ).fold((l) => left(l), (r) => right(r));
+  }
+
+  @override
+  EitherModel<Response> updatePaymentStatus(Map<String, dynamic> data) async {
+    var response = await put("invoices/update-status", jsonEncode(data));
+    if(response.statusCode == null) response = await put("invoices/update-status", jsonEncode(data));
+    if(response.statusCode == null) response = await put("invoices/update-status", jsonEncode(data));
+    if(response.statusCode == null) response = await put("invoices/update-status", jsonEncode(data));
+
+    return _convert<Response>(
+      response,
+          (Map<String, dynamic> data) {},
+      onlyErrorCheck: true,
     ).fold((l) => left(l), (r) => right(r));
   }
 

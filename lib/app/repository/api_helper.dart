@@ -18,6 +18,7 @@ import '../modules/auth/register/models/client_register.dart';
 import '../modules/auth/register/models/client_register_response.dart';
 import '../modules/auth/register/models/employee_registration.dart';
 import '../modules/client/client_dashboard/models/current_hired_employees.dart';
+import '../modules/client/client_payment_and_invoice/model/client_invoice.dart';
 import '../modules/client/client_self_profile/model/client_profile_update.dart';
 import '../modules/client/client_shortlisted/models/shortlisted_employees.dart' as shortlistEmployees;
 import '../modules/client/client_terms_condition_for_hire/models/terms_condition_for_hire.dart';
@@ -122,4 +123,8 @@ abstract class ApiHelper {
   EitherModel<EmployeeFullDetails> employeeFullDetails(String id);
 
   EitherModel<ClientRegistrationResponse> updateClientProfile(ClientProfileUpdate clientProfileUpdate);
+
+  EitherModel<ClientInvoice> getClientInvoice(String clientId);
+
+  EitherModel<Response> updatePaymentStatus(Map<String, dynamic> data);
 }

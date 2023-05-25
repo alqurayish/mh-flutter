@@ -11,6 +11,7 @@ class CustomButtons {
     String text = "Continue",
     Function()? onTap,
     EdgeInsets? margin,
+    EdgeInsets? padding,
     double? height,
     double? fontSize,
     CustomButtonStyle customButtonStyle = CustomButtonStyle.regular,
@@ -19,6 +20,7 @@ class CustomButtons {
       Container(
         height: height ?? 61.h,
         margin: margin ?? EdgeInsets.symmetric(horizontal: 37.0.w),
+        padding: padding,
         decoration: _getButtonStyle(customButtonStyle, context, onTap != null),
         child: Material(
           type: MaterialType.transparency,
