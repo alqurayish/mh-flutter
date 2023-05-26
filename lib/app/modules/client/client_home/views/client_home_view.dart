@@ -135,10 +135,26 @@ class ClientHomeView extends GetView<ClientHomeController> {
                             SizedBox(width: 24.w),
 
                             Expanded(
-                              child: CustomFeatureBox(
-                                title: MyStrings.invoicePayment.tr,
-                                icon: MyAssets.invoicePayment,
-                                onTap: controller.onInvoiceAndPaymentClick,
+                              child: Obx(
+                                ()=> Stack(
+                                  clipBehavior: Clip.none,
+                                  children: [
+                                    CustomFeatureBox(
+                                      title: MyStrings.invoicePayment.tr,
+                                      icon: MyAssets.invoicePayment,
+                                      onTap: controller.onInvoiceAndPaymentClick,
+                                    ),
+
+                                    Positioned(
+                                      top: 4,
+                                      right: 5,
+                                      child: Visibility(
+                                        visible: ((controller.clientInvoice.value.invoices ?? []).where((element) => element.status == "DUE")).isNotEmpty,
+                                        child: CustomBadge(((controller.clientInvoice.value.invoices ?? []).where((element) => element.status == "DUE")).length.toString()),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ],

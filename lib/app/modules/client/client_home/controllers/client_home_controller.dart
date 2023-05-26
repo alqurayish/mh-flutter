@@ -10,6 +10,7 @@ import '../../../../models/custom_error.dart';
 import '../../../../models/requested_employees.dart';
 import '../../../../repository/api_helper.dart';
 import '../../../../routes/app_pages.dart';
+import '../../client_payment_and_invoice/model/client_invoice.dart';
 import '../../common/shortlist_controller.dart';
 
 class ClientHomeController extends GetxController {
@@ -21,6 +22,9 @@ class ClientHomeController extends GetxController {
 
   Rx<RequestedEmployees> requestedEmployees = RequestedEmployees().obs;
 
+  Rx<ClientInvoice> clientInvoice = ClientInvoice().obs;
+  RxBool isLoading = true.obs;
+
   // unread msg track
   RxInt unreadMsgFromEmployee = 0.obs;
   RxInt unreadMsgFromAdmin = 0.obs;
@@ -29,6 +33,7 @@ class ClientHomeController extends GetxController {
 
   @override
   void onInit() {
+    getClientInvoice();
     _trackUnreadMsg();
     _fetchRequestEmployees();
     super.onInit();
@@ -184,6 +189,27 @@ class ClientHomeController extends GetxController {
         Map<String, dynamic> data = event.data()!;
         unreadMsgFromAdmin.value = data["${appController.user.value.userId}_unread"];
       }
+    });
+  }
+
+  Future<void> getClientInvoice() async {
+
+    isLoading.value = true;
+
+    await _apiHelper.getClientInvoice(appController.user.value.userId).then((response) {
+      isLoading.value = false;
+
+      response.fold((CustomError customError) {
+
+        Utils.errorDialog(context!, customError..onRetry = getClientInvoice);
+
+      }, (ClientInvoice clientInvoice) {
+
+        this.clientInvoice.value = clientInvoice;
+        this.clientInvoice.refresh();
+
+      });
+
     });
   }
 

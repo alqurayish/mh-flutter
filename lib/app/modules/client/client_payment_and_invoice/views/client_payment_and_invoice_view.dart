@@ -19,9 +19,9 @@ class ClientPaymentAndInvoiceView
         context: context,
       ),
       body: Obx(
-        () => controller.isLoading.value
+        () => controller.clientHomeController.isLoading.value
             ? _loading
-            : (controller.clientInvoice.value.invoices ?? []).isEmpty
+            : (controller.clientHomeController.clientInvoice.value.invoices ?? []).isEmpty
                 ? Center(
                     child: Text(
                     "No invoice found",
@@ -34,7 +34,7 @@ class ClientPaymentAndInvoiceView
                     headerWidgets: _getTitleWidget(),
                     leftSideItemBuilder: _generateFirstColumnRow,
                     rightSideItemBuilder: _generateRightHandSideColumnRow,
-                    itemCount: (controller.clientInvoice.value.invoices ?? []).length,
+                    itemCount: (controller.clientHomeController.clientInvoice.value.invoices ?? []).length,
                     rowSeparatorWidget: Container(
                       height: 6.h,
                       color: MyColors.lFAFAFA_dframeBg(context),
@@ -81,7 +81,7 @@ class ClientPaymentAndInvoiceView
   }
 
   Widget _generateFirstColumnRow(BuildContext context, int index) {
-    Invoice invoice = controller.clientInvoice.value.invoices![index];
+    Invoice invoice = controller.clientHomeController.clientInvoice.value.invoices![index];
 
     double height = 71.h;
 
@@ -182,7 +182,7 @@ class ClientPaymentAndInvoiceView
 
   Widget _generateRightHandSideColumnRow(BuildContext context, int index) {
 
-    Invoice invoice = controller.clientInvoice.value.invoices![index];
+    Invoice invoice = controller.clientHomeController.clientInvoice.value.invoices![index];
 
     double height = 71.h;
 

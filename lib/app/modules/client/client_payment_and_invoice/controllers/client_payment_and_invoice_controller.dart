@@ -4,6 +4,7 @@ import '../../../../common/utils/exports.dart';
 import '../../../../common/widgets/custom_loader.dart';
 import '../../../../models/custom_error.dart';
 import '../../../../repository/api_helper.dart';
+import '../../client_home/controllers/client_home_controller.dart';
 import '../model/client_invoice.dart';
 
 class ClientPaymentAndInvoiceController extends GetxController {
@@ -11,15 +12,13 @@ class ClientPaymentAndInvoiceController extends GetxController {
 
   final AppController _appController = Get.find();
   final ApiHelper _apiHelper = Get.find();
-  Rx<ClientInvoice> clientInvoice = ClientInvoice().obs;
 
-  RxBool isLoading = true.obs;
+  ClientHomeController clientHomeController = Get.find();
 
   String _selectedInvoiceId = "";
 
   @override
   void onInit() {
-    _getClientInvoice();
     super.onInit();
   }
 
@@ -33,30 +32,11 @@ class ClientPaymentAndInvoiceController extends GetxController {
     super.onClose();
   }
 
-  Future<void> _getClientInvoice() async {
 
-    isLoading.value = true;
-
-    await _apiHelper.getClientInvoice(_appController.user.value.userId).then((response) {
-      isLoading.value = false;
-
-      response.fold((CustomError customError) {
-
-        Utils.errorDialog(context!, customError..onRetry = _getClientInvoice);
-
-      }, (ClientInvoice clientInvoice) {
-
-        this.clientInvoice.value = clientInvoice;
-        this.clientInvoice.refresh();
-
-      });
-
-    });
-  }
 
   void onPayClick(int index) {
-    _selectedInvoiceId = clientInvoice.value.invoices![index].id ?? "";
-    _cardPayment(clientInvoice.value.invoices![index].amount ?? 0);
+    _selectedInvoiceId = clientHomeController.clientInvoice.value.invoices![index].id ?? "";
+    _cardPayment(clientHomeController.clientInvoice.value.invoices![index].amount ?? 0);
   }
 
   Future<void> _cardPayment(double amount) async {
@@ -81,11 +61,11 @@ class ClientPaymentAndInvoiceController extends GetxController {
 
       response.fold((CustomError customError) {
 
-        Utils.errorDialog(context!, customError..onRetry = _getClientInvoice);
+        Utils.errorDialog(context!, customError..onRetry = clientHomeController.getClientInvoice);
 
       }, (Response response) {
 
-        _getClientInvoice();
+        clientHomeController.getClientInvoice();
 
       });
 
