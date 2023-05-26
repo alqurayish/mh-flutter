@@ -38,6 +38,8 @@ class ClientEmployeeChatController extends GetxController {
 
   bool firstTimeScrollToBottomComplete = false;
 
+  RxDouble bottomHeight = 0.0.obs;
+
   @override
   void onInit() {
 

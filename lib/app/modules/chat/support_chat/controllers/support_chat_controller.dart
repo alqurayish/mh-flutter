@@ -47,6 +47,8 @@ class SupportChatController extends GetxController {
 
   bool firstTimeScrollToBottomComplete = false;
 
+  RxDouble bottomHeight = 0.0.obs;
+
   @override
   Future<void> onInit() async {
 
