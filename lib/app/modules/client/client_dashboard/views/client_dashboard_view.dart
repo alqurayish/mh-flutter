@@ -1,4 +1,6 @@
+import 'package:flutter_keyboard_size/flutter_keyboard_size.dart';
 import 'package:horizontal_data_table/horizontal_data_table.dart';
+import 'package:keyboard_visibility_pro/keyboard_visibility_pro.dart';
 import 'package:mh/app/common/widgets/custom_dropdown.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
@@ -255,11 +257,11 @@ class ClientDashboardView extends GetView<ClientDashboardController> {
             showMaterialModalBottomSheet(
               context: controller.context!,
               builder: (context) => Container(
-                padding: EdgeInsets.only(
-                  bottom: MediaQuery.of(context).viewInsets.bottom,
-                ),
+                // padding: EdgeInsets.only(
+                //   bottom: MediaQuery.of(context).viewInsets.bottom,
+                // ),
                 color: MyColors.lightCard(context),
-                child: _updateOption(index),
+                child: BottomA(_updateOption(index)),
               ),
             );
           },
@@ -277,13 +279,14 @@ class ClientDashboardView extends GetView<ClientDashboardController> {
               showMaterialModalBottomSheet(
                 context: controller.context!,
                 builder: (context) => Container(
-                  padding: EdgeInsets.only(
-                    bottom: MediaQuery.of(context).viewInsets.bottom,
-                  ),
+                  // padding: EdgeInsets.only(
+                  //   bottom: MediaQuery.of(context).viewInsets.bottom,
+                  // ),
                   color: MyColors.lightCard(context),
-                  child: _updateOption(index),
+                  child: BottomA(_updateOption(index)),
                 ),
               );
+
             } else {
               CustomDialogue.information(
                 context: controller.context!,
@@ -490,3 +493,33 @@ class ClientDashboardView extends GetView<ClientDashboardController> {
     ),
   );
 }
+
+
+class BottomA extends StatefulWidget {
+  final Widget updateOption;
+  const BottomA(this.updateOption, {Key? key}) : super(key: key);
+
+  @override
+  State<BottomA> createState() => _BottomAState();
+}
+
+class _BottomAState extends State<BottomA> {
+
+  double p = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return KeyboardVisibility(
+      onChanged: (bool visible) {
+        setState(() {
+          p = visible ? 300 : 0;
+        });
+      },
+      child: Container(
+        padding: EdgeInsets.only(bottom: p),
+        child: widget.updateOption,
+      ),
+    );
+  }
+}
+

@@ -85,6 +85,9 @@ dependencies:
 
   flutter_stripe: ^9.2.0
 
+  keyboard_visibility_pro: ^0.0.1
+  flutter_keyboard_size: ^1.0.1
+
   flutter:
     sdk: flutter
 
