@@ -249,21 +249,17 @@ class ClientDashboardController extends GetxController {
 
       int checkInDiff = element.checkInCheckOutDetails!.clientCheckInTime!.difference(element.checkInCheckOutDetails!.checkInTime!).inMinutes;
       int checkOutDiff = element.checkInCheckOutDetails!.clientCheckOutTime!.difference(element.checkInCheckOutDetails!.checkOutTime!).inMinutes;
-
-      print(checkInDiff);
-      print(checkOutDiff);
+      int breakTime = element.checkInCheckOutDetails?.clientBreakTime ?? 0;
 
       Map<String, dynamic> data = {
         "id": element.currentHiredEmployeeId,
         "checkIn": (element.checkInCheckOutDetails?.checkIn ?? false) || (element.checkInCheckOutDetails?.emmergencyCheckIn ?? false),
         "checkOut": (element.checkInCheckOutDetails?.checkOut ?? false) || (element.checkInCheckOutDetails?.emmergencyCheckOut ?? false),
         if(tecComment.text.isNotEmpty) "clientComment": tecComment.text,
-        "clientBreakTime": selectedComplainType == complainType.last ? int.parse(tecTime.text) : 0,
+        "clientBreakTime": selectedComplainType == complainType.last ? int.parse(tecTime.text) : breakTime,
         "clientCheckInTime": complainType[0] == selectedComplainType ? -(int.parse(tecTime.text)) : complainType[1] == selectedComplainType ? int.parse(tecTime.text) : checkInDiff,
         "clientCheckOutTime": complainType.length > 2 ? complainType[2] == selectedComplainType ? -(int.parse(tecTime.text)) : complainType[3] == selectedComplainType ? int.parse(tecTime.text) : checkOutDiff : 0,
       };
-
-      print(data);
 
       CustomLoader.show(context!);
       await _apiHelper.updateCheckInOutByClient(data).then((response) {
