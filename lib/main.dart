@@ -25,8 +25,6 @@ Future<void> main() async {
   await Firebase.initializeApp();
   FirebaseMessaging.onBackgroundMessage(backgroundHandler);
 
-  Stripe.publishableKey = AppCredentials.stripePublishableKey;
-
   FirebaseMessaging.instance.onTokenRefresh.listen((token) {
     if (kDebugMode) {
       print("=============== REFRESHED FCM TOKEN =================");
