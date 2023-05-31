@@ -20,11 +20,6 @@ class HireStatusView extends GetView<HireStatusController> {
                   "Payment Successfully",
                   style: MyColors.l111111_dwhite(context).semiBold22,
                 ),
-                SizedBox(height: 15.h),
-                Text(
-                  "We will contact with you within 24 hours",
-                  style: MyColors.text.regular15,
-                ),
               ],
             ),
           ),

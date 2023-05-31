@@ -54,7 +54,7 @@ class ClientShortlistedController extends GetxController {
                   ),
                 )
               : ThemeData.dark().copyWith(
-                  colorScheme: ColorScheme.light(
+                  colorScheme: ColorScheme.dark(
                     primary: MyColors.c_C6A34F,
                     onPrimary: Colors.white,
                     onSurface: MyColors.l111111_dwhite(context),

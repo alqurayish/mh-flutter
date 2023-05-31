@@ -1,4 +1,3 @@
-import 'package:flutter_keyboard_size/flutter_keyboard_size.dart';
 import 'package:horizontal_data_table/horizontal_data_table.dart';
 import 'package:keyboard_visibility_pro/keyboard_visibility_pro.dart';
 import 'package:mh/app/common/widgets/custom_dropdown.dart';
@@ -127,9 +126,8 @@ class ClientDashboardView extends GetView<ClientDashboardController> {
               onPrimary: Colors.white,
               onSurface: MyColors.l111111_dwhite(context),
             ),
-          )
-              : ThemeData.dark().copyWith(
-            colorScheme: ColorScheme.light(
+          ) : ThemeData.dark().copyWith(
+            colorScheme: ColorScheme.dark(
               primary: MyColors.c_C6A34F,
               onPrimary: Colors.white,
               onSurface: MyColors.l111111_dwhite(context),

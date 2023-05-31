@@ -12,6 +12,8 @@ class AppVersion {
     this.playStoreLink,
     this.serverMaintenance,
     this.serverMaintenanceMsg,
+    this.stripePublisherKey,
+    this.stripeSecret,
   });
 
   final bool? active;
@@ -24,6 +26,8 @@ class AppVersion {
   final String? playStoreLink;
   final bool? serverMaintenance;
   final String? serverMaintenanceMsg;
+  final String? stripePublisherKey;
+  final String? stripeSecret;
 
   factory AppVersion.fromRawJson(String str) => AppVersion.fromJson(json.decode(str));
 
@@ -40,6 +44,8 @@ class AppVersion {
     playStoreLink: json["playStoreLink"],
     serverMaintenance: json["serverMaintenance"],
     serverMaintenanceMsg: json["serverMaintenanceMsg"],
+    stripePublisherKey: json["stripePublisherKey"],
+    stripeSecret: json["stripeSecret"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -53,5 +59,7 @@ class AppVersion {
     "playStoreLink": playStoreLink,
     "serverMaintenance": serverMaintenance,
     "serverMaintenanceMsg": serverMaintenanceMsg,
+    "stripePublisherKey": stripePublisherKey,
+    "stripeSecret": stripeSecret,
   };
 }
