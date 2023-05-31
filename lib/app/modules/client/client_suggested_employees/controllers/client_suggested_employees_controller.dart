@@ -12,21 +12,6 @@ class ClientSuggestedEmployeesController extends GetxController {
   final ClientHomeController clientHomeController = Get.find();
   final ShortlistController shortlistController = Get.find();
 
-  @override
-  void onInit() {
-    super.onInit();
-  }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
   List<ClientRequestDetail> getUniquePositions() {
     List<String> ids = [];
     List<ClientRequestDetail> idsWithCounts = [];

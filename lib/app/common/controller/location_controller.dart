@@ -90,8 +90,6 @@ class LocationController {
     required double lat,
     required double long,
   }) async {
-    print(lat);
-    print(long);
     GeoData data = await Geocoder2.getDataFromCoordinates(
       latitude: lat,
       longitude: long,

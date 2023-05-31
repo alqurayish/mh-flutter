@@ -14,16 +14,6 @@ class ClientTermsConditionForHireController extends GetxController with StateMix
     super.onInit();
   }
 
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
   Future<void> _fetchTermsCondition() async {
 
     change(null, status: RxStatus.loading());

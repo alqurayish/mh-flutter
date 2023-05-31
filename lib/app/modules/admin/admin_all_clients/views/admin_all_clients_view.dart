@@ -1,6 +1,5 @@
 import '../../../../common/utils/exports.dart';
 import '../../../../common/widgets/custom_appbar.dart';
-import '../../../../common/widgets/custom_network_image.dart';
 import '../../../../common/widgets/no_item_found.dart';
 import '../../../../models/employees_by_id.dart';
 import '../controllers/admin_all_clients_controller.dart';
@@ -185,20 +184,6 @@ class AdminAllClientsView extends GetView<AdminAllClientsController> {
       ),
     );
   }
-
-  Widget _image(String profilePicture) => Container(
-    margin: const EdgeInsets.fromLTRB(16, 16, 13, 16),
-    width: 74.w,
-    height: 74.w,
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(5),
-      color: Colors.grey.withOpacity(.1),
-    ),
-    child: CustomNetworkImage(
-      url: profilePicture,
-      radius: 5,
-    ),
-  );
 
   Widget _name(String name) => Text(
     name,

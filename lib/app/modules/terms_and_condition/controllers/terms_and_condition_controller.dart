@@ -14,16 +14,6 @@ class TermsAndConditionController extends GetxController with StateMixin<TermsCo
     super.onInit();
   }
 
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
   Future<void> _fetchTermsCondition() async {
 
     change(null, status: RxStatus.loading());

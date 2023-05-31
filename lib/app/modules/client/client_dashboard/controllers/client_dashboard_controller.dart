@@ -1,18 +1,14 @@
 import 'package:intl/intl.dart';
-import 'package:mh/app/common/controller/app_controller.dart';
-import 'package:mh/app/common/widgets/custom_loader.dart';
-import 'package:mh/app/modules/client/common/shortlist_controller.dart';
-import 'package:mh/app/repository/api_helper.dart';
 
+import '../../../../common/controller/app_controller.dart';
 import '../../../../common/utils/exports.dart';
-import '../../../../enums/chat_with.dart';
+import '../../../../common/widgets/custom_loader.dart';
 import '../../../../models/check_in_out_histories.dart';
 import '../../../../models/custom_error.dart';
-import '../../../../models/employee_daily_statistics.dart';
+import '../../../../repository/api_helper.dart';
 import '../../../../routes/app_pages.dart';
 import '../../client_home/controllers/client_home_controller.dart';
 import '../models/current_hired_employees.dart';
-import 'package:intl/intl.dart';
 
 class ClientDashboardController extends GetxController {
   BuildContext? context;
@@ -64,16 +60,6 @@ class ClientDashboardController extends GetxController {
     onDatePicked(DateTime.now());
 
     _fetchEmployees();
-  }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
   }
 
   String getComment(int index) {

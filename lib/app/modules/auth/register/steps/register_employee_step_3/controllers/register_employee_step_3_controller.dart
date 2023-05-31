@@ -20,7 +20,6 @@ class RegisterEmployeeStep3Controller extends GetxController {
 
   Country selectedCountry = countries.where((element) => element.code == "GB").first;
 
-  @override
   void onContinuePressed() {
     if (formKey.currentState!.validate()) {
       formKey.currentState!.save();
@@ -34,12 +33,10 @@ class RegisterEmployeeStep3Controller extends GetxController {
     }
   }
 
-  @override
   void onSkillChange(List<String> value) {
     selectedSkillList.value = value;
   }
 
-  @override
   void onCountryChange(Country country) {
     selectedCountry = country;
   }

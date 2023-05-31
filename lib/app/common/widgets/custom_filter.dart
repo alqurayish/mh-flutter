@@ -81,7 +81,7 @@ class CustomFilter {
                       prefixIcon: Icons.bookmark,
                       hints: null,
                       value: null,
-                      items: (Get.find<AppController>().allActivePositions.value).map((e) => e.name!).toList(),
+                      items: (Get.find<AppController>().allActivePositions).map((e) => e.name!).toList(),
                       onChange: (value) {
                         positionId = Get.find<AppController>().allActivePositions.firstWhere((element) => element.name == value).id!;
                       },

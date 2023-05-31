@@ -1,9 +1,6 @@
 import 'package:mh/app/modules/employee/employee_home/controllers/employee_home_controller.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
-import '../../enums/user_type.dart';
-import '../../modules/client/client_home/controllers/client_home_controller.dart';
-import '../controller/app_controller.dart';
 import '../utils/exports.dart';
 import 'custom_badge.dart';
 

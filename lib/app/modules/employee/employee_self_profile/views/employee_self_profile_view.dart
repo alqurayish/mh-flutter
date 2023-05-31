@@ -1,11 +1,8 @@
 import '../../../../common/data/data.dart';
-import '../../../../common/style/my_decoration.dart';
 import '../../../../common/utils/exports.dart';
 import '../../../../common/utils/validators.dart';
 import '../../../../common/widgets/custom_appbar.dart';
-import '../../../../common/widgets/custom_appbar_back_button.dart';
 import '../../../../common/widgets/custom_bottombar.dart';
-import '../../../../common/widgets/custom_dropdown.dart';
 import '../../../../common/widgets/custom_network_image.dart';
 import '../controllers/employee_self_profile_controller.dart';
 

@@ -14,7 +14,6 @@ class RegisterEmployeeStep2Controller extends GetxController {
   TextEditingController tecPresentAddress = TextEditingController();
   TextEditingController tecPermanentAddress = TextEditingController();
 
-  @override
   void onContinuePressed() {
     if (formKey.currentState!.validate()) {
       formKey.currentState!.save();
@@ -27,12 +26,10 @@ class RegisterEmployeeStep2Controller extends GetxController {
     }
   }
 
-  @override
   void onLanguageChange(List<String> value) {
     selectedLanguageList.value = value;
   }
 
-  @override
   void onCountryChange(String? country) {
     selectedCountry.value = country!;
   }

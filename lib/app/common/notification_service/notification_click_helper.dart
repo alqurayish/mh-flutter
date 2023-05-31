@@ -1,13 +1,13 @@
 import 'dart:convert';
 
-import '../../enums/chat_with.dart';
+import 'package:flutter/foundation.dart';
+
 import '../../routes/app_pages.dart';
 import '../utils/exports.dart';
 
 
 class NotificationClickHelper {
   static void goToRoute(String? payload) {
-    print("clicked");
     if(payload != null) {
       Map<String, dynamic> data = jsonDecode(payload);
 
@@ -29,7 +29,9 @@ class NotificationClickHelper {
         });
       }
     } else {
-      print("Payload is null");
+      if (kDebugMode) {
+        print("Payload is null");
+      }
     }
   }
 }

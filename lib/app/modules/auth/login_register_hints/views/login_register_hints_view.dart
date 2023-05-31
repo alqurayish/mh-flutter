@@ -1,11 +1,7 @@
-import 'package:flutter/services.dart';
-
 import '../../../../common/utils/exports.dart';
 import '../../../../common/widgets/bottom_curve_path.dart';
 import '../../../../common/widgets/horizontal_divider_with_text.dart';
 import '../controllers/login_register_hints_controller.dart';
-import 'login_register_hints_view_phone.dart';
-import 'login_register_hints_view_tablet.dart';
 
 class LoginRegisterHintsView extends GetView<LoginRegisterHintsController> {
   const LoginRegisterHintsView({Key? key}) : super(key: key);

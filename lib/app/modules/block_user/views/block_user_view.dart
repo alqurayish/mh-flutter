@@ -13,7 +13,7 @@ class BlockUserView extends GetView<BlockUserController> {
         title: const Text('BlockUserView'),
         centerTitle: true,
       ),
-      body: Center(
+      body: const Center(
         child: Text(
           'BlockUserView is working',
           style: TextStyle(fontSize: 20),

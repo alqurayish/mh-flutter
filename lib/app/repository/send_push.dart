@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 
 class SendPush {
   static Future<void> sendMsgNotification({
@@ -30,7 +31,9 @@ class SendPush {
         ),
       );
 
-      print("${response.statusCode} : $token");
+      if (kDebugMode) {
+        print("${response.statusCode} : $token");
+      }
     }
   }
 }

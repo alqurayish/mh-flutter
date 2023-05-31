@@ -7,7 +7,6 @@ import '../../../../routes/app_pages.dart';
 class EmployeeRegisterSuccessController extends GetxController {
   final AppController appController = Get.find();
 
-  @override
   void onGetStartedClick() {
     if (appController.user.value.userType == UserType.client) {
       Get.offAndToNamed(Routes.clientHome);

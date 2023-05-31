@@ -4,26 +4,21 @@ import 'dart:io';
 import 'package:dartz/dartz.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:mh/app/models/address_to_lat_lng.dart';
-import 'package:mh/app/models/check_in_out_histories.dart';
-import 'package:mh/app/models/lat_long_to_address.dart';
-import 'package:mh/app/modules/client/client_payment_and_invoice/model/client_invoice.dart';
-import 'package:mh/app/modules/client/client_self_profile/model/client_profile_update.dart';
-import 'package:mh/app/modules/employee/employee_home/models/today_check_in_out_details.dart';
 import 'package:mh/app/repository/server_urls.dart';
 
 import '../common/controller/app_error_controller.dart';
 import '../common/local_storage/storage_helper.dart';
 import '../common/utils/exports.dart';
-import '../common/utils/logcat.dart';
 import '../common/utils/type_def.dart';
 import '../enums/error_from.dart';
 import '../models/all_admins.dart';
+import '../models/check_in_out_histories.dart';
 import '../models/client_details.dart';
 import '../models/commons.dart';
 import '../models/custom_error.dart';
 import '../models/employee_full_details.dart';
 import '../models/employees_by_id.dart';
+import '../models/lat_long_to_address.dart';
 import '../models/one_to_one_msg.dart';
 import '../models/requested_employees.dart' as requested_employees;
 import '../models/sources.dart';
@@ -33,8 +28,11 @@ import '../modules/auth/register/models/client_register.dart';
 import '../modules/auth/register/models/client_register_response.dart';
 import '../modules/auth/register/models/employee_registration.dart';
 import '../modules/client/client_dashboard/models/current_hired_employees.dart';
+import '../modules/client/client_payment_and_invoice/model/client_invoice.dart';
+import '../modules/client/client_self_profile/model/client_profile_update.dart';
 import '../modules/client/client_shortlisted/models/shortlisted_employees.dart' as shortlistEmployees;
 import '../modules/client/client_terms_condition_for_hire/models/terms_condition_for_hire.dart';
+import '../modules/employee/employee_home/models/today_check_in_out_details.dart';
 import 'api_error_handel.dart';
 import 'api_helper.dart';
 
@@ -72,8 +70,6 @@ class ApiHelperImpl extends GetConnect with ApiHelper {
     bool onlyErrorCheck = false,
   }) {
     try {
-
-      print(response?.body);
 
       if((response?.statusText ?? "").contains("SocketException")) {
         AppErrorController.submitAutomaticError(
@@ -183,13 +179,10 @@ class ApiHelperImpl extends GetConnect with ApiHelper {
   EitherModel<ClientRegistrationResponse> clientRegister(
     ClientRegistration clientRegistration,
   ) async {
-    print(clientRegistration.toJson);
     var response = await post("users/client-register", jsonEncode(clientRegistration.toJson));
     if(response.statusCode == null) await post("users/client-register", jsonEncode(clientRegistration.toJson));
     if(response.statusCode == null) await post("users/client-register", jsonEncode(clientRegistration.toJson));
     if(response.statusCode == null) await post("users/client-register", jsonEncode(clientRegistration.toJson));
-
-    print(response.body);
 
     return _convert<ClientRegistrationResponse>(
       response,
@@ -206,7 +199,6 @@ class ApiHelperImpl extends GetConnect with ApiHelper {
     if(response.statusCode == null) response = await post("users/employee-register", jsonEncode(employeeRegistration.toJson));
     if(response.statusCode == null) response = await post("users/employee-register", jsonEncode(employeeRegistration.toJson));
 
-    print(response.body);
 
     return _convert<ClientRegistrationResponse>(
       response,
@@ -296,8 +288,6 @@ class ApiHelperImpl extends GetConnect with ApiHelper {
     if(response.statusCode == null) response = await get(url);
     if(response.statusCode == null) response = await get(url);
 
-    print(response.body);
-
     return _convert<Employees>(
       response,
       Employees.fromJson,
@@ -371,7 +361,6 @@ class ApiHelperImpl extends GetConnect with ApiHelper {
     if(response.statusCode == null) response = await get("short-list");
     if(response.statusCode == null) response = await get("short-list");
 
-    print(response.body);
 
     return _convert<shortlistEmployees.ShortlistedEmployees>(
       response,
@@ -429,7 +418,6 @@ class ApiHelperImpl extends GetConnect with ApiHelper {
     if(response.statusCode == null) response = await delete("short-list/delete/$shortlistId");
     if(response.statusCode == null) response = await delete("short-list/delete/$shortlistId");
 
-    print(response.body);
 
     return _convert<Response>(
       response,
@@ -445,7 +433,6 @@ class ApiHelperImpl extends GetConnect with ApiHelper {
     if(response.statusCode == null) response = await post("hired-histories/create", jsonEncode(data));
     if(response.statusCode == null) response = await post("hired-histories/create", jsonEncode(data));
 
-    print(response.body);
 
     return _convert<Response>(
       response,
@@ -511,7 +498,6 @@ class ApiHelperImpl extends GetConnect with ApiHelper {
     if (response.statusCode == null) response = await post("current-hired-employees/create", jsonEncode(data));
     if (response.statusCode == null) response = await post("current-hired-employees/create", jsonEncode(data));
 
-    print(response.body);
 
     return _convert<TodayCheckInOutDetails>(
       response,
@@ -526,7 +512,6 @@ class ApiHelperImpl extends GetConnect with ApiHelper {
     if (response.statusCode == null) response = await put("current-hired-employees/update", jsonEncode(data));
     if (response.statusCode == null) response = await put("current-hired-employees/update", jsonEncode(data));
 
-    print(response.body);
 
     return _convert<Response>(
       response,
@@ -542,7 +527,6 @@ class ApiHelperImpl extends GetConnect with ApiHelper {
     if (response.statusCode == null) response = await put("current-hired-employees/update-status", jsonEncode(data));
     if (response.statusCode == null) response = await put("current-hired-employees/update-status", jsonEncode(data));
 
-    print(response.body);
 
     return _convert<Response>(
       response,
@@ -570,7 +554,6 @@ class ApiHelperImpl extends GetConnect with ApiHelper {
     String url = "hired-histories/employee-list-for-client";
 
     if (date != null) url += "?filterDate=$date";
-    print(url);
 
     var response = await get(url);
     if(response.statusCode == null) response = await get(url);

@@ -16,7 +16,6 @@ import '../../routes/app_pages.dart';
 import '../data/data.dart';
 import '../local_storage/storage_helper.dart';
 import '../utils/logcat.dart';
-import '../utils/utils.dart';
 import '../values/my_assets.dart';
 
 class AppController extends GetxService {

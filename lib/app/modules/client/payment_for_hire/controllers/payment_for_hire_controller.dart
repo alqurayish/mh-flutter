@@ -7,7 +7,6 @@ import '../../../../models/custom_error.dart';
 import '../../../../repository/api_helper.dart';
 import '../../../../routes/app_pages.dart';
 import '../../common/shortlist_controller.dart';
-import 'package:flutter_stripe/flutter_stripe.dart';
 
 class PaymentForHireController extends GetxController {
   BuildContext? context;
@@ -19,11 +18,6 @@ class PaymentForHireController extends GetxController {
   final AppController appController = Get.find();
 
   SelectedPaymentMethod? selectedPaymentMethod;
-
-  @override
-  void onInit() {
-    super.onInit();
-  }
 
   void onPaymentMethodChange(SelectedPaymentMethod paymentMethod) {
     selectedPaymentMethod = paymentMethod;

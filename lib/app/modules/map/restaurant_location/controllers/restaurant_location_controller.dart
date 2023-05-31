@@ -1,15 +1,12 @@
 import 'dart:async';
 
-import 'package:geocoder2/geocoder2.dart';
-import 'package:geocoder_buddy/geocoder_buddy.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:mh/app/repository/api_helper.dart';
 
 import '../../../../common/controller/location_controller.dart';
 import '../../../../common/utils/exports.dart';
 import '../../../../models/address_to_lat_lng.dart';
-import '../../../../models/lat_long_to_address.dart';
+import '../../../../repository/api_helper.dart';
 import '../../../auth/register/controllers/register_controller.dart';
 import '../../../client/client_self_profile/controllers/client_self_profile_controller.dart';
 
@@ -44,16 +41,6 @@ class RestaurantLocationController extends GetxController {
   void onInit() {
     _getCurrentLocation();
     super.onInit();
-  }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
   }
 
   void onAddressSearch() {

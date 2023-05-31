@@ -31,22 +31,18 @@ class AdminHomeController extends GetxController {
     super.onInit();
   }
 
-  @override
   void onEmployeeClick() {
     Get.toNamed(Routes.adminAllEmployees);
   }
 
-  @override
   void onClientClick() {
     Get.toNamed(Routes.adminAllClients);
   }
 
-  @override
   void onRequestClick() {
     Get.toNamed(Routes.adminClientRequest);
   }
 
-  @override
   void onAdminDashboardClick() {
     Get.toNamed(Routes.adminDashboard);
   }

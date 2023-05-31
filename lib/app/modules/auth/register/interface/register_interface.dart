@@ -1,6 +1,4 @@
 import '../../../../enums/user_type.dart';
-import '../../../../models/gender.dart';
-import '../../../../models/position.dart';
 
 abstract class RegisterInterface {
   void onTermsAndConditionCheck(bool active);

@@ -3,7 +3,6 @@ import '../../../../common/utils/exports.dart';
 import '../../../../common/utils/validators.dart';
 import '../../../../common/widgets/custom_appbar.dart';
 import '../../../../common/widgets/custom_bottombar.dart';
-import '../../../../common/widgets/custom_text_input_field.dart';
 import '../controllers/employee_emergency_check_in_out_controller.dart';
 
 class EmployeeEmergencyCheckInOutView extends GetView<EmployeeEmergencyCheckInOutController> {

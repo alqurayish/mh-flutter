@@ -1,13 +1,11 @@
-import 'package:mh/app/modules/admin/admin_home/controllers/admin_home_controller.dart';
-
 import '../../../../common/controller/app_controller.dart';
 import '../../../../common/utils/exports.dart';
 import '../../../../common/widgets/custom_loader.dart';
-import '../../../../enums/chat_with.dart';
 import '../../../../models/custom_error.dart';
 import '../../../../models/employees_by_id.dart';
 import '../../../../repository/api_helper.dart';
 import '../../../../routes/app_pages.dart';
+import '../../admin_home/controllers/admin_home_controller.dart';
 
 class AdminAllClientsController extends GetxController {
   BuildContext? context;
@@ -21,19 +19,9 @@ class AdminAllClientsController extends GetxController {
   RxBool isLoading = false.obs;
 
   @override
-  void onInit() {
-    super.onInit();
-  }
-
-  @override
   void onReady() {
     _getClients();
     super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
   }
 
   Future<void> _getClients() async {

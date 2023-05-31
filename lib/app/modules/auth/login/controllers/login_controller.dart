@@ -1,5 +1,3 @@
-import 'package:jwt_decoder/jwt_decoder.dart';
-
 import '../../../../common/controller/app_controller.dart';
 import '../../../../common/utils/exports.dart';
 import '../../../../common/widgets/custom_dialog.dart';

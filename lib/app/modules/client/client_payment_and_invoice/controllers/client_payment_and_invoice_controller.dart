@@ -5,7 +5,6 @@ import '../../../../common/widgets/custom_loader.dart';
 import '../../../../models/custom_error.dart';
 import '../../../../repository/api_helper.dart';
 import '../../client_home/controllers/client_home_controller.dart';
-import '../model/client_invoice.dart';
 
 class ClientPaymentAndInvoiceController extends GetxController {
   BuildContext? context;
@@ -16,23 +15,6 @@ class ClientPaymentAndInvoiceController extends GetxController {
   ClientHomeController clientHomeController = Get.find();
 
   String _selectedInvoiceId = "";
-
-  @override
-  void onInit() {
-    super.onInit();
-  }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
-
 
   void onPayClick(int index) {
     _selectedInvoiceId = clientHomeController.clientInvoice.value.invoices![index].id ?? "";

@@ -20,21 +20,6 @@ class RegisterEmployeeStep4Controller extends GetxController implements Register
   RxList<CertificateWithFile> certificate = <CertificateWithFile>[].obs;
 
   @override
-  void onInit() {
-    super.onInit();
-  }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
-  @override
   void onAddNewCertificateClick() {
     Utils.unFocus();
 

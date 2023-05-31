@@ -7,21 +7,6 @@ class AdminClientRequestController extends GetxController {
 
   AdminHomeController adminHomeController = Get.find();
 
-  @override
-  void onInit() {
-    super.onInit();
-  }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
   String getRestaurantName(int index) {
     return adminHomeController.requestedEmployees.value.requestEmployees?[index].clientDetails?.restaurantName ?? "-";
   }

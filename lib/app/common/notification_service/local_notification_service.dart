@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:mh/app/common/controller/app_controller.dart';
 
@@ -38,7 +39,9 @@ class LocalNotificationService {
     _notificationsPlugin.initialize(
       initializationSettings,
       onSelectNotification: (String? payload) async {
-        print("onSelectNotification");
+        if (kDebugMode) {
+          print("onSelectNotification");
+        }
 
         // when app running click
         if (payload!.isNotEmpty) {
@@ -48,9 +51,10 @@ class LocalNotificationService {
     );
 
     FirebaseMessaging.instance.getInitialMessage().then((message) {
-      print("FirebaseMessaging.instance.getInitialMessage");
+      if (kDebugMode) {
+        print("FirebaseMessaging.instance.getInitialMessage");
+      }
       if (message != null) {
-        print("New Notification");
 
         // NotificationClickHelper.goToRoute(jsonEncode(message.data));
         // if (message.data['_id'] != null) {
@@ -69,7 +73,9 @@ class LocalNotificationService {
     // 2. This method only call when App in forground it mean app must be opened
     FirebaseMessaging.onMessage.listen(
       (message) {
-        print("FirebaseMessaging.onMessage.listen");
+        if (kDebugMode) {
+          print("FirebaseMessaging.onMessage.listen");
+        }
         if (message.notification != null) {
           // print(message.notification?.title);
           // print(message.notification?.body);f
@@ -92,7 +98,9 @@ class LocalNotificationService {
 
     // 3. This method only call when App in background and not terminated(not closed)
     FirebaseMessaging.onMessageOpenedApp.listen((message) {
-      print("FirebaseMessaging.onMessageOpenedApp.listen");
+      if (kDebugMode) {
+        print("FirebaseMessaging.onMessageOpenedApp.listen");
+      }
       if (message.notification != null) {
         // print(message.notification?.title);
         // print(message.notification?.body);
@@ -126,7 +134,9 @@ class LocalNotificationService {
         payload: jsonEncode(message.data),
       );
     } on Exception catch (e) {
-      print(e);
+      if (kDebugMode) {
+        print(e);
+      }
     }
   }
 }

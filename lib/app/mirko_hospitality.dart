@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import 'common/app_info/app_info.dart';
-import 'common/controller/app_controller.dart';
 import 'common/language/translation.dart';
 import 'common/local_storage/storage_helper.dart';
 import 'common/style/theme.dart';

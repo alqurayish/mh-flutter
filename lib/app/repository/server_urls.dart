@@ -23,12 +23,6 @@ class ServerUrls {
     return _url(prodUrl);
   }
 
-  static String get _getPostUrl {
-    const String prodUrl = "";
-
-    return _url(prodUrl);
-  }
-
   static String get _apiVersion {
     return "api/v1";
   }

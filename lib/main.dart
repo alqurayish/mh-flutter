@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 
@@ -11,10 +12,12 @@ import 'app/mirko_hospitality.dart';
 // import 'package:device_preview/device_preview.dart';
 
 Future<void> backgroundHandler(RemoteMessage message) async {
-  print("=============== backgroundHandler =================");
-  print(message.data.toString());
-  print(message.notification!.title);
-  print("=============== backgroundHandler =================");
+  if (kDebugMode) {
+    print("=============== backgroundHandler =================");
+    print(message.data.toString());
+    print(message.notification!.title);
+    print("=============== backgroundHandler =================");
+  }
 }
 
 Future<void> main() async {
@@ -25,14 +28,18 @@ Future<void> main() async {
   Stripe.publishableKey = AppCredentials.stripePublishableKey;
 
   FirebaseMessaging.instance.onTokenRefresh.listen((token) {
-    print("=============== REFRESHED FCM TOKEN =================");
-    print(token);
+    if (kDebugMode) {
+      print("=============== REFRESHED FCM TOKEN =================");
+      print(token);
+    }
     // NotificationRepository().saveUUIDAndFcmToken(token : token);
   });
 
   FirebaseMessaging.instance.getToken().then((value) {
-    print("=============== FCM TOKEN =================");
-    print(value);
+    if (kDebugMode) {
+      print("=============== FCM TOKEN =================");
+      print(value);
+    }
   });
 
   LocalNotificationService.initialize();

@@ -18,21 +18,6 @@ class EmployeeEmergencyCheckInOutController extends GetxController {
 
   final formKeyClient = GlobalKey<FormState>();
 
-  @override
-  void onInit() {
-    super.onInit();
-  }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
   String get getButtonText {
     if((employeeHomeController.todayCheckInOutDetails.value.details?.checkInCheckOutDetails?.checkIn ?? false) ||
         (employeeHomeController.todayCheckInOutDetails.value.details?.checkInCheckOutDetails?.emmergencyCheckIn ?? false)) {

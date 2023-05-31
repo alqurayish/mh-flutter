@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 
 import '../../../../common/controller/app_controller.dart';
 import '../../../../common/utils/exports.dart';
@@ -78,11 +79,6 @@ class ClientEmployeeChatController extends GetxController {
   }
 
   @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
   void onClose() {
     _updateChatScreenStatus(false);
     super.onClose();
@@ -149,7 +145,9 @@ class ClientEmployeeChatController extends GetxController {
           isReceiverOnline.value = data["active"];
         });
       } else {
-        print("user not enter in chat screen");
+        if (kDebugMode) {
+          print("user not enter in chat screen");
+        }
       }
     });
 

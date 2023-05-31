@@ -32,15 +32,6 @@ class AdminClientRequestPositionsController extends GetxController {
 
   }
 
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
 
   String getSuggested(Position position) {
     int total = (adminHomeController.requestedEmployees.value.requestEmployees?[selectedIndex].clientRequestDetails ?? []).firstWhere((element) => element.positionId == position.id).numOfEmployee ?? 0;

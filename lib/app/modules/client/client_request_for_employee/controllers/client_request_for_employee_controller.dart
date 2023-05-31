@@ -1,10 +1,7 @@
-import 'dart:convert';
-
-import 'package:mh/app/common/widgets/custom_loader.dart';
-
 import '../../../../common/controller/app_controller.dart';
 import '../../../../common/utils/exports.dart';
 import '../../../../common/widgets/custom_dialog.dart';
+import '../../../../common/widgets/custom_loader.dart';
 import '../../../../models/custom_error.dart';
 import '../../../../repository/api_helper.dart';
 import '../../client_home/controllers/client_home_controller.dart';
@@ -34,16 +31,6 @@ class ClientRequestForEmployeeController extends GetxController {
     super.onInit();
   }
 
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
   void onDropdownChange(int value, int index) {
     selectedEmployee[index] = value;
   }
@@ -65,10 +52,6 @@ class ClientRequestForEmployeeController extends GetxController {
       "requestClientId": appController.user.value.userId,
       "employees": idsWihCount
     };
-
-    print(data);
-
-
 
     CustomLoader.show(context!);
     await apiHelper.clientRequestForEmployee(data).then((response) {

@@ -1,11 +1,9 @@
 import 'package:intl_phone_field/country_picker_dialog.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 
-import '../../../../../../common/data/data.dart';
 import '../../../../../../common/style/my_decoration.dart';
 import '../../../../../../common/utils/exports.dart';
 import '../../../../../../common/utils/validators.dart';
-import '../../../../../../common/widgets/custom_dropdown.dart';
 import '../../../../../../common/widgets/custom_multi_dropdown.dart';
 import '../../../../../../common/widgets/custom_text_input_field.dart';
 import '../controllers/register_employee_step_3_controller.dart';

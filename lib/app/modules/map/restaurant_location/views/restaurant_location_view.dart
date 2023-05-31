@@ -1,6 +1,4 @@
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:mh/app/common/app_info/app_credentials.dart';
-import 'package:mh/app/common/controller/location_controller.dart';
 
 import '../../../../common/utils/exports.dart';
 import '../../../../common/widgets/custom_text_input_field.dart';
@@ -78,12 +76,12 @@ class RestaurantLocationView extends GetView<RestaurantLocationController> {
     );
   }
 
-  Widget get _loading => SizedBox(
+  Widget get _loading => const SizedBox(
         width: double.infinity,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
-          children: const [
+          children: [
             CircularProgressIndicator(),
             SizedBox(height: 10),
             Text("Fetch current location"),

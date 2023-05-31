@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 
 import '../../../../common/controller/app_controller.dart';
 import '../../../../common/utils/exports.dart';
 import '../../../../models/all_admins.dart';
 import '../../../../models/custom_error.dart';
 import '../../../../models/employee_full_details.dart';
-import '../../../../models/employees_by_id.dart';
 import '../../../../repository/api_helper.dart';
 import '../../../../repository/send_push.dart';
 
@@ -91,10 +91,6 @@ class SupportChatController extends GetxController {
     super.onInit();
   }
 
-  @override
-  void onReady() {
-    super.onReady();
-  }
 
   @override
   void onClose() {
@@ -172,7 +168,9 @@ class SupportChatController extends GetxController {
             isReceiverOnline.value = data["active"];
           });
         } else {
-          print("user not enter in chat screen");
+          if (kDebugMode) {
+            print("user not enter in chat screen");
+          }
         }
       });
     }

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
@@ -9,7 +10,7 @@ import 'app_controller.dart';
 
 class AppLifecycleController extends GetxController with WidgetsBindingObserver {
 
-  AppController _appController = Get.find();
+  final AppController _appController = Get.find();
 
   @override
   void onInit() {
@@ -28,7 +29,9 @@ class AppLifecycleController extends GetxController with WidgetsBindingObserver 
     switch (state) {
       case AppLifecycleState.resumed:
         // priority 3
-        print('App resumed');
+        if (kDebugMode) {
+          print('App resumed');
+        }
 
         if(Get.isRegistered<ClientEmployeeChatController>()) {
           _updateActiveStatus(true);
@@ -41,18 +44,24 @@ class AppLifecycleController extends GetxController with WidgetsBindingObserver 
 
       case AppLifecycleState.paused:
         // priority 2
-        print('App paused');
+        if (kDebugMode) {
+          print('App paused');
+        }
         break;
 
       case AppLifecycleState.inactive:
         // priority 1 // call offline true
-        print('App inactive');
+        if (kDebugMode) {
+          print('App inactive');
+        }
 
         _updateActiveStatus(false);
         break;
 
       case AppLifecycleState.detached:
-        print('App detached');
+        if (kDebugMode) {
+          print('App detached');
+        }
         break;
     }
   }

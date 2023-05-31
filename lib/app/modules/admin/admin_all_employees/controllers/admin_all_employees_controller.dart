@@ -1,7 +1,6 @@
 import '../../../../common/controller/app_controller.dart';
 import '../../../../common/utils/exports.dart';
 import '../../../../common/widgets/custom_loader.dart';
-import '../../../../enums/chat_with.dart';
 import '../../../../models/custom_error.dart';
 import '../../../../models/employees_by_id.dart';
 import '../../../../repository/api_helper.dart';
@@ -20,19 +19,9 @@ class AdminAllEmployeesController extends GetxController {
   RxBool isLoading = false.obs;
 
   @override
-  void onInit() {
-    super.onInit();
-  }
-
-  @override
   void onReady() {
     _getEmployees();
     super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
   }
 
   void onEmployeeClick(Employee employee) {

@@ -1,4 +1,4 @@
-import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get.dart';
@@ -40,7 +40,9 @@ class PaymentController extends GetxController {
       }
     } catch (e, s) {
       CustomLoader.hide(Get.context!);
-      print('exception:$e $s');
+      if (kDebugMode) {
+        print('exception:$e $s');
+      }
     }
   }
 
@@ -86,7 +88,9 @@ class PaymentController extends GetxController {
 
     } catch (e) {
       CustomLoader.hide(Get.context!);
-      print("exception:$e");
+      if (kDebugMode) {
+        print("exception:$e");
+      }
     }
   }
 

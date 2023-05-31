@@ -1,7 +1,6 @@
 import '../../../../common/utils/exports.dart';
 import '../../../../models/check_in_out_histories.dart';
 import '../../../../models/custom_error.dart';
-import '../../../../models/employee_daily_statistics.dart';
 import '../../../../repository/api_helper.dart';
 
 class EmployeeDashboardController extends GetxController {
@@ -19,16 +18,6 @@ class EmployeeDashboardController extends GetxController {
   void onInit() {
     _fetchCheckInOutHistory();
     super.onInit();
-  }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
   }
 
   String getComment(int index) {

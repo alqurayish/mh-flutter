@@ -1,10 +1,8 @@
 import 'package:horizontal_data_table/horizontal_data_table.dart';
-import 'package:mh/app/common/widgets/no_item_found.dart';
 
-import '../../../../common/style/my_decoration.dart';
 import '../../../../common/utils/exports.dart';
 import '../../../../common/widgets/custom_appbar.dart';
-import '../../../../common/widgets/custom_dropdown.dart';
+import '../../../../common/widgets/no_item_found.dart';
 import '../controllers/admin_dashboard_controller.dart';
 
 class AdminDashboardView extends GetView<AdminDashboardController> {

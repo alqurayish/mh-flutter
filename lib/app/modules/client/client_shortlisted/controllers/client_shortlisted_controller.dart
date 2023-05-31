@@ -13,27 +13,10 @@ class ClientShortlistedController extends GetxController {
 
   final ShortlistController shortlistController = Get.find();
 
-  @override
-  void onInit() {
-    super.onInit();
-  }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
-  @override
   void onSelectClick(ShortList shortList) {
     shortlistController.onSelectClick(shortList);
   }
 
-  @override
   Future<void> onDataSelect(String shortlistId) async {
     DateTimeRange? selectedRange = await showDateRangePicker(
       context: context!,

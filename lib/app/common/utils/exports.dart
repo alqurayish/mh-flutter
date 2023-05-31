@@ -1,7 +1,6 @@
 export 'package:flutter/material.dart';
 export 'package:get/get.dart';
 export 'logcat.dart';
-export 'logcat.dart';
 export 'utils.dart';
 export '../values/my_assets.dart';
 export '../values/my_color.dart';

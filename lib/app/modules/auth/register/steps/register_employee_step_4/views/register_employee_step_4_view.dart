@@ -342,9 +342,9 @@ class RegisterEmployeeStep4View extends GetView<RegisterEmployeeStep4Controller>
                                   color: MyColors.c_7B7B7B,
                                 ),
                                 const SizedBox(width: 12),
-                                Column(
+                                const Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: const [
+                                  children: [
                                     Text(
                                       "Choose certificate",
                                       style: TextStyle(

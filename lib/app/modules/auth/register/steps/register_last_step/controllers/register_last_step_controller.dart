@@ -1,23 +1,16 @@
 import 'dart:isolate';
 
 import '../../../../../../common/controller/app_controller.dart';
-import '../../../../../../common/local_storage/storage_helper.dart';
 import '../../../../../../common/utils/exports.dart';
 import '../../../../../../common/widgets/custom_dialog.dart';
-import '../../../../../../common/widgets/custom_loader.dart';
 import '../../../../../../enums/user_type.dart';
 import '../../../../../../models/custom_error.dart';
 import '../../../../../../models/employees_by_id.dart';
 import '../../../../../../models/sources.dart';
 import '../../../../../../repository/api_helper.dart';
 import '../../../../../../repository/api_helper_impl_with_file_upload.dart';
-import '../../../../../../routes/app_pages.dart';
 import '../../../controllers/register_controller.dart';
-import '../../../models/client_register.dart';
 import '../../../models/client_register_response.dart';
-import '../../../models/employee_registration.dart';
-import '../../register_employee_step_2/controllers/register_employee_step_2_controller.dart';
-import '../../register_employee_step_3/controllers/register_employee_step_3_controller.dart';
 import '../../register_employee_step_4/controllers/register_employee_step_4_controller.dart';
 
 import 'package:dio/dio.dart' as dio;
@@ -112,12 +105,10 @@ class RegisterLastStepController extends GetxController {
     }
   }
 
-  @override
   void onSourceChange(String? value) {
     selectedSource = value!;
   }
 
-  @override
   void onReferChange(String? value) {
     selectedRefer = value!;
   }

@@ -39,22 +39,10 @@ class ClientSelfProfileController extends GetxController {
     tecRestaurantEmail.text = appController.user.value.client?.email ?? "Email not found";
   }
 
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
-  @override
   void onClientCountryChange(Country country) {
     selectedClientCountry = country;
   }
 
-  @override
   void onRestaurantAddressPressed() {
     Get.toNamed(Routes.restaurantLocation);
   }

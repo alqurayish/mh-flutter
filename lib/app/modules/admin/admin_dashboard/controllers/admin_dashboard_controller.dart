@@ -39,16 +39,6 @@ class AdminDashboardController extends GetxController {
     super.onInit();
   }
 
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
   UserDailyStatistics dailyStatistics(int index) => Utils.checkInOutToStatistics(history[index]);
 
   void onDatePicked(DateTime dateTime) {
@@ -58,7 +48,6 @@ class AdminDashboardController extends GetxController {
     _fetchCheckInOutHistory();
   }
 
-  @override
   void onClientChange(String? value) {
     if(value == restaurants.first) {
       clientId = null;

@@ -1,15 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:mh/app/common/widgets/chat_with_user_choose.dart';
 import 'package:slide_to_act/slide_to_act.dart';
 
 import '../../../../common/controller/app_controller.dart';
 import '../../../../common/controller/location_controller.dart';
 import '../../../../common/utils/exports.dart';
+import '../../../../common/widgets/chat_with_user_choose.dart';
 import '../../../../common/widgets/custom_break_time.dart';
 import '../../../../common/widgets/custom_dialog.dart';
 import '../../../../common/widgets/custom_loader.dart';
-import '../../../../enums/chat_with.dart';
 import '../../../../models/check_in_out_histories.dart';
 import '../../../../models/custom_error.dart';
 import '../../../../models/employee_daily_statistics.dart';
@@ -55,17 +54,14 @@ class EmployeeHomeController extends GetxController {
   }
 
 
-  @override
   void onDashboardClick() {
     Get.toNamed(Routes.employeeDashboard);
   }
 
-  @override
   void onEmergencyCheckinCheckout() {
     Get.toNamed(Routes.employeeEmergencyCheckInOut);
   }
 
-  @override
   void onHelpAndSupportClick() {
     ChatWithUserChoose.show(
       context!,
@@ -74,7 +70,6 @@ class EmployeeHomeController extends GetxController {
     );
   }
 
-  @override
   void onNotificationClick() {
     Get.toNamed(Routes.clientNotification);
   }

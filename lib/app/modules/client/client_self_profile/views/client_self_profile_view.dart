@@ -1,11 +1,6 @@
-import 'package:intl_phone_field/country_picker_dialog.dart';
-import 'package:intl_phone_field/intl_phone_field.dart';
-import 'package:mh/app/common/widgets/custom_appbar.dart';
-
-import '../../../../common/style/my_decoration.dart';
 import '../../../../common/utils/exports.dart';
 import '../../../../common/utils/validators.dart';
-import '../../../../common/widgets/custom_appbar_back_button.dart';
+import '../../../../common/widgets/custom_appbar.dart';
 import '../../../../common/widgets/custom_bottombar.dart';
 import '../controllers/client_self_profile_controller.dart';
 

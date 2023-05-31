@@ -40,11 +40,6 @@ class AdminClientRequestPositionEmployeesController extends GetxController {
     super.onReady();
   }
 
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
   void onEmployeeClick(Employee employee) {
     Get.toNamed(Routes.employeeDetails, arguments: {
       MyStrings.arg.data : employee,

@@ -108,22 +108,18 @@ class RegisterController extends GetxController implements RegisterInterface {
     onUserTypeClick(UserType.values[index + 1]);
   }
 
-  @override
   void onCountryChange(String? country) {
     selectedCountry.value = country!;
   }
 
-  @override
   void onSourceChange(String? value) {
     selectedSource = value!;
   }
 
-  @override
   void onReferChange(String? value) {
     selectedRefer = value!;
   }
 
-  @override
   void onRestaurantAddressPressed() {
     Get.toNamed(Routes.restaurantLocation);
   }
@@ -172,12 +168,10 @@ class RegisterController extends GetxController implements RegisterInterface {
     selectedPosition.value = position!;
   }
 
-  @override
   void onClientCountryChange(Country country) {
     selectedClientCountry = country;
   }
 
-  @override
   void onEmployeeCountryChange(Country country) {
     selectedEmployeeCountry = country;
   }
@@ -396,7 +390,6 @@ class RegisterController extends GetxController implements RegisterInterface {
     );
   }
 
-  @override
   Future<void> onCvClick() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
@@ -410,7 +403,6 @@ class RegisterController extends GetxController implements RegisterInterface {
     }
   }
 
-  @override
   Future<void> onProfileImageClick() async {
     final picker = ImagePicker();
 

@@ -1,12 +1,10 @@
-import 'package:mh/app/common/widgets/custom_dialog.dart';
-
 import '../../../common/app_info/app_info.dart';
 import '../../../common/controller/app_controller.dart';
 import '../../../common/utils/exports.dart';
+import '../../../common/widgets/custom_dialog.dart';
 import '../../../models/commons.dart';
 import '../../../models/custom_error.dart';
 import '../../../repository/api_helper.dart';
-import '../../../routes/app_pages.dart';
 
 class SplashController extends GetxController {
 
@@ -14,11 +12,6 @@ class SplashController extends GetxController {
 
   final ApiHelper _apiHelper = Get.find();
   final AppController _appController = Get.find();
-
-  @override
-  void onInit() {
-    super.onInit();
-  }
 
   @override
   void onReady() {

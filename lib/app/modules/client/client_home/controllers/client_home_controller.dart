@@ -5,7 +5,6 @@ import '../../../../common/utils/exports.dart';
 import '../../../../common/widgets/client_help_option.dart';
 import '../../../../common/widgets/custom_dialog.dart';
 import '../../../../common/widgets/custom_loader.dart';
-import '../../../../enums/chat_with.dart';
 import '../../../../models/custom_error.dart';
 import '../../../../models/requested_employees.dart';
 import '../../../../repository/api_helper.dart';
@@ -39,27 +38,22 @@ class ClientHomeController extends GetxController {
     super.onInit();
   }
 
-  @override
   void onMhEmployeeClick() {
     Get.toNamed(Routes.mhEmployees);
   }
 
-  @override
   void onDashboardClick() {
     Get.toNamed(Routes.clientDashboard);
   }
 
-  @override
   void onMyEmployeeClick() {
     Get.toNamed(Routes.clientMyEmployee);
   }
 
-  @override
   void onInvoiceAndPaymentClick() {
     Get.toNamed(Routes.clientPaymentAndInvoice);
   }
 
-  @override
   void onHelpAndSupportClick() {
     ClientHelpOption.show(
       context!,
@@ -67,7 +61,6 @@ class ClientHomeController extends GetxController {
     );
   }
 
-  @override
   void onNotificationClick() {
     Get.toNamed(Routes.clientNotification);
   }
@@ -76,7 +69,6 @@ class ClientHomeController extends GetxController {
     Get.toNamed(Routes.clientSelfProfile);
   }
 
-  @override
   void chatWithAdmin() {
     Get.back(); // hide dialogue
 
@@ -88,7 +80,6 @@ class ClientHomeController extends GetxController {
     });
   }
 
-  @override
   void requestEmployees() {
     Get.back(); // hide dialogue
 
