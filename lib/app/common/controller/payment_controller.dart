@@ -3,15 +3,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart';
+import 'package:mh/app/common/controller/app_controller.dart';
 import 'package:mh/app/common/widgets/custom_dialog.dart';
 import 'package:mh/app/common/widgets/custom_loader.dart';
+import 'package:mh/app/repository/api_helper.dart';
 
+import '../../models/commons.dart';
+import '../../models/custom_error.dart';
 import '../../modules/client/client_payment_and_invoice/controllers/client_payment_and_invoice_controller.dart';
 import '../../modules/client/payment_for_hire/controllers/payment_for_hire_controller.dart';
 import '../app_info/app_credentials.dart';
 import 'app_error_controller.dart';
 
 class PaymentController extends GetxController {
+  ApiHelper apiHelper = Get.find();
+  AppController appController = Get.find();
+
   Map<String, dynamic>? paymentIntentData;
 
   Future<void> makePayment({
@@ -20,6 +27,35 @@ class PaymentController extends GetxController {
     required String customerName,
   }) async {
     try {
+
+      CustomLoader.show(Get.context!);
+
+      await apiHelper.commons().then((response) {
+        response.fold((CustomError customError) {
+
+        }, (Commons commons) {
+          appController.setCommons(commons);
+        });
+      });
+
+      CustomLoader.hide(Get.context!);
+
+      if((appController.commons?.value.appVersion?.first.stripePublisherKey ?? "").isEmpty) {
+        CustomDialogue.information(
+          context: Get.context!,
+          title: "Invalid Payment",
+          description: "Something Wrong with payment",
+        );
+        AppErrorController.submitAutomaticError(
+          errorName: "From: payment_controller.dart > makePayment",
+          description: "invalid stripe credential :: pub: ${appController.commons?.value.appVersion?.first.stripePublisherKey} ~ key: ${appController.commons?.value.appVersion?.first.stripeSecret}",
+        );
+        return;
+      }
+
+      // Stripe.publishableKey = AppCredentials.stripePublishableKey;
+      Stripe.publishableKey = appController.commons?.value.appVersion?.first.stripePublisherKey ?? "";
+
       paymentIntentData = await createPaymentIntent(amount, currency);
 
       if (paymentIntentData != null) {
@@ -103,7 +139,7 @@ class PaymentController extends GetxController {
           'https://api.stripe.com/v1/payment_intents?amount=${(amount * 100).toInt()}&currency=$currency&payment_method_types[]=card',
           options: Options(
             headers: {
-              'Authorization': 'Bearer ${AppCredentials.stripeSecretKey}',
+              'Authorization': 'Bearer ${appController.commons?.value.appVersion?.first.stripeSecret}',
               'Content-Type': 'application/x-www-form-urlencoded'
             },
           ));
