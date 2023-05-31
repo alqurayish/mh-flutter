@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import 'common/app_info/app_info.dart';
+import 'common/controller/app_controller.dart';
 import 'common/language/translation.dart';
 import 'common/local_storage/storage_helper.dart';
 import 'common/style/theme.dart';
@@ -14,6 +15,11 @@ class MirkoHospitality extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // i dont know why MediaQuery.of(context).viewInsets.bottom not work in bottom sheet on this project
+    // that's why store MediaQuery.of(context).viewInsets.bottom (basically keyboard height) in a observable variable
+
+    Get.find<AppController>().bottomPadding.value = MediaQuery.of(context).viewInsets.bottom;
+
     return ScreenUtilInit(
       designSize: const Size(428, 926),
       minTextAdapt: true,

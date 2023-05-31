@@ -12,7 +12,6 @@ import '../../models/commons.dart';
 import '../../models/custom_error.dart';
 import '../../modules/client/client_payment_and_invoice/controllers/client_payment_and_invoice_controller.dart';
 import '../../modules/client/payment_for_hire/controllers/payment_for_hire_controller.dart';
-import '../app_info/app_credentials.dart';
 import 'app_error_controller.dart';
 
 class PaymentController extends GetxController {

@@ -1,5 +1,5 @@
 import 'package:horizontal_data_table/horizontal_data_table.dart';
-import 'package:keyboard_visibility_pro/keyboard_visibility_pro.dart';
+import 'package:mh/app/common/controller/app_controller.dart';
 import 'package:mh/app/common/widgets/custom_dropdown.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
@@ -496,29 +496,17 @@ class ClientDashboardView extends GetView<ClientDashboardController> {
 }
 
 
-class BottomA extends StatefulWidget {
+class BottomA extends StatelessWidget {
   final Widget updateOption;
+
   const BottomA(this.updateOption, {Key? key}) : super(key: key);
 
   @override
-  State<BottomA> createState() => _BottomAState();
-}
-
-class _BottomAState extends State<BottomA> {
-
-  double p = 0;
-
-  @override
   Widget build(BuildContext context) {
-    return KeyboardVisibility(
-      onChanged: (bool visible) {
-        setState(() {
-          p = visible ? 300 : 0;
-        });
-      },
-      child: Container(
-        padding: EdgeInsets.only(bottom: p),
-        child: widget.updateOption,
+    return Obx(
+      () => Container(
+        padding: EdgeInsets.only(bottom: Get.find<AppController>().bottomPadding.value),
+        child: updateOption,
       ),
     );
   }

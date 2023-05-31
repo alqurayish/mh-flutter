@@ -24,6 +24,10 @@ class AppController extends GetxService {
 
   RxList<Position> allActivePositions = <Position>[].obs;
 
+  // i dont know why MediaQuery.of(context).viewInsets.bottom not work in bottom sheet on this project
+  // that's why store MediaQuery.of(context).viewInsets.bottom (basically keyboard height) in a observable variable
+  RxDouble bottomPadding = 0.0.obs;
+
   Rx<User> user = User(
     userType: UserType.guest,
   ).obs;
