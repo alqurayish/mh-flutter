@@ -233,9 +233,20 @@ class ClientDashboardController extends GetxController {
 
       CheckInCheckOutHistoryElement element = getCheckInOutDate(index)!;
 
-      int checkInDiff = element.checkInCheckOutDetails!.clientCheckInTime!.difference(element.checkInCheckOutDetails!.checkInTime!).inMinutes;
-      int checkOutDiff = element.checkInCheckOutDetails!.clientCheckOutTime!.difference(element.checkInCheckOutDetails!.checkOutTime!).inMinutes;
-      int breakTime = element.checkInCheckOutDetails?.clientBreakTime ?? 0;
+      int checkInDiff = 0, checkOutDiff = 0, breakTime = 0;
+
+      if(element.checkInCheckOutDetails!.clientCheckInTime != null) {
+        checkInDiff = element.checkInCheckOutDetails!.clientCheckInTime!.difference(element.checkInCheckOutDetails!.checkInTime!).inMinutes;
+      }
+
+      if(element.checkInCheckOutDetails!.clientCheckOutTime != null) {
+        checkOutDiff = element.checkInCheckOutDetails!.clientCheckOutTime!.difference(element.checkInCheckOutDetails!.checkOutTime!).inMinutes;
+      }
+
+      if(element.checkInCheckOutDetails!.clientBreakTime != null) {
+        breakTime = element.checkInCheckOutDetails?.clientBreakTime ?? 0;
+      }
+
 
       Map<String, dynamic> data = {
         "id": element.currentHiredEmployeeId,
