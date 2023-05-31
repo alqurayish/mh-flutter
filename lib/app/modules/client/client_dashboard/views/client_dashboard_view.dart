@@ -449,7 +449,10 @@ class ClientDashboardView extends GetView<ClientDashboardController> {
                     ),
                   ),
                 ),
-                const Text("  Min"),
+                Text(
+                  "  Min",
+                  style: MyColors.l111111_dffffff(controller.context!).medium12,
+                ),
                 const SizedBox(width: 14),
               ],
             ),
