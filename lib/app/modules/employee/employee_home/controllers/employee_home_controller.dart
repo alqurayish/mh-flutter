@@ -289,9 +289,13 @@ class EmployeeHomeController extends GetxController {
   void _trackUnreadMsg() {
     if(appController.user.value.employee?.isHired ?? false) {
       FirebaseFirestore.instance.collection('employee_client_chat').where("employeeId", isEqualTo: appController.user.value.userId).where("clientId", isEqualTo: appController.user.value.employee!.hiredBy!).snapshots().listen((QuerySnapshot<Map<String, dynamic>> event) {
-        Map<String, dynamic> data = event.docs.first.data();
 
-        unreadMsgFromClient.value = data["${appController.user.value.userId}_unread"];
+        if(event.docs.isNotEmpty) {
+          Map<String, dynamic> data = event.docs.first.data();
+
+          unreadMsgFromClient.value = data["${appController.user.value.userId}_unread"];
+        }
+
       });
     }
 

@@ -160,15 +160,15 @@ class EmployeeHomeView extends GetView<EmployeeHomeController> {
                           ? _loading("Fetching Today's Info")
                           : controller.loadingCurrentLocation.value
                               ? _loading("Get current location")
-                              : controller.locationFetchError.value.isNotEmpty
-                                  ? _locationFetchError
-                                  : controller.errorMsg.value.isNotEmpty
-                                      ? _errorMsg
-                                      : (controller.appController.user.value.employee?.isHired ?? false)
-                                          ? controller.isTodayInBetweenFromDateAndToDate
-                                              ? _checkInCheckout
-                                              : Text("you hire form ${controller.appController.user.value.employee?.hiredFromDate.toString().split(" ").first} to ${controller.appController.user.value.employee?.hiredFromDate.toString().split(" ").first}")
-                                          : const Text("You are not hired yes"),
+                              : (controller.appController.user.value.employee?.isHired ?? false)
+                                  ? controller.isTodayInBetweenFromDateAndToDate
+                                      ? controller.locationFetchError.value.isNotEmpty
+                                          ? _locationFetchError
+                                          : controller.errorMsg.value.isNotEmpty
+                                              ? _errorMsg
+                                              : _checkInCheckout
+                                      : Text("you hire form ${controller.appController.user.value.employee?.hiredFromDate.toString().split(" ").first} to ${controller.appController.user.value.employee?.hiredFromDate.toString().split(" ").first}")
+                                  : const Text("You are not hired yes"),
                     ),
                     SizedBox(height: 30.h),
                   ],
