@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:mh/app/models/client_details.dart';
 import 'package:slide_to_act/slide_to_act.dart';
 
 import '../../../../common/controller/app_controller.dart';
@@ -12,6 +13,7 @@ import '../../../../common/widgets/custom_loader.dart';
 import '../../../../models/check_in_out_histories.dart';
 import '../../../../models/custom_error.dart';
 import '../../../../models/employee_daily_statistics.dart';
+import '../../../../models/user_info.dart';
 import '../../../../repository/api_helper.dart';
 import '../../../../routes/app_pages.dart';
 import '../models/today_check_in_out_details.dart';
@@ -189,6 +191,16 @@ class EmployeeHomeController extends GetxController {
   }
 
   Future<void> _getTodayCheckInOutDetails() async {
+    await _apiHelper.clientDetails(appController.user.value.userId).then((response) {
+      response.fold((CustomError customError) {
+        Utils.errorDialog(context!, customError..onRetry = _getTodayCheckInOutDetails);
+      }, (UserInfo userInfo) {
+        appController.user.value.employee = appController.user.value.employee?.copyWith(userInfo);
+        appController.user.refresh();
+      });
+    });
+
+
     if(!(appController.user.value.employee?.isHired ?? false)) return;
     if(loading.value) return;
 

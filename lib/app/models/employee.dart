@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:mh/app/models/user_info.dart';
+
 class Employee {
   Employee({
     this.id,
@@ -162,4 +164,44 @@ class Employee {
     "iat": iat,
     "exp": exp,
   };
+
+  Employee copyWith(UserInfo userInfo) => Employee(
+    id: userInfo.details?.sId ?? id,
+    name: userInfo.details?.name ?? name,
+    email: userInfo.details?.email ?? email,
+    userIdNumber: userInfo.details?.userIdNumber ?? userIdNumber,
+    phoneNumber: userInfo.details?.phoneNumber ?? phoneNumber,
+    role: userInfo.details?.role ?? role,
+    profilePicture: userInfo.details?.profilePicture ?? profilePicture,
+    cv: userInfo.details?.cv ?? cv,
+    verified: userInfo.details?.verified ?? verified,
+    active: userInfo.details?.active ?? active,
+    employee: userInfo.details?.employee ?? employee,
+    gender: gender,
+    dateOfBirth: dateOfBirth,
+    presentAddress: presentAddress,
+    permanentAddress: permanentAddress,
+    higherEducation: higherEducation,
+    licensesNo: licensesNo,
+    emmergencyContact: emmergencyContact,
+    countryName: userInfo.details?.countryName ?? countryName,
+    sourceFrom: sourceFrom,
+    employeeExperience: employeeExperience,
+    rating: userInfo.details?.rating ?? rating,
+    totalWorkingHour: userInfo.details?.totalWorkingHour ?? totalWorkingHour,
+    isReferPerson: userInfo.details?.isReferPerson ?? isReferPerson,
+    isHired: userInfo.details?.isHired ?? isHired,
+    hiredFromDate: hiredFromDate,
+    hiredToDate: hiredToDate,
+    hiredBy: userInfo.details?.hiredBy ?? hiredBy,
+    hiredByRestaurantName: userInfo.details?.hiredByRestaurantName ?? hiredByRestaurantName,
+    hiredByRestaurantAddress: userInfo.details?.hiredByRestaurantAddress ?? hiredByRestaurantAddress,
+    isMhEmployee: userInfo.details?.isMhEmployee ?? isMhEmployee,
+    languages: languages,
+    clientDiscount: userInfo.details?.clientDiscount ?? clientDiscount,
+    hiredByLat: userInfo.details?.hiredByLat ?? hiredByLat,
+    hiredByLong: userInfo.details?.hiredByLong ?? hiredByLong,
+    iat: iat,
+    exp: exp,
+  );
 }

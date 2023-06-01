@@ -10,6 +10,7 @@ import '../models/lat_long_to_address.dart';
 import '../models/one_to_one_msg.dart';
 import '../models/requested_employees.dart' as requested_employees;
 import '../models/sources.dart';
+import '../models/user_info.dart';
 import '../modules/auth/login/model/login.dart';
 import '../modules/auth/login/model/login_response.dart';
 import '../modules/auth/register/models/client_register.dart';
@@ -39,7 +40,7 @@ abstract class ApiHelper {
 
   EitherModel<Response> updateFcmToken({bool isLogin = true});
 
-  EitherModel<ClientDetails> clientDetails(
+  EitherModel<UserInfo> clientDetails(
     String id,
   );
 
