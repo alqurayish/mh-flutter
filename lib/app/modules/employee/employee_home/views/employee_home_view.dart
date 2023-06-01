@@ -102,7 +102,12 @@ class EmployeeHomeView extends GetView<EmployeeHomeController> {
                                         bottom: 0,
                                         child: Obx(
                                           () => Visibility(
-                                            visible: (controller.appController.user.value.employee?.isHired ?? false) && (controller.loading.value || controller.loadingCurrentLocation.value || (controller.checkIn.value && controller.checkOut.value)),
+                                            visible: (controller.appController.user.value.employee?.isHired ?? false) ?
+                                              (controller.loading.value
+                                                  || controller.loadingCurrentLocation.value
+                                                  || (controller.checkIn.value && controller.checkOut.value)
+                                                  || !controller.isTodayInBetweenFromDateAndToDate)
+                                                : true,
                                             child: Container(
                                               decoration: BoxDecoration(
                                                 borderRadius: BorderRadius.circular(10.0),
@@ -159,7 +164,11 @@ class EmployeeHomeView extends GetView<EmployeeHomeController> {
                                   ? _locationFetchError
                                   : controller.errorMsg.value.isNotEmpty
                                       ? _errorMsg
-                                      : _checkInCheckout,
+                                      : (controller.appController.user.value.employee?.isHired ?? false)
+                                          ? controller.isTodayInBetweenFromDateAndToDate
+                                              ? _checkInCheckout
+                                              : Text("you hire form ${controller.appController.user.value.employee?.hiredFromDate.toString().split(" ").first} to ${controller.appController.user.value.employee?.hiredFromDate.toString().split(" ").first}")
+                                          : const Text("You are not hired yes"),
                     ),
                     SizedBox(height: 30.h),
                   ],

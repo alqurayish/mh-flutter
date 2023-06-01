@@ -110,6 +110,18 @@ class EmployeeHomeController extends GetxController {
     )
   );
 
+  bool get isTodayInBetweenFromDateAndToDate {
+    DateTime today = DateTime.now();
+
+    if(appController.user.value.employee?.hiredFromDate != null && appController.user.value.employee?.hiredToDate != null) {
+      return (appController.user.value.employee!.hiredFromDate!.isAtSameMomentAs(today) || appController.user.value.employee!.hiredFromDate!.isAfter(today)) &&
+             (appController.user.value.employee!.hiredToDate!.isAtSameMomentAs(today) || appController.user.value.employee!.hiredToDate!.isAfter(today));
+    }
+
+    return false;
+
+  }
+
   void onCheckInCheckOut() {
     if(!checkIn.value && !checkOut.value) {
       _onCheckIn();
