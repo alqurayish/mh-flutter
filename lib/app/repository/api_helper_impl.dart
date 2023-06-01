@@ -554,7 +554,7 @@ class ApiHelperImpl extends GetConnect with ApiHelper {
   EitherModel<HiredEmployeesByDate> getHiredEmployeesByDate({String? date}) async {
     String url = "hired-histories/employee-list-for-client";
 
-    if (date != null) url += "?filterDate=$date";
+    if (date != null) url += "?filterDate=$date&utc=${DateTime.now().timeZoneOffset.inHours}";
 
     var response = await get(url);
     if(response.statusCode == null) response = await get(url);
@@ -587,9 +587,9 @@ class ApiHelperImpl extends GetConnect with ApiHelper {
     String? clientId,
     String? employeeId,
   }) async {
-    String url = "check-in-check-out-histories?";
+    String url = "check-in-check-out-histories?utc=${DateTime.now().timeZoneOffset.inHours}";
 
-    if ((filterDate ?? "").isNotEmpty) url += "filterDate=$filterDate";
+    if ((filterDate ?? "").isNotEmpty) url += "&filterDate=$filterDate";
     if ((requestType ?? "").isNotEmpty) url += "&requestType=$requestType";
     if ((clientId ?? "").isNotEmpty) url += "&clientId=$clientId";
     if ((employeeId ?? "").isNotEmpty) url += "&employeeId=$employeeId";

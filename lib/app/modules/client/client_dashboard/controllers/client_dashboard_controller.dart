@@ -207,7 +207,7 @@ class ClientDashboardController extends GetxController {
     loading.value = true;
 
     await _apiHelper.getCheckInOutHistory(
-      filterDate: dashboardDate.value.toUtc().toString().split(" ").first,
+      filterDate: dashboardDate.value.toString().split(" ").first,
       clientId: appController.user.value.userId,
     ).then((response) {
 
