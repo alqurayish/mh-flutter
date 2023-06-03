@@ -45,7 +45,7 @@ class LoginController extends GetxController implements LoginViewInterface {
     Login login = Login(password: tecPassword.text.trim());
 
     if (GetUtils.isEmail(tecUserId.text.trim())) {
-      login.email = tecUserId.text.trim();
+      login.email = tecUserId.text.trim().toLowerCase();
     } else {
       login.userIdNumber = tecUserId.text.trim();
     }

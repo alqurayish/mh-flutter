@@ -167,8 +167,8 @@ class EmployeeHomeView extends GetView<EmployeeHomeController> {
                                           : controller.errorMsg.value.isNotEmpty
                                               ? _errorMsg
                                               : _checkInCheckout
-                                      : Text("you hire form ${controller.appController.user.value.employee?.hiredFromDate.toString().split(" ").first} to ${controller.appController.user.value.employee?.hiredFromDate.toString().split(" ").first}")
-                                  : const Text("You are not hired yes"),
+                                      : _massage("you hired from ${controller.appController.user.value.employee?.hiredFromDate.toString().split(" ").first} to ${controller.appController.user.value.employee?.hiredToDate.toString().split(" ").first}")
+                                  : _massage("You are not hired yet"),
                     ),
                     SizedBox(height: 30.h),
                   ],
@@ -187,8 +187,12 @@ class EmployeeHomeView extends GetView<EmployeeHomeController> {
   );
 
   Widget get _promotionText => Text(
-    MyStrings.exploreTheFeaturesOfMhAppBelow.tr,
-    style: MyColors.l777777_dtext(controller.context!).medium15,
+    (controller.appController.user.value.employee?.isHired ?? false) ?
+    "${controller.appController.user.value.employee?.hiredByRestaurantName ?? ""} hired you from ${controller.appController.user.value.employee?.hiredFromDate.toString().split(" ").first} to ${controller.appController.user.value.employee?.hiredToDate.toString().split(" ").first}"
+        : MyStrings.exploreTheFeaturesOfMhAppBelow.tr,
+    style: (controller.appController.user.value.employee?.isHired ?? false) ?
+      MyColors.c_C6A34F.semiBold16
+      : MyColors.l777777_dtext(controller.context!).medium15,
   );
 
   Widget _loading(String msg) =>
@@ -197,8 +201,14 @@ class EmployeeHomeView extends GetView<EmployeeHomeController> {
         children: [
           const CupertinoActivityIndicator(),
           const SizedBox(width: 10),
-          Text(msg),
+          _massage(msg),
         ],
+      );
+
+  Widget _massage(String msg) => Text(
+        msg,
+        textAlign: TextAlign.center,
+        style: MyColors.l111111_dffffff(controller.context!).regular12,
       );
 
   Widget get _locationFetchError =>
@@ -232,7 +242,7 @@ class EmployeeHomeView extends GetView<EmployeeHomeController> {
 
   Widget get _todayDashboard => Obx(
     () => Visibility(
-      visible: controller.checkIn.value && (controller.appController.user.value.employee?.isHired ?? false),
+      visible: controller.checkIn.value && (controller.appController.user.value.employee?.isHired ?? false) && controller.isTodayInBetweenFromDateAndToDate,
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 12),
         decoration: BoxDecoration(

@@ -67,7 +67,7 @@ class Details {
   bool? active;
   int? rating;
   int? totalWorkingHour;
-  int? hourlyRate;
+  double? hourlyRate;
   int? clientDiscount;
   PushNotificationDetails? pushNotificationDetails;
   List<String>? skills;
@@ -169,7 +169,7 @@ class Details {
     active = json['active'];
     rating = json['rating'];
     totalWorkingHour = json['totalWorkingHour'];
-    hourlyRate = json['hourlyRate'];
+    hourlyRate = double.parse(json['hourlyRate'].toString());
     clientDiscount = json['clientDiscount'];
     pushNotificationDetails = json['pushNotificationDetails'] != null
         ? PushNotificationDetails.fromJson(json['pushNotificationDetails'])

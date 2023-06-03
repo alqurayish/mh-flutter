@@ -137,7 +137,7 @@ class Employee {
   final dynamic employeeExperience;
   final int? rating;
   final int? totalWorkingHour;
-  final int? hourlyRate;
+  final double? hourlyRate;
   final List<dynamic>? certificates;
   final DateTime? createdAt;
   final DateTime? updatedAt;
@@ -193,7 +193,7 @@ class Employee {
     employeeExperience: json["employeeExperience"],
     rating: json["rating"],
     totalWorkingHour: json["totalWorkingHour"],
-    hourlyRate: json["hourlyRate"],
+    hourlyRate: double.parse(json["hourlyRate"].toString()),
     certificates: json["certificates"] == null ? [] : List<dynamic>.from(json["certificates"]!.map((x) => x)),
     createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
     updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),

@@ -74,7 +74,7 @@ class Users {
   int? noOfEmployee;
   int? rating;
   int? totalWorkingHour;
-  int? hourlyRate;
+  double? hourlyRate;
   int? clientDiscount;
   MenuPermission? menuPermission;
   List<String>? certificates;
@@ -152,7 +152,7 @@ class Users {
     noOfEmployee = json['noOfEmployee'];
     rating = json['rating'];
     totalWorkingHour = json['totalWorkingHour'];
-    hourlyRate = json['hourlyRate'];
+    hourlyRate = double.parse(json['hourlyRate'].toString());
     clientDiscount = json['clientDiscount'];
     menuPermission = json['menuPermission'] != null
         ? MenuPermission.fromJson(json['menuPermission'])

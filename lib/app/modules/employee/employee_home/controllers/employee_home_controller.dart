@@ -111,11 +111,14 @@ class EmployeeHomeController extends GetxController {
   );
 
   bool get isTodayInBetweenFromDateAndToDate {
-    DateTime today = DateTime.now();
+    DateTime today = DateTime.parse(DateTime.now().toString().split(" ").first);
 
     if(appController.user.value.employee?.hiredFromDate != null && appController.user.value.employee?.hiredToDate != null) {
-      return (appController.user.value.employee!.hiredFromDate!.isAtSameMomentAs(today) || appController.user.value.employee!.hiredFromDate!.isAfter(today)) &&
-             (appController.user.value.employee!.hiredToDate!.isAtSameMomentAs(today) || appController.user.value.employee!.hiredToDate!.isAfter(today));
+      DateTime fromDate = DateTime.parse(appController.user.value.employee!.hiredFromDate.toString().split(" ").first);
+      DateTime toDate = DateTime.parse(appController.user.value.employee!.hiredToDate.toString().split(" ").first);
+
+      return (today.isAtSameMomentAs(fromDate) || today.isAfter(fromDate)) &&
+             (today.isAtSameMomentAs(toDate) || today.isBefore(toDate));
     }
 
     return false;
@@ -229,6 +232,8 @@ class EmployeeHomeController extends GetxController {
       }, (TodayCheckInOutDetails details) {
 
         todayCheckInOutDetails.value = details;
+
+        print(details.toJson());
 
         Logcat.msg(details.toJson().toString(), printWithLog: true);
 

@@ -76,7 +76,7 @@ class Details {
   final bool? active;
   final int? rating;
   final int? totalWorkingHour;
-  final int? hourlyRate;
+  final double? hourlyRate;
   final int? clientDiscount;
   final List<dynamic>? menuPermission;
   final String? licensesNo;
@@ -184,7 +184,7 @@ class Details {
     active: json["active"],
     rating: json["rating"],
     totalWorkingHour: json["totalWorkingHour"],
-    hourlyRate: json["hourlyRate"],
+    hourlyRate: double.parse(json["hourlyRate"].toString()),
     clientDiscount: json["clientDiscount"],
     menuPermission: json["menuPermission"] == null ? [] : List<dynamic>.from(json["menuPermission"]!.map((x) => x)),
     licensesNo: json["licensesNo"],

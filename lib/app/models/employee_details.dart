@@ -7,7 +7,7 @@ class EmployeeDetails {
   dynamic employeeExperience;
   int? rating;
   int? totalWorkingHour;
-  int? hourlyRate;
+  double? hourlyRate;
   String? sId;
   String? profilePicture;
   String? restaurantName;
@@ -44,7 +44,7 @@ class EmployeeDetails {
     employeeExperience = json['employeeExperience'];
     rating = json['rating'];
     totalWorkingHour = json['totalWorkingHour'];
-    hourlyRate = json['hourlyRate'];
+    hourlyRate = double.parse(json['hourlyRate'].toString());
     sId = json['_id'];
     profilePicture = json['profilePicture'];
     restaurantName = json['restaurantName'];

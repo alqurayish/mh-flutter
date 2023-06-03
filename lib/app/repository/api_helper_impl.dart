@@ -561,6 +561,8 @@ class ApiHelperImpl extends GetConnect with ApiHelper {
     if(response.statusCode == null) response = await get(url);
     if(response.statusCode == null) response = await get(url);
 
+    print(response.body);
+
     return _convert<HiredEmployeesByDate>(
     response,
       HiredEmployeesByDate.fromJson,

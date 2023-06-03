@@ -57,7 +57,7 @@ class ClientMyEmployeeView extends GetView<ClientMyEmployeeController> {
 
   Widget _employeeItem(HiredHistory hiredHistory) {
     return Container(
-      height: 105.h,
+      height: 120.h,
       margin: EdgeInsets.symmetric(horizontal: 24.w).copyWith(
         bottom: 20.h,
       ),
@@ -144,6 +144,14 @@ class ClientMyEmployeeView extends GetView<ClientMyEmployeeController> {
                       Row(
                         children: [
                           _detailsItem(MyAssets.exp, "", Utils.getPositionName(hiredHistory.employeeDetails?.positionId ?? "")),
+                        ],
+                      ),
+
+                      SizedBox(height: 8.h),
+
+                      Row(
+                        children: [
+                          _detailsItem(MyAssets.calender, "", "${hiredHistory.fromDate.toString().split(" ").first} - ${hiredHistory.toDate.toString().split(" ").first}  ( ${hiredHistory.fromDate!.differenceInDays(hiredHistory.toDate!)})"),
                         ],
                       ),
 
