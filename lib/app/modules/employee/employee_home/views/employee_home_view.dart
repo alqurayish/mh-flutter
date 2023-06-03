@@ -188,7 +188,7 @@ class EmployeeHomeView extends GetView<EmployeeHomeController> {
 
   Widget get _promotionText => Text(
     (controller.appController.user.value.employee?.isHired ?? false) ?
-    "${controller.appController.user.value.employee?.hiredByRestaurantName ?? ""} hired you from ${controller.appController.user.value.employee?.hiredFromDate.toString().split(" ").first} to ${controller.appController.user.value.employee?.hiredToDate.toString().split(" ").first}"
+    "${(controller.appController.user.value.employee?.hiredByRestaurantName ?? "").toUpperCase()} hired you from ${controller.appController.user.value.employee?.hiredFromDate.toString().split(" ").first} to ${controller.appController.user.value.employee?.hiredToDate.toString().split(" ").first}"
         : MyStrings.exploreTheFeaturesOfMhAppBelow.tr,
     style: (controller.appController.user.value.employee?.isHired ?? false) ?
       MyColors.c_C6A34F.semiBold16
