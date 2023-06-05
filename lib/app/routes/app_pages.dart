@@ -29,8 +29,6 @@ import '../modules/auth/register/steps/register_employee_step_4/views/register_e
 import '../modules/auth/register/steps/register_last_step/bindings/register_last_step_binding.dart';
 import '../modules/auth/register/steps/register_last_step/views/register_last_step_view.dart';
 import '../modules/auth/register/views/register_view.dart';
-import '../modules/block_user/bindings/block_user_binding.dart';
-import '../modules/block_user/views/block_user_view.dart';
 import '../modules/chat/client_employee_chat/bindings/client_employee_chat_binding.dart';
 import '../modules/chat/client_employee_chat/views/client_employee_chat_view.dart';
 import '../modules/chat/support_chat/bindings/support_chat_binding.dart';
@@ -337,11 +335,6 @@ class AppPages {
       name: _Paths.termsAndCondition,
       page: () => const TermsAndConditionView(),
       binding: TermsAndConditionBinding(),
-    ),
-    GetPage(
-      name: _Paths.blockUser,
-      page: () => const BlockUserView(),
-      binding: BlockUserBinding(),
     ),
     GetPage(
       name: _Paths.contactUs,

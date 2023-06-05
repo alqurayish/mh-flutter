@@ -37,7 +37,6 @@ abstract class Routes {
   static const employeeDetails = _Paths.employeeDetails;
   static const employeeRegisterSuccess = _Paths.employeeRegisterSuccess;
   static const termsAndCondition = _Paths.termsAndCondition;
-  static const blockUser = _Paths.blockUser;
   static const mhEmployeesById = _Paths.mhEmployeesById;
   static const clientTermsConditionForHire = _Paths.clientTermsConditionForHire;
   static const payment = _Paths.paymentForHire;
@@ -94,7 +93,6 @@ abstract class _Paths {
   static const employeeDetails = '/employee-details';
 
   static const termsAndCondition = '/terms-and-condition';
-  static const blockUser = '/block-user';
   static const mhEmployeesById = '/mh-employees-by-id';
 
   static const contactUs = '/contact-us';
