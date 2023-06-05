@@ -8,7 +8,9 @@ class AuthMiddleware extends GetMiddleware {
 
   @override
   RouteSettings? redirect(String? route) {
-    if (Get.find<AppController>().user.value.userType == null) {
+    if (Get.find<AppController>().user.value.userType == null ||
+        Get.find<AppController>().user.value.isGuest
+    ) {
       return const RouteSettings(name: Routes.loginRegisterHints);
     }
     return null;

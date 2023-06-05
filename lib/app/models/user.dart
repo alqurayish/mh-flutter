@@ -10,16 +10,22 @@ class User {
   Employee? employee;
   Admin? admin;
 
+  User({
+    this.userType,
+    this.client,
+    this.employee,
+  });
+
   bool get isClient => userType == UserType.client;
   bool get isEmployee => userType == UserType.employee;
   bool get isAdmin => userType == UserType.admin;
   bool get isGuest => userType == UserType.guest;
 
-  String get userId => _getUserIdAndName[0];
-  String get userName => _getUserIdAndName[1];
-  String get userRole => _getUserIdAndName[2];
+  String get userId => _getUserIdAndNameAndOtherInfo[0];
+  String get userName => _getUserIdAndNameAndOtherInfo[1];
+  String get userRole => _getUserIdAndNameAndOtherInfo[2];
 
-  List<String> get _getUserIdAndName {
+  List<String> get _getUserIdAndNameAndOtherInfo {
     String id = '';
     String name = '';
     String role = '';
@@ -40,10 +46,4 @@ class User {
 
     return [id, name, role];
   }
-
-  User({
-    this.userType,
-    this.client,
-    this.employee,
-  });
 }

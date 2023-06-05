@@ -184,6 +184,9 @@ class AppController extends GetxService {
 
     StorageHelper.removeToken;
 
+    user.value = User(userType: UserType.guest);
+    user.refresh();
+
     Get.offAllNamed(Routes.loginRegisterHints);
   }
 
