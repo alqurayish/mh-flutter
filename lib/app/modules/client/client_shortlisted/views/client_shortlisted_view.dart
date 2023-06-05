@@ -60,7 +60,7 @@ class ClientShortlistedView extends GetView<ClientShortlistedController> {
 
   Widget _employeeItem(ShortList employee) {
     return Container(
-      height: 92.h,
+      height: 110.h,
       margin: EdgeInsets.symmetric(horizontal: 24.w).copyWith(
         bottom: 20.h,
       ),
@@ -139,32 +139,66 @@ class ClientShortlistedView extends GetView<ClientShortlistedController> {
                 Row(
                   children: [
                     Expanded(
-                      child: GestureDetector(
-                        onTap: () =>  controller.onDataSelect(employee.sId!),
-                        child: Container(
-                          height: 25.h,
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 5.w,
-                            vertical: 2.h,
-                          ),
-                          decoration: BoxDecoration(
-                            color: MyColors.c_F5F5F5,
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          child: Row(
-                            children: [
-                              Image.asset(MyAssets.calender),
-                              SizedBox(width: 10.w),
-
-                              Text(
-                                employee.fromDate != null && employee.toDate != null ?
-                                "${employee.fromDate!.dMMMy} - ${employee.toDate!.dMMMy} (${employee.fromDate!.differenceInDays(employee.toDate!)})"
-                                : "--/--/--   -   --/--/--",
-                                style: MyColors.c_111111.medium12,
+                      child: Column(
+                        children: [
+                          GestureDetector(
+                            onTap: () =>  controller.onDateSelect(employee.sId!),
+                            child: Container(
+                              height: 25.h,
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 5.w,
+                                vertical: 2.h,
                               ),
-                            ],
+                              decoration: BoxDecoration(
+                                color: MyColors.c_F5F5F5,
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              child: Row(
+                                children: [
+                                  Image.asset(MyAssets.calender),
+                                  SizedBox(width: 10.w),
+
+                                  Text(
+                                    employee.fromDate != null && employee.toDate != null ?
+                                    "${employee.fromDate!.dMMMy} - ${employee.toDate!.dMMMy} (${employee.fromDate!.differenceInDays(employee.toDate!)})"
+                                    : "--/--/--   -   --/--/--",
+                                    style: MyColors.c_111111.medium12,
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
-                        ),
+
+                          const SizedBox(height: 7),
+
+                          GestureDetector(
+                            onTap: () =>  controller.onTimeSelect(employee.sId!),
+                            child: Container(
+                              height: 25.h,
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 5.w,
+                                vertical: 2.h,
+                              ),
+                              decoration: BoxDecoration(
+                                color: MyColors.c_F5F5F5,
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              child: Row(
+                                children: [
+                                  Image.asset(MyAssets.totalHour),
+                                  SizedBox(width: 10.w),
+
+                                  Text(
+                                    employee.fromTime != null && employee.toTime != null
+                                        ? "From ${employee.fromTime}   To ${employee.toTime}})"
+                                        : "From --:--   To --:--",
+                                    style: MyColors.c_111111.medium12,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
 

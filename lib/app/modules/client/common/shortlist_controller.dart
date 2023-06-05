@@ -184,9 +184,10 @@ class ShortlistController extends GetxService {
   }
 
   bool isDateRangeSetForSelectedUser() {
+    // book all employee
     if(selectedForHire.isEmpty) {
       for(ShortList employee in shortList) {
-        if(employee.fromDate != null && employee.toDate != null) {
+        if(employee.fromDate != null && employee.toDate != null && employee.fromTime != null && employee.toTime != null) {
           selectedForHire.add(employee);
         }
       }
@@ -196,10 +197,11 @@ class ShortlistController extends GetxService {
       return shortList.length == selectedForHire.length;
     }
 
+    // check date and time range is selected
     bool valid = true;
 
     for (ShortList element in selectedForHire) {
-      if(element.fromDate == null || element.toDate == null) {
+      if(element.fromDate == null || element.toDate == null || element.fromTime == null || element.toTime == null) {
         valid = false;
         break;
       }

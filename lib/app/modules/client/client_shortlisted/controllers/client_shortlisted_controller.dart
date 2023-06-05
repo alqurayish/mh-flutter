@@ -1,5 +1,6 @@
 import '../../../../common/utils/exports.dart';
 import '../../../../common/widgets/custom_dialog.dart';
+import '../../../../common/widgets/custom_hire_time.dart';
 import '../../../../common/widgets/custom_loader.dart';
 import '../../../../repository/api_helper.dart';
 import '../../../../routes/app_pages.dart';
@@ -17,7 +18,7 @@ class ClientShortlistedController extends GetxController {
     shortlistController.onSelectClick(shortList);
   }
 
-  Future<void> onDataSelect(String shortlistId) async {
+  Future<void> onDateSelect(String shortlistId) async {
     DateTimeRange? selectedRange = await showDateRangePicker(
       context: context!,
       initialDateRange: DateTimeRange(
@@ -55,13 +56,29 @@ class ClientShortlistedController extends GetxController {
         "toDate": selectedRange.end.toString().split(" ").first
       };
 
-      CustomLoader.show(context!);
-
-      await _apiHelper.updateShortlistItem(data).then((value) async {
-        await shortlistController.fetchShortListEmployees();
-        CustomLoader.hide(context!);
-      });
+      _updateShortListDateOrTime(data);
     }
+  }
+
+  Future<void> _updateShortListDateOrTime(Map<String, dynamic> data) async {
+    CustomLoader.show(context!);
+
+    await _apiHelper.updateShortlistItem(data).then((value) async {
+      await shortlistController.fetchShortListEmployees();
+      CustomLoader.hide(context!);
+    });
+  }
+
+  void onTimeSelect(String shortlistId) {
+    CustomHireTime.show(context!, (String fromTime, String toTime) {
+      Map<String, dynamic> data = {
+        "id": shortlistId,
+        "fromTime": fromTime,
+        "toTime": toTime
+      };
+
+      _updateShortListDateOrTime(data);
+    });
   }
 
   void onBookAllClick() {
@@ -78,7 +95,7 @@ class ClientShortlistedController extends GetxController {
       CustomDialogue.information(
         context: context!,
         title: "Invalid Input",
-        description: "Please select the date range for when you want to hire an employee",
+        description: "Please select the date and time range for when you want to hire an employee",
       );
     }
   }

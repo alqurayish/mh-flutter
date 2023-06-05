@@ -60,6 +60,8 @@ class ShortList {
   int? iV;
   DateTime? fromDate;
   DateTime? toDate;
+  String? fromTime;
+  String? toTime;
 
   ShortList({
     this.sId,
@@ -72,6 +74,8 @@ class ShortList {
     this.iV,
     this.fromDate,
     this.toDate,
+    this.fromTime,
+    this.toTime,
   });
 
   ShortList.fromJson(Map<String, dynamic> json) {
@@ -87,6 +91,8 @@ class ShortList {
     iV = json['__v'];
     fromDate = json['fromDate'] == null ? null : DateTime.parse(json["fromDate"]);
     toDate = json['toDate'] == null ? null : DateTime.parse(json["toDate"]);
+    fromTime = json['fromTime'];
+    toTime = json['toTime'];
   }
 
   Map<String, dynamic> toJson() {
@@ -103,6 +109,8 @@ class ShortList {
     data['__v'] = iV;
     data['fromDate'] = fromDate;
     data['toDate'] = toDate;
+    data['fromTime'] = fromTime;
+    data['toTime'] = toTime;
     return data;
   }
 }
