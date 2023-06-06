@@ -6,6 +6,7 @@ import '../../../../enums/selected_payment_method.dart';
 import '../../../../models/custom_error.dart';
 import '../../../../repository/api_helper.dart';
 import '../../../../routes/app_pages.dart';
+import '../../client_home/controllers/client_home_controller.dart';
 import '../../common/shortlist_controller.dart';
 
 class PaymentForHireController extends GetxController {
@@ -16,6 +17,8 @@ class PaymentForHireController extends GetxController {
   final ApiHelper _apiHelper = Get.find();
 
   final AppController appController = Get.find();
+
+  final ClientHomeController _clientHomeController = Get.find();
 
   SelectedPaymentMethod? selectedPaymentMethod;
 
@@ -53,6 +56,7 @@ class PaymentForHireController extends GetxController {
       }, (r) {
         shortlistController.fetchShortListEmployees();
         shortlistController.selectedForHire..clear()..refresh();
+        _clientHomeController.fetchRequestEmployees();
         Get.until((route) => Get.currentRoute == Routes.clientHome);
         Get.toNamed(Routes.hireStatus);
       });

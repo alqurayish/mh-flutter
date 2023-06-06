@@ -63,7 +63,7 @@ class  CustomHireTime {
                       _hourAndMinInWheel(
                           childCount: 12,
                           onItemSelect: (int value) {
-                            fromTimeMin = value;
+                            fromTimeMin = value * 5;
                           },
                           itemBuilder: (context, index) {
                             return _value(context, index * 5);
@@ -104,7 +104,7 @@ class  CustomHireTime {
                       _hourAndMinInWheel(
                         childCount: 12,
                         onItemSelect: (int value) {
-                          toTimeMin = value;
+                          toTimeMin = value * 5;
                         },
                         itemBuilder: (context, index) {
                           return _value(context, index * 5);

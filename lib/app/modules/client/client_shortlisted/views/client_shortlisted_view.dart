@@ -190,7 +190,7 @@ class ClientShortlistedView extends GetView<ClientShortlistedController> {
 
                                   Text(
                                     employee.fromTime != null && employee.toTime != null
-                                        ? "From ${employee.fromTime}   To ${employee.toTime}})"
+                                        ? "From ${employee.fromTime}   To ${employee.toTime}"
                                         : "From --:--   To --:--",
                                     style: MyColors.c_111111.medium12,
                                   ),
