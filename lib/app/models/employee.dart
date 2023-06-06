@@ -33,6 +33,8 @@ class Employee {
     this.hiredByRestaurantAddress,
     this.hiredFromDate,
     this.hiredToDate,
+    this.hiredFromTime,
+    this.hiredToTime,
     this.hiredBy,
     this.isMhEmployee,
     this.languages,
@@ -70,6 +72,8 @@ class Employee {
   final bool? isHired;
   final DateTime? hiredFromDate;
   final DateTime? hiredToDate;
+  final String? hiredFromTime;
+  final String? hiredToTime;
   final String? hiredBy;
   final String? hiredByRestaurantName;
   final String? hiredByRestaurantAddress;
@@ -113,6 +117,8 @@ class Employee {
     isHired: json["isHired"],
     hiredFromDate: json["hiredFromDate"] == null ? null : DateTime.parse(json["hiredFromDate"]),
     hiredToDate: json["hiredToDate"] == null ? null : DateTime.parse(json["hiredToDate"]),
+    hiredFromTime: json["hiredFromTime"],
+    hiredToTime: json["hiredToTime"],
     hiredBy: json["hiredBy"],
     hiredByRestaurantName: json["hiredByRestaurantName"],
     hiredByRestaurantAddress: json["hiredByRestaurantAddress"],
@@ -156,6 +162,8 @@ class Employee {
     "hiredFromDate": hiredFromDate?.toIso8601String(),
     "hiredToDate": hiredToDate?.toIso8601String(),
     "hiredBy": hiredBy,
+    "hiredFromTime": hiredFromTime,
+    "hiredToTime": hiredToTime,
     "isMhEmployee": isMhEmployee,
     "languages": languages == null ? [] : List<dynamic>.from(languages!.map((x) => x)),
     "clientDiscount": clientDiscount,
@@ -191,8 +199,10 @@ class Employee {
     totalWorkingHour: userInfo.details?.totalWorkingHour ?? totalWorkingHour,
     isReferPerson: userInfo.details?.isReferPerson ?? isReferPerson,
     isHired: userInfo.details?.isHired ?? isHired,
-    hiredFromDate: hiredFromDate,
-    hiredToDate: hiredToDate,
+    hiredFromDate: userInfo.details?.hiredFromDate ?? hiredFromDate,
+    hiredToDate: userInfo.details?.hiredToDate ?? hiredToDate,
+    hiredFromTime: userInfo.details?.hiredFromTime ?? hiredFromTime,
+    hiredToTime: userInfo.details?.hiredToTime ?? hiredToTime,
     hiredBy: userInfo.details?.hiredBy ?? hiredBy,
     hiredByRestaurantName: userInfo.details?.hiredByRestaurantName ?? hiredByRestaurantName,
     hiredByRestaurantAddress: userInfo.details?.hiredByRestaurantAddress ?? hiredByRestaurantAddress,

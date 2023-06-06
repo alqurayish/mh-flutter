@@ -186,14 +186,51 @@ class EmployeeHomeView extends GetView<EmployeeHomeController> {
     style: MyColors.l111111_dwhite(controller.context!).semiBold20,
   );
 
-  Widget get _promotionText => Text(
-    (controller.appController.user.value.employee?.isHired ?? false) ?
-    "${(controller.appController.user.value.employee?.hiredByRestaurantName ?? "").toUpperCase()} hired you from ${controller.appController.user.value.employee?.hiredFromDate.toString().split(" ").first} to ${controller.appController.user.value.employee?.hiredToDate.toString().split(" ").first}"
-        : MyStrings.exploreTheFeaturesOfMhAppBelow.tr,
-    style: (controller.appController.user.value.employee?.isHired ?? false) ?
-      MyColors.c_C6A34F.semiBold16
-      : MyColors.l777777_dtext(controller.context!).medium15,
-  );
+  Widget get _promotionText => (controller.appController.user.value.employee?.isHired ?? false) ?
+      Text.rich(
+        TextSpan(
+          text: (controller.appController.user.value.employee?.hiredByRestaurantName ?? "").toUpperCase(),
+          style: MyColors.c_C6A34F.semiBold16,
+          children: [
+            TextSpan(
+              text: " booked  you from ",
+              style: MyColors.l111111_dffffff(controller.context!).regular16,
+            ),
+            TextSpan(
+              text: controller.appController.user.value.employee?.hiredFromDate.toString().split(" ").first,
+              style: MyColors.l111111_dffffff(controller.context!).semiBold16,
+            ),
+            TextSpan(
+              text: " to ",
+              style: MyColors.l111111_dffffff(controller.context!).regular16,
+            ),
+            TextSpan(
+              text: controller.appController.user.value.employee?.hiredToDate.toString().split(" ").first,
+              style: MyColors.l111111_dffffff(controller.context!).semiBold16,
+            ),
+            TextSpan(
+              text: ". Everyday at ",
+              style: MyColors.l111111_dffffff(controller.context!).regular16,
+            ),
+            TextSpan(
+              text: controller.appController.user.value.employee?.hiredFromTime,
+              style: MyColors.l111111_dffffff(controller.context!).semiBold16,
+            ),
+            TextSpan(
+              text: " to ",
+              style: MyColors.l111111_dffffff(controller.context!).regular16,
+            ),
+            TextSpan(
+              text: controller.appController.user.value.employee?.hiredToTime,
+              style: MyColors.l111111_dffffff(controller.context!).semiBold16,
+            ),
+          ]
+        ),
+      )
+      : Text(
+          MyStrings.exploreTheFeaturesOfMhAppBelow.tr,
+          style: MyColors.l777777_dtext(controller.context!).medium15,
+        );
 
   Widget _loading(String msg) =>
       Row(
