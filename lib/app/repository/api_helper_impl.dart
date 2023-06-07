@@ -13,7 +13,6 @@ import '../common/utils/type_def.dart';
 import '../enums/error_from.dart';
 import '../models/all_admins.dart';
 import '../models/check_in_out_histories.dart';
-import '../models/client_details.dart';
 import '../models/commons.dart';
 import '../models/custom_error.dart';
 import '../models/employee_full_details.dart';
@@ -31,13 +30,13 @@ import '../modules/auth/register/models/employee_registration.dart';
 import '../modules/client/client_dashboard/models/current_hired_employees.dart';
 import '../modules/client/client_payment_and_invoice/model/client_invoice.dart';
 import '../modules/client/client_self_profile/model/client_profile_update.dart';
-import '../modules/client/client_shortlisted/models/shortlisted_employees.dart' as shortlistEmployees;
+import '../modules/client/client_shortlisted/models/shortlisted_employees.dart' as short_list_employees;
 import '../modules/client/client_terms_condition_for_hire/models/terms_condition_for_hire.dart';
 import '../modules/employee/employee_home/models/today_check_in_out_details.dart';
 import 'api_error_handel.dart';
 import 'api_helper.dart';
 
-class ApiHelperImpl extends GetConnect with ApiHelper {
+class ApiHelperImpl extends GetConnect implements ApiHelper {
   @override
   void onInit() {
     httpClient.baseUrl = ServerUrls.serverUrlUser;
@@ -356,16 +355,16 @@ class ApiHelperImpl extends GetConnect with ApiHelper {
   }
 
   @override
-  EitherModel<shortlistEmployees.ShortlistedEmployees> fetchShortlistEmployees() async {
+  EitherModel<short_list_employees.ShortlistedEmployees> fetchShortlistEmployees() async {
     var response = await get("short-list");
     if(response.statusCode == null) response = await get("short-list");
     if(response.statusCode == null) response = await get("short-list");
     if(response.statusCode == null) response = await get("short-list");
 
 
-    return _convert<shortlistEmployees.ShortlistedEmployees>(
+    return _convert<short_list_employees.ShortlistedEmployees>(
       response,
-      shortlistEmployees.ShortlistedEmployees.fromJson,
+      short_list_employees.ShortlistedEmployees.fromJson,
     ).fold((l) => left(l), (r) => right(r));
   }
 
@@ -560,8 +559,6 @@ class ApiHelperImpl extends GetConnect with ApiHelper {
     if(response.statusCode == null) response = await get(url);
     if(response.statusCode == null) response = await get(url);
     if(response.statusCode == null) response = await get(url);
-
-    print(response.body);
 
     return _convert<HiredEmployeesByDate>(
     response,

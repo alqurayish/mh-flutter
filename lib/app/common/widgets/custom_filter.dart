@@ -1,4 +1,12 @@
 import 'package:another_xlider/another_xlider.dart';
+import 'package:another_xlider/models/handler.dart';
+import 'package:another_xlider/models/hatch_mark.dart';
+import 'package:another_xlider/models/hatch_mark_label.dart';
+import 'package:another_xlider/models/slider_step.dart';
+import 'package:another_xlider/models/tooltip/tooltip.dart';
+import 'package:another_xlider/models/tooltip/tooltip_box.dart';
+import 'package:another_xlider/models/tooltip/tooltip_position_offset.dart';
+import 'package:another_xlider/models/trackbar.dart';
 import 'package:mh/app/common/controller/app_controller.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 

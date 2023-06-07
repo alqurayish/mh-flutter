@@ -109,7 +109,7 @@ class ApiHelperImplementWithFileUpload {
                 percentSendPort.send(((100 / total) * count).toInt());
               },
             );
-    } on DioError catch (e, s) {
+    } on DioException catch (e, s) {
       if(kDebugMode) {
         print(e.response);
         print(e);

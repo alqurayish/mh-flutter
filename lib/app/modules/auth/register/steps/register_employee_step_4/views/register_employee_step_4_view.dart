@@ -120,7 +120,7 @@ class RegisterEmployeeStep4View extends GetView<RegisterEmployeeStep4Controller>
 
   Widget get _pageContentTitle => Text(
     MyStrings.imageCertificate.tr,
-    style: Theme.of(controller.context!).textTheme.headline1!.copyWith(
+    style: Theme.of(controller.context!).textTheme.displayLarge!.copyWith(
       fontSize: 18.sp,
     ),
   );
@@ -129,7 +129,7 @@ class RegisterEmployeeStep4View extends GetView<RegisterEmployeeStep4Controller>
     padding: const EdgeInsets.only(left: 18),
     child: Text(
       MyStrings.steps.trParams({'step': '4'}),
-      style: Theme.of(controller.context!).textTheme.headline3!.copyWith(
+      style: Theme.of(controller.context!).textTheme.displaySmall!.copyWith(
         fontSize: 14.sp,
         fontWeight: FontWeight.w500,
         fontFamily: MyAssets.fontMontserrat,
@@ -206,7 +206,7 @@ class RegisterEmployeeStep4View extends GetView<RegisterEmployeeStep4Controller>
               const Icon(Icons.file_copy),
               const SizedBox(width: 12),
               Text("Upload your certificates",
-              style: Theme.of(controller.context!).textTheme.bodyText1!.copyWith(
+              style: Theme.of(controller.context!).textTheme.bodyLarge!.copyWith(
 
               ),),
               const Spacer(),

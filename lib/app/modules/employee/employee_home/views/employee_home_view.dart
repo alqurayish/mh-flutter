@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:slide_to_act/slide_to_act.dart';
-
+import 'package:mh/app/modules/employee/employee_home/widgets/slide_action_widget.dart';
 import '../../../../common/utils/exports.dart';
 import '../../../../common/widgets/custom_appbar.dart';
 import '../../../../common/widgets/custom_badge.dart';
@@ -307,7 +306,7 @@ class EmployeeHomeView extends GetView<EmployeeHomeController> {
   Widget get _checkInCheckout => Obx(
         () => Visibility(
           visible: (!controller.checkIn.value || !controller.checkOut.value) && (controller.appController.user.value.employee?.isHired ?? false),
-          child: SlideAction(
+          child: SlideActionWidget(
             key: controller.key,
             height: 74.h,
             outerColor: MyColors.c_C6A34F,

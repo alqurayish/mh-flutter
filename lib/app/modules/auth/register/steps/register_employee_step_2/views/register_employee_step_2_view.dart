@@ -137,7 +137,7 @@ class RegisterEmployeeStep2View extends GetView<RegisterEmployeeStep2Controller>
 
   Widget get _pageContentTitle => Text(
         MyStrings.countryAddressLanguage.tr,
-        style: Theme.of(controller.context!).textTheme.headline1!.copyWith(
+        style: Theme.of(controller.context!).textTheme.displayLarge!.copyWith(
               fontSize: 18.sp,
             ),
       );
@@ -146,7 +146,7 @@ class RegisterEmployeeStep2View extends GetView<RegisterEmployeeStep2Controller>
         padding: const EdgeInsets.only(left: 18),
         child: Text(
           MyStrings.steps.trParams({'step': '2'}),
-          style: Theme.of(controller.context!).textTheme.headline3!.copyWith(
+          style: Theme.of(controller.context!).textTheme.displaySmall!.copyWith(
                 fontSize: 14.sp,
                 fontWeight: FontWeight.w500,
                 fontFamily: MyAssets.fontMontserrat,
