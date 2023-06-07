@@ -22,20 +22,17 @@ class LoginView extends GetView<LoginController> {
             top: -100.h,
             child: _topLeftBg,
           ),
-
           Positioned(
             right: -75.w,
             bottom: -130.h,
             child: _bottomRightBg,
           ),
-
           Positioned(
             left: 0.w,
             right: 0.w,
             bottom: 50.h,
             child: _dontHaveAnAccount,
           ),
-
           _mainContent,
         ],
       ),
@@ -58,8 +55,10 @@ class LoginView extends GetView<LoginController> {
             _userIdField,
             SizedBox(height: 34.h),
             _passwordField,
-            SizedBox(height: 40.h),
-            // _forgotPassword,
+            SizedBox(height: 10.h),
+            _rememberMeWidget,
+            SizedBox(height: 34.h),
+            // _forgotPassword,x
             SizedBox(height: 57.h),
             CustomButtons.button(
               text: MyStrings.login.tr,
@@ -84,18 +83,18 @@ class LoginView extends GetView<LoginController> {
         style: MyColors.l111111_dwhite(controller.context!).semiBold22,
       );
 
-  Widget get _userIdField => CustomTextInputField(
-        controller: controller.tecUserId,
+  Widget get _userIdField => Obx(() => CustomTextInputField(
+        controller: controller.tecUserId.value,
         label: MyStrings.userNameEmailId.tr,
         prefixIcon: Icons.person,
         validator: (String? value) => Validators.emptyValidator(
           value,
           MyStrings.required.tr,
         ),
-      );
+      ));
 
-  Widget get _passwordField => CustomTextInputField(
-        controller: controller.tecPassword,
+  Widget get _passwordField => Obx(() => CustomTextInputField(
+        controller: controller.tecPassword.value,
         label: MyStrings.password.tr,
         prefixIcon: Icons.lock,
         isPasswordField: true,
@@ -103,7 +102,7 @@ class LoginView extends GetView<LoginController> {
           value,
           MyStrings.required.tr,
         ),
-      );
+      ));
 
   Widget get _forgotPassword => Align(
         alignment: Alignment.centerRight,
@@ -130,8 +129,7 @@ class LoginView extends GetView<LoginController> {
                   fontFamily: MyAssets.fontMontserrat,
                   fontWeight: FontWeight.w600,
                 ),
-                recognizer: TapGestureRecognizer()
-                  ..onTap = controller.onRegisterPressed,
+                recognizer: TapGestureRecognizer()..onTap = controller.onRegisterPressed,
               )
             ],
           ),
@@ -146,4 +144,18 @@ class LoginView extends GetView<LoginController> {
           shape: BoxShape.circle,
         ),
       );
+
+  Widget get _rememberMeWidget => Obx(() => Padding(
+        padding: EdgeInsets.only(left: 5.w),
+        child: Row(
+          children: [
+            Checkbox(
+                activeColor: MyColors.c_C6A34F,
+                checkColor: MyColors.c_FFFFFF,
+                value: controller.rememberMe.value,
+                onChanged: controller.onRememberMePressed),
+            const Text(MyStrings.rememberMeText, style: TextStyle(fontWeight: FontWeight.bold)),
+          ],
+        ),
+      ));
 }
