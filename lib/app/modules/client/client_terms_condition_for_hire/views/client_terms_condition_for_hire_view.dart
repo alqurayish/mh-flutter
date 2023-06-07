@@ -11,6 +11,8 @@ class ClientTermsConditionForHireView extends GetView<ClientTermsConditionForHir
 
   @override
   Widget build(BuildContext context) {
+    controller.context = context;
+
     return Scaffold(
       backgroundColor: MyColors.lFAFAFA_dframeBg(context),
       appBar: CustomAppbar.appbar(
@@ -26,7 +28,8 @@ class ClientTermsConditionForHireView extends GetView<ClientTermsConditionForHir
             return _item(context, state!.termsConditions![index]);
           },
         ),
-        onLoading: const Center(child: CupertinoActivityIndicator(
+        onLoading: const Center(
+            child: CupertinoActivityIndicator(
           radius: 10,
         )),
         onError: (String? msg) => Center(
@@ -42,22 +45,20 @@ class ClientTermsConditionForHireView extends GetView<ClientTermsConditionForHir
 
   Widget _bottomBar(BuildContext context) {
     return controller.obx(
-        (state) => CustomBottomBar(
-          child: CustomButtons.button(
-            onTap: controller.onMakePaymentClick,
-            text: "I Agree & Make Payment",
-            customButtonStyle: CustomButtonStyle.radiusTopBottomCorner,
-          ),
-        ),
-
-      onLoading: CustomBottomBar(
+      (state) => CustomBottomBar(
         child: CustomButtons.button(
-          onTap: null,
-          text: "I Agree & Make Payment",
+          onTap: controller.onIAgreeClick,
+          text: "I Agree",
           customButtonStyle: CustomButtonStyle.radiusTopBottomCorner,
         ),
       ),
-
+      onLoading: CustomBottomBar(
+        child: CustomButtons.button(
+          onTap: null,
+          text: "I Agree",
+          customButtonStyle: CustomButtonStyle.radiusTopBottomCorner,
+        ),
+      ),
     );
   }
 
@@ -69,17 +70,15 @@ class ClientTermsConditionForHireView extends GetView<ClientTermsConditionForHir
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(width: 24.w),
-
             Container(
               height: 27.w,
               width: 27.w,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10.0),
-                border: Border.all(
-                  color: MyColors.lA6A6A6_dstock(context),
-                  width: .5,
-                )
-              ),
+                  borderRadius: BorderRadius.circular(10.0),
+                  border: Border.all(
+                    color: MyColors.lA6A6A6_dstock(context),
+                    width: .5,
+                  )),
               child: Align(
                 child: Container(
                   height: 13.w,
@@ -91,9 +90,7 @@ class ClientTermsConditionForHireView extends GetView<ClientTermsConditionForHir
                 ),
               ),
             ),
-
             SizedBox(width: 15.w),
-
             Expanded(
               child: Text(
                 termsCondition.description ?? "-",
@@ -101,11 +98,9 @@ class ClientTermsConditionForHireView extends GetView<ClientTermsConditionForHir
                 style: MyColors.l111111_dwhite(context).semiBold15,
               ),
             ),
-
             SizedBox(width: 24.w),
           ],
         ),
-
         SizedBox(height: 20.h),
       ],
     );
