@@ -23,7 +23,7 @@ class ClientShortlistedController extends GetxController {
       context: context!,
       initialDateRange: DateTimeRange(
         start: DateTime.now(),
-        end: DateTime.now(),
+        end: DateTime.now().add(const Duration(days: 1)),
       ),
       firstDate: DateTime.now(),
       lastDate: DateTime.now().add(const Duration(days: 1000)),
@@ -49,7 +49,7 @@ class ClientShortlistedController extends GetxController {
       },
     );
 
-    if(selectedRange != null) {
+    if (selectedRange != null) {
       Map<String, dynamic> data = {
         "id": shortlistId,
         "fromDate": selectedRange.start.toString().split(" ").first,
@@ -71,25 +71,20 @@ class ClientShortlistedController extends GetxController {
 
   void onTimeSelect(String shortlistId) {
     CustomHireTime.show(context!, (String fromTime, String toTime) {
-      Map<String, dynamic> data = {
-        "id": shortlistId,
-        "fromTime": fromTime,
-        "toTime": toTime
-      };
+      Map<String, dynamic> data = {"id": shortlistId, "fromTime": fromTime, "toTime": toTime};
 
       _updateShortListDateOrTime(data);
     });
   }
 
   void onBookAllClick() {
-    if(shortlistController.shortList.isEmpty) {
+    if (shortlistController.shortList.isEmpty) {
       CustomDialogue.information(
         context: context!,
         title: "Empty Shortlist",
         description: "Please add employee to shortlist then continue",
       );
-    }
-    else if(shortlistController.isDateRangeSetForSelectedUser()) {
+    } else if (shortlistController.isDateRangeSetForSelectedUser()) {
       Get.toNamed(Routes.clientTermsConditionForHire);
     } else {
       CustomDialogue.information(
