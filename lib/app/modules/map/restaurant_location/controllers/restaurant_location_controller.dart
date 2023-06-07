@@ -77,7 +77,7 @@ class RestaurantLocationController extends GetxController {
       registerController.restaurantLat = latLng.value.latitude;
       registerController.restaurantLong = latLng.value.longitude;
       registerController.restaurantAddressFromMap.value = tecAddress.text.trim();
-      registerController.tecRestaurantAddress.text = tecAddress.text.trim();
+      registerController.tecClientAddress.text = tecAddress.text.trim();
     }
     else if(Get.isRegistered<ClientSelfProfileController>()) {
       final ClientSelfProfileController profileController = Get.find();

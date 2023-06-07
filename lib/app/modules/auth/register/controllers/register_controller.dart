@@ -50,14 +50,16 @@ class RegisterController extends GetxController implements RegisterInterface {
   double restaurantLat = 0;
   double restaurantLong = 0;
 
-
   /// client information
-  TextEditingController tecRestaurantName = TextEditingController();
-  TextEditingController tecRestaurantAddress = TextEditingController();
-  TextEditingController tecEmailAddress = TextEditingController();
-  TextEditingController tecPhoneNumber = TextEditingController();
-  TextEditingController tecPassword = TextEditingController();
-  TextEditingController tecConfirmPassword = TextEditingController();
+  TextEditingController tecClientName = TextEditingController();
+  TextEditingController tecClientAddress = TextEditingController();
+  TextEditingController tecClientEmailAddress = TextEditingController();
+  TextEditingController tecClientPhoneNumber = TextEditingController();
+  TextEditingController tecClientPassword = TextEditingController();
+  TextEditingController tecClientConfirmPassword = TextEditingController();
+  TextEditingController tecClientCountry = TextEditingController();
+
+  RxString selectedClientCountry = "United Kingdom".obs;
 
   // fetch sources
   Sources? sources;
@@ -80,7 +82,7 @@ class RegisterController extends GetxController implements RegisterInterface {
   TextEditingController tecEmployeeEmail = TextEditingController();
   TextEditingController tecEmployeePhone = TextEditingController();
 
-  RxString selectedCountry = "United Kingdom".obs;
+  RxString selectedEmployeeCountry = "United Kingdom".obs;
 
   // Rx<DateTime> dateOfBirth = DateTime.now().obs;
 
@@ -92,9 +94,8 @@ class RegisterController extends GetxController implements RegisterInterface {
   RxList<File> cv = <File>[].obs;
 
   // phone number country code
-  Country selectedEmployeeCountry = countries.where((element) => element.code == "GB").first;
-  Country selectedClientCountry = countries.where((element) => element.code == "GB").first;
-
+  Country selectedEmployeeWisePhoneNumber = countries.where((element) => element.code == "GB").first;
+  Country selectedClientWisePhoneNumber = countries.where((element) => element.code == "GB").first;
 
   @override
   void onInit() {
@@ -102,26 +103,10 @@ class RegisterController extends GetxController implements RegisterInterface {
     super.onInit();
   }
 
-
+  ///----------------Common-------------------------------------------
   @override
-  void onPageChange(int index) {
-    onUserTypeClick(UserType.values[index + 1]);
-  }
-
-  void onCountryChange(String? country) {
-    selectedCountry.value = country!;
-  }
-
-  void onSourceChange(String? value) {
-    selectedSource = value!;
-  }
-
-  void onReferChange(String? value) {
-    selectedRefer = value!;
-  }
-
-  void onRestaurantAddressPressed() {
-    Get.toNamed(Routes.restaurantLocation);
+  void onPositionChange(String? position) {
+    selectedPosition.value = position!;
   }
 
   @override
@@ -137,6 +122,19 @@ class RegisterController extends GetxController implements RegisterInterface {
   @override
   void onLoginPressed() {
     Get.toNamed(Routes.login);
+  }
+
+  @override
+  void onPageChange(int index) {
+    onUserTypeClick(UserType.values[index + 1]);
+  }
+
+  void onSourceChange(String? value) {
+    selectedSource = value!;
+  }
+
+  void onReferChange(String? value) {
+    selectedRefer = value!;
   }
 
   @override
@@ -158,41 +156,84 @@ class RegisterController extends GetxController implements RegisterInterface {
     }
   }
 
-  // @override
-  // void onGenderChange(String? gender) {
-  //   selectedGender.value = gender!;
-  // }
-
-  @override
-  void onPositionChange(String? position) {
-    selectedPosition.value = position!;
+  ///---------------Client-----------------------------------------
+  void onClientCountryChange(String? country) {
+    selectedClientCountry.value = country!;
   }
 
-  void onClientCountryChange(Country country) {
-    selectedClientCountry = country;
+  void onClientAddressPressed() {
+    Get.toNamed(Routes.restaurantLocation);
   }
 
-  void onEmployeeCountryChange(Country country) {
-    selectedEmployeeCountry = country;
+  void onClientCountryWisePhoneNumberChange(Country phone) {
+    selectedClientWisePhoneNumber = phone;
   }
-
-  // void onDatePicked(DateTime dateTime) {
-  //   dateOfBirth.value = dateTime;
-  //   tecEmployeeDob.text = dateTime.toString().split(" ").first.trim();
-  //   dateOfBirth.refresh();
-  // }
 
   void _clientRegisterPressed() {
     if (formKeyClient.currentState!.validate()) {
       formKeyClient.currentState!.save();
 
-      if(!termsAndConditionCheck.value) {
+      if (!termsAndConditionCheck.value) {
         _errorDialog("Invalid Input", "you must accept our terms and condition");
       } else {
         _clientRegister();
       }
     }
   }
+
+  Future<void> _clientRegister() async {
+    ClientRegistration clientRegistration = ClientRegistration(
+        restaurantName: tecClientName.text.trim(),
+        restaurantAddress: tecClientAddress.text.trim(),
+        email: tecClientEmailAddress.text.trim().toLowerCase(),
+        phoneNumber: selectedClientWisePhoneNumber.dialCode + tecClientPhoneNumber.text.trim(),
+        sourceId: _getSourceId(),
+        referPersonId: _getReferPersonId(),
+        password: tecClientPassword.text.trim(),
+        lat: restaurantLat.toString(),
+        long: restaurantLong.toString(),
+        countryName: selectedClientCountry.value);
+
+    CustomLoader.show(context!);
+
+    await _apiHelper.clientRegister(clientRegistration).then((response) {
+      CustomLoader.hide(context!);
+
+      response.fold((CustomError customError) {
+        Utils.errorDialog(context!, customError..onRetry = _clientRegister);
+      }, (ClientRegistrationResponse clientRegistrationResponse) async {
+        if (clientRegistrationResponse.statusCode == 201) {
+          await appController.afterSuccessRegister(clientRegistrationResponse.token!);
+        } else if ((clientRegistrationResponse.errors ?? []).isNotEmpty) {
+          _errorDialog("Invalid Input",
+              clientRegistrationResponse.errors?.first.msg ?? "Please check you input field and try again");
+        } else {
+          _errorDialog("Something  Wrong", clientRegistrationResponse.message ?? "Failed to Register");
+        }
+      });
+    });
+  }
+
+  /* @override
+  void onGenderChange(String? gender) {
+    selectedGender.value = gender!;
+  }*/
+
+  ///--------------Employee---------------------------------------
+
+  void onEmployeeCountryChange(String? country) {
+    selectedEmployeeCountry.value = country!;
+  }
+
+  void onEmployeeCountryWisePhoneNumberChange(Country phone) {
+    selectedEmployeeWisePhoneNumber = phone;
+  }
+
+  /*void onDatePicked(DateTime dateTime) {
+    dateOfBirth.value = dateTime;
+    tecEmployeeDob.text = dateTime.toString().split(" ").first.trim();
+    dateOfBirth.refresh();
+  }*/
 
   void _employeeRegisterPressed() {
     if (formKeyEmployee.currentState!.validate()) {
@@ -218,7 +259,7 @@ class RegisterController extends GetxController implements RegisterInterface {
 
   String _getSourceId() {
     for (Source element in (sources?.sources ?? [])) {
-      if(element.name == selectedSource) {
+      if (element.name == selectedSource) {
         return element.id;
       }
     }
@@ -229,45 +270,12 @@ class RegisterController extends GetxController implements RegisterInterface {
     if (selectedRefer == "Other") return "";
 
     for (Employee element in (employees?.users ?? [])) {
-      if("${element.firstName} ${element.lastName} - ${element.userIdNumber}" == selectedRefer) {
+      if ("${element.firstName} ${element.lastName} - ${element.userIdNumber}" == selectedRefer) {
         return element.id!;
       }
     }
 
     return "";
-  }
-
-  Future<void> _clientRegister() async {
-    ClientRegistration clientRegistration = ClientRegistration(
-      restaurantName: tecRestaurantName.text.trim(),
-      restaurantAddress: tecRestaurantAddress.text.trim(),
-      email: tecEmailAddress.text.trim().toLowerCase(),
-      phoneNumber: selectedClientCountry.dialCode + tecPhoneNumber.text.trim(),
-      sourceId: _getSourceId(),
-      referPersonId: _getReferPersonId(),
-      password: tecPassword.text.trim(),
-      lat: restaurantLat.toString(),
-      long: restaurantLong.toString()
-    );
-
-    CustomLoader.show(context!);
-
-    await _apiHelper.clientRegister(clientRegistration).then((response) {
-
-      CustomLoader.hide(context!);
-
-      response.fold((CustomError customError) {
-        Utils.errorDialog(context!, customError..onRetry = _clientRegister);
-      }, (ClientRegistrationResponse clientRegistrationResponse) async {
-        if(clientRegistrationResponse.statusCode == 201) {
-          await appController.afterSuccessRegister(clientRegistrationResponse.token!);
-        } else if((clientRegistrationResponse.errors ?? []).isNotEmpty) {
-          _errorDialog("Invalid Input", clientRegistrationResponse.errors?.first.msg ?? "Please check you input field and try again");
-        } else {
-          _errorDialog("Something  Wrong", clientRegistrationResponse.message ?? "Failed to Register");
-        }
-      });
-    });
   }
 
   Future<void> _employeeRegister() async {
@@ -276,7 +284,7 @@ class RegisterController extends GetxController implements RegisterInterface {
       lastName: tecEmployeeLastName.text.trim(),
       email: tecEmployeeEmail.text.trim(),
       phoneNumber: tecEmployeePhone.text.trim(),
-      countryName: selectedCountry.value,
+      countryName: selectedEmployeeCountry.value,
       positionId: Utils.getPositionId(selectedPosition.value.trim()),
     );
 
@@ -284,17 +292,17 @@ class RegisterController extends GetxController implements RegisterInterface {
 
     // update dialogue text
 
-    if(cv.isNotEmpty) {
+    if (cv.isNotEmpty) {
       uploadTitle.value = "Uploading CV...";
     }
-    if(profileImage.isNotEmpty) {
+    if (profileImage.isNotEmpty) {
       uploadTitle.value = "Uploading profile image...";
     }
-    if(cv.isNotEmpty && profileImage.isNotEmpty) {
+    if (cv.isNotEmpty && profileImage.isNotEmpty) {
       uploadTitle.value = "Uploading CV and profile image...";
     }
 
-    if(profileImage.isNotEmpty) {
+    if (profileImage.isNotEmpty) {
       formData.files.add(MapEntry(
           "profilePicture",
           await dio.MultipartFile.fromFile(
@@ -304,7 +312,7 @@ class RegisterController extends GetxController implements RegisterInterface {
           )));
     }
 
-    if(cv.isNotEmpty) {
+    if (cv.isNotEmpty) {
       formData.files.add(MapEntry(
           "cv",
           await dio.MultipartFile.fromFile(
@@ -313,7 +321,6 @@ class RegisterController extends GetxController implements RegisterInterface {
             contentType: MediaType("application", "pdf"),
           )));
     }
-
 
     // show dialog
     _showPercentIsolate();
@@ -331,7 +338,8 @@ class RegisterController extends GetxController implements RegisterInterface {
         if ([200, 201].contains(response["data"]["statusCode"])) {
           await appController.afterSuccessRegister("");
         } else {
-          _errorDialog("Something wrong", response["data"]["message"] ?? "Failed to register. Please check you data and try again");
+          _errorDialog("Something wrong",
+              response["data"]["message"] ?? "Failed to register. Please check you data and try again");
         }
       } else {
         _errorDialog("Server Error", "Failed to register. Please try again");
@@ -397,7 +405,9 @@ class RegisterController extends GetxController implements RegisterInterface {
     );
 
     if (result != null) {
-      cv..clear()..add(File(result.files.single.path!));
+      cv
+        ..clear()
+        ..add(File(result.files.single.path!));
     } else {
       cv.clear();
     }
@@ -412,19 +422,19 @@ class RegisterController extends GetxController implements RegisterInterface {
     );
 
     if (pickedFile != null) {
-      profileImage..clear()..add(File(pickedFile.path));
+      profileImage
+        ..clear()
+        ..add(File(pickedFile.path));
     } else {
       profileImage.clear();
     }
   }
 
   Future<void> _fetchSourceAndRefers() async {
-
     await Future.wait([
       _apiHelper.fetchSources(),
       _apiHelper.getEmployees(isReferred: true),
     ]).then((response) {
-
       response[0].fold((CustomError customError) {
         Utils.errorDialog(context!, customError..onRetry = _fetchSourceAndRefers);
       }, (r) {
@@ -438,8 +448,6 @@ class RegisterController extends GetxController implements RegisterInterface {
       });
 
       loading.value = false;
-
     });
   }
-
 }

@@ -22,7 +22,7 @@ class ClientShortlistedController extends GetxController {
     DateTimeRange? selectedRange = await showDateRangePicker(
       context: context!,
       initialDateRange: DateTimeRange(
-        start: DateTime.now(),
+        start: DateTime.now().add(const Duration(days: 1)),
         end: DateTime.now().add(const Duration(days: 1)),
       ),
       firstDate: DateTime.now(),
