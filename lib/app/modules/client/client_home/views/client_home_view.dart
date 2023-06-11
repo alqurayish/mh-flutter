@@ -1,3 +1,6 @@
+import 'package:flutter/cupertino.dart';
+import 'package:mh/app/routes/app_pages.dart';
+
 import '../../../../common/utils/exports.dart';
 import '../../../../common/widgets/custom_appbar.dart';
 import '../../../../common/widgets/custom_badge.dart';
@@ -30,15 +33,21 @@ class ClientHomeView extends GetView<ClientHomeController> {
             // ),
             IconButton(
               onPressed: () {
+                Get.toNamed(Routes.notifications);
+              },
+              icon: const Icon(CupertinoIcons.bell),
+            ),
+            IconButton(
+              onPressed: () {
                 CustomMenu.accountMenu(
                   context,
                   onProfileTap: controller.onProfileClick,
                 );
               },
               icon: const Icon(
-                Icons.person_outline_rounded,
+                CupertinoIcons.person,
               ),
-            ),
+            )
           ],
         ),
         body: SizedBox(
@@ -52,11 +61,11 @@ class ClientHomeView extends GetView<ClientHomeController> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
-
                       children: [
                         SizedBox(height: 29.h),
                         _restaurantName(MyStrings.hiRestaurant.trParams({
-                          "restaurantName": controller.appController.user.value.client?.restaurantName ?? "owner of the",
+                          "restaurantName":
+                              controller.appController.user.value.client?.restaurantName ?? "owner of the",
                         })),
                         SizedBox(height: 20.h),
 
@@ -91,9 +100,7 @@ class ClientHomeView extends GetView<ClientHomeController> {
                                 onTap: controller.onMhEmployeeClick,
                               ),
                             ),
-
                             SizedBox(width: 24.w),
-
                             Expanded(
                               child: Obx(
                                 () => Stack(
@@ -104,7 +111,6 @@ class ClientHomeView extends GetView<ClientHomeController> {
                                       icon: MyAssets.dashboard,
                                       onTap: controller.onDashboardClick,
                                     ),
-
                                     Positioned(
                                       top: 4,
                                       right: 5,
@@ -131,12 +137,10 @@ class ClientHomeView extends GetView<ClientHomeController> {
                                 onTap: controller.onMyEmployeeClick,
                               ),
                             ),
-
                             SizedBox(width: 24.w),
-
                             Expanded(
                               child: Obx(
-                                ()=> Stack(
+                                () => Stack(
                                   clipBehavior: Clip.none,
                                   children: [
                                     CustomFeatureBox(
@@ -144,13 +148,14 @@ class ClientHomeView extends GetView<ClientHomeController> {
                                       icon: MyAssets.invoicePayment,
                                       onTap: controller.onInvoiceAndPaymentClick,
                                     ),
-
                                     Positioned(
                                       top: 4,
                                       right: 5,
                                       child: Visibility(
-                                        visible: ((controller.clientInvoice.value.invoices ?? []).where((element) => element.status == "DUE")).isNotEmpty,
-                                        child: CustomBadge(((controller.clientInvoice.value.invoices ?? []).where((element) => element.status == "DUE")).length.toString()),
+                                        visible: ((controller.clientInvoice.value.invoices ?? [])
+                                            .where((element) => element.status == "DUE")).isNotEmpty,
+                                        child: CustomBadge(((controller.clientInvoice.value.invoices ?? [])
+                                            .where((element) => element.status == "DUE")).length.toString()),
                                       ),
                                     ),
                                   ],
@@ -159,20 +164,16 @@ class ClientHomeView extends GetView<ClientHomeController> {
                             ),
                           ],
                         ),
-
                       ],
                     ),
                   ),
                 ),
-
                 SizedBox(height: 30.h),
-
                 Stack(
                   children: [
                     CustomHelpSupport(
                       onTap: controller.onHelpAndSupportClick,
                     ),
-
                     Obx(
                       () => Positioned(
                         top: 0,
@@ -187,7 +188,6 @@ class ClientHomeView extends GetView<ClientHomeController> {
                     ),
                   ],
                 ),
-
                 SizedBox(height: 30.h),
               ],
             ),
@@ -254,7 +254,7 @@ class ClientHomeView extends GetView<ClientHomeController> {
       );
 
   Widget get _suggestedEmployees => Obx(
-    () => Visibility(
+        () => Visibility(
           visible: (controller.requestedEmployees.value.requestEmployees ?? []).isNotEmpty,
           child: GestureDetector(
             onTap: controller.onSuggestedEmployeesClick,
@@ -302,10 +302,10 @@ class ClientHomeView extends GetView<ClientHomeController> {
             ),
           ),
         ),
-  );
+      );
 
   Widget get _employeeShortlisted => Obx(
-    () => Visibility(
+        () => Visibility(
           visible: controller.shortlistController.totalShortlisted.value > 0,
           child: InkWell(
             borderRadius: BorderRadius.circular(10.0),
@@ -354,5 +354,5 @@ class ClientHomeView extends GetView<ClientHomeController> {
             ),
           ),
         ),
-  );
+      );
 }

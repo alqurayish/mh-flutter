@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:mh/app/modules/employee/employee_home/widgets/slide_action_widget.dart';
 import '../../../../common/controller/app_controller.dart';
@@ -302,5 +303,46 @@ class EmployeeHomeController extends GetxController {
         unreadMsgFromAdmin.value = data["${appController.user.value.userId}_unread"];
       }
     });
+  }
+
+  void onHiredYouTap() {
+    Get.bottomSheet(Container(
+      color: MyColors.lightCard(context!),
+      //height: Get.width * 0.6,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          ListTile(
+            onTap: (){},
+            leading: const Icon(CupertinoIcons.check_mark, color: Colors.grey),
+            title: Text('Allow', style: MyColors.l111111_dtext(context!).regular16_5),
+          ),
+          const Divider(
+            height: 1,
+          ),
+          ListTile(
+            onTap: (){},
+            leading: const Icon(CupertinoIcons.clear, color: Colors.grey),
+            title: Text('Deny', style: MyColors.l111111_dtext(context!).regular16_5),
+          ),
+          const Divider(
+            height: 1,
+          ),
+          ListTile(
+            onTap: () {
+              Get.back();
+            },
+            leading: const Icon(
+              Icons.remove,
+              color: Colors.red,
+            ),
+            title: Text('Cancel', style: MyColors.l111111_dtext(context!).semiBold15.copyWith(color: Colors.red)),
+          ),
+          const Divider(
+            height: 1,
+          ),
+        ],
+      ),
+    ));
   }
 }

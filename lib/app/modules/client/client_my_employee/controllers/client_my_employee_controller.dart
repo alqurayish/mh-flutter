@@ -1,3 +1,5 @@
+import 'package:dartz/dartz.dart';
+
 import '../../../../common/utils/exports.dart';
 import '../../../../models/custom_error.dart';
 import '../../../../repository/api_helper.dart';
@@ -27,7 +29,7 @@ class ClientMyEmployeeController extends GetxController {
 
     isLoading.value = true;
 
-    await _apiHelper.getHiredEmployeesByDate().then((response) {
+    await _apiHelper.getHiredEmployeesByDate().then((Either<CustomError, HiredEmployeesByDate> response) {
       isLoading.value = false;
 
       response.fold((CustomError customError) {

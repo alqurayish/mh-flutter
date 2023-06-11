@@ -1,3 +1,5 @@
+import 'package:mh/app/modules/notifications/models/notification_response_model.dart';
+
 import '../common/utils/exports.dart';
 import '../common/utils/type_def.dart';
 import '../models/all_admins.dart';
@@ -51,6 +53,8 @@ abstract class ApiHelper {
     String? maxTotalHour,
     bool? isReferred,
   });
+
+  EitherModel<NotificationResponseModel> getNotifications();
 
   EitherModel<Employees> getAllUsersFromAdmin({
     String? positionId,
