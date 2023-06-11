@@ -1,7 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dartz/dartz.dart';
-import 'package:mh/app/modules/notifications/models/notification_response_model.dart';
-
 import '../../../../common/controller/app_controller.dart';
 import '../../../../common/utils/exports.dart';
 import '../../../../common/widgets/client_help_option.dart';
@@ -32,11 +29,8 @@ class ClientHomeController extends GetxController {
 
   RxList<Map<String, dynamic>> employeeChatDetails = <Map<String, dynamic>>[].obs;
 
-  RxList<NotificationModel> notificationList = <NotificationModel>[].obs;
-
   @override
   void onInit() {
-    _getNotificationList();
     getClientInvoice();
     _trackUnreadMsg();
     _fetchRequestEmployees();
@@ -205,19 +199,6 @@ class ClientHomeController extends GetxController {
       }, (ClientInvoice clientInvoice) {
         this.clientInvoice.value = clientInvoice;
         this.clientInvoice.refresh();
-      });
-    });
-  }
-
-  void _getNotificationList() {
-    _apiHelper.getNotifications().then((Either<CustomError, NotificationResponseModel> response) {
-      response.fold((CustomError customError) {
-        Utils.errorDialog(Get.context!, customError..onRetry = _getNotificationList);
-      }, (NotificationResponseModel responseModel) {
-        if (responseModel.status == 'success' && responseModel.statusCode == 200) {
-          notificationList.value = responseModel.notifications ?? [];
-          notificationList.where((element) => element.readStatus == true);
-        }
       });
     });
   }

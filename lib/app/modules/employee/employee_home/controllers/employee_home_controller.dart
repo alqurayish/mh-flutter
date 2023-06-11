@@ -5,6 +5,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:mh/app/modules/employee/employee_home/models/single_notification_model_for_employee.dart';
 import 'package:mh/app/modules/employee/employee_home/widgets/slide_action_widget.dart';
 import 'package:mh/app/modules/notifications/models/notification_response_model.dart';
+import 'package:mh/app/modules/notifications/models/notification_update_request_model.dart';
+import 'package:mh/app/modules/notifications/models/notification_update_response_model.dart';
 import '../../../../common/controller/app_controller.dart';
 import '../../../../common/controller/location_controller.dart';
 import '../../../../common/utils/exports.dart';
@@ -50,6 +52,8 @@ class EmployeeHomeController extends GetxController {
   RxInt unreadMsgFromAdmin = 0.obs;
 
   Rx<NotificationModel> singleNotification = NotificationModel().obs;
+  RxBool singleNotificationDataLoading = false.obs;
+  RxBool showNormalText = false.obs;
 
   @override
   void onInit() {
@@ -312,55 +316,85 @@ class EmployeeHomeController extends GetxController {
   }
 
   void onHiredYouTap() {
-    Get.bottomSheet(Container(
-      color: MyColors.lightCard(context!),
-      //height: Get.width * 0.6,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          ListTile(
-            onTap: () {},
-            leading: const Icon(CupertinoIcons.check_mark, color: Colors.grey),
-            title: Text('Allow', style: MyColors.l111111_dtext(context!).regular16_5),
-          ),
-          const Divider(
-            height: 1,
-          ),
-          ListTile(
-            onTap: () {},
-            leading: const Icon(CupertinoIcons.clear, color: Colors.grey),
-            title: Text('Deny', style: MyColors.l111111_dtext(context!).regular16_5),
-          ),
-          const Divider(
-            height: 1,
-          ),
-          ListTile(
-            onTap: () {
-              Get.back();
-            },
-            leading: const Icon(
-              Icons.remove,
-              color: Colors.red,
+    if (singleNotification.value.hiredStatus == null) {
+      Get.bottomSheet(Container(
+        color: MyColors.lightCard(context!),
+        //height: Get.width * 0.6,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              onTap: () {
+                _updateNotification(id: singleNotification.value.id ?? '', hiredStatus: 'ALLOW');
+              },
+              leading: const Icon(CupertinoIcons.check_mark, color: Colors.grey),
+              title: Text('Allow', style: MyColors.l111111_dtext(context!).regular16_5),
             ),
-            title: Text('Cancel', style: MyColors.l111111_dtext(context!).semiBold15.copyWith(color: Colors.red)),
-          ),
-          const Divider(
-            height: 1,
-          ),
-        ],
-      ),
-    ));
+            const Divider(
+              height: 1,
+            ),
+            ListTile(
+              onTap: () {
+                _updateNotification(id: singleNotification.value.id ?? '', hiredStatus: 'DENY');
+              },
+              leading: const Icon(CupertinoIcons.clear, color: Colors.grey),
+              title: Text('Deny', style: MyColors.l111111_dtext(context!).regular16_5),
+            ),
+            const Divider(
+              height: 1,
+            ),
+            ListTile(
+              onTap: () {
+                Get.back();
+              },
+              leading: const Icon(
+                Icons.remove,
+                color: Colors.red,
+              ),
+              title: Text('Cancel', style: MyColors.l111111_dtext(context!).semiBold15.copyWith(color: Colors.red)),
+            ),
+            const Divider(
+              height: 1,
+            ),
+          ],
+        ),
+      ));
+    }
   }
 
   void _getSingleNotification() {
+    singleNotificationDataLoading.value = true;
     _apiHelper
         .singleNotificationForEmployee()
         .then((Either<CustomError, SingleNotificationModelForEmployee> responseData) {
+      singleNotificationDataLoading.value = false;
       responseData.fold((CustomError customError) {
         Utils.errorDialog(context!, customError..onRetry = _getSingleNotification);
       }, (SingleNotificationModelForEmployee response) {
         if (response.status == "success" && response.statusCode == 200 && response.details != null) {
           singleNotification.value = response.details!;
+        } else {
+          showNormalText.value = true;
+        }
+      });
+    });
+  }
+
+  void _updateNotification({required String id, required String hiredStatus}) {
+    Get.back();
+    CustomLoader.show(context!);
+
+    NotificationUpdateRequestModel notificationUpdateRequestModel =
+        NotificationUpdateRequestModel(id: id, fromWhere: 'employee_home_view', hiredStatus: hiredStatus);
+    _apiHelper
+        .updateNotification(notificationUpdateRequestModel: notificationUpdateRequestModel)
+        .then((Either<CustomError, NotificationUpdateResponseModel> response) {
+      CustomLoader.hide(context!);
+      response.fold((CustomError customError) {
+        Utils.errorDialog(context!, customError);
+      }, (NotificationUpdateResponseModel responseModel) {
+        if (responseModel.status == 'success' && responseModel.statusCode == 200) {
+          _getSingleNotification();
         }
       });
     });

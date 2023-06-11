@@ -44,8 +44,9 @@ class NotificationsController extends GetxController {
         .then((Either<CustomError, NotificationUpdateResponseModel> response) {
       CustomLoader.hide(context!);
       response.fold((CustomError customError) {
-        Utils.errorDialog(Get.context!, customError..onRetry = _getNotificationList);
+        Utils.errorDialog(context!, customError);
       }, (NotificationUpdateResponseModel responseModel) {
+        print('NotificationsController.updateNotification: ${responseModel.status == 'success' && responseModel.statusCode == 200}');
         if (responseModel.status == 'success' && responseModel.statusCode == 200) {
           _getNotificationList();
         }

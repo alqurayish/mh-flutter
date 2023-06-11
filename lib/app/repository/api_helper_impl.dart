@@ -775,17 +775,17 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
   @override
   EitherModel<NotificationUpdateResponseModel> updateNotification(
       {required NotificationUpdateRequestModel notificationUpdateRequestModel}) async {
-    var response = await put("notifications/update-status", jsonEncode(notificationUpdateRequestModel.toJson()));
-    if (response.statusCode == null) {
-      response = await put("notifications/update-status", jsonEncode(notificationUpdateRequestModel.toJson()));
-    }
-    if (response.statusCode == null) {
-      response = await put("notifications/update-status", jsonEncode(notificationUpdateRequestModel.toJson()));
-    }
-    if (response.statusCode == null) {
-      response = await put("notifications/update-status", jsonEncode(notificationUpdateRequestModel.toJson()));
-    }
 
+    Response response = await put("notifications/update-status", jsonEncode(notificationUpdateRequestModel.toJson()));
+    if (response.statusCode == null) {
+      response = await put("notifications/update-status", jsonEncode(notificationUpdateRequestModel.toJson()));
+    }
+    if (response.statusCode == null) {
+      response = await put("notifications/update-status", jsonEncode(notificationUpdateRequestModel.toJson()));
+    }
+    if (response.statusCode == null) {
+      response = await put("notifications/update-status", jsonEncode(notificationUpdateRequestModel.toJson()));
+    }
     return _convert<NotificationUpdateResponseModel>(
       response,
       NotificationUpdateResponseModel.fromJson,

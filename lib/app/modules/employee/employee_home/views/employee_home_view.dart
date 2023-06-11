@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:mh/app/modules/employee/employee_home/widgets/emloyee_home_promotion_widget.dart';
 import 'package:mh/app/modules/employee/employee_home/widgets/slide_action_widget.dart';
 import 'package:mh/app/routes/app_pages.dart';
 import '../../../../common/utils/exports.dart';
@@ -74,7 +75,8 @@ class EmployeeHomeView extends GetView<EmployeeHomeController> {
 
                             SizedBox(height: 20.h),
 
-                            _promotionText,
+                            //_promotionText,
+                            const EmployeeHomePromotionWidget(),
 
                             SizedBox(height: 40.h),
 

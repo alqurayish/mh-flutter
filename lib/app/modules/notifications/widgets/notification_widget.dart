@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mh/app/common/utils/exports.dart';
 import 'package:mh/app/modules/notifications/controllers/notifications_controller.dart';
@@ -14,18 +13,19 @@ class NotificationWidget extends StatelessWidget {
     return InkWell(
       onTap: () {
         Get.find<NotificationsController>()
-            .updateNotification(id: notification.id ?? '', readStatus: notification.readStatus ?? true);
+            .updateNotification(id: notification.id ?? '', readStatus: true);
       },
       child: Padding(
         padding: const EdgeInsets.only(top: 15.0),
         child: ListTile(
           title: Text(
             '${notification.text}',
-            style: TextStyle(color: notification.readStatus == true ? MyColors.c_7B7B7B : MyColors.c_111111),
+            style: TextStyle(color: notification.readStatus == true ? MyColors.c_7B7B7B : MyColors.c_111111, fontSize: 14),
           ),
           leading: const CircleAvatar(
-            backgroundColor: MyColors.c_111111,
-            child: Icon(CupertinoIcons.bell, color: MyColors.c_C6A34F),
+            radius: 15,
+            backgroundColor: MyColors.c_C6A34F,
+            child: Icon(CupertinoIcons.bell, color: MyColors.c_FFFFFF, size: 18),
           ),
           subtitle: Padding(
             padding: const EdgeInsets.only(top: 5),
