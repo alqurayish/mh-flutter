@@ -1,4 +1,6 @@
 import 'package:mh/app/modules/notifications/models/notification_response_model.dart';
+import 'package:mh/app/modules/notifications/models/notification_update_request_model.dart';
+import 'package:mh/app/modules/notifications/models/notification_update_response_model.dart';
 
 import '../common/utils/exports.dart';
 import '../common/utils/type_def.dart';
@@ -53,8 +55,6 @@ abstract class ApiHelper {
     String? maxTotalHour,
     bool? isReferred,
   });
-
-  EitherModel<NotificationResponseModel> getNotifications();
 
   EitherModel<Employees> getAllUsersFromAdmin({
     String? positionId,
@@ -129,4 +129,9 @@ abstract class ApiHelper {
   EitherModel<ClientInvoice> getClientInvoice(String clientId);
 
   EitherModel<Response> updatePaymentStatus(Map<String, dynamic> data);
+
+  EitherModel<NotificationResponseModel> getNotifications();
+
+  EitherModel<NotificationUpdateResponseModel> updateNotification(
+      {required NotificationUpdateRequestModel notificationUpdateRequestModel});
 }

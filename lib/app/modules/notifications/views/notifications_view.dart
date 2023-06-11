@@ -9,6 +9,7 @@ class NotificationsView extends GetView<NotificationsController> {
   const NotificationsView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    controller.context = context;
     return Scaffold(
         appBar: CustomAppbar.appbar(title: 'Notifications', context: context, centerTitle: true),
         body: Obx(() {
