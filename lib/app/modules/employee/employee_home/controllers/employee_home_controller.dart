@@ -1,7 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dartz/dartz.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:mh/app/modules/employee/employee_home/models/single_notification_model_for_employee.dart';
 import 'package:mh/app/modules/employee/employee_home/widgets/slide_action_widget.dart';
+import 'package:mh/app/modules/notifications/models/notification_response_model.dart';
 import '../../../../common/controller/app_controller.dart';
 import '../../../../common/controller/location_controller.dart';
 import '../../../../common/utils/exports.dart';
@@ -46,8 +49,11 @@ class EmployeeHomeController extends GetxController {
   RxInt unreadMsgFromClient = 0.obs;
   RxInt unreadMsgFromAdmin = 0.obs;
 
+  Rx<NotificationModel> singleNotification = NotificationModel().obs;
+
   @override
   void onInit() {
+    _getSingleNotification();
     _trackUnreadMsg();
     _getTodayCheckInOutDetails();
     super.onInit();
@@ -313,7 +319,7 @@ class EmployeeHomeController extends GetxController {
         mainAxisSize: MainAxisSize.min,
         children: [
           ListTile(
-            onTap: (){},
+            onTap: () {},
             leading: const Icon(CupertinoIcons.check_mark, color: Colors.grey),
             title: Text('Allow', style: MyColors.l111111_dtext(context!).regular16_5),
           ),
@@ -321,7 +327,7 @@ class EmployeeHomeController extends GetxController {
             height: 1,
           ),
           ListTile(
-            onTap: (){},
+            onTap: () {},
             leading: const Icon(CupertinoIcons.clear, color: Colors.grey),
             title: Text('Deny', style: MyColors.l111111_dtext(context!).regular16_5),
           ),
@@ -344,5 +350,19 @@ class EmployeeHomeController extends GetxController {
         ],
       ),
     ));
+  }
+
+  void _getSingleNotification() {
+    _apiHelper
+        .singleNotificationForEmployee()
+        .then((Either<CustomError, SingleNotificationModelForEmployee> responseData) {
+      responseData.fold((CustomError customError) {
+        Utils.errorDialog(context!, customError..onRetry = _getSingleNotification);
+      }, (SingleNotificationModelForEmployee response) {
+        if (response.status == "success" && response.statusCode == 200 && response.details != null) {
+          singleNotification.value = response.details!;
+        }
+      });
+    });
   }
 }

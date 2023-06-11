@@ -5,6 +5,7 @@ import 'package:dartz/dartz.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get/get_connect/http/src/request/request.dart';
+import 'package:mh/app/modules/employee/employee_home/models/single_notification_model_for_employee.dart';
 import 'package:mh/app/modules/notifications/models/notification_response_model.dart';
 import 'package:mh/app/modules/notifications/models/notification_update_request_model.dart';
 import 'package:mh/app/modules/notifications/models/notification_update_response_model.dart';
@@ -773,7 +774,6 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
 
   @override
   EitherModel<NotificationUpdateResponseModel> updateNotification(
-
       {required NotificationUpdateRequestModel notificationUpdateRequestModel}) async {
     var response = await put("notifications/update-status", jsonEncode(notificationUpdateRequestModel.toJson()));
     if (response.statusCode == null) {
@@ -790,5 +790,25 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
       response,
       NotificationUpdateResponseModel.fromJson,
     ).fold((CustomError l) => left(l), (NotificationUpdateResponseModel r) => right(r));
+  }
+
+  @override
+  EitherModel<SingleNotificationModelForEmployee> singleNotificationForEmployee() async {
+    String url = "notifications/details";
+
+    Response response = await get(url);
+    if (response.statusCode == null) {
+      response = await get(url);
+    }
+    if (response.statusCode == null) {
+      response = await get(url);
+    }
+    if (response.statusCode == null) {
+      response = await get(url);
+    }
+    return _convert<SingleNotificationModelForEmployee>(
+      response,
+      SingleNotificationModelForEmployee.fromJson,
+    ).fold((CustomError l) => left(l), (SingleNotificationModelForEmployee r) => right(r));
   }
 }

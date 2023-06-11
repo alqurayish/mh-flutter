@@ -25,7 +25,7 @@ class ClientShortlistedController extends GetxController {
         start: DateTime.now().add(const Duration(days: 1)),
         end: DateTime.now().add(const Duration(days: 1)),
       ),
-      firstDate: DateTime.now(),
+      firstDate: DateTime.now().add(const Duration(days: 1)),
       lastDate: DateTime.now().add(const Duration(days: 1000)),
       builder: (context, child) {
         return Theme(

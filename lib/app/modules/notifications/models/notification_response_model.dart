@@ -50,42 +50,43 @@ class NotificationModel {
   final String? createdBy;
   final DateTime? createdAt;
   final DateTime? updatedAt;
+  final String? hiredStatus;
 
-  NotificationModel({
-    this.id,
-    this.notificationType,
-    this.text,
-    this.employee,
-    this.client,
-    this.admin,
-    this.readStatus,
-    this.isClientHired,
-    this.active,
-    this.userId,
-    this.clientId,
-    this.restaurantName,
-    this.restaurantAddress,
-    this.createdBy,
-    this.createdAt,
-    this.updatedAt,
-  });
+  NotificationModel(
+      {this.id,
+      this.notificationType,
+      this.text,
+      this.employee,
+      this.client,
+      this.admin,
+      this.readStatus,
+      this.isClientHired,
+      this.active,
+      this.userId,
+      this.clientId,
+      this.restaurantName,
+      this.restaurantAddress,
+      this.createdBy,
+      this.createdAt,
+      this.updatedAt,
+      this.hiredStatus});
 
   factory NotificationModel.fromJson(Map<String, dynamic> json) => NotificationModel(
-        id: json["_id"],
-        notificationType: json["notificationType"],
-        text: json["text"],
-        employee: json["employee"],
-        client: json["client"],
-        admin: json["admin"],
-        readStatus: json["readStatus"],
-        isClientHired: json["isClientHired"],
-        active: json["active"],
-        userId: json["userId"],
-        clientId: json["clientId"],
-        restaurantName: json["restaurantName"],
-        restaurantAddress: json["restaurantAddress"],
-        createdBy: json["createdBy"],
-        createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
-        updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
-      );
+      id: json["_id"],
+      notificationType: json["notificationType"],
+      text: json["text"],
+      employee: json["employee"],
+      client: json["client"],
+      admin: json["admin"],
+      readStatus: json["readStatus"],
+      isClientHired: json["isClientHired"],
+      active: json["active"],
+      userId: json["userId"],
+      clientId: json["clientId"],
+      restaurantName: json["restaurantName"],
+      restaurantAddress: json["restaurantAddress"],
+      createdBy: json["createdBy"],
+      createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
+      updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
+      hiredStatus: json["hiredStatus"]);
 }

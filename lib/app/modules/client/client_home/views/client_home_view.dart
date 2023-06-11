@@ -31,11 +31,19 @@ class ClientHomeView extends GetView<ClientHomeController> {
             //     Icons.notifications_outlined,
             //   ),
             // ),
-            IconButton(
-              onPressed: () {
-                Get.toNamed(Routes.notifications);
-              },
-              icon: const Icon(CupertinoIcons.bell),
+            Badge(
+              backgroundColor: MyColors.c_111111,
+              label: Obx(() {
+                return controller.notificationList.isNotEmpty
+                    ? Text('${controller.notificationList.length}', style: const TextStyle(color: MyColors.c_FFFFFF))
+                    : const Wrap();
+              }),
+              child: IconButton(
+                onPressed: () {
+                  Get.toNamed(Routes.notifications);
+                },
+                icon: const Icon(CupertinoIcons.bell),
+              ),
             ),
             IconButton(
               onPressed: () {

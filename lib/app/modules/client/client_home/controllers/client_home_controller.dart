@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dartz/dartz.dart';
+import 'package:mh/app/modules/notifications/models/notification_response_model.dart';
 
 import '../../../../common/controller/app_controller.dart';
 import '../../../../common/utils/exports.dart';
@@ -30,8 +32,11 @@ class ClientHomeController extends GetxController {
 
   RxList<Map<String, dynamic>> employeeChatDetails = <Map<String, dynamic>>[].obs;
 
+  RxList<NotificationModel> notificationList = <NotificationModel>[].obs;
+
   @override
   void onInit() {
+    _getNotificationList();
     getClientInvoice();
     _trackUnreadMsg();
     _fetchRequestEmployees();
@@ -108,8 +113,9 @@ class ClientHomeController extends GetxController {
   int countTotalRequestedEmployees() {
     int total = 0;
 
-    for(RequestEmployee element in requestedEmployees.value.requestEmployees ?? []) {
-      total += (element.clientRequestDetails ?? []).fold(0, (previousValue, element) => previousValue + (element.numOfEmployee ?? 0));
+    for (RequestEmployee element in requestedEmployees.value.requestEmployees ?? []) {
+      total += (element.clientRequestDetails ?? [])
+          .fold(0, (previousValue, element) => previousValue + (element.numOfEmployee ?? 0));
     }
 
     return total;
@@ -118,7 +124,7 @@ class ClientHomeController extends GetxController {
   int countSuggestedEmployees() {
     int total = 0;
 
-    for(RequestEmployee element in requestedEmployees.value.requestEmployees ?? []) {
+    for (RequestEmployee element in requestedEmployees.value.requestEmployees ?? []) {
       total += (element.suggestedEmployeeDetails ?? []).length;
     }
 
@@ -129,10 +135,10 @@ class ClientHomeController extends GetxController {
     CustomDialogue.confirmation(
       context: context!,
       title: "Confirm Delete",
-      msg: "Are you sure you want to delete account? \n\n Once you delete your account you can't access and you lost all of your data",
+      msg:
+          "Are you sure you want to delete account? \n\n Once you delete your account you can't access and you lost all of your data",
       confirmButtonText: "Delete",
       onConfirm: () async {
-
         Get.back(); // hide confirmation dialog
 
         CustomLoader.show(context!);
@@ -151,17 +157,18 @@ class ClientHomeController extends GetxController {
           }, (Response deleteResponse) async {
             appController.onLogoutClick();
           });
-
         });
       },
     );
-
   }
 
   void _trackUnreadMsg() {
     // employee massage
-    FirebaseFirestore.instance.collection('employee_client_chat').where("clientId", isEqualTo: appController.user.value.userId).snapshots().listen((QuerySnapshot<Map<String, dynamic>> event) {
-
+    FirebaseFirestore.instance
+        .collection('employee_client_chat')
+        .where("clientId", isEqualTo: appController.user.value.userId)
+        .snapshots()
+        .listen((QuerySnapshot<Map<String, dynamic>> event) {
       unreadMsgFromEmployee.value = 0;
       employeeChatDetails.clear();
 
@@ -175,8 +182,12 @@ class ClientHomeController extends GetxController {
     });
 
     // admin massage
-    FirebaseFirestore.instance.collection("support_chat").doc(appController.user.value.userId).snapshots().listen((DocumentSnapshot<Map<String, dynamic>> event) {
-      if(event.exists) {
+    FirebaseFirestore.instance
+        .collection("support_chat")
+        .doc(appController.user.value.userId)
+        .snapshots()
+        .listen((DocumentSnapshot<Map<String, dynamic>> event) {
+      if (event.exists) {
         Map<String, dynamic> data = event.data()!;
         unreadMsgFromAdmin.value = data["${appController.user.value.userId}_unread"];
       }
@@ -184,24 +195,30 @@ class ClientHomeController extends GetxController {
   }
 
   Future<void> getClientInvoice() async {
-
     isLoading.value = true;
 
     await _apiHelper.getClientInvoice(appController.user.value.userId).then((response) {
       isLoading.value = false;
 
       response.fold((CustomError customError) {
-
         Utils.errorDialog(context!, customError..onRetry = getClientInvoice);
-
       }, (ClientInvoice clientInvoice) {
-
         this.clientInvoice.value = clientInvoice;
         this.clientInvoice.refresh();
-
       });
-
     });
   }
 
+  void _getNotificationList() {
+    _apiHelper.getNotifications().then((Either<CustomError, NotificationResponseModel> response) {
+      response.fold((CustomError customError) {
+        Utils.errorDialog(Get.context!, customError..onRetry = _getNotificationList);
+      }, (NotificationResponseModel responseModel) {
+        if (responseModel.status == 'success' && responseModel.statusCode == 200) {
+          notificationList.value = responseModel.notifications ?? [];
+          notificationList.where((element) => element.readStatus == true);
+        }
+      });
+    });
+  }
 }
