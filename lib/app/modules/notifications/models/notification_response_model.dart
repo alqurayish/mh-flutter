@@ -50,6 +50,10 @@ class NotificationModel {
   final String? createdBy;
   final DateTime? createdAt;
   final DateTime? updatedAt;
+  final DateTime? fromDate;
+  final DateTime? toDate;
+  final String? fromTime;
+  final String? toTime;
   final String? hiredStatus;
 
   NotificationModel(
@@ -66,6 +70,10 @@ class NotificationModel {
       this.clientId,
       this.restaurantName,
       this.restaurantAddress,
+      this.fromDate,
+      this.toDate,
+      this.fromTime,
+      this.toTime,
       this.createdBy,
       this.createdAt,
       this.updatedAt,
@@ -88,5 +96,9 @@ class NotificationModel {
       createdBy: json["createdBy"],
       createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
       updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
+      fromDate: json["fromDate"] == null ? null : DateTime.parse(json["fromDate"]),
+      toDate: json["toDate"] == null ? null : DateTime.parse(json["toDate"]),
+      fromTime: json["fromTime"],
+      toTime: json["toTime"],
       hiredStatus: json["hiredStatus"]);
 }

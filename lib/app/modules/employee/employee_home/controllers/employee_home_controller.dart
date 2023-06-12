@@ -2,8 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:intl/intl.dart';
 import 'package:mh/app/modules/employee/employee_home/models/single_notification_model_for_employee.dart';
 import 'package:mh/app/modules/employee/employee_home/widgets/slide_action_widget.dart';
+import 'package:mh/app/modules/notifications/controllers/notifications_controller.dart';
 import 'package:mh/app/modules/notifications/models/notification_response_model.dart';
 import 'package:mh/app/modules/notifications/models/notification_update_request_model.dart';
 import 'package:mh/app/modules/notifications/models/notification_update_response_model.dart';
@@ -23,6 +25,7 @@ import '../../../../routes/app_pages.dart';
 import '../models/today_check_in_out_details.dart';
 
 class EmployeeHomeController extends GetxController {
+  final NotificationsController notificationsController = Get.find<NotificationsController>();
   BuildContext? context;
 
   final AppController appController = Get.find();
@@ -60,6 +63,7 @@ class EmployeeHomeController extends GetxController {
     _getSingleNotification();
     _trackUnreadMsg();
     _getTodayCheckInOutDetails();
+    notificationsController.getNotificationList;
     super.onInit();
   }
 
@@ -399,4 +403,19 @@ class EmployeeHomeController extends GetxController {
       });
     });
   }
+
+ /* String timeConverter({required String time}) {
+
+    String formattedTime;
+    List<String> timeParts = time.split(":");
+    int hours = int.parse(timeParts[0]);
+    int minutes = int.parse(timeParts[1]);
+
+    // Create a DateTime object with the parsed values
+    DateTime dateTime = DateTime(0, 1, 1, hours, minutes);
+    formattedTime = DateFormat.jm().format(dateTime);
+    print('EmployeeHomeController.timeConverter: $formattedTime');
+    // Format the DateTime object to display the actual time
+    return formattedTime;
+  }*/
 }

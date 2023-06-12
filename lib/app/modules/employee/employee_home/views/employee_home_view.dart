@@ -15,6 +15,7 @@ class EmployeeHomeView extends GetView<EmployeeHomeController> {
 
   @override
   Widget build(BuildContext context) {
+
     controller.context = context;
 
     return WillPopScope(
@@ -32,12 +33,28 @@ class EmployeeHomeView extends GetView<EmployeeHomeController> {
             //     Icons.notifications_outlined,
             //   ),
             // ),
-            IconButton(
-              onPressed: () {
-                Get.toNamed(Routes.notifications);
-              },
-              icon: const Icon(CupertinoIcons.bell),
-            ),
+            Obx(() => controller.notificationsController.unreadCount.value == 0
+                ? IconButton(
+                    onPressed: () {
+                      Get.toNamed(Routes.notifications);
+                    },
+                    icon: const Icon(CupertinoIcons.bell))
+                : InkWell(
+                    onTap: () {
+                      Get.toNamed(Routes.notifications);
+                    },
+                    child: Padding(
+                      padding: EdgeInsets.only(top: 15.h, right: 15.w),
+                      child: Badge(
+                        backgroundColor: MyColors.c_C6A34F,
+                        label: Obx(() {
+                          return Text(controller.notificationsController.unreadCount.toString(),
+                              style: const TextStyle(color: MyColors.c_FFFFFF));
+                        }),
+                        child: const Icon(CupertinoIcons.bell),
+                      ),
+                    ),
+                  )),
             IconButton(
               onPressed: () {
                 CustomMenu.accountMenu(

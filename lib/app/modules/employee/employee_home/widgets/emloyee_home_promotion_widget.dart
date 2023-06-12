@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:mh/app/common/extensions/extensions.dart';
 import 'package:mh/app/common/values/my_color.dart';
 import 'package:mh/app/common/values/my_strings.dart';
@@ -16,7 +17,8 @@ class EmployeeHomePromotionWidget extends GetWidget<EmployeeHomeController> {
       if (controller.singleNotificationDataLoading.value == true) {
         return const Center(child: CupertinoActivityIndicator());
       } else {
-        if (controller.showNormalText.value == true) {
+        if (controller.showNormalText.value == true ||
+            controller.singleNotification.value.hiredStatus?.toUpperCase() == 'DENY') {
           return Text(MyStrings.exploreTheFeaturesOfMhAppBelow.tr,
               style: MyColors.l777777_dtext(controller.context!).medium15);
         } else {
@@ -28,17 +30,16 @@ class EmployeeHomePromotionWidget extends GetWidget<EmployeeHomeController> {
                 borderRadius: BorderRadius.circular(10.0),
                 color: Colors.purple.withOpacity(.6),
               ),
-              child: controller.singleNotification.value.hiredStatus != null
+              child: controller.singleNotification.value.hiredStatus != null &&
+                      controller.singleNotification.value.hiredStatus?.toUpperCase() == 'ALLOW'
                   ? Text(
-                      "${controller.singleNotification.value.text}",
+                      "You are hired from ${DateFormat.yMMMMd().format(controller.singleNotification.value.fromDate!)}, ${timeConverter(time: controller.singleNotification.value.fromTime.toString()).format(context)} to ${DateFormat.yMMMMd().format(controller.singleNotification.value.toDate!)}, ${timeConverter(time: controller.singleNotification.value.toTime.toString()).format(context)}",
                       style: MyColors.white.semiBold16)
                   : Row(
                       children: [
                         Expanded(
                           flex: 3,
-                          child: Text(
-                              "${controller.singleNotification.value.text}",
-                              style: MyColors.white.semiBold16),
+                          child: Text("${controller.singleNotification.value.text}", style: MyColors.white.semiBold16),
                         ),
                         SizedBox(
                           width: 10.w,
@@ -64,5 +65,14 @@ class EmployeeHomePromotionWidget extends GetWidget<EmployeeHomeController> {
         }
       }
     });
+  }
+
+  TimeOfDay timeConverter({required String time}) {
+    TimeOfDay timeOfDay;
+    List<String> timeParts = time.split(":");
+    int hour = int.parse(timeParts[0]);
+    int minute = int.parse(timeParts[1]);
+    timeOfDay = TimeOfDay(hour: hour, minute: minute);
+    return timeOfDay;
   }
 }

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:mh/app/modules/notifications/controllers/notifications_controller.dart';
 import '../../../../common/controller/app_controller.dart';
 import '../../../../common/utils/exports.dart';
 import '../../../../common/widgets/client_help_option.dart';
@@ -12,6 +13,7 @@ import '../../client_payment_and_invoice/model/client_invoice.dart';
 import '../../common/shortlist_controller.dart';
 
 class ClientHomeController extends GetxController {
+  final NotificationsController notificationsController = Get.find<NotificationsController>();
   BuildContext? context;
 
   final AppController appController = Get.find();
@@ -34,6 +36,7 @@ class ClientHomeController extends GetxController {
     getClientInvoice();
     _trackUnreadMsg();
     _fetchRequestEmployees();
+    notificationsController.getNotificationList();
     super.onInit();
   }
 

@@ -152,9 +152,15 @@ class LoginView extends GetView<LoginController> {
             Checkbox(
                 activeColor: MyColors.c_C6A34F,
                 checkColor: MyColors.c_FFFFFF,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(2.0),
+                ),
+                side: MaterialStateBorderSide.resolveWith(
+                      (states) => const BorderSide(width: 2.0, color: MyColors.c_C6A34F),
+                ),
                 value: controller.rememberMe.value,
                 onChanged: controller.onRememberMePressed),
-            const Text(MyStrings.rememberMeText, style: TextStyle(fontWeight: FontWeight.bold)),
+             Text(MyStrings.rememberMeText, style: MyColors.l111111_dwhite(controller.context!).semiBold15),
           ],
         ),
       ));

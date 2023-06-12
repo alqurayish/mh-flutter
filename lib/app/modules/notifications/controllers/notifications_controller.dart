@@ -15,19 +15,22 @@ class NotificationsController extends GetxController {
   RxList<NotificationModel> notificationList = <NotificationModel>[].obs;
   BuildContext? context;
 
+  RxInt unreadCount = 0.obs;
+
   @override
   void onInit() {
-    _getNotificationList();
+    getNotificationList();
     super.onInit();
   }
 
-  void _getNotificationList() {
+  void getNotificationList() {
     _apiHelper.getNotifications().then((Either<CustomError, NotificationResponseModel> response) {
       response.fold((CustomError customError) {
-        Utils.errorDialog(Get.context!, customError..onRetry = _getNotificationList);
+        Utils.errorDialog(Get.context!, customError..onRetry = getNotificationList);
       }, (NotificationResponseModel responseModel) {
         if (responseModel.status == 'success' && responseModel.statusCode == 200) {
           notificationList.value = responseModel.notifications ?? [];
+          _countUnread();
           notificationDataLoaded.value = true;
         }
       });
@@ -46,11 +49,19 @@ class NotificationsController extends GetxController {
       response.fold((CustomError customError) {
         Utils.errorDialog(context!, customError);
       }, (NotificationUpdateResponseModel responseModel) {
-        print('NotificationsController.updateNotification: ${responseModel.status == 'success' && responseModel.statusCode == 200}');
         if (responseModel.status == 'success' && responseModel.statusCode == 200) {
-          _getNotificationList();
+          getNotificationList();
         }
       });
     });
+  }
+
+  void _countUnread() {
+    unreadCount.value = 0;
+    for (var i in notificationList) {
+      if (i.readStatus == false) {
+        unreadCount.value += 1;
+      }
+    }
   }
 }

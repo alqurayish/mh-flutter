@@ -21,7 +21,7 @@ dependencies:
   cached_network_image: ^3.2.3
 
   # image picker form local
-  image_picker: ^0.8.7+5
+  image_picker: ^0.8.8
   image_cropper: ^4.0.1
 
   file_picker: ^5.3.2
@@ -30,7 +30,7 @@ dependencies:
   permission_handler: any
 
   # for network (specially for upload file)
-  dio: ^5.2.0
+  dio: ^5.2.1
   http_parser: ^4.0.2
 
   # check ui in different device
