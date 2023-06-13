@@ -8,10 +8,6 @@ abstract class Routes {
   static const loginRegisterHints = _Paths.loginRegisterHints;
   static const login = _Paths.login;
   static const register = _Paths.register;
-  static const registerEmployeeStep2 = _Paths.registerEmployeeStep2;
-  static const registerEmployeeStep3 = _Paths.registerEmployeeStep3;
-  static const registerEmployeeStep4 = _Paths.registerEmployeeStep4;
-  static const registerLastStep = _Paths.registerLastStep;
 
   static const adminHome = _Paths.adminHome;
   static const adminAllClients = _Paths.adminAllClients;
@@ -59,10 +55,6 @@ abstract class _Paths {
   static const loginRegisterHints = '/login-register-hints';
   static const login = '/login';
   static const register = '/register';
-  static const registerEmployeeStep2 = '/register-employee-step-2';
-  static const registerEmployeeStep3 = '/register-employee-step-3';
-  static const registerEmployeeStep4 = '/register-employee-step-4';
-  static const registerLastStep = '/register-last-step';
 
   static const adminHome = '/admin-home';
   static const adminAllClients = '/admin-all-clients';

@@ -2,27 +2,12 @@ import 'dart:isolate';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:http_parser/http_parser.dart';
 import 'package:mh/app/repository/server_urls.dart';
 
 import '../common/controller/app_error_controller.dart';
 
 class ApiHelperImplementWithFileUpload {
-
-  static void uploadProfileImageAndCv(Map<String, dynamic> data) async {
-    SendPort responseSendPort = data["responseReceivePort"];
-
-    Response? result = await _uploadData("${ServerUrls.serverUrlUser}users/profile-picture/upload", data);
-
-    responseSendPort.send({"data" : result?.data});
-  }
-
-  static void uploadCertificates(Map<String, dynamic> data) async {
-    SendPort responseSendPort = data["responseReceivePort"];
-
-    Response? result = await _uploadData("${ServerUrls.serverUrlUser}users/certificate/upload", data);
-
-    responseSendPort.send({"data" : result?.data});
-  }
 
   static void employeeRegister(Map<String, dynamic> data) async {
     SendPort responseSendPort = data["responseReceivePort"];
@@ -36,42 +21,36 @@ class ApiHelperImplementWithFileUpload {
     responseSendPort.send({"data" : result?.data});
   }
 
-  // static void uploadAccessoriesMoreImage(Map<String, dynamic> data) async {
-  //   SendPort responseSendPort = data["responseReceivePort"];
-  //
-  //   Response? result = await _uploadData("${ServerUrls.serverUrlUser}accessories/update-price-info", data);
-  //
-  //   responseSendPort.send({"data" : result?.data});
-  // }
-
-  // static void createOrUpdateAccessories(Map<String, dynamic> data) async {
-  //   SendPort responseSendPort = data["responseReceivePort"];
-  //
-  //   bool isCreateMethod = data["isCreate"];
-  //
-  //   Response? result = await _uploadData(
-  //     "${ServerUrls.serverUrlProduct}accessories/${isCreateMethod ? "create" : "update-basic"}",
-  //     data,
-  //     postMethod: isCreateMethod,
-  //   );
-  //
-  //   responseSendPort.send({"data" : result?.data});
-  // }
-
-  // static void uploadPaymentFile(Map<String, dynamic> data) async {
-  //   SendPort responseSendPort = data["responseReceivePort"];
-  //
-  //   Response? result = await _uploadData("${ServerUrls.serverUrlOrder}orders/update-payment-file/add-info", data);
-  //
-  //   responseSendPort.send([200].contains(result?.statusCode));
-  // }
-
   /// [List] has two data => [Response, isSuccess]
   static Future<Response?> _uploadData(String url, Map<String, dynamic> data, {bool postMethod = false}) async {
-    FormData formData = data["formData"];
+
     String token = data["token"];
     SendPort percentSendPort = data["percentReceivePort"];
     percentSendPort.send(0);
+
+    FormData formData = FormData.fromMap(data["basicData"]);
+
+    if(url.split("/").last == "users/employee-register") {
+      if(data["profileImage"] != null) {
+        formData.files.add(MapEntry(
+            "profilePicture",
+            await MultipartFile.fromFile(
+              data["profileImage"],
+              filename: data["profileImage"].last.path.split("/").last,
+              contentType: MediaType("image", "jpeg"),
+            )));
+      }
+
+      if(data["cv"].isNotEmpty) {
+        formData.files.add(MapEntry(
+            "cv",
+            await MultipartFile.fromFile(
+              data["cv"].last.path,
+              filename: data["cv"].last.path.split("/").last,
+              contentType: MediaType("application", "pdf"),
+            )));
+      }
+    }
 
     Response? response;
 

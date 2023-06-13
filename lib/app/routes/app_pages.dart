@@ -20,14 +20,6 @@ import '../modules/auth/login/views/login_view.dart';
 import '../modules/auth/login_register_hints/bindings/login_register_hints_binding.dart';
 import '../modules/auth/login_register_hints/views/login_register_hints_view.dart';
 import '../modules/auth/register/bindings/register_binding.dart';
-import '../modules/auth/register/steps/register_employee_step_2/bindings/register_employee_step_2_binding.dart';
-import '../modules/auth/register/steps/register_employee_step_2/views/register_employee_step_2_view.dart';
-import '../modules/auth/register/steps/register_employee_step_3/bindings/register_employee_step_3_binding.dart';
-import '../modules/auth/register/steps/register_employee_step_3/views/register_employee_step_3_view.dart';
-import '../modules/auth/register/steps/register_employee_step_4/bindings/register_employee_step_4_binding.dart';
-import '../modules/auth/register/steps/register_employee_step_4/views/register_employee_step_4_view.dart';
-import '../modules/auth/register/steps/register_last_step/bindings/register_last_step_binding.dart';
-import '../modules/auth/register/steps/register_last_step/views/register_last_step_view.dart';
 import '../modules/auth/register/views/register_view.dart';
 import '../modules/chat/client_employee_chat/bindings/client_employee_chat_binding.dart';
 import '../modules/chat/client_employee_chat/views/client_employee_chat_view.dart';
@@ -109,26 +101,6 @@ class AppPages {
       name: _Paths.register,
       page: () => const RegisterView(),
       binding: RegisterBinding(),
-    ),
-    GetPage(
-      name: _Paths.registerEmployeeStep2,
-      page: () => const RegisterEmployeeStep2View(),
-      binding: RegisterEmployeeStep2Binding(),
-    ),
-    GetPage(
-      name: _Paths.registerEmployeeStep3,
-      page: () => const RegisterEmployeeStep3View(),
-      binding: RegisterEmployeeStep3Binding(),
-    ),
-    GetPage(
-      name: _Paths.registerEmployeeStep4,
-      page: () => const RegisterEmployeeStep4View(),
-      binding: RegisterEmployeeStep4Binding(),
-    ),
-    GetPage(
-      name: _Paths.registerLastStep,
-      page: () => const RegisterLastStepView(),
-      binding: RegisterLastStepBinding(),
     ),
     GetPage(
       name: _Paths.adminHome,

@@ -280,8 +280,6 @@ class RegisterController extends GetxController implements RegisterInterface {
       positionId: Utils.getPositionId(selectedPosition.value.trim()),
     );
 
-    dio.FormData formData = dio.FormData.fromMap(employeeRegistration.toJson);
-
     // update dialogue text
 
     if(cv.isNotEmpty) {
@@ -292,26 +290,6 @@ class RegisterController extends GetxController implements RegisterInterface {
     }
     if(cv.isNotEmpty && profileImage.isNotEmpty) {
       uploadTitle.value = "Uploading CV and profile image...";
-    }
-
-    if(profileImage.isNotEmpty) {
-      formData.files.add(MapEntry(
-          "profilePicture",
-          await dio.MultipartFile.fromFile(
-            profileImage.last.path,
-            filename: profileImage.last.path.split("/").last,
-            contentType: MediaType("image", "jpeg"),
-          )));
-    }
-
-    if(cv.isNotEmpty) {
-      formData.files.add(MapEntry(
-          "cv",
-          await dio.MultipartFile.fromFile(
-            cv.last.path,
-            filename: cv.last.path.split("/").last,
-            contentType: MediaType("application", "pdf"),
-          )));
     }
 
 
@@ -343,7 +321,9 @@ class RegisterController extends GetxController implements RegisterInterface {
     });
 
     Map<String, dynamic> data = {
-      "formData": formData,
+      "basicData" : employeeRegistration.toJson,
+      "profilePicture": profileImage.isEmpty ? null : profileImage.last.path,
+      "cv": cv.isEmpty ? null : cv.last.path,
       "responseReceivePort": responseReceivePort.sendPort,
       "percentReceivePort": percentReceivePort.sendPort,
       "token": "",
