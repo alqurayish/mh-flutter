@@ -63,7 +63,7 @@ class Employee {
   final String? emmergencyContact;
   final String? countryName;
   final String? sourceFrom;
-  final int? employeeExperience;
+  final String? employeeExperience;
   final int? rating;
   final int? totalWorkingHour;
   final bool? isReferPerson;
@@ -106,7 +106,7 @@ class Employee {
     emmergencyContact: json["emmergencyContact"],
     countryName: json["countryName"],
     sourceFrom: json["sourceFrom"],
-    employeeExperience: json["employeeExperience"],
+    employeeExperience: json["employeeExperience"].toString(),
     rating: json["rating"],
     totalWorkingHour: json["totalWorkingHour"],
     isReferPerson: json["isReferPerson"],

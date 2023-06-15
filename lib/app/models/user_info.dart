@@ -70,7 +70,7 @@ class Details {
   double? hourlyRate;
   int? clientDiscount;
   PushNotificationDetails? pushNotificationDetails;
-  List<String>? skills;
+ // List<String>? skills;
   int? contractorHourlyRate;
   List<String>? menuPermission;
 
@@ -116,7 +116,7 @@ class Details {
         this.hourlyRate,
         this.clientDiscount,
         this.pushNotificationDetails,
-        this.skills,
+       // this.skills,
         this.contractorHourlyRate,
         this.menuPermission});
 
@@ -174,12 +174,12 @@ class Details {
     pushNotificationDetails = json['pushNotificationDetails'] != null
         ? PushNotificationDetails.fromJson(json['pushNotificationDetails'])
         : null;
-    if (json['skills'] != null) {
+   /* if (json['skills'] != null) {
       skills = <String>[];
       json['skills'].forEach((v) {
         skills!.add(v);
       });
-    }
+    }*/
     contractorHourlyRate = json['contractorHourlyRate'];
     if (json['menuPermission'] != null) {
       menuPermission = <String>[];
@@ -238,9 +238,9 @@ class Details {
     if (pushNotificationDetails != null) {
       data['pushNotificationDetails'] = pushNotificationDetails!.toJson();
     }
-    if (skills != null) {
+   /* if (skills != null) {
       data['skills'] = skills!.map((v) => v).toList();
-    }
+    }*/
     data['contractorHourlyRate'] = contractorHourlyRate;
     if (menuPermission != null) {
       data['menuPermission'] =

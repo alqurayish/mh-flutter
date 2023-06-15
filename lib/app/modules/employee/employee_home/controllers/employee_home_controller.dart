@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:intl/intl.dart';
 import 'package:mh/app/modules/employee/employee_home/models/single_notification_model_for_employee.dart';
 import 'package:mh/app/modules/employee/employee_home/widgets/slide_action_widget.dart';
 import 'package:mh/app/modules/notifications/controllers/notifications_controller.dart';
@@ -211,6 +210,9 @@ class EmployeeHomeController extends GetxController {
     showSlider.value = false;
 
     _getTodayCheckInOutDetails();
+    _getSingleNotification();
+    _trackUnreadMsg();
+    notificationsController.getNotificationList;
   }
 
   Future<void> _getTodayCheckInOutDetails() async {
@@ -399,12 +401,13 @@ class EmployeeHomeController extends GetxController {
       }, (NotificationUpdateResponseModel responseModel) {
         if (responseModel.status == 'success' && responseModel.statusCode == 200) {
           _getSingleNotification();
+          _getTodayCheckInOutDetails();
         }
       });
     });
   }
 
- /* String timeConverter({required String time}) {
+  /* String timeConverter({required String time}) {
 
     String formattedTime;
     List<String> timeParts = time.split(":");

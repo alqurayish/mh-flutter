@@ -15,7 +15,6 @@ class EmployeeHomeView extends GetView<EmployeeHomeController> {
 
   @override
   Widget build(BuildContext context) {
-
     controller.context = context;
 
     return WillPopScope(
@@ -187,9 +186,10 @@ class EmployeeHomeView extends GetView<EmployeeHomeController> {
                                           : controller.errorMsg.value.isNotEmpty
                                               ? _errorMsg
                                               : _checkInCheckout
-                                      : _massage(
-                                          "you hired from ${controller.appController.user.value.employee?.hiredFromDate.toString().split(" ").first} to ${controller.appController.user.value.employee?.hiredToDate.toString().split(" ").first}")
-                                  : _massage("You are not hired yet"),
+                                      : const Wrap()
+                                  /*_massage(
+                                          "you hired from ${controller.appController.user.value.employee?.hiredFromDate.toString().split(" ").first} to ${controller.appController.user.value.employee?.hiredToDate.toString().split(" ").first}")*/
+                                  : _massage("You have not been hired yet"),
                     ),
                     SizedBox(height: 30.h),
                   ],

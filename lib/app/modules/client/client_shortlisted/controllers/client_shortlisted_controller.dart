@@ -10,9 +10,17 @@ import '../models/shortlisted_employees.dart';
 class ClientShortlistedController extends GetxController {
   BuildContext? context;
 
+  double hourlyRate = 0.0;
+
   final ApiHelper _apiHelper = Get.find();
 
   final ShortlistController shortlistController = Get.find();
+
+  @override
+  void onInit() {
+    hourlyRate = Get.arguments ?? 0.0;
+    super.onInit();
+  }
 
   void onSelectClick(ShortList shortList) {
     shortlistController.onSelectClick(shortList);
@@ -93,5 +101,13 @@ class ClientShortlistedController extends GetxController {
         description: "Please select the date and time range for when you want to hire an employee",
       );
     }
+  }
+  TimeOfDay timeConverter({required String time}) {
+    TimeOfDay timeOfDay;
+    List<String> timeParts = time.split(":");
+    int hour = int.parse(timeParts[0]);
+    int minute = int.parse(timeParts[1]);
+    timeOfDay = TimeOfDay(hour: hour, minute: minute);
+    return timeOfDay;
   }
 }

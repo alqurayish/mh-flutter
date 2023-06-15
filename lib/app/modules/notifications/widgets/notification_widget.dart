@@ -12,15 +12,17 @@ class NotificationWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Get.find<NotificationsController>()
-            .updateNotification(id: notification.id ?? '', readStatus: true);
+        Get.find<NotificationsController>().updateNotification(id: notification.id ?? '', readStatus: true);
       },
       child: Padding(
         padding: const EdgeInsets.only(top: 15.0),
         child: ListTile(
           title: Text(
             '${notification.text}',
-            style: TextStyle(color: notification.readStatus == true ? MyColors.c_7B7B7B : MyColors.c_111111, fontSize: 14),
+            style: TextStyle(
+                fontWeight: notification.readStatus == false ? FontWeight.bold : FontWeight.normal,
+                color: notification.readStatus == true ? MyColors.c_7B7B7B : MyColors.l111111_dwhite(context),
+                fontSize: 14),
           ),
           leading: const CircleAvatar(
             radius: 15,
@@ -31,7 +33,7 @@ class NotificationWidget extends StatelessWidget {
             padding: const EdgeInsets.only(top: 5),
             child: Text(
                 '${DateFormat.yMMMMd().format(notification.createdAt!)}, ${DateFormat.jm().format(notification.createdAt!)}',
-                style: const TextStyle(fontStyle: FontStyle.italic)),
+                style: TextStyle(fontStyle: FontStyle.italic, color: MyColors.l111111_dwhite(context))),
           ),
         ),
       ),
