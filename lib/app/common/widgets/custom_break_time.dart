@@ -91,7 +91,7 @@ class  CustomBreakTime {
                             diameterRatio: 1.2,
                             physics: const FixedExtentScrollPhysics(),
                             onSelectedItemChanged: (int value) {
-                              min = value;
+                              min = value * 5;
                             },
                             childDelegate: ListWheelChildBuilderDelegate(
                                 childCount: 12,

@@ -250,18 +250,27 @@ class ClientDashboardView extends GetView<ClientDashboardController> {
   Widget _action(int index) => controller.getComment(index).isEmpty
       ? GestureDetector(
           onTap: () {
-            controller.setUpdatedDate(index);
+            if(controller.clientCommentEnable(index)) {
+              controller.setUpdatedDate(index);
 
-            showMaterialModalBottomSheet(
-              context: controller.context!,
-              builder: (context) => Container(
-                // padding: EdgeInsets.only(
-                //   bottom: MediaQuery.of(context).viewInsets.bottom,
-                // ),
-                color: MyColors.lightCard(context),
-                child: BottomA(_updateOption(index)),
-              ),
-            );
+              showMaterialModalBottomSheet(
+                context: controller.context!,
+                builder: (context) =>
+                    Container(
+                      // padding: EdgeInsets.only(
+                      //   bottom: MediaQuery.of(context).viewInsets.bottom,
+                      // ),
+                      color: MyColors.lightCard(context),
+                      child: BottomA(_updateOption(index)),
+                    ),
+              );
+            } else {
+              CustomDialogue.information(
+                context: controller.context!,
+                title: "Report",
+                description: "You can't report now. \n\n You have to report within 12 hours after checkout",
+              );
+            }
           },
           child: const Icon(
             Icons.check_circle,
@@ -288,7 +297,7 @@ class ClientDashboardView extends GetView<ClientDashboardController> {
             } else {
               CustomDialogue.information(
                 context: controller.context!,
-                title: "Restaurant Report on You",
+                title: "Report",
                 description: controller.getComment(index),
               );
             }

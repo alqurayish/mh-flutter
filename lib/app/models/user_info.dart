@@ -54,8 +54,10 @@ class Details {
   bool? isReferPerson;
   bool? isMhEmployee;
   bool? isHired;
-  String? hiredFromDate;
-  String? hiredToDate;
+  DateTime? hiredFromDate;
+  DateTime? hiredToDate;
+  String? hiredFromTime;
+  String? hiredToTime;
   String? hiredBy;
   String? hiredByLat;
   String? hiredByLong;
@@ -102,6 +104,8 @@ class Details {
         this.isHired,
         this.hiredFromDate,
         this.hiredToDate,
+        this.hiredFromTime,
+        this.hiredToTime,
         this.hiredBy,
         this.hiredByLat,
         this.hiredByLong,
@@ -156,8 +160,10 @@ class Details {
     isReferPerson = json['isReferPerson'];
     isMhEmployee = json['isMhEmployee'];
     isHired = json['isHired'];
-    hiredFromDate = json['hiredFromDate'];
-    hiredToDate = json['hiredToDate'];
+    hiredFromDate = json["hiredFromDate"] == null ? null : DateTime.parse(json["hiredFromDate"]);
+    hiredToDate = json["hiredToDate"] == null ? null : DateTime.parse(json["hiredToDate"]);
+    hiredFromTime = json['hiredFromTime'];
+    hiredToTime = json['hiredToTime'];
     hiredBy = json['hiredBy'];
     hiredByLat = json['hiredByLat'];
     hiredByLong = json['hiredByLong'];
@@ -220,8 +226,10 @@ class Details {
     data['isReferPerson'] = isReferPerson;
     data['isMhEmployee'] = isMhEmployee;
     data['isHired'] = isHired;
-    data['hiredFromDate'] = hiredFromDate;
-    data['hiredToDate'] = hiredToDate;
+    data['hiredFromDate'] = hiredFromDate?.toIso8601String();
+    data['hiredToDate'] = hiredToDate?.toIso8601String();
+    data['hiredFromTime'] = hiredFromTime;
+    data['hiredToTime'] = hiredToTime;
     data['hiredBy'] = hiredBy;
     data['hiredByLat'] = hiredByLat;
     data['hiredByLong'] = hiredByLong;

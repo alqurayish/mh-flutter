@@ -35,7 +35,7 @@ class ClientHomeController extends GetxController {
   void onInit() {
     getClientInvoice();
     _trackUnreadMsg();
-    _fetchRequestEmployees();
+    fetchRequestEmployees();
     notificationsController.getNotificationList();
     super.onInit();
   }
@@ -96,7 +96,7 @@ class ClientHomeController extends GetxController {
     Get.toNamed(Routes.clientSuggestedEmployees);
   }
 
-  void _fetchRequestEmployees() {
+  void fetchRequestEmployees() {
     _apiHelper.getRequestedEmployees(clientId: appController.user.value.userId).then((response) {
       response.fold((CustomError customError) {
         Utils.errorDialog(context!, customError..onRetry = onAccountDeleteClick);

@@ -83,11 +83,17 @@ class ClientDashboardController extends GetxController {
 
     if(element != null) {
       // checkout is 24h ago
-      if ((element.checkInCheckOutDetails?.checkOutTime != null) && DateTime.now().difference(element.checkInCheckOutDetails!.checkOutTime!.toLocal()).inHours > 24) {
+      if ((element.checkInCheckOutDetails?.checkOutTime != null) && DateTime.now().difference(element.checkInCheckOutDetails!.checkOutTime!.toLocal()).inHours > 12) {
+        return false;
+      }
+      else if ((element.checkInCheckOutDetails?.clientCheckOutTime != null) && DateTime.now().difference(element.checkInCheckOutDetails!.clientCheckOutTime!.toLocal()).inHours > 12) {
         return false;
       }
       // check in 24h ago (forgot checkout)
-      else if ((element.checkInCheckOutDetails?.checkInTime != null) && DateTime.now().difference(element.checkInCheckOutDetails!.checkInTime!.toLocal()).inHours > 24) {
+      else if ((element.checkInCheckOutDetails?.checkInTime != null) && DateTime.now().difference(element.checkInCheckOutDetails!.checkInTime!.toLocal()).inHours > 12) {
+        return false;
+      }
+      else if ((element.checkInCheckOutDetails?.clientCheckInTime != null) && DateTime.now().difference(element.checkInCheckOutDetails!.clientCheckInTime!.toLocal()).inHours > 12) {
         return false;
       }
     }

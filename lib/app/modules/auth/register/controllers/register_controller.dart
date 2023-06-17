@@ -288,39 +288,18 @@ class RegisterController extends GetxController implements RegisterInterface {
       positionId: Utils.getPositionId(selectedPosition.value.trim()),
     );
 
-    dio.FormData formData = dio.FormData.fromMap(employeeRegistration.toJson);
-
     // update dialogue text
 
-    if (cv.isNotEmpty) {
+    if(cv.isNotEmpty) {
       uploadTitle.value = "Uploading CV...";
     }
-    if (profileImage.isNotEmpty) {
+    if(profileImage.isNotEmpty) {
       uploadTitle.value = "Uploading profile image...";
     }
-    if (cv.isNotEmpty && profileImage.isNotEmpty) {
+    if(cv.isNotEmpty && profileImage.isNotEmpty) {
       uploadTitle.value = "Uploading CV and profile image...";
     }
 
-    if (profileImage.isNotEmpty) {
-      formData.files.add(MapEntry(
-          "profilePicture",
-          await dio.MultipartFile.fromFile(
-            profileImage.last.path,
-            filename: profileImage.last.path.split("/").last,
-            contentType: MediaType("image", "jpeg"),
-          )));
-    }
-
-    if (cv.isNotEmpty) {
-      formData.files.add(MapEntry(
-          "cv",
-          await dio.MultipartFile.fromFile(
-            cv.last.path,
-            filename: cv.last.path.split("/").last,
-            contentType: MediaType("application", "pdf"),
-          )));
-    }
 
     // show dialog
     _showPercentIsolate();
@@ -338,8 +317,7 @@ class RegisterController extends GetxController implements RegisterInterface {
         if ([200, 201].contains(response["data"]["statusCode"])) {
           await appController.afterSuccessRegister("");
         } else {
-          _errorDialog("Something wrong",
-              response["data"]["message"] ?? "Failed to register. Please check you data and try again");
+          _errorDialog("Something wrong", response["data"]["message"] ?? "Failed to register. Please check you data and try again");
         }
       } else {
         _errorDialog("Server Error", "Failed to register. Please try again");
@@ -351,7 +329,9 @@ class RegisterController extends GetxController implements RegisterInterface {
     });
 
     Map<String, dynamic> data = {
-      "formData": formData,
+      "basicData" : employeeRegistration.toJson,
+      "profilePicture": profileImage.isEmpty ? null : profileImage.last.path,
+      "cv": cv.isEmpty ? null : cv.last.path,
       "responseReceivePort": responseReceivePort.sendPort,
       "percentReceivePort": percentReceivePort.sendPort,
       "token": "",

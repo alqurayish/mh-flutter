@@ -11,7 +11,7 @@ import '../../../../common/widgets/custom_menu.dart';
 import '../controllers/employee_home_controller.dart';
 
 class EmployeeHomeView extends GetView<EmployeeHomeController> {
-  const EmployeeHomeView({Key? key}) : super(key: key);
+   const EmployeeHomeView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -207,6 +207,7 @@ class EmployeeHomeView extends GetView<EmployeeHomeController> {
         style: MyColors.l111111_dwhite(controller.context!).semiBold20,
       );
 
+/*<<<<<<< HEAD
   Widget get _promotionText => Obx(() => controller.appController.user.value.employee?.isHired ?? false
       ? InkWell(
           onTap: controller.onHiredYouTap,
@@ -246,6 +247,53 @@ class EmployeeHomeView extends GetView<EmployeeHomeController> {
           ),
         )
       : Text(MyStrings.exploreTheFeaturesOfMhAppBelow.tr, style: MyColors.l777777_dtext(controller.context!).medium15));
+=======
+  Widget get _promotionText => Obx(() => (controller.appController.user.value.employee?.isHired ?? false) ?
+      Text.rich(
+    TextSpan(
+        text: (controller.appController.user.value.employee?.hiredByRestaurantName ?? "").toUpperCase(),
+        style: MyColors.c_C6A34F.semiBold16,
+        children: [
+          TextSpan(
+            text: " booked  you from ",
+            style: MyColors.l111111_dffffff(controller.context!).regular16,
+          ),
+          TextSpan(
+            text: controller.appController.user.value.employee?.hiredFromDate.toString().split(" ").first,
+            style: MyColors.l111111_dffffff(controller.context!).semiBold16,
+          ),
+          TextSpan(
+            text: " to ",
+            style: MyColors.l111111_dffffff(controller.context!).regular16,
+          ),
+          TextSpan(
+            text: controller.appController.user.value.employee?.hiredToDate.toString().split(" ").first,
+            style: MyColors.l111111_dffffff(controller.context!).semiBold16,
+          ),
+          TextSpan(
+            text: ". Everyday at ",
+            style: MyColors.l111111_dffffff(controller.context!).regular16,
+          ),
+          TextSpan(
+            text: controller.appController.user.value.employee?.hiredFromTime,
+            style: MyColors.l111111_dffffff(controller.context!).semiBold16,
+          ),
+          TextSpan(
+            text: " to ",
+            style: MyColors.l111111_dffffff(controller.context!).regular16,
+          ),
+          TextSpan(
+            text: controller.appController.user.value.employee?.hiredToTime,
+            style: MyColors.l111111_dffffff(controller.context!).semiBold16,
+          ),
+        ]
+    ),
+  )
+      : Text(
+    MyStrings.exploreTheFeaturesOfMhAppBelow.tr,
+    style: MyColors.l777777_dtext(controller.context!).medium15,
+  ));
+>>>>>>> main*/
 
   Widget _loading(String msg) => Row(
         mainAxisAlignment: MainAxisAlignment.center,
