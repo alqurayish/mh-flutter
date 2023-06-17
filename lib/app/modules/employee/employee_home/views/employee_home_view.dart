@@ -187,7 +187,7 @@ class EmployeeHomeView extends GetView<EmployeeHomeController> {
                                               ? _errorMsg
                                               : _checkInCheckout
                                       : const Wrap()
-                                  /*_massage(
+                                  /*  _massage(
                                           "you hired from ${controller.appController.user.value.employee?.hiredFromDate.toString().split(" ").first} to ${controller.appController.user.value.employee?.hiredToDate.toString().split(" ").first}")*/
                                   : _massage("You have not been hired yet"),
                     ),

@@ -59,11 +59,15 @@ class EmployeeHomeController extends GetxController {
 
   @override
   void onInit() {
+    homeMethods();
+    super.onInit();
+  }
+
+  void homeMethods() {
     _getSingleNotification();
     _trackUnreadMsg();
     _getTodayCheckInOutDetails();
     notificationsController.getNotificationList;
-    super.onInit();
   }
 
   void onDashboardClick() {
@@ -379,6 +383,7 @@ class EmployeeHomeController extends GetxController {
       }, (SingleNotificationModelForEmployee response) {
         if (response.status == "success" && response.statusCode == 200 && response.details != null) {
           singleNotification.value = response.details!;
+          singleNotification.refresh();
         } else {
           showNormalText.value = true;
         }
