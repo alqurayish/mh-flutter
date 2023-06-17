@@ -10,9 +10,17 @@ import '../models/shortlisted_employees.dart';
 class ClientShortlistedController extends GetxController {
   BuildContext? context;
 
+  double hourlyRate = 0.0;
+
   final ApiHelper _apiHelper = Get.find();
 
   final ShortlistController shortlistController = Get.find();
+
+  @override
+  void onInit() {
+    hourlyRate = Get.arguments ?? 0.0;
+    super.onInit();
+  }
 
   void onSelectClick(ShortList shortList) {
     shortlistController.onSelectClick(shortList);
@@ -22,10 +30,10 @@ class ClientShortlistedController extends GetxController {
     DateTimeRange? selectedRange = await showDateRangePicker(
       context: context!,
       initialDateRange: DateTimeRange(
-        start: DateTime.now(),
-        end: DateTime.now(),
+        start: DateTime.now().add(const Duration(days: 1)),
+        end: DateTime.now().add(const Duration(days: 1)),
       ),
-      firstDate: DateTime.now(),
+      firstDate: DateTime.now().add(const Duration(days: 1)),
       lastDate: DateTime.now().add(const Duration(days: 1000)),
       builder: (context, child) {
         return Theme(
@@ -49,7 +57,7 @@ class ClientShortlistedController extends GetxController {
       },
     );
 
-    if(selectedRange != null) {
+    if (selectedRange != null) {
       Map<String, dynamic> data = {
         "id": shortlistId,
         "fromDate": selectedRange.start.toString().split(" ").first,
@@ -71,25 +79,20 @@ class ClientShortlistedController extends GetxController {
 
   void onTimeSelect(String shortlistId) {
     CustomHireTime.show(context!, (String fromTime, String toTime) {
-      Map<String, dynamic> data = {
-        "id": shortlistId,
-        "fromTime": fromTime,
-        "toTime": toTime
-      };
+      Map<String, dynamic> data = {"id": shortlistId, "fromTime": fromTime, "toTime": toTime};
 
       _updateShortListDateOrTime(data);
     });
   }
 
   void onBookAllClick() {
-    if(shortlistController.shortList.isEmpty) {
+    if (shortlistController.shortList.isEmpty) {
       CustomDialogue.information(
         context: context!,
         title: "Empty Shortlist",
         description: "Please add employee to shortlist then continue",
       );
-    }
-    else if(shortlistController.isDateRangeSetForSelectedUser()) {
+    } else if (shortlistController.isDateRangeSetForSelectedUser()) {
       Get.toNamed(Routes.clientTermsConditionForHire);
     } else {
       CustomDialogue.information(
@@ -98,5 +101,13 @@ class ClientShortlistedController extends GetxController {
         description: "Please select the date and time range for when you want to hire an employee",
       );
     }
+  }
+  TimeOfDay timeConverter({required String time}) {
+    TimeOfDay timeOfDay;
+    List<String> timeParts = time.split(":");
+    int hour = int.parse(timeParts[0]);
+    int minute = int.parse(timeParts[1]);
+    timeOfDay = TimeOfDay(hour: hour, minute: minute);
+    return timeOfDay;
   }
 }

@@ -1,8 +1,12 @@
+import 'package:mh/app/modules/employee/employee_home/models/single_notification_model_for_employee.dart';
+import 'package:mh/app/modules/notifications/models/notification_response_model.dart';
+import 'package:mh/app/modules/notifications/models/notification_update_request_model.dart';
+import 'package:mh/app/modules/notifications/models/notification_update_response_model.dart';
+
 import '../common/utils/exports.dart';
 import '../common/utils/type_def.dart';
 import '../models/all_admins.dart';
 import '../models/check_in_out_histories.dart';
-import '../models/client_details.dart';
 import '../models/commons.dart';
 import '../models/employee_full_details.dart';
 import '../models/employees_by_id.dart';
@@ -19,7 +23,7 @@ import '../modules/auth/register/models/employee_registration.dart';
 import '../modules/client/client_dashboard/models/current_hired_employees.dart';
 import '../modules/client/client_payment_and_invoice/model/client_invoice.dart';
 import '../modules/client/client_self_profile/model/client_profile_update.dart';
-import '../modules/client/client_shortlisted/models/shortlisted_employees.dart' as shortlistEmployees;
+import '../modules/client/client_shortlisted/models/shortlisted_employees.dart' as short_list_employees;
 import '../modules/client/client_terms_condition_for_hire/models/terms_condition_for_hire.dart';
 import '../modules/employee/employee_home/models/today_check_in_out_details.dart';
 
@@ -68,7 +72,7 @@ abstract class ApiHelper {
 
   EitherModel<TermsConditionForHire> getTermsConditionForHire();
 
-  EitherModel<shortlistEmployees.ShortlistedEmployees> fetchShortlistEmployees();
+  EitherModel<short_list_employees.ShortlistedEmployees> fetchShortlistEmployees();
 
   EitherModel<Sources> fetchSources();
 
@@ -126,4 +130,11 @@ abstract class ApiHelper {
   EitherModel<ClientInvoice> getClientInvoice(String clientId);
 
   EitherModel<Response> updatePaymentStatus(Map<String, dynamic> data);
+
+  EitherModel<NotificationResponseModel> getNotifications();
+
+  EitherModel<NotificationUpdateResponseModel> updateNotification(
+      {required NotificationUpdateRequestModel notificationUpdateRequestModel});
+
+  EitherModel<SingleNotificationModelForEmployee> singleNotificationForEmployee();
 }

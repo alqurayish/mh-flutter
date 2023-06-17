@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:mh/app/common/widgets/custom_badge.dart';
+import 'package:mh/app/routes/app_pages.dart';
 
 import '../../../../common/utils/exports.dart';
 import '../../../../common/widgets/custom_appbar.dart';
@@ -28,6 +30,28 @@ class AdminHomeView extends GetView<AdminHomeController> {
             //     Icons.notifications_outlined,
             //   ),
             // ),
+            Obx(() => controller.notificationsController.unreadCount.value == 0
+                ? IconButton(
+                    onPressed: () {
+                      Get.toNamed(Routes.notifications);
+                    },
+                    icon: const Icon(CupertinoIcons.bell))
+                : InkWell(
+                    onTap: () {
+                      Get.toNamed(Routes.notifications);
+                    },
+                    child: Padding(
+                      padding: EdgeInsets.only(top: 15.h, right: 15.w),
+                      child: Badge(
+                        backgroundColor: MyColors.c_C6A34F,
+                        label: Obx(() {
+                          return Text(controller.notificationsController.unreadCount.toString(),
+                              style: const TextStyle(color: MyColors.c_FFFFFF));
+                        }),
+                        child: const Icon(CupertinoIcons.bell),
+                      ),
+                    ),
+                  )),
             IconButton(
               onPressed: () {
                 CustomMenu.accountMenu(context);
@@ -49,16 +73,12 @@ class AdminHomeView extends GetView<AdminHomeController> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
-
                       children: [
                         SizedBox(height: 29.h),
                         _restaurantName("Hi, ${controller.appController.user.value.admin?.name ?? "-"}"),
                         SizedBox(height: 20.h),
-
                         _promotionText,
-
                         SizedBox(height: 40.h),
-
                         Row(
                           children: [
                             Expanded(
@@ -68,9 +88,7 @@ class AdminHomeView extends GetView<AdminHomeController> {
                                 onTap: controller.onAdminDashboardClick,
                               ),
                             ),
-
                             SizedBox(width: 24.w),
-
                             Expanded(
                               child: Obx(
                                 () => Stack(
@@ -82,7 +100,6 @@ class AdminHomeView extends GetView<AdminHomeController> {
                                       loading: controller.loading.value,
                                       onTap: controller.onRequestClick,
                                     ),
-
                                     Positioned(
                                       top: 4,
                                       right: 5,
@@ -97,9 +114,7 @@ class AdminHomeView extends GetView<AdminHomeController> {
                             ),
                           ],
                         ),
-
                         SizedBox(height: 30.h),
-
                         Row(
                           children: [
                             Expanded(
@@ -111,7 +126,6 @@ class AdminHomeView extends GetView<AdminHomeController> {
                                       icon: MyAssets.myEmployees,
                                       onTap: controller.onEmployeeClick,
                                     ),
-
                                     Positioned(
                                       top: 4,
                                       right: 5,
@@ -124,9 +138,7 @@ class AdminHomeView extends GetView<AdminHomeController> {
                                 ),
                               ),
                             ),
-
                             SizedBox(width: 24.w),
-
                             Expanded(
                               child: Obx(
                                 () => Stack(
@@ -136,7 +148,6 @@ class AdminHomeView extends GetView<AdminHomeController> {
                                       icon: MyAssets.kitchenPorter,
                                       onTap: controller.onClientClick,
                                     ),
-
                                     Positioned(
                                       top: 4,
                                       right: 5,
@@ -164,12 +175,12 @@ class AdminHomeView extends GetView<AdminHomeController> {
   }
 
   Widget _restaurantName(String name) => Text(
-    name,
-    style: MyColors.l111111_dwhite(controller.context!).semiBold20,
-  );
+        name,
+        style: MyColors.l111111_dwhite(controller.context!).semiBold20,
+      );
 
   Widget get _promotionText => Text(
-    MyStrings.exploreTheFeaturesOfMhAppBelow.tr,
-    style: MyColors.l777777_dtext(controller.context!).medium15,
-  );
+        MyStrings.exploreTheFeaturesOfMhAppBelow.tr,
+        style: MyColors.l777777_dtext(controller.context!).medium15,
+      );
 }

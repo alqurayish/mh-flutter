@@ -1,25 +1,26 @@
 class ClientRegistration {
-  String restaurantName;
-  String restaurantAddress;
-  String email;
-  String phoneNumber;
-  String sourceId;
-  String referPersonId;
-  String password;
-  String lat;
-  String long;
+  final String restaurantName;
+  final String restaurantAddress;
+  final String email;
+  final String phoneNumber;
+  final String sourceId;
+  final String referPersonId;
+  final String password;
+  final String lat;
+  final String long;
+  final String countryName;
 
-  ClientRegistration({
-    required this.restaurantName,
-    required this.restaurantAddress,
-    required this.email,
-    required this.phoneNumber,
-    required this.sourceId,
-    required this.referPersonId,
-    required this.password,
-    required this.lat,
-    required this.long,
-  });
+  ClientRegistration(
+      {required this.restaurantName,
+      required this.restaurantAddress,
+      required this.email,
+      required this.phoneNumber,
+      required this.sourceId,
+      required this.referPersonId,
+      required this.password,
+      required this.lat,
+      required this.long,
+      required this.countryName});
 
   Map<String, dynamic> get toJson => {
         "restaurantName": restaurantName,
@@ -27,9 +28,10 @@ class ClientRegistration {
         "email": email,
         "phoneNumber": phoneNumber,
         "sourceId": sourceId,
-        if(referPersonId.isNotEmpty) "referPersonId": referPersonId,
+        if (referPersonId.isNotEmpty) "referPersonId": referPersonId,
         "password": password,
         "lat": lat,
         "long": long,
+        "countryName": countryName,
       };
 }

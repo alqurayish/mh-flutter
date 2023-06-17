@@ -193,7 +193,7 @@ class ClientPaymentAndInvoiceView
     return Row(
       children: <Widget>[
         _cell(width: 100.w, height: height, value: (invoice.totalEmployee ?? 0).toString(), isPaid: invoice.status == "PAID"),
-        _cell(width: 100.w, height: height, value: (invoice.amount ?? 0).toStringAsFixed(2), isPaid: invoice.status == "PAID"),
+        _cell(width: 100.w, height: height, value: '£ ${(invoice.amount ?? 0).toStringAsFixed(2)}', isPaid: invoice.status == "PAID"),
         _cell(width: 100.w, height: height, value: invoice.invoiceNumber ?? "-", isPaid: invoice.status == "PAID"),
         _cell(width: 100.w,
           height: height,

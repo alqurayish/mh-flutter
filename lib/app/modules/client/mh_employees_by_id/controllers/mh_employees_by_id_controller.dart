@@ -1,3 +1,5 @@
+import 'package:dartz/dartz.dart';
+
 import '../../../../common/controller/app_controller.dart';
 import '../../../../common/utils/exports.dart';
 import '../../../../common/widgets/custom_loader.dart';
@@ -69,7 +71,7 @@ class MhEmployeesByIdController extends GetxController {
       employeeExperience: experience,
       minTotalHour: minTotalHour,
       maxTotalHour: maxTotalHour,
-    ).then((response) {
+    ).then((Either<CustomError, Employees> response) {
 
       isLoading.value = false;
       CustomLoader.hide(context!);

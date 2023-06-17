@@ -112,6 +112,7 @@ class MyStrings {
   static const String bookAll = "bookAll";
   static const String selectDateRange = "selectDateRange";
   static const String applyRange = "applyRange";
+  static const String rememberMeText = "Remember Me";
 }
 
 class _Arguements {

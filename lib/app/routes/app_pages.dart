@@ -69,6 +69,8 @@ import '../modules/employee/employee_self_profile/bindings/employee_self_profile
 import '../modules/employee/employee_self_profile/views/employee_self_profile_view.dart';
 import '../modules/map/restaurant_location/bindings/restaurant_location_binding.dart';
 import '../modules/map/restaurant_location/views/restaurant_location_view.dart';
+import '../modules/notifications/bindings/notifications_binding.dart';
+import '../modules/notifications/views/notifications_view.dart';
 import '../modules/splash/bindings/splash_binding.dart';
 import '../modules/splash/views/splash_view.dart';
 import '../modules/terms_and_condition/bindings/terms_and_condition_binding.dart';
@@ -327,6 +329,11 @@ class AppPages {
       name: _Paths.supportChat,
       page: () => const SupportChatView(),
       binding: SupportChatBinding(),
+    ),
+    GetPage(
+      name: _Paths.notifications,
+      page: () => const NotificationsView(),
+      binding: NotificationsBinding(),
     ),
   ];
 }

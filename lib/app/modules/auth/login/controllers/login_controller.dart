@@ -1,3 +1,6 @@
+import 'package:mh/app/common/local_storage/storage_helper.dart';
+import 'package:mh/app/modules/auth/login/model/login_credentials_model.dart';
+
 import '../../../../common/controller/app_controller.dart';
 import '../../../../common/utils/exports.dart';
 import '../../../../common/widgets/custom_dialog.dart';
@@ -17,8 +20,17 @@ class LoginController extends GetxController implements LoginViewInterface {
 
   final formKey = GlobalKey<FormState>();
 
-  TextEditingController tecUserId = TextEditingController();
-  TextEditingController tecPassword = TextEditingController();
+  Rx<TextEditingController> tecUserId = TextEditingController().obs;
+  Rx<TextEditingController> tecPassword = TextEditingController().obs;
+
+  RxBool rememberMe = false.obs;
+  late LoginCredentialsModel savedLoginCredentials;
+
+  @override
+  void onInit() {
+    retrieveLoginCredentials();
+    super.onInit();
+  }
 
   @override
   void onForgotPasswordPressed() {
@@ -42,12 +54,12 @@ class LoginController extends GetxController implements LoginViewInterface {
   }
 
   Future<void> _login() async {
-    Login login = Login(password: tecPassword.text.trim());
+    Login login = Login(password: tecPassword.value.text.trim());
 
-    if (GetUtils.isEmail(tecUserId.text.trim())) {
-      login.email = tecUserId.text.trim().toLowerCase();
+    if (GetUtils.isEmail(tecUserId.value.text.trim())) {
+      login.email = tecUserId.value.text.trim().toLowerCase();
     } else {
-      login.userIdNumber = tecUserId.text.trim();
+      login.userIdNumber = tecUserId.value.text.trim();
     }
 
     CustomLoader.show(context!);
@@ -59,6 +71,9 @@ class LoginController extends GetxController implements LoginViewInterface {
         Utils.errorDialog(context!, customError..onRetry = _login);
       }, (LoginResponse loginResponse) {
         if (loginResponse.statusCode == 200) {
+          if (rememberMe.value == true) {
+            _saveLoginCredentials(login: login);
+          }
           _goToNextRoute(loginResponse.token ?? "");
         } else if (loginResponse.statusCode == 401) {
           _accountBan();
@@ -87,7 +102,23 @@ class LoginController extends GetxController implements LoginViewInterface {
     await _appController.afterSuccessLogin(token);
   }
 
-  void _accountBan() {
+  void _accountBan() {}
 
+  void onRememberMePressed(bool? value) {
+    rememberMe.value = value ?? false;
+  }
+
+  Future<void> _saveLoginCredentials({required Login login}) async {
+    LoginCredentialsModel loginCredentialsModel = LoginCredentialsModel(
+        username: login.email != null && login.email != '' ? login.email ?? '' : login.userIdNumber ?? '',
+        password: login.password);
+
+    await StorageHelper.setLoginCredentials(loginCredentials: loginCredentialsModel);
+  }
+
+  Future<void> retrieveLoginCredentials() async {
+    savedLoginCredentials = StorageHelper.getLoginCredentials();
+    tecUserId.value.text = savedLoginCredentials.username;
+    tecPassword.value.text = savedLoginCredentials.password;
   }
 }

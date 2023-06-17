@@ -157,11 +157,11 @@ class RegisterView extends GetView<RegisterController> {
             SizedBox(height: 10.h),
 
             CustomTextInputField(
-              controller: controller.tecRestaurantName,
+              controller: controller.tecClientName,
               label: MyStrings.restaurantName.tr,
               prefixIcon: Icons.add_business,
               validator: (String? value) => Validators.emptyValidator(
-                controller.tecRestaurantName.value.text,
+                controller.tecClientName.value.text,
                 MyStrings.required.tr,
               ),
             ),
@@ -170,14 +170,14 @@ class RegisterView extends GetView<RegisterController> {
 
             Obx(
               () => CustomTextInputField(
-                controller: controller.tecRestaurantAddress,
+                controller: controller.tecClientAddress,
                 label: MyStrings.restaurantAddress.tr,
                 prefixIcon: Icons.location_on_rounded,
                 isMapField: true,
-                onSuffixPressed: controller.onRestaurantAddressPressed,
+                onSuffixPressed: controller.onClientAddressPressed,
                 readOnly: controller.restaurantAddressFromMap.value.isEmpty || controller.restaurantLat == 0 || controller.restaurantLong == 0,
                 onTap: (controller.restaurantAddressFromMap.value.isEmpty || controller.restaurantLat == 0 || controller.restaurantLong == 0)
-                    ? controller.onRestaurantAddressPressed
+                    ? controller.onClientAddressPressed
                     : null,
                 validator: (String? value) => Validators.emptyValidator(
                   value,
@@ -205,7 +205,7 @@ class RegisterView extends GetView<RegisterController> {
             SizedBox(height: 26.h),
 
             CustomTextInputField(
-              controller: controller.tecEmailAddress,
+              controller: controller.tecClientEmailAddress,
               textInputType: TextInputType.emailAddress,
               label: MyStrings.emailAddress.tr,
               prefixIcon: Icons.email_rounded,
@@ -213,11 +213,10 @@ class RegisterView extends GetView<RegisterController> {
             ),
 
             SizedBox(height: 26.h),
-
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 18.0.w),
               child: IntlPhoneField(
-                controller: controller.tecPhoneNumber,
+                controller: controller.tecClientPhoneNumber,
                 decoration: MyDecoration.inputFieldDecoration(
                   context: controller.context!,
                   label: MyStrings.phoneNumber.tr,
@@ -248,16 +247,25 @@ class RegisterView extends GetView<RegisterController> {
                     ),
                   ),
                 ),
-                initialCountryCode: controller.selectedClientCountry.code,
-                onCountryChanged: controller.onClientCountryChange,
+                initialCountryCode: controller.selectedClientWisePhoneNumber.code,
+                onCountryChanged: controller.onClientCountryWisePhoneNumberChange,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
               ),
             ),
 
             SizedBox(height: 26.h),
+            CustomDropdown(
+              prefixIcon: Icons.flag,
+              hints: MyStrings.country.tr,
+              value: controller.selectedClientCountry.value,
+              items: Data.getAllCountry.map((e) => e.name).toList(),
+              onChange: controller.onClientCountryChange,
+            ),
+
+            SizedBox(height: 26.h),
 
             CustomTextInputField(
-              controller: controller.tecPassword,
+              controller: controller.tecClientPassword,
               label: MyStrings.password.tr,
               prefixIcon: Icons.lock,
               isPasswordField: true,
@@ -267,12 +275,12 @@ class RegisterView extends GetView<RegisterController> {
             SizedBox(height: 26.h),
 
             CustomTextInputField(
-              controller: controller.tecConfirmPassword,
+              controller: controller.tecClientConfirmPassword,
               label: MyStrings.confirmPassword.tr,
               prefixIcon: Icons.lock,
               isPasswordField: true,
               validator: (String? value) => Validators.confirmPasswordValidator(
-                controller.tecPassword.text,
+                controller.tecClientPassword.text,
                 value ?? "",
               ),
             ),
@@ -499,8 +507,8 @@ class RegisterView extends GetView<RegisterController> {
                     ),
                   ),
                 ),
-                initialCountryCode: controller.selectedEmployeeCountry.code,
-                onCountryChanged: controller.onEmployeeCountryChange,
+                initialCountryCode: controller.selectedEmployeeWisePhoneNumber.code,
+                onCountryChanged: controller.onEmployeeCountryWisePhoneNumberChange,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
               ),
             ),
@@ -510,9 +518,9 @@ class RegisterView extends GetView<RegisterController> {
             CustomDropdown(
               prefixIcon: Icons.flag,
               hints: MyStrings.country.tr,
-              value: controller.selectedCountry.value,
+              value: controller.selectedEmployeeCountry.value,
               items: Data.getAllCountry.map((e) => e.name).toList(),
-              onChange: controller.onCountryChange,
+              onChange: controller.onEmployeeCountryChange,
             ),
 
             SizedBox(height: 26.h),

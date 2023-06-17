@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
-import 'package:slide_to_act/slide_to_act.dart';
-
+import 'package:mh/app/modules/employee/employee_home/widgets/emloyee_home_promotion_widget.dart';
+import 'package:mh/app/modules/employee/employee_home/widgets/slide_action_widget.dart';
+import 'package:mh/app/routes/app_pages.dart';
 import '../../../../common/utils/exports.dart';
 import '../../../../common/widgets/custom_appbar.dart';
 import '../../../../common/widgets/custom_badge.dart';
@@ -10,7 +11,7 @@ import '../../../../common/widgets/custom_menu.dart';
 import '../controllers/employee_home_controller.dart';
 
 class EmployeeHomeView extends GetView<EmployeeHomeController> {
-  const EmployeeHomeView({Key? key}) : super(key: key);
+   const EmployeeHomeView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +32,28 @@ class EmployeeHomeView extends GetView<EmployeeHomeController> {
             //     Icons.notifications_outlined,
             //   ),
             // ),
+            Obx(() => controller.notificationsController.unreadCount.value == 0
+                ? IconButton(
+                    onPressed: () {
+                      Get.toNamed(Routes.notifications);
+                    },
+                    icon: const Icon(CupertinoIcons.bell))
+                : InkWell(
+                    onTap: () {
+                      Get.toNamed(Routes.notifications);
+                    },
+                    child: Padding(
+                      padding: EdgeInsets.only(top: 15.h, right: 15.w),
+                      child: Badge(
+                        backgroundColor: MyColors.c_C6A34F,
+                        label: Obx(() {
+                          return Text(controller.notificationsController.unreadCount.toString(),
+                              style: const TextStyle(color: MyColors.c_FFFFFF));
+                        }),
+                        child: const Icon(CupertinoIcons.bell),
+                      ),
+                    ),
+                  )),
             IconButton(
               onPressed: () {
                 CustomMenu.accountMenu(
@@ -49,7 +72,7 @@ class EmployeeHomeView extends GetView<EmployeeHomeController> {
           child: SingleChildScrollView(
             physics: const AlwaysScrollableScrollPhysics(),
             child: SizedBox(
-              height: Get.height - 70,
+              height: Get.height * 0.85,
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 24.w),
                 child: Column(
@@ -59,7 +82,6 @@ class EmployeeHomeView extends GetView<EmployeeHomeController> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
-
                           children: [
                             SizedBox(height: 29.h),
                             // _restaurantName(MyStrings.hiRestaurant.trParams({
@@ -69,7 +91,8 @@ class EmployeeHomeView extends GetView<EmployeeHomeController> {
 
                             SizedBox(height: 20.h),
 
-                            _promotionText,
+                            //_promotionText,
+                            const EmployeeHomePromotionWidget(),
 
                             SizedBox(height: 40.h),
 
@@ -82,9 +105,7 @@ class EmployeeHomeView extends GetView<EmployeeHomeController> {
                                     onTap: controller.onDashboardClick,
                                   ),
                                 ),
-
                                 SizedBox(width: 24.w),
-
                                 Expanded(
                                   child: Stack(
                                     children: [
@@ -94,7 +115,6 @@ class EmployeeHomeView extends GetView<EmployeeHomeController> {
                                         iconHeight: 58.w,
                                         onTap: controller.onEmergencyCheckinCheckout,
                                       ),
-
                                       Positioned(
                                         left: 0,
                                         right: 0,
@@ -102,11 +122,11 @@ class EmployeeHomeView extends GetView<EmployeeHomeController> {
                                         bottom: 0,
                                         child: Obx(
                                           () => Visibility(
-                                            visible: (controller.appController.user.value.employee?.isHired ?? false) ?
-                                              (controller.loading.value
-                                                  || controller.loadingCurrentLocation.value
-                                                  || (controller.checkIn.value && controller.checkOut.value)
-                                                  || !controller.isTodayInBetweenFromDateAndToDate)
+                                            visible: (controller.appController.user.value.employee?.isHired ?? false)
+                                                ? (controller.loading.value ||
+                                                    controller.loadingCurrentLocation.value ||
+                                                    (controller.checkIn.value && controller.checkOut.value) ||
+                                                    !controller.isTodayInBetweenFromDateAndToDate)
                                                 : true,
                                             child: Container(
                                               decoration: BoxDecoration(
@@ -135,9 +155,12 @@ class EmployeeHomeView extends GetView<EmployeeHomeController> {
                                     top: 0,
                                     right: 5,
                                     child: Visibility(
-                                      visible: (controller.unreadMsgFromClient.value + controller.unreadMsgFromAdmin.value) > 0,
+                                      visible:
+                                          (controller.unreadMsgFromClient.value + controller.unreadMsgFromAdmin.value) >
+                                              0,
                                       child: CustomBadge(
-                                        (controller.unreadMsgFromClient.value + controller.unreadMsgFromAdmin.value).toString(),
+                                        (controller.unreadMsgFromClient.value + controller.unreadMsgFromAdmin.value)
+                                            .toString(),
                                       ),
                                     ),
                                   ),
@@ -148,13 +171,9 @@ class EmployeeHomeView extends GetView<EmployeeHomeController> {
                         ),
                       ),
                     ),
-
                     SizedBox(height: 30.h),
-
                     _todayDashboard,
-
                     SizedBox(height: 30.h),
-
                     Obx(
                       () => controller.loading.value
                           ? _loading("Fetching Today's Info")
@@ -167,8 +186,10 @@ class EmployeeHomeView extends GetView<EmployeeHomeController> {
                                           : controller.errorMsg.value.isNotEmpty
                                               ? _errorMsg
                                               : _checkInCheckout
-                                      : _massage("you hired from ${controller.appController.user.value.employee?.hiredFromDate.toString().split(" ").first} to ${controller.appController.user.value.employee?.hiredToDate.toString().split(" ").first}")
-                                  : _massage("You are not hired yet"),
+                                      : const Wrap()
+                                  /*  _massage(
+                                          "you hired from ${controller.appController.user.value.employee?.hiredFromDate.toString().split(" ").first} to ${controller.appController.user.value.employee?.hiredToDate.toString().split(" ").first}")*/
+                                  : _massage("You have not been hired yet"),
                     ),
                     SizedBox(height: 30.h),
                   ],
@@ -182,10 +203,51 @@ class EmployeeHomeView extends GetView<EmployeeHomeController> {
   }
 
   Widget _restaurantName(String name) => Text(
-    name,
-    style: MyColors.l111111_dwhite(controller.context!).semiBold20,
-  );
+        name,
+        style: MyColors.l111111_dwhite(controller.context!).semiBold20,
+      );
 
+/*<<<<<<< HEAD
+  Widget get _promotionText => Obx(() => controller.appController.user.value.employee?.isHired ?? false
+      ? InkWell(
+          onTap: controller.onHiredYouTap,
+          child: Container(
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10.0),
+              color: Colors.purple.withOpacity(.6),
+            ),
+            child: Row(
+              children: [
+                Expanded(
+                  flex: 3,
+                  child: Text(
+                      "${(controller.appController.user.value.employee?.hiredByRestaurantName ?? "").toUpperCase()} hired you from ${controller.appController.user.value.employee?.hiredFromDate.toString().split(" ").first} to ${controller.appController.user.value.employee?.hiredToDate.toString().split(" ").first}",
+                      style: MyColors.white.semiBold16),
+                ),
+                SizedBox(
+                  width: 10.w,
+                ),
+                Expanded(
+                  flex: 1,
+                  child: Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.purple.withOpacity(.45),
+                    ),
+                    child: const Icon(
+                      Icons.arrow_forward,
+                      color: MyColors.white,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        )
+      : Text(MyStrings.exploreTheFeaturesOfMhAppBelow.tr, style: MyColors.l777777_dtext(controller.context!).medium15));
+=======
   Widget get _promotionText => Obx(() => (controller.appController.user.value.employee?.isHired ?? false) ?
       Text.rich(
     TextSpan(
@@ -231,9 +293,9 @@ class EmployeeHomeView extends GetView<EmployeeHomeController> {
     MyStrings.exploreTheFeaturesOfMhAppBelow.tr,
     style: MyColors.l777777_dtext(controller.context!).medium15,
   ));
+>>>>>>> main*/
 
-  Widget _loading(String msg) =>
-      Row(
+  Widget _loading(String msg) => Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const CupertinoActivityIndicator(),
@@ -248,8 +310,7 @@ class EmployeeHomeView extends GetView<EmployeeHomeController> {
         style: MyColors.l111111_dffffff(controller.context!).regular12,
       );
 
-  Widget get _locationFetchError =>
-      Row(
+  Widget get _locationFetchError => Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const Icon(Icons.warning, color: Colors.amber),
@@ -261,8 +322,7 @@ class EmployeeHomeView extends GetView<EmployeeHomeController> {
         ],
       );
 
-  Widget get _errorMsg =>
-      Row(
+  Widget get _errorMsg => Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -278,60 +338,55 @@ class EmployeeHomeView extends GetView<EmployeeHomeController> {
       );
 
   Widget get _todayDashboard => Obx(
-    () => Visibility(
-      visible: controller.checkIn.value && (controller.appController.user.value.employee?.isHired ?? false) && controller.isTodayInBetweenFromDateAndToDate,
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 12),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10.0),
-          border: Border.all(
-            width: .5,
-            color: MyColors.c_A6A6A6,
+        () => Visibility(
+          visible: controller.checkIn.value &&
+              (controller.appController.user.value.employee?.isHired ?? false) &&
+              controller.isTodayInBetweenFromDateAndToDate,
+          child: Container(
+            padding: const EdgeInsets.symmetric(vertical: 12),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10.0),
+              border: Border.all(
+                width: .5,
+                color: MyColors.c_A6A6A6,
+              ),
+              color: MyColors.lightCard(controller.context!),
+            ),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    _itemValue("Check In", controller.dailyStatistics.displayCheckInTime),
+                    _itemValue("Check Out", controller.dailyStatistics.displayCheckOutTime),
+                    _itemValue("Break", controller.dailyStatistics.displayBreakTime),
+                  ],
+                ),
+                const SizedBox(height: 7),
+                Divider(
+                  indent: Get.width * .1,
+                  endIndent: Get.width * .1,
+                  color: MyColors.c_A6A6A6,
+                ),
+                const SizedBox(height: 7),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    _itemValue("Working Time", controller.dailyStatistics.workingHour, valueFontSize: 18),
+                    _itemValue("Date", controller.dailyStatistics.date, valueFontSize: 14),
+                  ],
+                ),
+              ],
+            ),
           ),
-          color: MyColors.lightCard(controller.context!),
         ),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                _itemValue("Check In", controller.dailyStatistics.displayCheckInTime),
-                _itemValue("Check Out", controller.dailyStatistics.displayCheckOutTime),
-                _itemValue("Break", controller.dailyStatistics.displayBreakTime),
-              ],
-            ),
-
-            const SizedBox(height: 7),
-
-            Divider(
-              indent: Get.width * .1,
-              endIndent: Get.width * .1,
-              color: MyColors.c_A6A6A6,
-            ),
-
-            const SizedBox(height: 7),
-
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                _itemValue("Working Time", controller.dailyStatistics.workingHour, valueFontSize: 18),
-                _itemValue("Date", controller.dailyStatistics.date, valueFontSize: 14),
-              ],
-            ),
-
-          ],
-        ),
-      ),
-    ),
-  );
+      );
 
   Widget _itemValue(String text, String value, {double valueFontSize = 14}) => Column(
         children: [
           Text(
             value,
-            style: MyColors.l7B7B7B_dtext(controller.context!).semiBold14.copyWith(
-              fontSize: valueFontSize
-            ),
+            style: MyColors.l7B7B7B_dtext(controller.context!).semiBold14.copyWith(fontSize: valueFontSize),
           ),
           const SizedBox(height: 5),
           Text(
@@ -343,8 +398,9 @@ class EmployeeHomeView extends GetView<EmployeeHomeController> {
 
   Widget get _checkInCheckout => Obx(
         () => Visibility(
-          visible: (!controller.checkIn.value || !controller.checkOut.value) && (controller.appController.user.value.employee?.isHired ?? false),
-          child: SlideAction(
+          visible: (!controller.checkIn.value || !controller.checkOut.value) &&
+              (controller.appController.user.value.employee?.isHired ?? false),
+          child: SlideActionWidget(
             key: controller.key,
             height: 74.h,
             outerColor: MyColors.c_C6A34F,
@@ -362,5 +418,4 @@ class EmployeeHomeView extends GetView<EmployeeHomeController> {
           ),
         ),
       );
-
 }

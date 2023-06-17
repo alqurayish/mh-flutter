@@ -13,16 +13,16 @@ class UserInfo {
     statusCode = json['statusCode'];
     message = json['message'];
     details =
-    json['details'] != null ? new Details.fromJson(json['details']) : null;
+    json['details'] != null ? Details.fromJson(json['details']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    data['statusCode'] = this.statusCode;
-    data['message'] = this.message;
-    if (this.details != null) {
-      data['details'] = this.details!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
+    data['statusCode'] = statusCode;
+    data['message'] = message;
+    if (details != null) {
+      data['details'] = details!.toJson();
     }
     return data;
   }
@@ -72,7 +72,7 @@ class Details {
   double? hourlyRate;
   int? clientDiscount;
   PushNotificationDetails? pushNotificationDetails;
-  List<String>? skills;
+ // List<String>? skills;
   int? contractorHourlyRate;
   List<String>? menuPermission;
 
@@ -120,7 +120,7 @@ class Details {
         this.hourlyRate,
         this.clientDiscount,
         this.pushNotificationDetails,
-        this.skills,
+       // this.skills,
         this.contractorHourlyRate,
         this.menuPermission});
 
@@ -180,12 +180,12 @@ class Details {
     pushNotificationDetails = json['pushNotificationDetails'] != null
         ? PushNotificationDetails.fromJson(json['pushNotificationDetails'])
         : null;
-    if (json['skills'] != null) {
+   /* if (json['skills'] != null) {
       skills = <String>[];
       json['skills'].forEach((v) {
         skills!.add(v);
       });
-    }
+    }*/
     contractorHourlyRate = json['contractorHourlyRate'];
     if (json['menuPermission'] != null) {
       menuPermission = <String>[];
@@ -196,63 +196,63 @@ class Details {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['_id'] = this.sId;
-    data['firstName'] = this.firstName;
-    data['lastName'] = this.lastName;
-    data['name'] = this.name;
-    data['positionId'] = this.positionId;
-    data['positionName'] = this.positionName;
-    data['userIdNumber'] = this.userIdNumber;
-    data['email'] = this.email;
-    data['phoneNumber'] = this.phoneNumber;
-    data['bankName'] = this.bankName;
-    data['accountNumber'] = this.accountNumber;
-    data['routingNumber'] = this.routingNumber;
-    data['dressSize'] = this.dressSize;
-    if (this.languages != null) {
-      data['languages'] = this.languages!.map((v) => v).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['_id'] = sId;
+    data['firstName'] = firstName;
+    data['lastName'] = lastName;
+    data['name'] = name;
+    data['positionId'] = positionId;
+    data['positionName'] = positionName;
+    data['userIdNumber'] = userIdNumber;
+    data['email'] = email;
+    data['phoneNumber'] = phoneNumber;
+    data['bankName'] = bankName;
+    data['accountNumber'] = accountNumber;
+    data['routingNumber'] = routingNumber;
+    data['dressSize'] = dressSize;
+    if (languages != null) {
+      data['languages'] = languages!.map((v) => v).toList();
     }
-    if (this.certificates != null) {
-      data['certificates'] = this.certificates!.map((v) => v).toList();
+    if (certificates != null) {
+      data['certificates'] = certificates!.map((v) => v).toList();
     }
-    data['countryName'] = this.countryName;
-    data['employee'] = this.employee;
-    data['client'] = this.client;
-    data['admin'] = this.admin;
-    data['hr'] = this.hr;
-    data['marketing'] = this.marketing;
-    data['role'] = this.role;
-    data['isReferPerson'] = this.isReferPerson;
-    data['isMhEmployee'] = this.isMhEmployee;
-    data['isHired'] = this.isHired;
-    data['hiredFromDate'] = this.hiredFromDate?.toIso8601String();
-    data['hiredToDate'] = this.hiredToDate?.toIso8601String();
-    data['hiredFromTime'] = this.hiredFromTime;
-    data['hiredToTime'] = this.hiredToTime;
-    data['hiredBy'] = this.hiredBy;
-    data['hiredByLat'] = this.hiredByLat;
-    data['hiredByLong'] = this.hiredByLong;
-    data['hiredByRestaurantName'] = this.hiredByRestaurantName;
-    data['hiredByRestaurantAddress'] = this.hiredByRestaurantAddress;
-    data['profilePicture'] = this.profilePicture;
-    data['cv'] = this.cv;
-    data['verified'] = this.verified;
-    data['active'] = this.active;
-    data['rating'] = this.rating;
-    data['totalWorkingHour'] = this.totalWorkingHour;
-    data['hourlyRate'] = this.hourlyRate;
-    data['clientDiscount'] = this.clientDiscount;
-    if (this.pushNotificationDetails != null) {
-      data['pushNotificationDetails'] = this.pushNotificationDetails!.toJson();
+    data['countryName'] = countryName;
+    data['employee'] = employee;
+    data['client'] = client;
+    data['admin'] = admin;
+    data['hr'] = hr;
+    data['marketing'] = marketing;
+    data['role'] = role;
+    data['isReferPerson'] = isReferPerson;
+    data['isMhEmployee'] = isMhEmployee;
+    data['isHired'] = isHired;
+    data['hiredFromDate'] = hiredFromDate?.toIso8601String();
+    data['hiredToDate'] = hiredToDate?.toIso8601String();
+    data['hiredFromTime'] = hiredFromTime;
+    data['hiredToTime'] = hiredToTime;
+    data['hiredBy'] = hiredBy;
+    data['hiredByLat'] = hiredByLat;
+    data['hiredByLong'] = hiredByLong;
+    data['hiredByRestaurantName'] = hiredByRestaurantName;
+    data['hiredByRestaurantAddress'] = hiredByRestaurantAddress;
+    data['profilePicture'] = profilePicture;
+    data['cv'] = cv;
+    data['verified'] = verified;
+    data['active'] = active;
+    data['rating'] = rating;
+    data['totalWorkingHour'] = totalWorkingHour;
+    data['hourlyRate'] = hourlyRate;
+    data['clientDiscount'] = clientDiscount;
+    if (pushNotificationDetails != null) {
+      data['pushNotificationDetails'] = pushNotificationDetails!.toJson();
     }
-    if (this.skills != null) {
-      data['skills'] = this.skills!.map((v) => v).toList();
-    }
-    data['contractorHourlyRate'] = this.contractorHourlyRate;
-    if (this.menuPermission != null) {
+   /* if (skills != null) {
+      data['skills'] = skills!.map((v) => v).toList();
+    }*/
+    data['contractorHourlyRate'] = contractorHourlyRate;
+    if (menuPermission != null) {
       data['menuPermission'] =
-          this.menuPermission!.map((v) => v).toList();
+          menuPermission!.map((v) => v).toList();
     }
     return data;
   }

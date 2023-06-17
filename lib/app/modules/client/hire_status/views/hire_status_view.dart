@@ -12,18 +12,28 @@ class HireStatusView extends GetView<HireStatusController> {
       body: Column(
         children: [
           Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Lottie.asset(MyAssets.lottie.registrationDone),
-                Text(
-                  "Payment Successfully",
-                  style: MyColors.l111111_dwhite(context).semiBold22,
-                ),
-              ],
+            flex: 2,
+            child: Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Lottie.asset(MyAssets.lottie.registrationDone),
+                  Text(
+                    "Booked Successfully",
+                    style: MyColors.l111111_dwhite(context).semiBold22,
+                  ),
+                  SizedBox(height: 20.h),
+                  Text(
+                    "Our authority will contact with you withing 3 hours for further execution.",
+                    style: MyColors.l111111_dwhite(context).semiBold15,
+                  ),
+                ],
+              ),
             ),
           ),
           Expanded(
+            flex: 1,
             child: Center(
               child: GestureDetector(
                 onTap: Get.back,
