@@ -22,9 +22,6 @@ import '../models/client_register.dart';
 import '../models/client_register_response.dart';
 import '../models/employee_registration.dart';
 
-import 'package:dio/dio.dart' as dio;
-import 'package:http_parser/http_parser.dart';
-
 class RegisterController extends GetxController implements RegisterInterface {
   BuildContext? context;
 
@@ -347,8 +344,8 @@ class RegisterController extends GetxController implements RegisterInterface {
         return AlertDialog(
           content: Row(
             children: [
-              const CircularProgressIndicator(
-                color: MyColors.c_C6A34F,
+              const CircularProgressIndicator.adaptive(
+                backgroundColor: MyColors.c_C6A34F,
               ),
               const SizedBox(width: 20),
               Expanded(

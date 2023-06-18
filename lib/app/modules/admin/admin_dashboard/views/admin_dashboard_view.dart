@@ -18,8 +18,8 @@ class AdminDashboardView extends GetView<AdminDashboardController> {
         title: 'Dashboard',
       ),
       body: Obx(
-        () => controller.historyLoading.value ? const Center(child: CircularProgressIndicator(
-          color: MyColors.c_C6A34F,
+        () => controller.historyLoading.value ? const Center(child: CircularProgressIndicator.adaptive(
+          backgroundColor: MyColors.c_C6A34F,
         )) : Column(
           children: [
 
@@ -150,8 +150,8 @@ class AdminDashboardView extends GetView<AdminDashboardController> {
               () => Visibility(
                 visible: (controller.checkInCheckOutHistory.value.checkInCheckOutHistory ?? []).isEmpty,
                 child: controller.historyLoading.value
-                    ? const CircularProgressIndicator(
-                        color: MyColors.c_C6A34F,
+                    ? const CircularProgressIndicator.adaptive(
+                        backgroundColor: MyColors.c_C6A34F,
                       )
                     : const NoItemFound(),
               ),

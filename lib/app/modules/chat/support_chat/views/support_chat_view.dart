@@ -64,8 +64,8 @@ class SupportChatView extends GetView<SupportChatController> {
           Obx(
             () => controller.loading.value
                 ? const Center(
-                    child: CircularProgressIndicator(
-                      color: MyColors.c_C6A34F,
+                    child: CircularProgressIndicator.adaptive(
+                      backgroundColor: MyColors.c_C6A34F,
                     ),
                   )
                 : StreamBuilder<QuerySnapshot>(
@@ -77,8 +77,8 @@ class SupportChatView extends GetView<SupportChatController> {
 
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         const Center(
-                          child: CircularProgressIndicator(
-                            color: MyColors.c_C6A34F,
+                          child: CircularProgressIndicator.adaptive(
+                            backgroundColor: MyColors.c_C6A34F,
                           ),
                         );
                       }

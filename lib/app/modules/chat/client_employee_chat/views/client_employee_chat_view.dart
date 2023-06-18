@@ -64,8 +64,8 @@ class ClientEmployeeChatView extends GetView<ClientEmployeeChatController> {
           Obx(
             () => controller.loading.value
                 ? const Center(
-                    child: CircularProgressIndicator(
-                      color: MyColors.c_C6A34F,
+                    child: CircularProgressIndicator.adaptive(
+                      backgroundColor: MyColors.c_C6A34F,
                     ),
                   )
                 :
@@ -78,8 +78,8 @@ class ClientEmployeeChatView extends GetView<ClientEmployeeChatController> {
 
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   const Center(
-                    child: CircularProgressIndicator(
-                      color: MyColors.c_C6A34F,
+                    child: CircularProgressIndicator.adaptive(
+                      backgroundColor: MyColors.c_C6A34F,
                     ),
                   );
                 }

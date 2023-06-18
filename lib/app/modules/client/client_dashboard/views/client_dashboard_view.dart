@@ -29,7 +29,7 @@ class ClientDashboardView extends GetView<ClientDashboardController> {
       ),
       body: Obx(
         () => controller.loading.value
-            ? const Center(child: CircularProgressIndicator(color: MyColors.c_C6A34F))
+            ? const Center(child: CircularProgressIndicator.adaptive(backgroundColor: MyColors.c_C6A34F))
             : (controller.hiredEmployeesByDate.value.hiredHistories ?? []).isEmpty
                 ? Column(
                   children: [

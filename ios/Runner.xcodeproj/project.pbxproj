@@ -391,11 +391,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-<<<<<<< HEAD
 				CURRENT_PROJECT_VERSION = 18;
-=======
-				CURRENT_PROJECT_VERSION = 17;
->>>>>>> main
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 6CVZ9J92UW;
 				ENABLE_BITCODE = NO;
@@ -411,11 +407,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.invain.mh;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-<<<<<<< HEAD
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Muktadir - distribution";
-=======
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Khalid Hassan - distribution";
->>>>>>> main
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -546,11 +538,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-<<<<<<< HEAD
 				CURRENT_PROJECT_VERSION = 18;
-=======
-				CURRENT_PROJECT_VERSION = 17;
->>>>>>> main
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 6CVZ9J92UW;
 				ENABLE_BITCODE = NO;
@@ -566,11 +554,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.invain.mh;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-<<<<<<< HEAD
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Muktadir - distribution";
-=======
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Khalid Hassan - distribution";
->>>>>>> main
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -593,11 +577,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-<<<<<<< HEAD
 				CURRENT_PROJECT_VERSION = 18;
-=======
-				CURRENT_PROJECT_VERSION = 17;
->>>>>>> main
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 6CVZ9J92UW;
 				ENABLE_BITCODE = NO;
@@ -613,11 +593,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.invain.mh;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-<<<<<<< HEAD
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Muktadir - distribution";
-=======
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Khalid Hassan - distribution";
->>>>>>> main
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;

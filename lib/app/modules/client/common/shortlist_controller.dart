@@ -146,8 +146,8 @@ class ShortlistController extends GetxService {
               width: 20,
               height: 20,
               child: Center(
-                child: CircularProgressIndicator(
-                  color: MyColors.c_C6A34F,
+                child: CircularProgressIndicator.adaptive(
+                  backgroundColor: MyColors.c_C6A34F,
                 ),
               ),
             )

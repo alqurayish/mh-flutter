@@ -82,7 +82,7 @@ class RestaurantLocationView extends GetView<RestaurantLocationController> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            CircularProgressIndicator(),
+            CircularProgressIndicator.adaptive(),
             SizedBox(height: 10),
             Text("Fetch current location"),
           ],
