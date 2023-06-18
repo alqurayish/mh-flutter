@@ -27,8 +27,7 @@ class AdminHomeController extends GetxController {
 
   @override
   void onInit() {
-    _trackUnreadMsg();
-    _fetchRequest();
+    homeMethods();
     notificationsController.getNotificationList();
     super.onInit();
   }
@@ -110,5 +109,10 @@ class AdminHomeController extends GetxController {
 
       chatUserIds.refresh();
     });
+  }
+
+  void homeMethods() {
+    _trackUnreadMsg();
+    _fetchRequest();
   }
 }

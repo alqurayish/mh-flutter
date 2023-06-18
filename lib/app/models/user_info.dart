@@ -42,8 +42,8 @@ class Details {
   String? accountNumber;
   String? routingNumber;
   String? dressSize;
-  List<String>? languages;
-  List<String>? certificates;
+  //List<String>? languages;
+ // List<String>? certificates;
   String? countryName;
   bool? employee;
   bool? client;
@@ -74,7 +74,7 @@ class Details {
   PushNotificationDetails? pushNotificationDetails;
  // List<String>? skills;
   int? contractorHourlyRate;
-  List<String>? menuPermission;
+  //List<String>? menuPermission;
 
   Details(
       {this.sId,
@@ -90,8 +90,8 @@ class Details {
         this.accountNumber,
         this.routingNumber,
         this.dressSize,
-        this.languages,
-        this.certificates,
+        //this.languages,
+       // this.certificates,
         this.countryName,
         this.employee,
         this.client,
@@ -122,7 +122,8 @@ class Details {
         this.pushNotificationDetails,
        // this.skills,
         this.contractorHourlyRate,
-        this.menuPermission});
+        //this.menuPermission
+      });
 
   Details.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
@@ -138,18 +139,19 @@ class Details {
     accountNumber = json['accountNumber'];
     routingNumber = json['routingNumber'];
     dressSize = json['dressSize'];
-    if (json['languages'] != null) {
+   /* if (json['languages'] != null) {
       languages = <String>[];
       json['languages'].forEach((v) {
         languages!.add(v);
       });
-    }
+    }*/
+    /*
     if (json['certificates'] != null) {
       certificates = <String>[];
       json['certificates'].forEach((v) {
         certificates!.add(v);
       });
-    }
+    }*/
     countryName = json['countryName'];
     employee = json['employee'];
     client = json['client'];
@@ -187,12 +189,12 @@ class Details {
       });
     }*/
     contractorHourlyRate = json['contractorHourlyRate'];
-    if (json['menuPermission'] != null) {
+    /*if (json['menuPermission'] != null) {
       menuPermission = <String>[];
       json['menuPermission'].forEach((v) {
         menuPermission!.add(v);
       });
-    }
+    }*/
   }
 
   Map<String, dynamic> toJson() {
@@ -210,12 +212,12 @@ class Details {
     data['accountNumber'] = accountNumber;
     data['routingNumber'] = routingNumber;
     data['dressSize'] = dressSize;
-    if (languages != null) {
+   /* if (languages != null) {
       data['languages'] = languages!.map((v) => v).toList();
     }
     if (certificates != null) {
       data['certificates'] = certificates!.map((v) => v).toList();
-    }
+    }*/
     data['countryName'] = countryName;
     data['employee'] = employee;
     data['client'] = client;
@@ -250,10 +252,10 @@ class Details {
       data['skills'] = skills!.map((v) => v).toList();
     }*/
     data['contractorHourlyRate'] = contractorHourlyRate;
-    if (menuPermission != null) {
+   /* if (menuPermission != null) {
       data['menuPermission'] =
           menuPermission!.map((v) => v).toList();
-    }
+    }*/
     return data;
   }
 }

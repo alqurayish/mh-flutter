@@ -4,6 +4,8 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:mh/app/common/controller/app_controller.dart';
+import 'package:mh/app/modules/client/client_home/controllers/client_home_controller.dart';
+import 'package:mh/app/modules/employee/employee_home/controllers/employee_home_controller.dart';
 import 'package:mh/app/modules/notifications/controllers/notifications_controller.dart';
 
 import '../../modules/admin/admin_home/controllers/admin_home_controller.dart';
@@ -11,7 +13,6 @@ import '../utils/exports.dart';
 import 'notification_click_helper.dart';
 
 class LocalNotificationService {
-
   static final FlutterLocalNotificationsPlugin _notificationsPlugin = FlutterLocalNotificationsPlugin();
 
   static Future<void> initialize() async {
@@ -88,6 +89,13 @@ class LocalNotificationService {
 
           LocalNotificationService.showNotification(message);
           Get.put(NotificationsController()).getNotificationList();
+          if (Get.isRegistered<EmployeeHomeController>()) {
+            Get.find<EmployeeHomeController>().homeMethods();
+          } else if (Get.isRegistered<AdminHomeController>()) {
+            Get.find<AdminHomeController>().homeMethods();
+          } else if (Get.isRegistered<ClientHomeController>()) {
+            Get.find<ClientHomeController>().homeMethods();
+          }
         }
       },
     );

@@ -148,7 +148,7 @@ class ClientShortlistedController extends GetxController {
     int totalHours = duration.inHours;
 
     // Calculate the total rate
-    double totalRate = totalHours * 0.0;
+    double totalRate = totalHours * hourlyRate;
 
     return totalRate;
   }

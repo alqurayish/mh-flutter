@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-
 import '../../../../common/utils/exports.dart';
 import '../../../../common/widgets/custom_appbar_back_button.dart';
 import '../../../../common/widgets/custom_bottombar.dart';
@@ -10,10 +9,10 @@ class ClientEmployeeChatView extends GetView<ClientEmployeeChatController> {
 
   @override
   Widget build(BuildContext context) {
-
     controller.context = context;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(54.h),
         child: Container(
@@ -68,31 +67,33 @@ class ClientEmployeeChatView extends GetView<ClientEmployeeChatController> {
                       backgroundColor: MyColors.c_C6A34F,
                     ),
                   )
-                :
-            StreamBuilder<QuerySnapshot>(
-              stream: controller.massageCollection.orderBy('time').snapshots(),
-              builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                if (snapshot.hasError) {
-                  return const Center(child: Text('Something went wrong'));
-                }
+                : StreamBuilder<QuerySnapshot>(
+                    stream: controller.massageCollection.orderBy('time').snapshots(),
+                    builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                      if (snapshot.hasError) {
+                        return const Center(child: Text('Something went wrong'));
+                      }
 
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  const Center(
-                    child: CircularProgressIndicator.adaptive(
-                      backgroundColor: MyColors.c_C6A34F,
-                    ),
-                  );
-                }
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        const Center(
+                          child: CircularProgressIndicator.adaptive(
+                            backgroundColor: MyColors.c_C6A34F,
+                          ),
+                        );
+                      }
 
-                if((snapshot.data?.docs ?? []).isEmpty) {
-                  return Center(
-                    child: Text("No Massage", style: MyColors.text.regular14,),
-                  );
-                }
+                      if ((snapshot.data?.docs ?? []).isEmpty) {
+                        return Center(
+                          child: Text(
+                            "No Massage",
+                            style: MyColors.text.regular14,
+                          ),
+                        );
+                      }
 
-                WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-                  controller.setMassagePosition();
-                });
+                      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+                        controller.setMassagePosition();
+                      });
 
                       return ListView.builder(
                         controller: controller.scrollController,
@@ -105,9 +106,10 @@ class ClientEmployeeChatView extends GetView<ClientEmployeeChatController> {
 
                           double topMargin = 0;
 
-                          if(index > 0) {
-                            Map<String, dynamic> previousData = snapshot.data!.docs[index - 1].data()! as Map<String, dynamic>;
-                            if(previousData["fromId"] != data["fromId"]) {
+                          if (index > 0) {
+                            Map<String, dynamic> previousData =
+                                snapshot.data!.docs[index - 1].data()! as Map<String, dynamic>;
+                            if (previousData["fromId"] != data["fromId"]) {
                               topMargin = 20;
                             }
                           }
@@ -120,16 +122,14 @@ class ClientEmployeeChatView extends GetView<ClientEmployeeChatController> {
                           );
                         },
                       );
-
-              },
-            ),
-
+                    },
+                  ),
           ),
           Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Obx(
-                ()=> Padding(
+                () => Padding(
                   padding: EdgeInsets.only(bottom: controller.appController.bottomPadding.value),
                   child: CustomBottomBar(
                     child: Padding(
@@ -142,9 +142,7 @@ class ClientEmployeeChatView extends GetView<ClientEmployeeChatController> {
                               height: 54.w,
                               decoration: BoxDecoration(
                                 boxShadow: const [
-                                  BoxShadow(
-                                      color: Color.fromRGBO(8, 56, 73, 0.5)
-                                  ),
+                                  BoxShadow(color: Color.fromRGBO(8, 56, 73, 0.5)),
                                   BoxShadow(
                                     offset: Offset(0, .5),
                                     blurRadius: 1,
@@ -217,9 +215,7 @@ class ClientEmployeeChatView extends GetView<ClientEmployeeChatController> {
       children: [
         // _msgDate(msg.createdAt!),
 
-        fromId == controller.fromId
-            ? _senderMsg(text, topMargin)
-            : _receiverMsg(text, topMargin),
+        fromId == controller.fromId ? _senderMsg(text, topMargin) : _receiverMsg(text, topMargin),
 
         Visibility(
           visible: lastItem,
@@ -232,52 +228,50 @@ class ClientEmployeeChatView extends GetView<ClientEmployeeChatController> {
   }
 
   Widget _senderMsg(String msg, double topMargin) => Align(
-    alignment: Alignment.centerRight,
-    child: Container(
-      margin: const EdgeInsets.symmetric(horizontal: 14).copyWith(
-          bottom: 5,
-          left: Get.width * .2,
-        top: topMargin,
-      ),
-      padding: const EdgeInsets.symmetric(horizontal: 15,vertical: 8),
-      decoration: BoxDecoration(
-          color: MyColors.c_C6A34F,
-          border: Border.all(color: MyColors.c_C6A34F),
-          borderRadius: const BorderRadius.only(
-            topRight: Radius.circular(20),
-            topLeft: Radius.circular(20),
-            bottomLeft: Radius.circular(20),
-          )
-      ),
-      child: Text(
-        msg,
-        style: MyColors.white.regular15,
-      ),
-    ),
-  );
+        alignment: Alignment.centerRight,
+        child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 14).copyWith(
+            bottom: 5,
+            left: Get.width * .2,
+            top: topMargin,
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+          decoration: BoxDecoration(
+              color: MyColors.c_C6A34F,
+              border: Border.all(color: MyColors.c_C6A34F),
+              borderRadius: const BorderRadius.only(
+                topRight: Radius.circular(20),
+                topLeft: Radius.circular(20),
+                bottomLeft: Radius.circular(20),
+              )),
+          child: Text(
+            msg,
+            style: MyColors.white.regular15,
+          ),
+        ),
+      );
 
   Widget _receiverMsg(String msg, double topMargin) => Align(
-    alignment: Alignment.centerLeft,
-    child: Container(
-      margin: const EdgeInsets.symmetric(horizontal: 14).copyWith(
-          bottom: 5,
-        right: Get.width * .2,
-          top: topMargin,
-      ),
-      padding: const EdgeInsets.symmetric(horizontal: 15,vertical: 8),
-      decoration: BoxDecoration(
-          color: MyColors.lightCard(controller.context!),
-          border: Border.all(color: MyColors.c_C6A34F),
-          borderRadius: const BorderRadius.only(
-            topRight: Radius.circular(20),
-            topLeft: Radius.circular(20),
-            bottomRight: Radius.circular(20),
-          )
-      ),
-      child: Text(
-        msg,
-        style: MyColors.l111111_dwhite(controller.context!).regular15,
-      ),
-    ),
-  );
+        alignment: Alignment.centerLeft,
+        child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 14).copyWith(
+            bottom: 5,
+            right: Get.width * .2,
+            top: topMargin,
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+          decoration: BoxDecoration(
+              color: MyColors.lightCard(controller.context!),
+              border: Border.all(color: MyColors.c_C6A34F),
+              borderRadius: const BorderRadius.only(
+                topRight: Radius.circular(20),
+                topLeft: Radius.circular(20),
+                bottomRight: Radius.circular(20),
+              )),
+          child: Text(
+            msg,
+            style: MyColors.l111111_dwhite(controller.context!).regular15,
+          ),
+        ),
+      );
 }

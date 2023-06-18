@@ -1,8 +1,8 @@
 import 'dart:convert';
-
-import 'package:flutter/foundation.dart';
+import 'package:mh/app/modules/admin/admin_home/controllers/admin_home_controller.dart';
+import 'package:mh/app/modules/client/client_home/controllers/client_home_controller.dart';
 import 'package:mh/app/modules/employee/employee_home/controllers/employee_home_controller.dart';
-
+import 'package:mh/app/modules/notifications/controllers/notifications_controller.dart';
 import '../../routes/app_pages.dart';
 import '../utils/exports.dart';
 
@@ -27,18 +27,25 @@ class NotificationClickHelper {
           MyStrings.arg.supportChatDocId: data[MyStrings.arg.supportChatDocId],
         });
       } else {
-        if(Get.isRegistered<EmployeeHomeController>()){
+        Get.delete<NotificationsController>();
+        Get.toNamed(Routes.notifications);
+        if (Get.isRegistered<EmployeeHomeController>()) {
           Get.find<EmployeeHomeController>().homeMethods();
-          Get.toNamed(Routes.notifications);
+        } else if (Get.isRegistered<AdminHomeController>()) {
+          Get.find<AdminHomeController>().homeMethods();
+        } else if (Get.isRegistered<ClientHomeController>()) {
+          Get.find<ClientHomeController>().homeMethods();
         }
       }
     } else {
-      if(Get.isRegistered<EmployeeHomeController>()){
+      Get.delete<NotificationsController>();
+      Get.toNamed(Routes.notifications);
+      if (Get.isRegistered<EmployeeHomeController>()) {
         Get.find<EmployeeHomeController>().homeMethods();
-        Get.toNamed(Routes.notifications);
-      }
-      if (kDebugMode) {
-        print("Payload is null");
+      } else if (Get.isRegistered<AdminHomeController>()) {
+        Get.find<AdminHomeController>().homeMethods();
+      } else if (Get.isRegistered<ClientHomeController>()) {
+        Get.find<ClientHomeController>().homeMethods();
       }
     }
   }
