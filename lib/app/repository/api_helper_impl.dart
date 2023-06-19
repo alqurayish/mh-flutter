@@ -786,8 +786,6 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
     if (response.statusCode == null) {
       response = await put("notifications/update-status", jsonEncode(notificationUpdateRequestModel.toJson()));
     }
-    print('ApiHelperImpl.updateNotification: ${jsonDecode(response.bodyString??'')}');
-    print('ApiHelperImpl.updateNotification requestBody: ${notificationUpdateRequestModel.toJson()}');
     return _convert<NotificationUpdateResponseModel>(
       response,
       NotificationUpdateResponseModel.fromJson,

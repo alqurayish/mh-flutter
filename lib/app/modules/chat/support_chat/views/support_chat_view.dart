@@ -126,80 +126,81 @@ class SupportChatView extends GetView<SupportChatController> {
                     },
                   ),
           ),
-          Positioned.fill(
-              child: Align(
-            alignment: Alignment.bottomCenter,
-            child: Obx(
+          Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Obx(
               () => Padding(
-                padding: EdgeInsets.only(bottom: controller.appController.bottomPadding.value),
-                child: CustomBottomBar(
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 20, right: 20),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Container(
-                            width: MediaQuery.of(context).size.width / 1.5,
-                            height: 54.w,
-                            decoration: BoxDecoration(
-                              boxShadow: const [
-                                BoxShadow(color: Color.fromRGBO(8, 56, 73, 0.5)),
-                                BoxShadow(
-                                  offset: Offset(0, .5),
-                                  blurRadius: 1,
-                                  color: Color(0xFFF9F8F9),
-                                ),
-                              ],
-                              borderRadius: BorderRadius.circular(25),
-                              color: MyColors.lnull_d111111(context),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 14),
-                              child: TextField(
-                                controller: controller.tecController,
-                                cursorColor: MyColors.l111111_dwhite(context),
-                                keyboardType: TextInputType.multiline,
-                                maxLines: null,
-                                style: MyColors.l111111_dwhite(context).regular16,
-                                decoration: InputDecoration(
-                                  border: InputBorder.none,
-                                  hintText: "Message",
-                                  hintStyle: MyColors.text.regular16,
-                                ),
+              padding: EdgeInsets.only(bottom: controller.appController.bottomPadding.value),
+              child: CustomBottomBar(
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 20, right: 20),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Container(
+                          width: MediaQuery.of(context).size.width / 1.5,
+                          height: 54.w,
+                          decoration: BoxDecoration(
+                            boxShadow: const [
+                              BoxShadow(color: Color.fromRGBO(8, 56, 73, 0.5)),
+                              BoxShadow(
+                                offset: Offset(0, .5),
+                                blurRadius: 1,
+                                color: Color(0xFFF9F8F9),
+                              ),
+                            ],
+                            borderRadius: BorderRadius.circular(25),
+                            color: MyColors.lnull_d111111(context),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 14),
+                            child: TextField(
+                              controller: controller.tecController,
+                              cursorColor: MyColors.l111111_dwhite(context),
+                              keyboardType: TextInputType.multiline,
+                              maxLines: null,
+                              style: MyColors.l111111_dwhite(context).regular16,
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                hintText: "Message",
+                                hintStyle: MyColors.text.regular16,
                               ),
                             ),
                           ),
                         ),
-                        const SizedBox(width: 7),
-                        GestureDetector(
-                          onTap: controller.onSendTap,
-                          child: Container(
-                            width: 54.w,
-                            height: 54.w,
-                            decoration: const BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: MyColors.c_C6A34F,
-                            ),
-                            child: Align(
-                              alignment: Alignment.center,
-                              child: Transform.translate(
-                                offset: const Offset(-2, 2),
-                                child: Image.asset(
-                                  MyAssets.msgSend,
-                                  width: 30,
-                                  height: 30,
-                                ),
+                      ),
+                      const SizedBox(width: 7),
+                      GestureDetector(
+                        onTap: controller.onSendTap,
+                        child: Container(
+                          width: 54.w,
+                          height: 54.w,
+                          decoration: const BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: MyColors.c_C6A34F,
+                          ),
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: Transform.translate(
+                              offset: const Offset(-2, 2),
+                              child: Image.asset(
+                                MyAssets.msgSend,
+                                width: 30,
+                                height: 30,
                               ),
                             ),
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ),
-            ),
-          ))
+              ),
+              ),
+            ],
+          )
         ],
       ),
     );
