@@ -6,7 +6,7 @@ class AppInfo {
 
   static const String appName = "Mirco Hospitality";
 
-  static const String version = "1.0.11";
+  static const String version = "1.0.12";
 
   /// it must change [releaseMode] when release
   static const ReleaseMode releaseMode = ReleaseMode.release;

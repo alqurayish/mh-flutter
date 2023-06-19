@@ -166,11 +166,11 @@ class ClientEmployeeChatController extends GetxController {
 
     tecController.clear();
 
-    scrollToBottom();
-
     massageCollection.add(data).then((value) {
       _sendNotification(data["text"]);
     });
+
+    scrollToBottom();
   }
 
   void _sendNotification(String text) {

@@ -57,11 +57,11 @@ class SupportChatView extends GetView<SupportChatController> {
                 ],
               ),
             ),
+            centerTitle: true,
           ),
         ),
       ),
       body: Column(
-        //mainAxisAlignment: MainAxisAlignment.end,
         children: [
           Expanded(
             child: Obx(
@@ -102,7 +102,7 @@ class SupportChatView extends GetView<SupportChatController> {
                         return ListView.builder(
                           controller: controller.scrollController,
                           itemCount: (snapshot.data?.docs ?? []).length,
-                          //padding: const EdgeInsets.symmetric(vertical: 10),
+                          padding: EdgeInsets.zero,
                           itemBuilder: (context, index) {
                             Map<String, dynamic> data = snapshot.data!.docs[index].data()! as Map<String, dynamic>;
 
@@ -128,8 +128,8 @@ class SupportChatView extends GetView<SupportChatController> {
                     ),
             ),
           ),
-          const SupportChatInputWidget()
-          /*Obx(
+         // const SupportChatInputWidget()
+          Obx(
           () => Padding(
           padding: EdgeInsets.only(bottom: controller.appController.bottomPadding.value),
           child: CustomBottomBar(
@@ -198,7 +198,7 @@ class SupportChatView extends GetView<SupportChatController> {
             ),
           ),
           ),
-          )*/
+          )
         ],
       ),
     );
