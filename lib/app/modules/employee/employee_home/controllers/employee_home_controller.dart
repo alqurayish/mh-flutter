@@ -60,7 +60,6 @@ class EmployeeHomeController extends GetxController {
   @override
   void onInit() {
     homeMethods();
-    notificationsController.getNotificationList();
     super.onInit();
   }
 
@@ -68,6 +67,7 @@ class EmployeeHomeController extends GetxController {
     _getSingleNotification();
     _trackUnreadMsg();
     _getTodayCheckInOutDetails();
+    notificationsController.getNotificationList();
   }
 
   void onDashboardClick() {

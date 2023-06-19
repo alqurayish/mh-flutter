@@ -334,6 +334,8 @@ class RegisterController extends GetxController implements RegisterInterface {
       "token": "",
     };
 
+    print('RegisterController._employeeRegister: $data');
+
     await Isolate.spawn(ApiHelperImplementWithFileUpload.employeeRegister, data);
   }
 

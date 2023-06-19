@@ -88,7 +88,8 @@ class LocalNotificationService {
           }
 
           LocalNotificationService.showNotification(message);
-          Get.put(NotificationsController()).getNotificationList();
+          //Get.put(NotificationsController()).getNotificationList();
+          print('LocalNotificationService.initialize: ${Get.isRegistered<EmployeeHomeController>()}');
           if (Get.isRegistered<EmployeeHomeController>()) {
             Get.find<EmployeeHomeController>().homeMethods();
           } else if (Get.isRegistered<AdminHomeController>()) {

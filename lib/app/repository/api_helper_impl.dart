@@ -195,7 +195,7 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
 
   @override
   EitherModel<ClientRegistrationResponse> employeeRegister(
-    EmployeeRegistration employeeRegistration,
+    EmployeeRegistration employeeRegistration
   ) async {
     var response = await post("users/employee-register", jsonEncode(employeeRegistration.toJson));
     if (response.statusCode == null) {
@@ -207,6 +207,8 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
     if (response.statusCode == null) {
       response = await post("users/employee-register", jsonEncode(employeeRegistration.toJson));
     }
+
+    print('ApiHelperImpl.employeeRegister: ${jsonEncode(employeeRegistration.toJson)}');
 
     return _convert<ClientRegistrationResponse>(
       response,
@@ -806,6 +808,7 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
     if (response.statusCode == null) {
       response = await get(url);
     }
+    print('ApiHelperImpl.singleNotificationForEmployee: ${response.bodyString}');
     return _convert<SingleNotificationModelForEmployee>(
       response,
       SingleNotificationModelForEmployee.fromJson,

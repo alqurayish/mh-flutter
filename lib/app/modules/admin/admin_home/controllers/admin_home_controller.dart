@@ -28,7 +28,6 @@ class AdminHomeController extends GetxController {
   @override
   void onInit() {
     homeMethods();
-    notificationsController.getNotificationList();
     super.onInit();
   }
 
@@ -114,5 +113,6 @@ class AdminHomeController extends GetxController {
   void homeMethods() {
     _trackUnreadMsg();
     _fetchRequest();
+    notificationsController.getNotificationList();
   }
 }

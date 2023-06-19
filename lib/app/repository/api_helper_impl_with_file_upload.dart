@@ -10,6 +10,7 @@ import '../common/controller/app_error_controller.dart';
 class ApiHelperImplementWithFileUpload {
 
   static void employeeRegister(Map<String, dynamic> data) async {
+
     SendPort responseSendPort = data["responseReceivePort"];
 
     Response? result = await _uploadData(
