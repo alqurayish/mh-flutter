@@ -30,23 +30,23 @@ class ApiHelperImplementWithFileUpload {
 
     FormData formData = FormData.fromMap(data["basicData"]);
 
-    if(url.split("/").last == "users/employee-register") {
-      if(data["profileImage"] != null) {
+    if(url.split("/").last == "employee-register") {
+      if((data["profilePicture"] ?? "").isNotEmpty) {
         formData.files.add(MapEntry(
             "profilePicture",
             await MultipartFile.fromFile(
-              data["profileImage"],
-              filename: data["profileImage"].last.path.split("/").last,
+              data["profilePicture"],
+              filename: data["profilePicture"].split("/").last,
               contentType: MediaType("image", "jpeg"),
             )));
       }
 
-      if(data["cv"].isNotEmpty) {
+      if((data["cv"] ?? "").isNotEmpty) {
         formData.files.add(MapEntry(
             "cv",
             await MultipartFile.fromFile(
-              data["cv"].last.path,
-              filename: data["cv"].last.path.split("/").last,
+              data["cv"],
+              filename: data["cv"].split("/").last,
               contentType: MediaType("application", "pdf"),
             )));
       }
