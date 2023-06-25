@@ -1,9 +1,11 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:isolate';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl_phone_field/countries.dart';
+import 'package:mh/app/modules/auth/models/employee_registration_response_model.dart';
 
 import '../../../../common/controller/app_controller.dart';
 import '../../../../common/data/data.dart';
@@ -26,6 +28,7 @@ class RegisterController extends GetxController implements RegisterInterface {
   BuildContext? context;
 
   final ApiHelper _apiHelper = Get.find();
+
   final AppController appController = Get.find();
 
   /// user type will change when user click on employee or client
@@ -333,8 +336,6 @@ class RegisterController extends GetxController implements RegisterInterface {
       "percentReceivePort": percentReceivePort.sendPort,
       "token": "",
     };
-
-    print('RegisterController._employeeRegister: $data');
 
     await Isolate.spawn(ApiHelperImplementWithFileUpload.employeeRegister, data);
   }

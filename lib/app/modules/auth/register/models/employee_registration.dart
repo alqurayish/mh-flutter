@@ -15,7 +15,7 @@ class EmployeeRegistration {
     required this.positionId,
   });
 
-  Map<String, dynamic> get toJson => {
+  Map<String, String> get toJson => {
         "firstName": firstName,
         "lastName": lastName,
         "email": email,

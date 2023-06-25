@@ -57,8 +57,6 @@ class ClientShortlistedView extends GetView<ClientShortlistedController> {
   }
 
   Widget _employeeItem(ShortList employee) {
-    print(
-        'ClientShortlistedView._employeeItem: ${employee.fromDate}, ${employee.fromTime} - ${employee.toDate}, ${employee.toTime}');
     return Column(
       children: [
         Container(
@@ -244,8 +242,8 @@ class ClientShortlistedView extends GetView<ClientShortlistedController> {
                       employee.fromTime != null &&
                       employee.toTime != null &&
                       employee.employeeDetails?.hourlyRate != null)
-                  ? 'Total Rate: £ ${controller.calculateTotalRate(fromDateStr: employee.fromDate.toString(), toDateStr: employee.toDate.toString(), fromTimeStr: employee.fromTime.toString(), toTimeStr: employee.toTime.toString(), hourlyRate: employee.employeeDetails?.hourlyRate ?? 0.0)}'
-                  : 'Hourly Rate: £ ${employee.employeeDetails?.hourlyRate ?? 0.0}',
+                  ? 'Total Rate: £ ${controller.calculateTotalRate(fromDateStr: employee.fromDate.toString(), toDateStr: employee.toDate.toString(), fromTimeStr: employee.fromTime.toString(), toTimeStr: employee.toTime.toString(), hourlyRate: employee.employeeDetails?.hourlyRate ?? 0.0).toStringAsFixed(2)}'
+                  : 'Hourly Rate: £ ${employee.employeeDetails?.hourlyRate!.toStringAsFixed(2) ?? '0.00'}',
               style: const TextStyle(color: MyColors.c_FFFFFF),
             )))
       ],

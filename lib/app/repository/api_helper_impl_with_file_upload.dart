@@ -31,23 +31,23 @@ class ApiHelperImplementWithFileUpload {
 
     FormData formData = FormData.fromMap(data["basicData"]);
 
-    if(url.split("/").last == "users/employee-register") {
-      if(data["profileImage"] != null) {
+    if(url.split("/").last == "employee-register") {
+      if((data["profilePicture"] ?? "").isNotEmpty) {
         formData.files.add(MapEntry(
             "profilePicture",
             await MultipartFile.fromFile(
-              data["profileImage"],
-              filename: data["profileImage"].last.path.split("/").last,
+              data["profilePicture"],
+              filename: data["profilePicture"].split("/").last,
               contentType: MediaType("image", "jpeg"),
             )));
       }
 
-      if(data["cv"].isNotEmpty) {
+      if((data["cv"] ?? "").isNotEmpty) {
         formData.files.add(MapEntry(
             "cv",
             await MultipartFile.fromFile(
-              data["cv"].last.path,
-              filename: data["cv"].last.path.split("/").last,
+              data["cv"],
+              filename: data["cv"].split("/").last,
               contentType: MediaType("application", "pdf"),
             )));
       }
@@ -56,9 +56,9 @@ class ApiHelperImplementWithFileUpload {
     Response? response;
 
     if(kDebugMode) {
-      print(url);
-      print(formData.fields);
-      print(formData.files);
+      print('Url: $url');
+      print('fields: ${formData.fields}');
+      print('files: ${formData.files}');
     }
 
     try {
@@ -74,21 +74,21 @@ class ApiHelperImplementWithFileUpload {
 
       response = postMethod
           ? await Dio().post(
-              url,
-              data: formData,
-              options: options,
-              onSendProgress: (int count, int total) {
-                percentSendPort.send(((100 / total) * count).toInt());
-              },
-            )
+        url,
+        data: formData,
+        options: options,
+        onSendProgress: (int count, int total) {
+          percentSendPort.send(((100 / total) * count).toInt());
+        },
+      )
           : await Dio().put(
-              url,
-              data: formData,
-              options: options,
-              onSendProgress: (int count, int total) {
-                percentSendPort.send(((100 / total) * count).toInt());
-              },
-            );
+        url,
+        data: formData,
+        options: options,
+        onSendProgress: (int count, int total) {
+          percentSendPort.send(((100 / total) * count).toInt());
+        },
+      );
     } on DioException catch (e, s) {
       if(kDebugMode) {
         print(e.response);

@@ -41,7 +41,6 @@ class AdminDashboardView extends GetView<AdminDashboardController> {
                       ],
                     ),
                   ),
-
                   Expanded(
                     child: SizedBox(
                       height: 40.h,
@@ -163,7 +162,7 @@ class AdminDashboardView extends GetView<AdminDashboardController> {
                 child: Expanded(
                   child: HorizontalDataTable(
                     leftHandSideColumnWidth: 90.w,
-                    rightHandSideColumnWidth: 520.w,
+                    rightHandSideColumnWidth: 970.w,
                     isFixedHeader: true,
                     headerWidgets: _getTitleWidget(),
                     leftSideItemBuilder: _generateFirstColumnRow,
@@ -225,6 +224,9 @@ class AdminDashboardView extends GetView<AdminDashboardController> {
   List<Widget> _getTitleWidget() {
     return [
       _getTitleItemWidget('Date', 90.w),
+      _getTitleItemWidget('Restaurant Name', 150.w),
+      _getTitleItemWidget('Employee Name', 150.w),
+      _getTitleItemWidget('Position', 150.w),
       _getTitleItemWidget('Check in', 100.w),
       _getTitleItemWidget('Check out', 100.w),
       _getTitleItemWidget('Break Time', 100.w),
@@ -260,6 +262,9 @@ class AdminDashboardView extends GetView<AdminDashboardController> {
   Widget _generateRightHandSideColumnRow(BuildContext context, int index) {
     return Row(
       children: <Widget>[
+        _cell(width: 150.w, value: controller.dailyStatistics(index).restaurantName),
+        _cell(width: 150.w, value: controller.dailyStatistics(index).employeeName),
+        _cell(width: 150.w, value: controller.dailyStatistics(index).position),
         _cell(width: 100.w, value: controller.dailyStatistics(index).displayCheckInTime),
         _cell(width: 100.w, value: controller.dailyStatistics(index).displayCheckOutTime),
         _cell(width: 100.w, value: controller.dailyStatistics(index).displayBreakTime),
@@ -275,6 +280,8 @@ class AdminDashboardView extends GetView<AdminDashboardController> {
     child: Center(
       child: Text(
         value,
+        maxLines: 2,
+        overflow: TextOverflow.ellipsis,
         textAlign: TextAlign.center,
         style: MyColors.l7B7B7B_dtext(controller.context!).semiBold13,
       ),

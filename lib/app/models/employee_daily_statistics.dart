@@ -1,5 +1,8 @@
 class UserDailyStatistics {
   String date;
+  String restaurantName;
+  String employeeName;
+  String position;
   String displayCheckInTime;
   String displayCheckOutTime;
   String displayBreakTime;
@@ -15,6 +18,9 @@ class UserDailyStatistics {
 
   UserDailyStatistics({
     required this.date,
+    required this.restaurantName,
+    required this.employeeName,
+    required this.position,
     required this.displayCheckInTime,
     required this.displayCheckOutTime,
     required this.displayBreakTime,
