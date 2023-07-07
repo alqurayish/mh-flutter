@@ -70,13 +70,13 @@ class ClientRequestForEmployeeController extends GetxController {
           CustomDialogue.information(
             context: Get.context!,
             title: "Requested",
-            description: "Your request is placed successfully. You will notify when admin suggest" ,
+            description: "Your Request has been placed successfully. Expect a recommendation within 24 hours" ,
           );
         } else {
           CustomDialogue.information(
             context: Get.context!,
             title: "Error",
-            description: "Something wrong",
+            description: "Something went wrong",
           );
         }
 

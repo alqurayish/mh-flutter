@@ -147,6 +147,7 @@ class Utils {
       employeeBreakTime: "-",
       workingHour: "-",
       amount: "-",
+      complain: "-",
       totalWorkingTimeInMinute: 0,
     );
 
@@ -207,6 +208,8 @@ class Utils {
 
     dailyStatistics.restaurantName = element.restaurantDetails?.restaurantName ?? '';
     dailyStatistics.employeeName = element.employeeDetails?.name ?? '';
+    dailyStatistics.position = '-';
+    dailyStatistics.complain = '-';
     return dailyStatistics;
   }
 }

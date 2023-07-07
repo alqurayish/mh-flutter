@@ -162,7 +162,7 @@ class AdminDashboardView extends GetView<AdminDashboardController> {
                 child: Expanded(
                   child: HorizontalDataTable(
                     leftHandSideColumnWidth: 90.w,
-                    rightHandSideColumnWidth: 970.w,
+                    rightHandSideColumnWidth: 1120.w,
                     isFixedHeader: true,
                     headerWidgets: _getTitleWidget(),
                     leftSideItemBuilder: _generateFirstColumnRow,
@@ -232,6 +232,7 @@ class AdminDashboardView extends GetView<AdminDashboardController> {
       _getTitleItemWidget('Break Time', 100.w),
       _getTitleItemWidget('Total hours', 100.w),
       _getTitleItemWidget('Amount', 120.w),
+      _getTitleItemWidget('Complain', 150.w),
     ];
   }
 
@@ -270,6 +271,7 @@ class AdminDashboardView extends GetView<AdminDashboardController> {
         _cell(width: 100.w, value: controller.dailyStatistics(index).displayBreakTime),
         _cell(width: 100.w, value: controller.dailyStatistics(index).workingHour),
         _cell(width: 120.w, value: controller.dailyStatistics(index).amount),
+        _cell(width: 150.w, value: controller.dailyStatistics(index).complain),
       ],
     );
   }

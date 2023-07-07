@@ -194,9 +194,7 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
   }
 
   @override
-  EitherModel<ClientRegistrationResponse> employeeRegister(
-    EmployeeRegistration employeeRegistration
-  ) async {
+  EitherModel<ClientRegistrationResponse> employeeRegister(EmployeeRegistration employeeRegistration) async {
     var response = await post("users/employee-register", jsonEncode(employeeRegistration.toJson));
     if (response.statusCode == null) {
       response = await post("users/employee-register", jsonEncode(employeeRegistration.toJson));
@@ -263,7 +261,8 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
   EitherModel<UserInfo> clientDetails(
     String id,
   ) async {
-    var response = await get("users/$id");
+    String url = "users/$id";
+    var response = await get(url);
     if (response.statusCode == null) response = await get("users/$id");
     if (response.statusCode == null) response = await get("users/$id");
     if (response.statusCode == null) response = await get("users/$id");
@@ -291,7 +290,6 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
     if ((minTotalHour ?? "").isNotEmpty) url += "&minTotalHour=$minTotalHour";
     if ((maxTotalHour ?? "").isNotEmpty) url += "&maxTotalHour=$maxTotalHour";
     if (isReferred ?? false) url += "&isReferPerson=${isReferred!.toApiFormat}";
-
     var response = await get(url);
     if (response.statusCode == null) response = await get(url);
     if (response.statusCode == null) response = await get(url);
@@ -484,7 +482,7 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
   }
 
   @override
-  EitherModel<TodayCheckInOutDetails> dailyCheckinCheckoutDetails(String employeeId) async {
+  EitherModel<TodayCheckInOutDetails> dailyCheckInCheckoutDetails(String employeeId) async {
     var response = await get("current-hired-employees/details/$employeeId");
     if (response.statusCode == null) response = await get("current-hired-employees/details/$employeeId");
     if (response.statusCode == null) response = await get("current-hired-employees/details/$employeeId");
@@ -641,7 +639,7 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
 
     if ((clientId ?? "").isNotEmpty) url += "clientId=$clientId";
 
-    var response = await get(url);
+    Response response = await get(url);
     if (response.statusCode == null) response = await get(url);
     if (response.statusCode == null) response = await get(url);
     if (response.statusCode == null) response = await get(url);
@@ -779,7 +777,6 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
   @override
   EitherModel<NotificationUpdateResponseModel> updateNotification(
       {required NotificationUpdateRequestModel notificationUpdateRequestModel}) async {
-
     Response response = await put("notifications/update-status", jsonEncode(notificationUpdateRequestModel.toJson()));
     if (response.statusCode == null) {
       response = await put("notifications/update-status", jsonEncode(notificationUpdateRequestModel.toJson()));
@@ -810,7 +807,21 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
     if (response.statusCode == null) {
       response = await get(url);
     }
-    print('ApiHelperImpl.singleNotificationForEmployee: ${response.bodyString}');
+    return _convert<SingleNotificationModelForEmployee>(
+      response,
+      SingleNotificationModelForEmployee.fromJson,
+    ).fold((CustomError l) => left(l), (SingleNotificationModelForEmployee r) => right(r));
+  }
+
+  @override
+  EitherModel<SingleNotificationModelForEmployee> removeClientRequestFromAdmin({required String requestId}) async {
+    String url = "request-employees/remove/$requestId";
+
+    var response = await delete(url);
+    if (response.statusCode == null) response = await delete(url);
+    if (response.statusCode == null) response = await delete(url);
+    if (response.statusCode == null) response = await delete(url);
+
     return _convert<SingleNotificationModelForEmployee>(
       response,
       SingleNotificationModelForEmployee.fromJson,
