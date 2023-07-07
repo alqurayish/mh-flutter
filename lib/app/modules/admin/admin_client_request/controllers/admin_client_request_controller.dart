@@ -33,8 +33,8 @@ class AdminClientRequestController extends GetxController {
   void onCancelClick({required String requestId}) {
     CustomDialogue.confirmation(
       context: context!,
-      title: "Confirm Remove",
-      msg: "Are you sure you want to remove this request?",
+      title: "Confirm Cancellation",
+      msg: "Are you sure you want to cancel this request?",
       confirmButtonText: "YES",
       onConfirm: () async {
         Get.back(); // hide confirmation dialog
