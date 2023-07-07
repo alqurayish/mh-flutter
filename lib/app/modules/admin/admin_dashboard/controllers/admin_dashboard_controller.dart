@@ -1,3 +1,5 @@
+import 'package:dartz/dartz.dart';
+
 import '../../../../common/controller/app_controller.dart';
 import '../../../../common/utils/exports.dart';
 import '../../../../models/check_in_out_histories.dart';
@@ -64,7 +66,7 @@ class AdminDashboardController extends GetxController {
     await _apiHelper.getCheckInOutHistory(
       filterDate: dashboardDate.value.toString().split(" ").first,
       clientId: clientId,
-    ).then((response) {
+    ).then((Either<CustomError, CheckInCheckOutHistory> response) {
 
       historyLoading.value = false;
 

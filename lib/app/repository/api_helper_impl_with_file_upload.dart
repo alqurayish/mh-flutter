@@ -10,6 +10,7 @@ import '../common/controller/app_error_controller.dart';
 class ApiHelperImplementWithFileUpload {
 
   static void employeeRegister(Map<String, dynamic> data) async {
+
     SendPort responseSendPort = data["responseReceivePort"];
 
     Response? result = await _uploadData(
@@ -55,9 +56,9 @@ class ApiHelperImplementWithFileUpload {
     Response? response;
 
     if(kDebugMode) {
-      print(url);
-      print(formData.fields);
-      print(formData.files);
+      print('Url: $url');
+      print('fields: ${formData.fields}');
+      print('files: ${formData.files}');
     }
 
     try {
@@ -73,21 +74,21 @@ class ApiHelperImplementWithFileUpload {
 
       response = postMethod
           ? await Dio().post(
-              url,
-              data: formData,
-              options: options,
-              onSendProgress: (int count, int total) {
-                percentSendPort.send(((100 / total) * count).toInt());
-              },
-            )
+        url,
+        data: formData,
+        options: options,
+        onSendProgress: (int count, int total) {
+          percentSendPort.send(((100 / total) * count).toInt());
+        },
+      )
           : await Dio().put(
-              url,
-              data: formData,
-              options: options,
-              onSendProgress: (int count, int total) {
-                percentSendPort.send(((100 / total) * count).toInt());
-              },
-            );
+        url,
+        data: formData,
+        options: options,
+        onSendProgress: (int count, int total) {
+          percentSendPort.send(((100 / total) * count).toInt());
+        },
+      );
     } on DioException catch (e, s) {
       if(kDebugMode) {
         print(e.response);

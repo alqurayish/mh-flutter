@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 import '../../../../common/utils/exports.dart';
 import '../../../../common/widgets/custom_dialog.dart';
 import '../../../../common/widgets/custom_hire_time.dart';
@@ -102,6 +104,7 @@ class ClientShortlistedController extends GetxController {
       );
     }
   }
+
   TimeOfDay timeConverter({required String time}) {
     TimeOfDay timeOfDay;
     List<String> timeParts = time.split(":");
@@ -109,5 +112,44 @@ class ClientShortlistedController extends GetxController {
     int minute = int.parse(timeParts[1]);
     timeOfDay = TimeOfDay(hour: hour, minute: minute);
     return timeOfDay;
+  }
+
+  double calculateTotalRate(
+      {required String fromDateStr,
+      required String toDateStr,
+      required String fromTimeStr,
+      required String toTimeStr,
+      required double hourlyRate}) {
+    // Parse dates and times
+    DateFormat dateFormat = DateFormat("yyyy-MM-dd");
+    DateFormat timeFormat = DateFormat("HH:mm");
+    DateTime fromDate = dateFormat.parse(fromDateStr);
+    DateTime toDate = dateFormat.parse(toDateStr);
+    DateTime fromTime = timeFormat.parse(fromTimeStr);
+    DateTime toTime = timeFormat.parse(toTimeStr);
+
+    // Calculate the duration in hours
+    DateTime fromDateTime = DateTime(
+      fromDate.year,
+      fromDate.month,
+      fromDate.day,
+      fromTime.hour,
+      fromTime.minute,
+    );
+    DateTime toDateTime = DateTime(
+      toDate.year,
+      toDate.month,
+      toDate.day,
+      toTime.hour,
+      toTime.minute,
+    );
+
+    Duration duration = toDateTime.difference(fromDateTime);
+    int totalHours = duration.inHours;
+
+    // Calculate the total rate
+    double totalRate = totalHours * hourlyRate;
+
+    return totalRate;
   }
 }

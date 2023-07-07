@@ -24,7 +24,7 @@ class ClientSuggestedEmployeesView extends GetView<ClientSuggestedEmployeesContr
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: 22.h),
-              ...controller.getUniquePositions().map((e) {
+              ...controller.getUniquePositions().map((ClientRequestDetail e) {
                 return _employeeInSamePosition(e);
               }),
             ],
@@ -48,165 +48,177 @@ class ClientSuggestedEmployeesView extends GetView<ClientSuggestedEmployeesContr
             style: MyColors.l111111_dwhite(controller.context!).semiBold16,
           ),
         ),
-
-        if(employees.isEmpty)
+        if (employees.isEmpty)
           Padding(
             padding: EdgeInsets.fromLTRB(24.w, 0, 24.w, 20.h),
             child: const Text("No employee suggest yet"),
           )
         else
-        ...employees.map((e) {
-          return _employeeItem(e);
-        }),
+          ...employees.map((e) {
+            return _employeeItem(e);
+          }),
       ],
     );
   }
 
   Widget _employeeItem(SuggestedEmployeeDetail employee) {
-    return Container(
-      height: 92.h,
-      margin: EdgeInsets.symmetric(horizontal: 24.w).copyWith(
-        bottom: 20.h,
-      ),
-      decoration: BoxDecoration(
-        color: MyColors.lightCard(controller.context!),
-        borderRadius: BorderRadius.circular(10.0).copyWith(
-          bottomRight: const Radius.circular(11),
+    return InkWell(
+      onTap: () => controller.onEmployeeItemClick(employeeDetail: employee),
+      child: Container(
+        height: 92.h,
+        margin: EdgeInsets.symmetric(horizontal: 24.w).copyWith(
+          bottom: 20.h,
         ),
-        border: Border.all(
-          width: .5,
-          color: MyColors.c_A6A6A6,
-        ),
-      ),
-      child: Row(
-        children: [
-          _image((employee.profilePicture ?? "").imageUrl),
-
-          Expanded(
-            child: Column(
-              children: [
-
-                Row(
-                  children: [
-                    Expanded(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(height: 5.h),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              _name(employee.name ?? "-"),
-                              _rating(employee.rating ?? 0),
-                              const Spacer(),
-                              Obx(
-                                    () => controller.shortlistController.getIcon(
-                                  employee.employeeId!,
-                                  controller.shortlistController.isFetching.value,
-                                ),
-                              ),
-                              SizedBox(width: 9.w),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-
-                SizedBox(height: 3.h),
-
-                Divider(
-                  thickness: .5,
-                  height: 1,
-                  color: MyColors.c_D9D9D9,
-                  endIndent: 13.w,
-                ),
-
-                SizedBox(height: 10.h),
-
-                Row(
-                  children: [
-                    _detailsItem(MyAssets.exp, MyStrings.rate.tr, MyStrings.ratePerHour.trParams({"rate": "£${(employee.hourlyRate ?? 0)}"})),
-                    _detailsItem(MyAssets.totalHour, MyStrings.totalHour.tr, (employee.totalWorkingHour ?? 0).toString()),
-                  ],
-                ),
-              ],
-            ),
+        decoration: BoxDecoration(
+          color: MyColors.lightCard(controller.context!),
+          borderRadius: BorderRadius.circular(10.0).copyWith(
+            bottomRight: const Radius.circular(11),
           ),
-        ],
+          border: Border.all(
+            width: .5,
+            color: MyColors.c_A6A6A6,
+          ),
+        ),
+        child: Row(
+          children: [
+            _image((employee.profilePicture ?? "").imageUrl),
+            Expanded(
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(height: 5.h),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                _name(employee.name ?? "-"),
+                                _rating(employee.rating ?? 0),
+                                const Spacer(),
+                                Obx(
+                                  () => controller.shortlistController.getIcon(
+                                    employee.employeeId!,
+                                    controller.shortlistController.isFetching.value,
+                                  ),
+                                ),
+                                SizedBox(width: 9.w),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 3.h),
+                  Divider(
+                    thickness: .5,
+                    height: 1,
+                    color: MyColors.c_D9D9D9,
+                    endIndent: 13.w,
+                  ),
+                  SizedBox(height: 10.h),
+                  Row(
+                    children: [
+                      _detailsItem(MyAssets.exp, MyStrings.rate.tr,
+                          MyStrings.ratePerHour.trParams({"rate": "£${(employee.hourlyRate ?? 0)}"})),
+                      _detailsItem(
+                          MyAssets.totalHour, MyStrings.totalHour.tr, (employee.totalWorkingHour ?? 0).toString()),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      InkWell(
+                          onTap: controller.onCancelClick,
+                          child: const Icon(
+                            Icons.cancel,
+                            color: Colors.red,
+                          )),
+                      SizedBox(width: 9.w),
+                    ],
+                  )
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
 
   Widget _image(String profilePicture) => Container(
-    margin: const EdgeInsets.fromLTRB(8, 8, 13, 8),
-    width: 74.w,
-    height: 74.h,
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(5),
-      color: Colors.grey.withOpacity(.1),
-    ),
-    child: CustomNetworkImage(
-      url: profilePicture,
-      radius: 5,
-    ),
-  );
+        margin: const EdgeInsets.fromLTRB(8, 8, 13, 8),
+        width: 74.w,
+        height: 74.h,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(5),
+          color: Colors.grey.withOpacity(.1),
+        ),
+        child: CustomNetworkImage(
+          url: profilePicture,
+          radius: 5,
+        ),
+      );
 
   Widget _name(String name) => Text(
-    name,
-    style: MyColors.l111111_dwhite(controller.context!).medium14,
-  );
+        name,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+        style: MyColors.l111111_dwhite(controller.context!).medium14,
+      );
 
   Widget _rating(int rating) => Visibility(
-    visible: rating > 0,
-    child: Row(
-      children: [
-        SizedBox(width: 10.w),
-        Container(
-          height: 2.h,
-          width: 2.h,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: MyColors.l111111_dwhite(controller.context!),
-          ),
+        visible: rating > 0,
+        child: Row(
+          children: [
+            SizedBox(width: 10.w),
+            Container(
+              height: 2.h,
+              width: 2.h,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: MyColors.l111111_dwhite(controller.context!),
+              ),
+            ),
+            SizedBox(width: 10.w),
+            const Icon(
+              Icons.star,
+              color: MyColors.c_FFA800,
+              size: 16,
+            ),
+            SizedBox(width: 2.w),
+            Text(
+              rating.toString(),
+              style: MyColors.l111111_dwhite(controller.context!).medium14,
+            ),
+          ],
         ),
-        SizedBox(width: 10.w),
-        const Icon(
-          Icons.star,
-          color: MyColors.c_FFA800,
-          size: 16,
-        ),
-        SizedBox(width: 2.w),
-        Text(
-          rating.toString(),
-          style: MyColors.l111111_dwhite(controller.context!).medium14,
-        ),
-      ],
-    ),
-  );
+      );
 
   Widget _detailsItem(String icon, String title, String value) => Expanded(
-    child: Row(
-      children: [
-        Image.asset(
-          icon,
-          width: 14.w,
-          height: 14.w,
+        child: Row(
+          children: [
+            Image.asset(
+              icon,
+              width: 14.w,
+              height: 14.w,
+            ),
+            SizedBox(width: 10.w),
+            Text(
+              title,
+              style: MyColors.l7B7B7B_dtext(controller.context!).medium11,
+            ),
+            SizedBox(width: 3.w),
+            Text(
+              value,
+              style: MyColors.l111111_dwhite(controller.context!).medium11,
+            ),
+          ],
         ),
-        SizedBox(width: 10.w),
-        Text(
-          title,
-          style: MyColors.l7B7B7B_dtext(controller.context!).medium11,
-        ),
-        SizedBox(width: 3.w),
-        Text(
-          value,
-          style: MyColors.l111111_dwhite(controller.context!).medium11,
-        ),
-      ],
-    ),
-  );
+      );
 }

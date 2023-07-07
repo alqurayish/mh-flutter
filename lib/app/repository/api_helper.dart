@@ -90,7 +90,7 @@ abstract class ApiHelper {
 
   void submitAppError(Map<String, String> data);
 
-  EitherModel<TodayCheckInOutDetails> dailyCheckinCheckoutDetails(String employeeId);
+  EitherModel<TodayCheckInOutDetails> dailyCheckInCheckoutDetails(String employeeId);
 
   EitherModel<TodayCheckInOutDetails> checkin(Map<String, dynamic> data);
 
@@ -137,4 +137,6 @@ abstract class ApiHelper {
       {required NotificationUpdateRequestModel notificationUpdateRequestModel});
 
   EitherModel<SingleNotificationModelForEmployee> singleNotificationForEmployee();
+
+  EitherModel<SingleNotificationModelForEmployee> removeClientRequestFromAdmin({required String requestId});
 }

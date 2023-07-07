@@ -33,10 +33,7 @@ class ClientHomeController extends GetxController {
 
   @override
   void onInit() {
-    getClientInvoice();
-    _trackUnreadMsg();
-    fetchRequestEmployees();
-    notificationsController.getNotificationList();
+    homeMethods();
     super.onInit();
   }
 
@@ -204,5 +201,12 @@ class ClientHomeController extends GetxController {
         this.clientInvoice.refresh();
       });
     });
+  }
+
+  void homeMethods() {
+    getClientInvoice();
+    _trackUnreadMsg();
+    fetchRequestEmployees();
+    notificationsController.getNotificationList();
   }
 }

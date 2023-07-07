@@ -31,8 +31,8 @@ class CustomFeatureBox extends StatelessWidget {
           onTap: loading ? null : onTap,
           child: loading
               ? const Center(
-                child: CircularProgressIndicator(
-                    color: MyColors.c_C6A34F,
+                child: CircularProgressIndicator.adaptive(
+                    backgroundColor: MyColors.c_C6A34F,
                   ),
               )
               : Column(

@@ -18,8 +18,8 @@ class AdminDashboardView extends GetView<AdminDashboardController> {
         title: 'Dashboard',
       ),
       body: Obx(
-        () => controller.historyLoading.value ? const Center(child: CircularProgressIndicator(
-          color: MyColors.c_C6A34F,
+        () => controller.historyLoading.value ? const Center(child: CircularProgressIndicator.adaptive(
+          backgroundColor: MyColors.c_C6A34F,
         )) : Column(
           children: [
 
@@ -41,7 +41,6 @@ class AdminDashboardView extends GetView<AdminDashboardController> {
                       ],
                     ),
                   ),
-
                   Expanded(
                     child: SizedBox(
                       height: 40.h,
@@ -150,8 +149,8 @@ class AdminDashboardView extends GetView<AdminDashboardController> {
               () => Visibility(
                 visible: (controller.checkInCheckOutHistory.value.checkInCheckOutHistory ?? []).isEmpty,
                 child: controller.historyLoading.value
-                    ? const CircularProgressIndicator(
-                        color: MyColors.c_C6A34F,
+                    ? const CircularProgressIndicator.adaptive(
+                        backgroundColor: MyColors.c_C6A34F,
                       )
                     : const NoItemFound(),
               ),
@@ -163,7 +162,7 @@ class AdminDashboardView extends GetView<AdminDashboardController> {
                 child: Expanded(
                   child: HorizontalDataTable(
                     leftHandSideColumnWidth: 90.w,
-                    rightHandSideColumnWidth: 520.w,
+                    rightHandSideColumnWidth: 1120.w,
                     isFixedHeader: true,
                     headerWidgets: _getTitleWidget(),
                     leftSideItemBuilder: _generateFirstColumnRow,
@@ -225,11 +224,15 @@ class AdminDashboardView extends GetView<AdminDashboardController> {
   List<Widget> _getTitleWidget() {
     return [
       _getTitleItemWidget('Date', 90.w),
+      _getTitleItemWidget('Restaurant Name', 150.w),
+      _getTitleItemWidget('Employee Name', 150.w),
+      _getTitleItemWidget('Position', 150.w),
       _getTitleItemWidget('Check in', 100.w),
       _getTitleItemWidget('Check out', 100.w),
       _getTitleItemWidget('Break Time', 100.w),
       _getTitleItemWidget('Total hours', 100.w),
       _getTitleItemWidget('Amount', 120.w),
+      _getTitleItemWidget('Complain', 150.w),
     ];
   }
 
@@ -260,11 +263,15 @@ class AdminDashboardView extends GetView<AdminDashboardController> {
   Widget _generateRightHandSideColumnRow(BuildContext context, int index) {
     return Row(
       children: <Widget>[
+        _cell(width: 150.w, value: controller.dailyStatistics(index).restaurantName),
+        _cell(width: 150.w, value: controller.dailyStatistics(index).employeeName),
+        _cell(width: 150.w, value: controller.dailyStatistics(index).position),
         _cell(width: 100.w, value: controller.dailyStatistics(index).displayCheckInTime),
         _cell(width: 100.w, value: controller.dailyStatistics(index).displayCheckOutTime),
         _cell(width: 100.w, value: controller.dailyStatistics(index).displayBreakTime),
         _cell(width: 100.w, value: controller.dailyStatistics(index).workingHour),
         _cell(width: 120.w, value: controller.dailyStatistics(index).amount),
+        _cell(width: 150.w, value: controller.dailyStatistics(index).complain),
       ],
     );
   }
@@ -275,6 +282,8 @@ class AdminDashboardView extends GetView<AdminDashboardController> {
     child: Center(
       child: Text(
         value,
+        maxLines: 2,
+        overflow: TextOverflow.ellipsis,
         textAlign: TextAlign.center,
         style: MyColors.l7B7B7B_dtext(controller.context!).semiBold13,
       ),

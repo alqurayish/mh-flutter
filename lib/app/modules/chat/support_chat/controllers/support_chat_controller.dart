@@ -10,7 +10,6 @@ import '../../../../repository/api_helper.dart';
 import '../../../../repository/send_push.dart';
 
 class SupportChatController extends GetxController {
-
   BuildContext? context;
 
   final AppController appController = Get.find();
@@ -49,7 +48,6 @@ class SupportChatController extends GetxController {
 
   @override
   Future<void> onInit() async {
-
     scrollController = ScrollController();
 
     receiverName = Get.arguments[MyStrings.arg.receiverName];
@@ -64,19 +62,18 @@ class SupportChatController extends GetxController {
     supportChatDocument = supportChatCollection.doc(docId);
     massageCollection = supportChatDocument.collection("massages");
 
-
     // admin send massage to client/employee
-    if(toId == "allAdmin") {
+    if (toId == "allAdmin") {
       await _getAllAdmins();
     } else {
       await _getReceiverToken();
     }
 
     await supportChatDocument.get().then((value) {
-      if(!value.exists) {
+      if (!value.exists) {
         supportChatCollection.doc(docId).set({
-          "allAdmin_unread" : 0,
-          "${docId}_unread" : 0,
+          "allAdmin_unread": 0,
+          "${docId}_unread": 0,
           "role": toId == "allAdmin" ? appController.user.value.userRole : receiverRole
         });
       }
@@ -89,7 +86,6 @@ class SupportChatController extends GetxController {
     super.onInit();
   }
 
-
   @override
   void onClose() {
     _updateChatScreenStatus(false);
@@ -97,12 +93,10 @@ class SupportChatController extends GetxController {
   }
 
   void setMassagePosition() {
-    if(firstTimeScrollToBottomComplete) {
-
-      if((scrollController.position.maxScrollExtent - scrollController.offset) < 100) {
+    if (firstTimeScrollToBottomComplete) {
+      if ((scrollController.position.maxScrollExtent - scrollController.offset) < 100) {
         scrollToBottom();
       }
-
     } else {
       scrollToBottom();
 
@@ -111,7 +105,7 @@ class SupportChatController extends GetxController {
   }
 
   void scrollToBottom() {
-    if(scrollController.hasClients) {
+    if (scrollController.hasClients) {
       scrollController.animateTo(
         scrollController.position.maxScrollExtent,
         duration: const Duration(milliseconds: 300),
@@ -121,39 +115,32 @@ class SupportChatController extends GetxController {
   }
 
   Future<void> _getAllAdmins() async {
-
     await _apiHelper.getAllAdmins().then((response) {
       response.fold((CustomError customError) {
-
         Utils.errorDialog(context!, customError..onRetry = _getAllAdmins);
-
       }, (AllAdmins allAdmins) {
-
         this.allAdmins.value = allAdmins;
         this.allAdmins.refresh();
-
       });
     });
   }
 
   void _trackSenderAndReceiversOnline() {
-
     // client/employee send msg to admin
-    if(toId == "allAdmin") {
+    if (toId == "allAdmin") {
       onChatScreenCollection.snapshots().listen((QuerySnapshot<Object?> event) {
         adminsOffline.clear();
         adminsOnline.clear();
-        for(Users admin in allAdmins.value.users ?? []) {
+        for (Users admin in allAdmins.value.users ?? []) {
           for (var element in event.docs) {
             Map<String, dynamic> data = element.data() as Map<String, dynamic>;
 
-            if(admin.sId == element.id) {
-              if(data["active"]) {
+            if (admin.sId == element.id) {
+              if (data["active"]) {
                 adminsOnline.add(admin.sId!);
               } else {
                 adminsOffline.add(admin.sId!);
               }
-
             }
           }
         }
@@ -162,7 +149,7 @@ class SupportChatController extends GetxController {
     // admin send msg to client/employee
     else {
       onChatScreenCollection.doc(toId).get().then((value) {
-        if(value.exists) {
+        if (value.exists) {
           onChatScreenCollection.doc(toId).snapshots().listen((DocumentSnapshot doc) {
             Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
             isReceiverOnline.value = data["active"];
@@ -178,43 +165,36 @@ class SupportChatController extends GetxController {
 
   Future<void> _getReceiverToken() async {
     await _apiHelper.employeeFullDetails(toId).then((response) {
-
       response.fold((l) {
         Logcat.msg(l.msg);
       }, (EmployeeFullDetails r) {
         receiverToken = r.details?.pushNotificationDetails?.fcmToken ?? "";
         receiverRole = r.details?.role ?? "";
       });
-
     });
   }
 
   void _updateChatScreenStatus(bool active) {
     onChatScreenCollection.doc(fromId).set({
-      "active" : active,
+      "active": active,
     });
   }
 
   void _updateReadAllMsg() {
-
     // client/employee logged in
-    if(toId == "allAdmin") {
-      supportChatDocument.update({
-        "${fromId}_unread" : 0
-      });
+    if (toId == "allAdmin") {
+      supportChatDocument.update({"${fromId}_unread": 0});
     }
     // admin logged in
     else {
-      supportChatDocument.update({
-        "allAdmin_unread" : 0
-      });
+      supportChatDocument.update({"allAdmin_unread": 0});
     }
 
     loading.value = false;
   }
 
   Future<void> onSendTap() async {
-    if(tecController.text.trim().isEmpty) return;
+    if (tecController.text.trim().isEmpty) return;
 
     Map<String, dynamic> data = {
       "fromId": fromId,
@@ -229,29 +209,28 @@ class SupportChatController extends GetxController {
     massageCollection.add(data).then((value) {
       _sendNotification(data["text"]);
     });
+
+    scrollToBottom();
   }
 
   void _sendNotification(String text) {
     // client/employee logged in
-    if(toId == "allAdmin") {
-
+    if (toId == "allAdmin") {
       if (adminsOnline.isEmpty) {
-        supportChatDocument.update({
-          "allAdmin_unread" : FieldValue.increment(1)
-        });
+        supportChatDocument.update({"allAdmin_unread": FieldValue.increment(1)});
       }
 
       List<String> adminTokens = [];
 
-      for(Users admin in allAdmins.value.users ?? []) {
-        if(adminsOffline.contains(admin.sId)) {
-          if((admin.pushNotificationDetails?.fcmToken ?? "").isNotEmpty) {
+      for (Users admin in allAdmins.value.users ?? []) {
+        if (adminsOffline.contains(admin.sId)) {
+          if ((admin.pushNotificationDetails?.fcmToken ?? "").isNotEmpty) {
             adminTokens.add(admin.pushNotificationDetails!.fcmToken!);
           }
         }
       }
 
-      if(adminTokens.isNotEmpty) {
+      if (adminTokens.isNotEmpty) {
         SendPush.sendMsgNotification(
           deviceTokens: adminTokens,
           title: '${appController.user.value.userName} send a massage',
@@ -268,13 +247,10 @@ class SupportChatController extends GetxController {
     }
     // admin logged in
     else {
-      if(!isReceiverOnline.value) {
+      if (!isReceiverOnline.value) {
+        supportChatDocument.update({"${toId}_unread": FieldValue.increment(1)});
 
-        supportChatDocument.update({
-          "${toId}_unread" : FieldValue.increment(1)
-        });
-
-        if(receiverToken.isNotEmpty) {
+        if (receiverToken.isNotEmpty) {
           SendPush.sendMsgNotification(
             deviceTokens: [receiverToken],
             title: 'New massage from MH support',
@@ -291,5 +267,4 @@ class SupportChatController extends GetxController {
       }
     }
   }
-
 }

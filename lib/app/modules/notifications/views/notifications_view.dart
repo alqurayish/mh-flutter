@@ -14,7 +14,7 @@ class NotificationsView extends GetView<NotificationsController> {
         appBar: CustomAppbar.appbar(title: 'Notifications', context: context, centerTitle: true),
         body: Obx(() {
           if (controller.notificationDataLoaded.value == false) {
-            return const Center(child: CircularProgressIndicator.adaptive());
+            return const Center(child: CircularProgressIndicator.adaptive(backgroundColor: MyColors.c_C6A34F));
           } else if (controller.notificationDataLoaded.value == true && controller.notificationList.isEmpty) {
             return const Center(child: NoItemFound());
           } else {

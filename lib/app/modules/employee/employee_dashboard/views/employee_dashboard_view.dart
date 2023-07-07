@@ -21,7 +21,7 @@ class EmployeeDashboardView extends GetView<EmployeeDashboardController> {
       ),
       body: Obx(
         () => controller.loading.value
-            ? const Center(child: CircularProgressIndicator(color: MyColors.c_C6A34F))
+            ? const Center(child: CircularProgressIndicator.adaptive(backgroundColor: MyColors.c_C6A34F))
             : controller.history.isEmpty
                 ? const NoItemFound()
                 : Column(

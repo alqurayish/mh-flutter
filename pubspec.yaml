@@ -1,5 +1,5 @@
 name: mh
-version: 1.0.11+18
+version: 1.0.13+20
 publish_to: none
 description: A new Flutter project.
 environment:
@@ -21,16 +21,17 @@ dependencies:
   cached_network_image: ^3.2.3
 
   # image picker form local
-  image_picker: ^0.8.9
+  image_picker: ^1.0.0
   image_cropper: ^4.0.1
 
   file_picker: ^5.3.2
 
   # for image picker
-  permission_handler: ^10.3.0
+  permission_handler: ^10.4.1
 
   # for network (specially for upload file)
   dio: ^5.2.1+1
+
   http_parser: ^4.0.2
 
   # check ui in different device
@@ -56,7 +57,7 @@ dependencies:
 
   states_rebuilder: ^6.3.0
 
-  intl_phone_field: ^3.1.0
+  intl_phone_field: ^3.2.0
 
   lottie: ^2.4.0
 
@@ -68,9 +69,9 @@ dependencies:
 
   flutter_automation: ^2.0.0
 
-  horizontal_data_table: ^4.3.0
+  horizontal_data_table: ^4.3.1
 
-  google_maps_flutter: ^2.3.0
+  google_maps_flutter: ^2.3.1
   geolocator: ^9.0.2
   geocoder2: ^1.4.0
   geocoder_buddy: ^1.0.1
@@ -80,9 +81,9 @@ dependencies:
   firebase_core: ^2.14.0
   firebase_crashlytics: ^3.3.3
   firebase_in_app_messaging: ^0.7.3+3
-  firebase_messaging: ^14.6.3
+  firebase_messaging: ^14.6.4
   flutter_local_notifications: ^9.7.1
-  cloud_firestore: ^4.8.1
+  cloud_firestore: ^4.8.2
   device_info_plus: ^9.0.2
 
   flutter_stripe: ^9.2.1
@@ -91,7 +92,7 @@ dependencies:
     sdk: flutter
 
 dev_dependencies:
-  flutter_lints: ^2.0.1
+  flutter_lints: ^2.0.2
   flutter_test:
     sdk: flutter
 

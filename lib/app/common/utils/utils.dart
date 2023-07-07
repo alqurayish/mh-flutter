@@ -28,12 +28,8 @@ class Utils {
       (value) => SystemChrome.setSystemUIOverlayStyle(
         SystemUiOverlayStyle(
           statusBarColor: Colors.transparent,
-          statusBarIconBrightness: brightness == Brightness.light
-              ? Brightness.dark
-              : Brightness.light,
-          statusBarBrightness: brightness == Brightness.light
-              ? Brightness.dark
-              : Brightness.light,
+          statusBarIconBrightness: brightness == Brightness.light ? Brightness.dark : Brightness.light,
+          statusBarBrightness: brightness == Brightness.light ? Brightness.dark : Brightness.light,
         ),
       ),
     );
@@ -46,24 +42,24 @@ class Utils {
   static bool get isPhone => GetPlatform.isMobile;
 
   static errorDialog(BuildContext context, CustomError customError) {
-    if(customError.errorFrom == ErrorFrom.noInternet) {
+    if (customError.errorFrom == ErrorFrom.noInternet) {
       CustomDialogue.noInternetError(
         context: context,
         onRetry: customError.onRetry,
       );
-    } else if(customError.errorFrom == ErrorFrom.api) {
+    } else if (customError.errorFrom == ErrorFrom.api) {
       CustomDialogue.apiError(
         context: context,
         onRetry: customError.onRetry,
         errorCode: customError.errorCode,
         msg: customError.msg,
       );
-    } else if(customError.errorFrom == ErrorFrom.typeConversion) {
+    } else if (customError.errorFrom == ErrorFrom.typeConversion) {
       CustomDialogue.typeConversionError(
         context: context,
         onRetry: customError.onRetry,
       );
-    } else if(customError.errorFrom == ErrorFrom.server) {
+    } else if (customError.errorFrom == ErrorFrom.server) {
       CustomDialogue.serverError(
         context: context,
         onRetry: customError.onRetry,
@@ -73,7 +69,7 @@ class Utils {
   }
 
   static String calculateAge(DateTime? dateTime) {
-    return( DateTime.now().year - (dateTime ?? DateTime.now()).year).toString();
+    return (DateTime.now().year - (dateTime ?? DateTime.now()).year).toString();
   }
 
   static bool isPositionActive(String positionId) {
@@ -83,8 +79,8 @@ class Utils {
   }
 
   static String getPositionName(String positionId) {
-    var result = (Get.find<AppController>().commons?.value.positions ?? [])
-        .where((element) => element.id == positionId);
+    var result =
+        (Get.find<AppController>().commons?.value.positions ?? []).where((element) => element.id == positionId);
 
     if (result.isEmpty) return "-";
 
@@ -92,15 +88,15 @@ class Utils {
   }
 
   static String getPositionId(String positionName) {
-    var result = (Get.find<AppController>().commons?.value.positions ?? [])
-        .where((element) => element.name == positionName);
+    var result =
+        (Get.find<AppController>().commons?.value.positions ?? []).where((element) => element.name == positionName);
 
     return result.first.id ?? "";
   }
 
   static List<String> getSkillIds(List<String> skillNames) {
-    var result = (Get.find<AppController>().commons?.value.skills ?? [])
-        .where((element) => skillNames.contains(element.name));
+    var result =
+        (Get.find<AppController>().commons?.value.skills ?? []).where((element) => skillNames.contains(element.name));
 
     return result.map((e) => e.id!).toList();
   }
@@ -122,11 +118,11 @@ class Utils {
   }
 
   static int? _getWorkingTimeInMinute(DateTime? checkInTime, DateTime? checkOutTime, int? breakTime) {
-    if(checkOutTime == null && checkInTime != null) {
+    if (checkOutTime == null && checkInTime != null) {
       return getCurrentTime.difference(checkInTime.toLocal()).inMinutes;
     }
 
-    if(checkInTime != null && checkOutTime != null) {
+    if (checkInTime != null && checkOutTime != null) {
       int timeDifference = checkOutTime.difference(checkInTime).inMinutes;
       return (timeDifference - (breakTime ?? 0));
     }
@@ -135,8 +131,11 @@ class Utils {
   }
 
   static UserDailyStatistics checkInOutToStatistics(CheckInCheckOutHistoryElement element) {
-    UserDailyStatistics dailyStatistics =  UserDailyStatistics(
+    UserDailyStatistics dailyStatistics = UserDailyStatistics(
       date: "-",
+      restaurantName: '-',
+      employeeName: '-',
+      position: '-',
       displayCheckInTime: "-",
       displayCheckOutTime: "-",
       displayBreakTime: "-",
@@ -148,6 +147,7 @@ class Utils {
       employeeBreakTime: "-",
       workingHour: "-",
       amount: "-",
+      complain: "-",
       totalWorkingTimeInMinute: 0,
     );
 
@@ -156,51 +156,60 @@ class Utils {
     DateTime? clientCheckIn = element.checkInCheckOutDetails?.clientCheckInTime;
     DateTime? clientCheckOut = element.checkInCheckOutDetails?.clientCheckOutTime;
 
-    if(employeeCheckin != null) {
+    if (employeeCheckin != null) {
       dailyStatistics.employeeCheckInTime = "${employeeCheckin.toLocal().hour} : ${employeeCheckin.toLocal().minute}";
     }
-    if(employeeCheckout != null) {
-      dailyStatistics.employeeCheckOutTime = "${employeeCheckout.toLocal().hour} : ${employeeCheckout.toLocal().minute}";
+    if (employeeCheckout != null) {
+      dailyStatistics.employeeCheckOutTime =
+          "${employeeCheckout.toLocal().hour} : ${employeeCheckout.toLocal().minute}";
     }
-    if(element.checkInCheckOutDetails?.breakTime != null && element.checkInCheckOutDetails?.breakTime != 0) {
+    if (element.checkInCheckOutDetails?.breakTime != null && element.checkInCheckOutDetails?.breakTime != 0) {
       dailyStatistics.employeeBreakTime = "${element.checkInCheckOutDetails?.breakTime ?? 0} min";
     }
 
-    if(clientCheckIn != null) {
+    if (clientCheckIn != null) {
       dailyStatistics.clientCheckInTime = "${clientCheckIn.toLocal().hour} : ${clientCheckIn.toLocal().minute}";
     }
-    if(clientCheckOut != null) {
+    if (clientCheckOut != null) {
       dailyStatistics.clientCheckOutTime = "${clientCheckOut.toLocal().hour} : ${clientCheckOut.toLocal().minute}";
     }
-    if(element.checkInCheckOutDetails?.clientBreakTime != null && element.checkInCheckOutDetails?.clientBreakTime != 0) {
+    if (element.checkInCheckOutDetails?.clientBreakTime != null &&
+        element.checkInCheckOutDetails?.clientBreakTime != 0) {
       dailyStatistics.clientBreakTime = "${element.checkInCheckOutDetails?.clientBreakTime ?? 0} min";
     }
 
     DateTime? tempCheckInTime = clientCheckIn ?? employeeCheckin;
     DateTime? tempCheckOutTime = clientCheckOut ?? employeeCheckout;
-    int? tempBreakTime = (element.checkInCheckOutDetails?.clientBreakTime ?? 0) == 0 ? (element.checkInCheckOutDetails?.breakTime ?? 0) : (element.checkInCheckOutDetails?.clientBreakTime ?? 0);
+    int? tempBreakTime = (element.checkInCheckOutDetails?.clientBreakTime ?? 0) == 0
+        ? (element.checkInCheckOutDetails?.breakTime ?? 0)
+        : (element.checkInCheckOutDetails?.clientBreakTime ?? 0);
     int? tempWorkingTimeInMinute = _getWorkingTimeInMinute(tempCheckInTime, tempCheckOutTime, tempBreakTime);
 
-    if((tempCheckInTime) != null) {
+    if ((tempCheckInTime) != null) {
       dailyStatistics.date = DateTime.parse(tempCheckInTime.toLocal().toString().split(" ").first).dMMMy;
       dailyStatistics.displayCheckInTime = "${tempCheckInTime.toLocal().hour} : ${tempCheckInTime.toLocal().minute}";
     }
 
-    if(tempCheckOutTime != null) {
+    if (tempCheckOutTime != null) {
       dailyStatistics.displayCheckOutTime = "${tempCheckOutTime.toLocal().hour} : ${tempCheckOutTime.toLocal().minute}";
     }
 
-    if(tempBreakTime != 0) {
+    if (tempBreakTime != 0) {
       dailyStatistics.displayBreakTime = "$tempBreakTime min";
     }
 
     // working time and amount
-    if(tempWorkingTimeInMinute != null) {
+    if (tempWorkingTimeInMinute != null) {
       dailyStatistics.totalWorkingTimeInMinute = tempWorkingTimeInMinute;
       dailyStatistics.workingHour = minuteToHour(tempWorkingTimeInMinute);
-      dailyStatistics.amount = ((tempWorkingTimeInMinute / 60) * (element.employeeDetails?.hourlyRate ?? 0)).toStringAsFixed(1);
+      dailyStatistics.amount =
+          ((tempWorkingTimeInMinute / 60) * (element.employeeDetails?.hourlyRate ?? 0)).toStringAsFixed(1);
     }
 
+    dailyStatistics.restaurantName = element.restaurantDetails?.restaurantName ?? '';
+    dailyStatistics.employeeName = element.employeeDetails?.name ?? '';
+    dailyStatistics.position = '-';
+    dailyStatistics.complain = '-';
     return dailyStatistics;
   }
 }

@@ -405,7 +405,7 @@ class EmployeeHomeView extends GetView<EmployeeHomeController> {
             height: 74.h,
             outerColor: MyColors.c_C6A34F,
             elevation: 2,
-            submittedIcon: const CircularProgressIndicator(color: Colors.white),
+            submittedIcon: const CircularProgressIndicator.adaptive(backgroundColor: Colors.white),
             onSubmit: controller.onCheckInCheckOut,
             reversed: controller.checkIn.value,
             child: Text(

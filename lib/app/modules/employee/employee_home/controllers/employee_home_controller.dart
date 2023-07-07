@@ -67,7 +67,7 @@ class EmployeeHomeController extends GetxController {
     _getSingleNotification();
     _trackUnreadMsg();
     _getTodayCheckInOutDetails();
-    notificationsController.getNotificationList;
+    notificationsController.getNotificationList();
   }
 
   void onDashboardClick() {
@@ -411,19 +411,4 @@ class EmployeeHomeController extends GetxController {
       });
     });
   }
-
-  /* String timeConverter({required String time}) {
-
-    String formattedTime;
-    List<String> timeParts = time.split(":");
-    int hours = int.parse(timeParts[0]);
-    int minutes = int.parse(timeParts[1]);
-
-    // Create a DateTime object with the parsed values
-    DateTime dateTime = DateTime(0, 1, 1, hours, minutes);
-    formattedTime = DateFormat.jm().format(dateTime);
-    print('EmployeeHomeController.timeConverter: $formattedTime');
-    // Format the DateTime object to display the actual time
-    return formattedTime;
-  }*/
 }

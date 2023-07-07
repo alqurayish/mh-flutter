@@ -1,3 +1,5 @@
+import 'package:mh/app/routes/app_pages.dart';
+
 import '../../../../common/controller/app_controller.dart';
 import '../../../../common/utils/exports.dart';
 import '../../../../models/requested_employees.dart';
@@ -44,4 +46,14 @@ class ClientSuggestedEmployeesController extends GetxController {
     return employees;
   }
 
+  void onEmployeeItemClick({required SuggestedEmployeeDetail employeeDetail}){
+    /*Get.toNamed(Routes.employeeDetails, arguments: {
+      MyStrings.arg.data : employeeDetail,
+      MyStrings.arg.showAsAdmin : false,
+    });*/
+  }
+
+  void onCancelClick(){
+
+  }
 }

@@ -17,12 +17,12 @@ class AdminClientRequestView extends GetView<AdminClientRequestController> {
         title: 'Request',
       ),
       body: Obx(
-        () => (controller.adminHomeController.requestedEmployees.value.requestEmployees ?? []).isEmpty ? const NoItemFound() :
-
-        ListView.builder(
+        () => (controller.adminHomeController.requestedEmployees.value.requestEmployees ?? []).isEmpty
+            ? const NoItemFound()
+            : ListView.builder(
                 itemCount: (controller.adminHomeController.requestedEmployees.value.requestEmployees ?? []).length,
                 itemBuilder: (context, index) {
-                  return _item(index);
+                  return int.parse(controller.getSuggested(index).split(' ')[2]) > 0 ? const Wrap() : _item(index);
                 },
                 padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
               ),
@@ -31,18 +31,18 @@ class AdminClientRequestView extends GetView<AdminClientRequestController> {
   }
 
   Widget _item(int index) => GestureDetector(
-    onTap: () => controller.onItemClick(index),
-    child: Container(
-      margin: const EdgeInsets.all(14).copyWith(top: 0, bottom: 12),
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
+        onTap: () => controller.onItemClick(index),
+        child: Container(
+          margin: const EdgeInsets.all(14).copyWith(top: 0, bottom: 12),
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
             color: MyColors.lightCard(controller.context!),
             border: Border.all(
               width: .5,
               color: MyColors.c_A6A6A6,
             ),
           ),
-      child: Row(
+          child: Row(
             children: [
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -58,23 +58,36 @@ class AdminClientRequestView extends GetView<AdminClientRequestController> {
                   ),
                 ],
               ),
-
               const Spacer(),
-
-              Container(
-                padding: const EdgeInsets.all(7),
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: MyColors.c_C6A34F.withOpacity(.1),
-                ),
-                child: const Icon(
-                  Icons.arrow_forward,
-                  size: 15,
-                  color: MyColors.c_C6A34F,
-                ),
+              Column(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(7),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: MyColors.c_C6A34F.withOpacity(.1),
+                    ),
+                    child: const Icon(
+                      Icons.arrow_forward,
+                      size: 15,
+                      color: MyColors.c_C6A34F,
+                    ),
+                  ),
+                  const SizedBox(height: 5),
+                  InkWell(
+                    onTap: () => controller.onCancelClick(
+                        requestId:
+                            controller.adminHomeController.requestedEmployees.value.requestEmployees?[index].id ?? ''),
+                    child: const Icon(
+                      Icons.cancel,
+                      color: Colors.red,
+                      size: 30,
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
-    ),
-  );
+        ),
+      );
 }
