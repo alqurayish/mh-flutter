@@ -2,6 +2,7 @@ class EmployeeDetails {
   String? employeeId;
   String? name;
   String? positionId;
+  String? positionName;
   String? presentAddress;
   String? permanentAddress;
   dynamic employeeExperience;
@@ -21,6 +22,7 @@ class EmployeeDetails {
     this.employeeId,
     this.name,
     this.positionId,
+    this.positionName,
     this.presentAddress,
     this.permanentAddress,
     this.employeeExperience,
@@ -39,6 +41,7 @@ class EmployeeDetails {
     employeeId = json['employeeId'];
     name = json['name'];
     positionId = json['positionId'];
+    positionName = json['positionName'];
     presentAddress = json['presentAddress'];
     permanentAddress = json['permanentAddress'];
     employeeExperience = json['employeeExperience'];
@@ -58,6 +61,7 @@ class EmployeeDetails {
     data['employeeId'] = employeeId;
     data['name'] = name;
     data['positionId'] = positionId;
+    data['positionName'] = positionName;
     data['presentAddress'] = presentAddress;
     data['permanentAddress'] = permanentAddress;
     data['employeeExperience'] = employeeExperience;

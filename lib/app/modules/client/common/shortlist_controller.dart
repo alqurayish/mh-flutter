@@ -78,6 +78,7 @@ class ShortlistController extends GetxService {
   }
 
   Future<void> _addEmployeeToShortlist(String employeeId) async {
+
     isFetching.value = true;
 
     Map<String, dynamic> data  = {"employeeId" : employeeId};

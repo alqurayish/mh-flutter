@@ -134,7 +134,7 @@ class ClientSuggestedEmployeesView extends GetView<ClientSuggestedEmployeesContr
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       InkWell(
-                          onTap: controller.onCancelClick,
+                          onTap: () => controller.onCancelClick(employeeId: employee.employeeId ?? ''),
                           child: const Icon(
                             Icons.cancel,
                             color: Colors.red,

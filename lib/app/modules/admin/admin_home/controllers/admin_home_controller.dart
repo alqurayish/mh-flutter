@@ -25,6 +25,10 @@ class AdminHomeController extends GetxController {
 
   RxList<String> chatUserIds = <String>[].obs;
 
+  int numberOfRequestFromClient = 0;
+
+  String requestId = '';
+
   @override
   void onInit() {
     homeMethods();
@@ -77,6 +81,7 @@ class AdminHomeController extends GetxController {
       }, (RequestedEmployees requestedEmployees) async {
         this.requestedEmployees.value = requestedEmployees;
         this.requestedEmployees.refresh();
+        calculateNumberOfRequestFromClient();
       });
     });
   }
@@ -115,4 +120,14 @@ class AdminHomeController extends GetxController {
     _fetchRequest();
     notificationsController.getNotificationList();
   }
+
+  void calculateNumberOfRequestFromClient() {
+    numberOfRequestFromClient = 0;
+    for (var i in requestedEmployees.value.requestEmployees!) {
+      if (i.suggestedEmployeeDetails!.isEmpty) {
+        numberOfRequestFromClient += 1;
+      }
+    }
+  }
+
 }

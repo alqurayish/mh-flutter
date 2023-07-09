@@ -1,5 +1,3 @@
-import 'package:mh/app/models/requested_employees.dart';
-
 import '../../../../common/utils/exports.dart';
 import '../../../../common/widgets/custom_appbar.dart';
 import '../../../../common/widgets/custom_filter.dart';
@@ -111,36 +109,43 @@ class AdminClientRequestPositionEmployeesView extends GetView<AdminClientRequest
             Positioned(
               right: 0,
               bottom: 0,
-              child: SizedBox(
-                width: 122.w,
-                child: Obx(
-                  () => CustomButtons.button(
-                    height: 28.w,
-                    text: (user.isHired ?? false)
-                        ? controller.hireStatus.value
-                        : (controller
-                                        .adminHomeController
-                                        .requestedEmployees
-                                        .value
-                                        .requestEmployees?[
-                                            controller.adminClientRequestPositionsController.selectedIndex]
-                                        .suggestedEmployeeDetails ??
-                                    [])
-                                .where((SuggestedEmployeeDetail element) =>
-                                    element.positionId == controller.clientRequestDetail.positionId)
-                                .toList()
-                                .where((SuggestedEmployeeDetail element) => element.employeeId == user.id!)
-                                .isNotEmpty
-                            ? "Suggested"
-                            : "Suggest",
-                    margin: EdgeInsets.zero,
-                    fontSize: 12,
-                    customButtonStyle: CustomButtonStyle.radiusTopBottomCorner,
-                    onTap: (user.isHired ?? false) || controller.alreadySuggest(user.id!)
-                        ? null
-                        : () => controller.onSuggestClick(user),
-                  ),
-                ),
+              child: Row(
+                children: [
+                  if (user.isSuggested != null && user.isSuggested == true)
+                    InkWell(
+                        onTap: () => controller.onCancelClick(employeeId: user.id ?? ''),
+                        child: const Icon(Icons.cancel, color: Colors.red)),
+                  SizedBox(width: 10.w),
+                  SizedBox(
+                      width: 122.w,
+                      child: CustomButtons.button(
+                        height: 28.w,
+                        text: (user.isHired ?? false)
+                            ? controller.hireStatus.value
+                            : user.isSuggested != null && user.isSuggested == true
+                                /*(controller
+                                            .adminHomeController
+                                            .requestedEmployees
+                                            .value
+                                            .requestEmployees?[
+                                                controller.adminClientRequestPositionsController.selectedIndex]
+                                            .suggestedEmployeeDetails ??
+                                        [])
+                                    .where((SuggestedEmployeeDetail element) =>
+                                        element.positionId == controller.clientRequestDetail.positionId)
+                                    .toList()
+                                    .where((SuggestedEmployeeDetail element) => element.employeeId == user.id!)
+                                    .isNotEmpty*/
+                                ? "Suggested"
+                                : "Suggest",
+                        margin: EdgeInsets.zero,
+                        fontSize: 12,
+                        customButtonStyle: CustomButtonStyle.radiusTopBottomCorner,
+                        onTap: (user.isHired ?? false) || (user.isSuggested != null && user.isSuggested == true)
+                            ? null
+                            : () => controller.onSuggestClick(user),
+                      )),
+                ],
               ),
             ),
             Row(

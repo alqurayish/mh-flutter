@@ -98,6 +98,7 @@ class Employee {
     this.lat,
     this.long,
     this.pushNotificationDetails,
+    this.isSuggested
   });
 
   final String? id;
@@ -150,6 +151,7 @@ class Employee {
   final String? lat;
   final String? long;
   final PushNotificationDetails? pushNotificationDetails;
+  final bool? isSuggested;
 
   factory Employee.fromRawJson(String str) => Employee.fromJson(json.decode(str));
 
@@ -206,6 +208,7 @@ class Employee {
     lat: json["lat"],
     long: json["long"],
     pushNotificationDetails: json["pushNotificationDetails"] == null ? null : PushNotificationDetails.fromJson(json["pushNotificationDetails"]),
+    isSuggested: json['isSuggested']
   );
 
   Map<String, dynamic> toJson() => {
@@ -259,6 +262,7 @@ class Employee {
     "lat": lat,
     "long": long,
     "pushNotificationDetails": pushNotificationDetails?.toJson(),
+    "isSuggested": isSuggested
   };
 }
 

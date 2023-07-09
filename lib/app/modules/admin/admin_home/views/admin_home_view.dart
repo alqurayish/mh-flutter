@@ -104,8 +104,8 @@ class AdminHomeView extends GetView<AdminHomeController> {
                                       top: 4,
                                       right: 5,
                                       child: Visibility(
-                                        visible: controller.getTotalSuggestLeft > 0,
-                                        child: CustomBadge(controller.getTotalSuggestLeft.toString()),
+                                        visible: controller.numberOfRequestFromClient > 0,
+                                        child: CustomBadge(controller.numberOfRequestFromClient.toString()),
                                       ),
                                     ),
                                   ],

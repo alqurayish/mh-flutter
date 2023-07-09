@@ -151,13 +151,13 @@ class Utils {
       totalWorkingTimeInMinute: 0,
     );
 
-    DateTime? employeeCheckin = element.checkInCheckOutDetails?.checkInTime;
+    DateTime? employeeCheckIn = element.checkInCheckOutDetails?.checkInTime;
     DateTime? employeeCheckout = element.checkInCheckOutDetails?.checkOutTime;
     DateTime? clientCheckIn = element.checkInCheckOutDetails?.clientCheckInTime;
     DateTime? clientCheckOut = element.checkInCheckOutDetails?.clientCheckOutTime;
 
-    if (employeeCheckin != null) {
-      dailyStatistics.employeeCheckInTime = "${employeeCheckin.toLocal().hour} : ${employeeCheckin.toLocal().minute}";
+    if (employeeCheckIn != null) {
+      dailyStatistics.employeeCheckInTime = "${employeeCheckIn.toLocal().hour} : ${employeeCheckIn.toLocal().minute}";
     }
     if (employeeCheckout != null) {
       dailyStatistics.employeeCheckOutTime =
@@ -178,7 +178,7 @@ class Utils {
       dailyStatistics.clientBreakTime = "${element.checkInCheckOutDetails?.clientBreakTime ?? 0} min";
     }
 
-    DateTime? tempCheckInTime = clientCheckIn ?? employeeCheckin;
+    DateTime? tempCheckInTime = clientCheckIn ?? employeeCheckIn;
     DateTime? tempCheckOutTime = clientCheckOut ?? employeeCheckout;
     int? tempBreakTime = (element.checkInCheckOutDetails?.clientBreakTime ?? 0) == 0
         ? (element.checkInCheckOutDetails?.breakTime ?? 0)

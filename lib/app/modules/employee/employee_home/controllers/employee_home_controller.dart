@@ -182,7 +182,7 @@ class EmployeeHomeController extends GetxController {
       "checkInDistance": double.parse(getDistance.toStringAsFixed(2)),
     };
 
-    await _apiHelper.checkin(data).then((response) {
+    await _apiHelper.checkIn(data).then((response) {
       response.fold((CustomError customError) {
         CustomDialogue.information(
           context: context!,
