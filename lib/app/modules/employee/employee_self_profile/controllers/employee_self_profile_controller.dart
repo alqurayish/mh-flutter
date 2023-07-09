@@ -1,10 +1,13 @@
+import 'package:dartz/dartz.dart';
+
+import 'package:mh/app/models/custom_error.dart';
+
 import '../../../../common/controller/app_controller.dart';
 import '../../../../common/utils/exports.dart';
 import '../../../../models/employee_full_details.dart';
 import '../../../../repository/api_helper.dart';
 
 class EmployeeSelfProfileController extends GetxController {
-
   BuildContext? context;
 
   Rx<EmployeeFullDetails> employee = EmployeeFullDetails().obs;
@@ -25,7 +28,6 @@ class EmployeeSelfProfileController extends GetxController {
 
   RxString selectedCountry = "United Kingdom".obs;
 
-
   RxBool loading = false.obs;
 
   @override
@@ -38,18 +40,15 @@ class EmployeeSelfProfileController extends GetxController {
     selectedCountry.value = country!;
   }
 
-  void onUpdatePressed() {
-
-  }
+  void onUpdatePressed() {}
 
   Future<void> _getDetails() async {
     loading.value = true;
 
-    await _apiHelper.employeeFullDetails(appController.user.value.userId).then((response) {
-
+    await _apiHelper.employeeFullDetails(appController.user.value.userId).then((Either<CustomError, EmployeeFullDetails> response) {
       loading.value = false;
 
-      response.fold((l) {
+      response.fold((CustomError l) {
         Logcat.msg(l.msg);
       }, (r) {
         employee.value = r;
@@ -57,15 +56,15 @@ class EmployeeSelfProfileController extends GetxController {
 
         tecFirstName.text = employee.value.details?.firstName ?? "";
         tecLastName.text = employee.value.details?.lastName ?? "";
-        tecDob.text = employee.value.details?.dateOfBirth == null ? "" : employee.value.details!.dateOfBirth.toString().split(" ").first;
+        tecDob.text = employee.value.details?.dateOfBirth == null
+            ? ""
+            : employee.value.details!.dateOfBirth.toString().split(" ").first;
         tecPhoneNumber.text = employee.value.details?.phoneNumber ?? "";
         tecEmail.text = employee.value.details?.email ?? "";
         tecPresentAddress.text = employee.value.details?.presentAddress ?? "";
         tecPermanentAddress.text = employee.value.details?.permanentAddress ?? "";
         tecEmergencyContact.text = employee.value.details?.phoneNumber ?? "";
-
       });
-
     });
   }
 }

@@ -11,6 +11,7 @@ class EmployeeDetailsController extends GetxController {
 
   late Employee employee;
   late bool showAsAdmin;
+  late String fromWhere;
 
   final ShortlistController shortlistController = Get.find();
 
@@ -18,6 +19,7 @@ class EmployeeDetailsController extends GetxController {
   void onInit() {
     employee = Get.arguments[MyStrings.arg.data];
     showAsAdmin = Get.arguments[MyStrings.arg.showAsAdmin];
+    fromWhere = Get.arguments[MyStrings.arg.fromWhere];
     super.onInit();
   }
 

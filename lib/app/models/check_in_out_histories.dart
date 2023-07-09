@@ -33,7 +33,7 @@ class CheckInCheckOutHistory {
     total: json["total"],
     count: json["count"],
     next: json["next"],
-    checkInCheckOutHistory: json["checkInCheckOutHistory"] == null ? [] : List<CheckInCheckOutHistoryElement>.from(json["checkInCheckOutHistory"]!.map((x) => CheckInCheckOutHistoryElement.fromJson(x))),
+    checkInCheckOutHistory: json["result"] == null ? [] : List<CheckInCheckOutHistoryElement>.from(json["result"]!.map((x) => CheckInCheckOutHistoryElement.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
@@ -43,7 +43,7 @@ class CheckInCheckOutHistory {
     "total": total,
     "count": count,
     "next": next,
-    "checkInCheckOutHistory": checkInCheckOutHistory == null ? [] : List<dynamic>.from(checkInCheckOutHistory!.map((x) => x.toJson())),
+    "result": checkInCheckOutHistory == null ? [] : List<dynamic>.from(checkInCheckOutHistory!.map((x) => x.toJson())),
   };
 }
 

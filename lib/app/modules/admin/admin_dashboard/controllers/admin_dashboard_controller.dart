@@ -75,6 +75,7 @@ class AdminDashboardController extends GetxController {
       }, (CheckInCheckOutHistory checkInCheckOutHistory) async {
 
         this.checkInCheckOutHistory.value = checkInCheckOutHistory;
+        print('AdminDashboardController._fetchCheckInOutHistory: ${this.checkInCheckOutHistory.value.checkInCheckOutHistory}');
         history..clear()..addAll(checkInCheckOutHistory.checkInCheckOutHistory ?? []);
 
         _updateSummary();

@@ -208,7 +208,7 @@ class Utils {
 
     dailyStatistics.restaurantName = element.restaurantDetails?.restaurantName ?? '';
     dailyStatistics.employeeName = element.employeeDetails?.name ?? '';
-    dailyStatistics.position = '-';
+    dailyStatistics.position = element.employeeDetails?.positionName??'';
     dailyStatistics.complain = '-';
     return dailyStatistics;
   }

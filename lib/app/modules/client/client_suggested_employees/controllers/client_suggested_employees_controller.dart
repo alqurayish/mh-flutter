@@ -1,8 +1,11 @@
+import 'package:dartz/dartz.dart';
 import 'package:mh/app/common/widgets/custom_dialog.dart';
 import 'package:mh/app/common/widgets/custom_loader.dart';
 import 'package:mh/app/models/custom_error.dart';
+import 'package:mh/app/models/employee_full_details.dart';
 import 'package:mh/app/modules/employee/employee_home/models/single_notification_model_for_employee.dart';
 import 'package:mh/app/repository/api_helper.dart';
+import 'package:mh/app/routes/app_pages.dart';
 
 import '../../../../common/controller/app_controller.dart';
 import '../../../../common/utils/exports.dart';
@@ -54,11 +57,20 @@ class ClientSuggestedEmployeesController extends GetxController {
     return employees;
   }
 
-  void onEmployeeItemClick({required SuggestedEmployeeDetail employeeDetail}) {
-    /*Get.toNamed(Routes.employeeDetails, arguments: {
-      MyStrings.arg.data : employeeDetail,
-      MyStrings.arg.showAsAdmin : false,
-    });*/
+  void onEmployeeItemClick({required String employeeId}) {
+    CustomLoader.show(context!);
+    _apiHelper.employeeFullDetails(employeeId).then((Either<CustomError, EmployeeFullDetails> responseData) {
+      CustomLoader.hide(context!);
+      responseData.fold((CustomError l) {
+        Logcat.msg(l.msg);
+      }, (EmployeeFullDetails r) {
+        Get.toNamed(Routes.employeeDetails, arguments: {
+          MyStrings.arg.data: r.details,
+          MyStrings.arg.showAsAdmin: false,
+          MyStrings.arg.fromWhere: MyStrings.arg.clientSuggestedViewText
+        });
+      });
+    });
   }
 
   void onCancelClick({required String employeeId}) {

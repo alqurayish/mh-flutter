@@ -128,6 +128,10 @@ class _Arguements {
   String clientId = "clientId";
   String employeeId = "employeeId";
   String supportChatDocId = "supportChatDocId";
+
+  String fromWhere = "fromWhere";
+  String clientSuggestedViewText = "client_suggested_view";
+  String mhEmployeeViewByIdText = "mh_employee_view_by_id";
 }
 
 class _PayloadScreen {

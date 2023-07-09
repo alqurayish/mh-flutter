@@ -108,24 +108,19 @@ class EmployeeDetailsView extends GetView<EmployeeDetailsController> {
               style: MyColors.l111111_dwhite(controller.context!).medium16,
             ),
             SizedBox(height: 10.h),
-            if(position != null && position.isNotEmpty)
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10.0,vertical: 3.0),
-              decoration: const BoxDecoration(
-                color: MyColors.c_C6A34F,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(5.0),
-                  bottomRight: Radius.circular(5.0)
-                )
+            if (position != null && position.isNotEmpty)
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 3.0),
+                decoration: const BoxDecoration(
+                    color: MyColors.c_C6A34F,
+                    borderRadius: BorderRadius.only(topLeft: Radius.circular(5.0), bottomRight: Radius.circular(5.0))),
+                child: Text(
+                  position,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(color: MyColors.white, fontWeight: FontWeight.bold),
+                ),
               ),
-              child: Text(
-                position,
-                textAlign: TextAlign.center,
-                style: const TextStyle(color: MyColors.white, fontWeight: FontWeight.bold),
-              ),
-            ),
-            if(position != null && position.isNotEmpty)
-            SizedBox(height: 10.h),
+            if (position != null && position.isNotEmpty) SizedBox(height: 10.h),
             Visibility(
               visible: age != null,
               child: Column(
@@ -218,7 +213,8 @@ class EmployeeDetailsView extends GetView<EmployeeDetailsController> {
             SizedBox(height: 5.h),
             Row(
               children: [
-                _detailsItem(MyAssets.rate, MyStrings.rating.tr, "£${(controller.employee.rating ?? 0)}/hour"),
+                _detailsItem(MyAssets.rate, MyStrings.rate.tr,
+                    "£${(controller.employee.hourlyRate?.toStringAsFixed(2) ?? 0)}/hour"),
                 const Spacer(),
                 _detailsItem(MyAssets.exp, MyStrings.exp.tr, "${(controller.employee.employeeExperience ?? 0)} years"),
               ],
@@ -284,21 +280,23 @@ class EmployeeDetailsView extends GetView<EmployeeDetailsController> {
       );
 
   Widget _bottomBar(BuildContext context) {
-    return CustomBottomBar(
-      child: CustomButtons.button(
-        onTap: controller.showAsAdmin
-            ? controller.onChatClick
-            : (controller.employee.isHired ?? false)
-                ? null
-                : controller.onBookNowClick,
-        text: controller.showAsAdmin
-            ? "Chat"
-            : (controller.employee.isHired ?? false)
-                ? "Booked"
-                : "Book Now",
-        height: 52.h,
-        customButtonStyle: CustomButtonStyle.radiusTopBottomCorner,
-      ),
-    );
+    return controller.fromWhere == MyStrings.arg.mhEmployeeViewByIdText
+        ? CustomBottomBar(
+            child: CustomButtons.button(
+              onTap: controller.showAsAdmin
+                  ? controller.onChatClick
+                  : (controller.employee.isHired ?? false)
+                      ? null
+                      : controller.onBookNowClick,
+              text: controller.showAsAdmin
+                  ? "Chat"
+                  : (controller.employee.isHired ?? false)
+                      ? "Booked"
+                      : "Book Now",
+              height: 52.h,
+              customButtonStyle: CustomButtonStyle.radiusTopBottomCorner,
+            ),
+          )
+        : const Wrap();
   }
 }
