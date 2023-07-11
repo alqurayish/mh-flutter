@@ -55,6 +55,8 @@ class NotificationModel {
   final String? fromTime;
   final String? toTime;
   final String? hiredStatus;
+  final String? hiredByLat;
+  final String? hiredByLong;
 
   NotificationModel(
       {this.id,
@@ -77,6 +79,8 @@ class NotificationModel {
       this.createdBy,
       this.createdAt,
       this.updatedAt,
+      this.hiredByLat,
+      this.hiredByLong,
       this.hiredStatus});
 
   factory NotificationModel.fromJson(Map<String, dynamic> json) => NotificationModel(
@@ -100,5 +104,7 @@ class NotificationModel {
       toDate: json["toDate"] == null ? null : DateTime.parse(json["toDate"]),
       fromTime: json["fromTime"],
       toTime: json["toTime"],
-      hiredStatus: json["hiredStatus"]);
+      hiredStatus: json["hiredStatus"],
+      hiredByLat: json["hiredByLat"],
+      hiredByLong: json["hiredByLong"]);
 }

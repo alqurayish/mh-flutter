@@ -34,6 +34,7 @@ class EmployeeHomeController extends GetxController {
 
   RxBool loading = false.obs;
   RxBool loadingCurrentLocation = false.obs;
+  RxBool currentLocationDataLoaded = false.obs;
 
   // done
   RxBool checkIn = false.obs;
@@ -74,7 +75,7 @@ class EmployeeHomeController extends GetxController {
     Get.toNamed(Routes.employeeDashboard);
   }
 
-  void onEmergencyCheckinCheckout() {
+  void onEmergencyCheckInCheckout() {
     Get.toNamed(Routes.employeeEmergencyCheckInOut);
   }
 
@@ -278,6 +279,7 @@ class EmployeeHomeController extends GetxController {
         showSlider.value = false;
       }, (Position position) {
         currentLocation = position;
+        currentLocationDataLoaded.value = true;
 
         if (getDistance > 200) {
           showSlider.value = false;

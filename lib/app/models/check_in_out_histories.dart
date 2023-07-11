@@ -1,5 +1,9 @@
 import 'dart:convert';
 
+import 'package:get/get.dart';
+import 'package:mh/app/modules/client/client_home/controllers/client_home_controller.dart';
+import 'package:mh/app/modules/employee/employee_home/controllers/employee_home_controller.dart';
+
 import 'check_in_check_out_details.dart';
 import 'employee_details.dart';
 
@@ -27,24 +31,33 @@ class CheckInCheckOutHistory {
   String toRawJson() => json.encode(toJson());
 
   factory CheckInCheckOutHistory.fromJson(Map<String, dynamic> json) => CheckInCheckOutHistory(
-    status: json["status"],
-    statusCode: json["statusCode"],
-    message: json["message"],
-    total: json["total"],
-    count: json["count"],
-    next: json["next"],
-    checkInCheckOutHistory: json["result"] == null ? [] : List<CheckInCheckOutHistoryElement>.from(json["result"]!.map((x) => CheckInCheckOutHistoryElement.fromJson(x))),
-  );
+        status: json["status"],
+        statusCode: json["statusCode"],
+        message: json["message"],
+        total: json["total"],
+        count: json["count"],
+        next: json["next"],
+        checkInCheckOutHistory: Get.isRegistered<EmployeeHomeController>() == true
+            ? json["checkInCheckOutHistory"] == null
+                ? []
+                : List<CheckInCheckOutHistoryElement>.from(
+                    json["checkInCheckOutHistory"]!.map((x) => CheckInCheckOutHistoryElement.fromJson(x)))
+            : json["result"] == null
+                ? []
+                : List<CheckInCheckOutHistoryElement>.from(
+                    json["result"]!.map((x) => CheckInCheckOutHistoryElement.fromJson(x))),
+      );
 
   Map<String, dynamic> toJson() => {
-    "status": status,
-    "statusCode": statusCode,
-    "message": message,
-    "total": total,
-    "count": count,
-    "next": next,
-    "result": checkInCheckOutHistory == null ? [] : List<dynamic>.from(checkInCheckOutHistory!.map((x) => x.toJson())),
-  };
+        "status": status,
+        "statusCode": statusCode,
+        "message": message,
+        "total": total,
+        "count": count,
+        "next": next,
+        "result":
+            checkInCheckOutHistory == null ? [] : List<dynamic>.from(checkInCheckOutHistory!.map((x) => x.toJson())),
+      };
 }
 
 class CheckInCheckOutHistoryElement {
@@ -80,43 +93,47 @@ class CheckInCheckOutHistoryElement {
   final DateTime? updatedAt;
   final int? v;
 
-  factory CheckInCheckOutHistoryElement.fromRawJson(String str) => CheckInCheckOutHistoryElement.fromJson(json.decode(str));
+  factory CheckInCheckOutHistoryElement.fromRawJson(String str) =>
+      CheckInCheckOutHistoryElement.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
   factory CheckInCheckOutHistoryElement.fromJson(Map<String, dynamic> json) => CheckInCheckOutHistoryElement(
-    id: json["_id"],
-    employeeId: json["employeeId"],
-    currentHiredEmployeeId: json["currentHiredEmployeeId"],
-    hiredBy: json["hiredBy"],
-    employeeDetails: json["employeeDetails"] == null ? null : EmployeeDetails.fromJson(json["employeeDetails"]),
-    restaurantDetails: json["restaurantDetails"] == null ? null : RestaurantDetails.fromJson(json["restaurantDetails"]),
-    checkInCheckOutDetails: json["checkInCheckOutDetails"] == null ? null : CheckInCheckOutDetails.fromJson(json["checkInCheckOutDetails"]),
-    fromDate: json["fromDate"] == null ? null : DateTime.parse(json["fromDate"]),
-    toDate: json["toDate"] == null ? null : DateTime.parse(json["toDate"]),
-    hiredDate: json["hiredDate"] == null ? null : DateTime.parse(json["hiredDate"]),
-    createdBy: json["createdBy"],
-    createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
-    updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
-    v: json["__v"],
-  );
+        id: json["_id"],
+        employeeId: json["employeeId"],
+        currentHiredEmployeeId: json["currentHiredEmployeeId"],
+        hiredBy: json["hiredBy"],
+        employeeDetails: json["employeeDetails"] == null ? null : EmployeeDetails.fromJson(json["employeeDetails"]),
+        restaurantDetails:
+            json["restaurantDetails"] == null ? null : RestaurantDetails.fromJson(json["restaurantDetails"]),
+        checkInCheckOutDetails: json["checkInCheckOutDetails"] == null
+            ? null
+            : CheckInCheckOutDetails.fromJson(json["checkInCheckOutDetails"]),
+        fromDate: json["fromDate"] == null ? null : DateTime.parse(json["fromDate"]),
+        toDate: json["toDate"] == null ? null : DateTime.parse(json["toDate"]),
+        hiredDate: json["hiredDate"] == null ? null : DateTime.parse(json["hiredDate"]),
+        createdBy: json["createdBy"],
+        createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
+        updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
+        v: json["__v"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "_id": id,
-    "employeeId": employeeId,
-    "currentHiredEmployeeId": currentHiredEmployeeId,
-    "hiredBy": hiredBy,
-    "employeeDetails": employeeDetails?.toJson(),
-    "restaurantDetails": restaurantDetails?.toJson(),
-    "checkInCheckOutDetails": checkInCheckOutDetails?.toJson(),
-    "fromDate": fromDate?.toIso8601String(),
-    "toDate": toDate?.toIso8601String(),
-    "hiredDate": hiredDate?.toIso8601String(),
-    "createdBy": createdBy,
-    "createdAt": createdAt?.toIso8601String(),
-    "updatedAt": updatedAt?.toIso8601String(),
-    "__v": v,
-  };
+        "_id": id,
+        "employeeId": employeeId,
+        "currentHiredEmployeeId": currentHiredEmployeeId,
+        "hiredBy": hiredBy,
+        "employeeDetails": employeeDetails?.toJson(),
+        "restaurantDetails": restaurantDetails?.toJson(),
+        "checkInCheckOutDetails": checkInCheckOutDetails?.toJson(),
+        "fromDate": fromDate?.toIso8601String(),
+        "toDate": toDate?.toIso8601String(),
+        "hiredDate": hiredDate?.toIso8601String(),
+        "createdBy": createdBy,
+        "createdAt": createdAt?.toIso8601String(),
+        "updatedAt": updatedAt?.toIso8601String(),
+        "__v": v,
+      };
 }
 
 class RestaurantDetails {
@@ -141,20 +158,20 @@ class RestaurantDetails {
   String toRawJson() => json.encode(toJson());
 
   factory RestaurantDetails.fromJson(Map<String, dynamic> json) => RestaurantDetails(
-    hiredBy: json["hiredBy"],
-    restaurantName: json["restaurantName"],
-    restaurantAddress: json["restaurantAddress"],
-    lat: json["lat"],
-    long: json["long"],
-    id: json["_id"],
-  );
+        hiredBy: json["hiredBy"],
+        restaurantName: json["restaurantName"],
+        restaurantAddress: json["restaurantAddress"],
+        lat: json["lat"],
+        long: json["long"],
+        id: json["_id"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "hiredBy": hiredBy,
-    "restaurantName": restaurantName,
-    "restaurantAddress": restaurantAddress,
-    "lat": lat,
-    "long": long,
-    "_id": id,
-  };
+        "hiredBy": hiredBy,
+        "restaurantName": restaurantName,
+        "restaurantAddress": restaurantAddress,
+        "lat": lat,
+        "long": long,
+        "_id": id,
+      };
 }

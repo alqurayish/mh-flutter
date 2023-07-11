@@ -39,7 +39,8 @@ class EmployeeHomePromotionWidget extends GetWidget<EmployeeHomeController> {
                       children: [
                         Expanded(
                           flex: 3,
-                          child: Text("${controller.singleNotification.value.text}", style: MyColors.white.semiBold16),
+                          child:
+                              Text("${controller.singleNotification.value.text}", style: MyColors.white.semiBold16),
                         ),
                         SizedBox(
                           width: 10.w,
