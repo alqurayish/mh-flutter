@@ -512,6 +512,7 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
     if (response.statusCode == null) response = await put("current-hired-employees/update", jsonEncode(data));
     if (response.statusCode == null) response = await put("current-hired-employees/update", jsonEncode(data));
 
+    print('ApiHelperImpl.checkout: ${response.bodyString}');
     return _convert<Response>(
       response,
       (Map<String, dynamic> data) {},
@@ -571,6 +572,7 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
     if (response.statusCode == null) response = await get("current-hired-employees/details/$employeeId");
     if (response.statusCode == null) response = await get("current-hired-employees/details/$employeeId");
 
+    print('ApiHelperImpl.getTodayCheckInOutDetails: ${response.bodyString}');
     return _convert<TodayCheckInOutDetails>(
       response,
       TodayCheckInOutDetails.fromJson,
