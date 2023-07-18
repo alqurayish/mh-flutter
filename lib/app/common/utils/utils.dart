@@ -212,4 +212,11 @@ class Utils {
     dailyStatistics.complain = '-';
     return dailyStatistics;
   }
+
+ static String getCurrentTimeWithAMPM() {
+    DateTime now = DateTime.now();
+    String formattedTime = DateFormat('hh:mm a').format(now);
+    return formattedTime;
+  }
+
 }

@@ -62,7 +62,7 @@ class ClientTermsConditionForHireController extends GetxController with StateMix
         shortlistController.selectedForHire
           ..clear()
           ..refresh();
-        Get.until((route) => Get.currentRoute == Routes.clientHome);
+        Get.until((Route route) => Get.currentRoute == Routes.clientHome);
         Get.toNamed(Routes.hireStatus);
       });
     });

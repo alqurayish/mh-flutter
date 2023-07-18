@@ -12,15 +12,12 @@ import '../models/shortlisted_employees.dart';
 class ClientShortlistedController extends GetxController {
   BuildContext? context;
 
-  double hourlyRate = 0.0;
-
   final ApiHelper _apiHelper = Get.find();
 
   final ShortlistController shortlistController = Get.find();
 
   @override
   void onInit() {
-    hourlyRate = Get.arguments ?? 0.0;
     super.onInit();
   }
 
@@ -152,4 +149,6 @@ class ClientShortlistedController extends GetxController {
 
     return totalRate;
   }
+
+
 }

@@ -147,7 +147,6 @@ class EmployeeHomeController extends GetxController {
   }
 
   Future<void> onBreakTimePickDone(int hour, int min) async {
-
     Map<String, dynamic> data = {
       "id": todayCheckInOutDetails.value.details!.id!,
       "employeeId": appController.user.value.userId,
@@ -156,7 +155,8 @@ class EmployeeHomeController extends GetxController {
       if (currentLocation?.longitude != null) "long": currentLocation?.longitude.toString(),
       "breakTime": (hour * 60) + (min * 5),
       "checkOutDistance": double.parse(getDistance.toStringAsFixed(2)),
-      "totalWorkingHour": double.parse((double.parse(dailyStatistics.workingHour.split(' ').first) / 60).toStringAsFixed(2))
+      "totalWorkingHour":
+          double.parse((double.parse(dailyStatistics.workingHour.split(' ').first) / 60).toStringAsFixed(2))
     };
 
     CustomLoader.show(context!);
@@ -296,8 +296,8 @@ class EmployeeHomeController extends GetxController {
   double get getDistance => LocationController.calculateDistance(
       targetLat: double.parse(appController.user.value.employee!.hiredByLat!),
       targetLong: double.parse(appController.user.value.employee!.hiredByLong!),
-      currentLat: 23.76860969911456, //currentLocation!.latitude,
-      currentLong: 90.35406902432442 //currentLocation!.longitude,
+      currentLat: currentLocation!.latitude, //23.76860969911456,
+      currentLong: currentLocation!.longitude //90.35406902432442
       );
 
   void _trackUnreadMsg() {

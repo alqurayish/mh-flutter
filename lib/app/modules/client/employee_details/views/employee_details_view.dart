@@ -214,7 +214,7 @@ class EmployeeDetailsView extends GetView<EmployeeDetailsController> {
             Row(
               children: [
                 _detailsItem(MyAssets.rate, MyStrings.rate.tr,
-                    "£${(controller.employee.hourlyRate?.toStringAsFixed(2) ?? 0)}/hour"),
+                    "£${(controller.employee.contractorHourlyRate?.toStringAsFixed(2) ?? 0)}/hour"),
                 const Spacer(),
                 _detailsItem(MyAssets.exp, MyStrings.exp.tr, "${(controller.employee.employeeExperience ?? 0)} years"),
               ],
