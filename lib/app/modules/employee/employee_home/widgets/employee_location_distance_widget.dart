@@ -18,8 +18,8 @@ class EmployeeLocationDistanceWidget extends GetWidget<EmployeeHomeController> {
         return const Wrap();
       } else {
         return Container(
-          margin: const EdgeInsets.only(top: 20.0),
-          padding: const EdgeInsets.all(20),
+          margin: const EdgeInsets.only(top: 15.0),
+          padding: const EdgeInsets.all(15),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10.0),
             color: MyColors.c_C6A34F.withOpacity(.6),

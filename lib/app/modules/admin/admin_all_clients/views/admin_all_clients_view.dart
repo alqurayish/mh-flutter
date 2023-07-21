@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+
 import '../../../../common/utils/exports.dart';
 import '../../../../common/widgets/custom_appbar.dart';
 import '../../../../common/widgets/no_item_found.dart';
@@ -63,7 +65,6 @@ class AdminAllClientsView extends GetView<AdminAllClientsController> {
 
   Widget _employeeItem(int index, Employee user) {
     return Container(
-      height: 105.h,
       margin: EdgeInsets.symmetric(horizontal: 24.w).copyWith(
         bottom: 20.h,
       ),
@@ -106,7 +107,9 @@ class AdminAllClientsView extends GetView<AdminAllClientsController> {
                   child: Icon(
                     Icons.chat,
                     size: 20,
-                    color: controller.adminHomeController.chatUserIds.contains(user.id) ? MyColors.c_C6A34F : MyColors.stock,
+                    color: controller.adminHomeController.chatUserIds.contains(user.id)
+                        ? MyColors.c_C6A34F
+                        : MyColors.stock,
                   ),
                 ),
               ),
@@ -129,8 +132,8 @@ class AdminAllClientsView extends GetView<AdminAllClientsController> {
 
                 Expanded(
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-
                       Row(
                         children: [
                           Expanded(
@@ -155,6 +158,11 @@ class AdminAllClientsView extends GetView<AdminAllClientsController> {
 
                       Row(
                         children: [
+                          const CircleAvatar(
+                              radius: 11.0,
+                              backgroundColor: MyColors.c_C6A34F,
+                              child: Icon(Icons.add_road_rounded, size: 15, color: MyColors.c_FFFFFF)),
+                          SizedBox(width: 5.w),
                           Expanded(
                             child: Text(
                               user.restaurantAddress ?? "No address found",
@@ -169,6 +177,22 @@ class AdminAllClientsView extends GetView<AdminAllClientsController> {
 
                       SizedBox(height: 8.h),
 
+                      Row(
+                        children: [
+                          const CircleAvatar(
+                            radius: 11.0,
+                              backgroundColor: MyColors.c_C6A34F,
+                              child: Icon(CupertinoIcons.phone, size: 15, color: MyColors.c_FFFFFF)),
+                          SizedBox(width: 5.w),
+                          Text(
+                            user.phoneNumber ?? " ",
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: MyColors.l111111_dwhite(controller.context!).regular14,
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 8.h),
                       // Row(
                       //   children: [
                       //     Text("Discount ${user.clientDiscount ?? 0}%"),
@@ -186,35 +210,35 @@ class AdminAllClientsView extends GetView<AdminAllClientsController> {
   }
 
   Widget _name(String name) => Text(
-    name,
-    style: MyColors.c_C6A34F.semiBold18,
-  );
+        name,
+        style: MyColors.c_C6A34F.semiBold18,
+      );
 
   Widget _rating(int rating) => Visibility(
-    visible: rating > 0,
-    child: Row(
-      children: [
-        SizedBox(width: 10.w),
-        Container(
-          height: 2.h,
-          width: 2.h,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: MyColors.l111111_dwhite(controller.context!),
-          ),
+        visible: rating > 0,
+        child: Row(
+          children: [
+            SizedBox(width: 10.w),
+            Container(
+              height: 2.h,
+              width: 2.h,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: MyColors.l111111_dwhite(controller.context!),
+              ),
+            ),
+            SizedBox(width: 10.w),
+            const Icon(
+              Icons.star,
+              color: MyColors.c_FFA800,
+              size: 16,
+            ),
+            SizedBox(width: 2.w),
+            Text(
+              rating.toString(),
+              style: MyColors.l111111_dwhite(controller.context!).medium14,
+            ),
+          ],
         ),
-        SizedBox(width: 10.w),
-        const Icon(
-          Icons.star,
-          color: MyColors.c_FFA800,
-          size: 16,
-        ),
-        SizedBox(width: 2.w),
-        Text(
-          rating.toString(),
-          style: MyColors.l111111_dwhite(controller.context!).medium14,
-        ),
-      ],
-    ),
-  );
+      );
 }

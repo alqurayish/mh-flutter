@@ -207,7 +207,7 @@ class MhEmployeesByIdView extends GetView<MhEmployeesByIdController> {
 
                       Row(
                         children: [
-                          _detailsItem(MyAssets.rate, MyStrings.rate.tr, "£${(user.contractorHourlyRate ?? 0.0).toStringAsFixed(2)}"),
+                          _detailsItem(MyAssets.rate, MyStrings.rate.tr, "£${(user.hourlyRate ?? 0.0).toStringAsFixed(2)}"),
                         ],
                       ),
 

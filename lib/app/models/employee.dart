@@ -80,7 +80,7 @@ class Employee {
   final String? hiredByRestaurantAddress;
   final bool? isMhEmployee;
   final List<String>? languages;
-  final int? clientDiscount;
+  final double? clientDiscount;
   final String? hiredByLat;
   final String? hiredByLong;
   final int? iat;
@@ -128,7 +128,7 @@ class Employee {
     hiredByRestaurantAddress: json["hiredByRestaurantAddress"],
     isMhEmployee: json["isMhEmployee"],
     languages: json["languages"] == null ? [] : List<String>.from(json["languages"]!.map((x) => x)),
-    clientDiscount: json["clientDiscount"],
+    clientDiscount: json["clientDiscount"] == null ? 0.0 : double.parse(json['clientDiscount'].toString()),
     hiredByLat: json["hiredByLat"],
     hiredByLong: json["hiredByLong"],
     iat: json["iat"],

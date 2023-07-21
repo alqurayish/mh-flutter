@@ -1,13 +1,10 @@
 import 'dart:convert';
-
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:mh/app/common/controller/app_controller.dart';
 import 'package:mh/app/modules/client/client_home/controllers/client_home_controller.dart';
 import 'package:mh/app/modules/employee/employee_home/controllers/employee_home_controller.dart';
-import 'package:mh/app/modules/notifications/controllers/notifications_controller.dart';
-
 import '../../modules/admin/admin_home/controllers/admin_home_controller.dart';
 import '../utils/exports.dart';
 import 'notification_click_helper.dart';
@@ -18,7 +15,7 @@ class LocalNotificationService {
   static Future<void> initialize() async {
     const InitializationSettings initializationSettings = InitializationSettings(
       android: AndroidInitializationSettings("@drawable/icon_notification"),
-      iOS: IOSInitializationSettings(
+      iOS: DarwinInitializationSettings(
         requestAlertPermission: true,
         requestBadgePermission: true,
         requestSoundPermission: true,
@@ -34,23 +31,22 @@ class LocalNotificationService {
 
     _notificationsPlugin.initialize(
       initializationSettings,
-      onSelectNotification: (String? payload) async {
-        if (kDebugMode) {
-          print("onSelectNotification");
-        }
-
+      onDidReceiveBackgroundNotificationResponse: (NotificationResponse notificationResponse) {
         // when app running click
-        if (payload!.isNotEmpty) {
-          NotificationClickHelper.goToRoute(payload);
+        if (notificationResponse.payload != null && notificationResponse.payload!.isNotEmpty) {
+          NotificationClickHelper.goToRoute(notificationResponse.payload);
+        }
+      },
+      onDidReceiveNotificationResponse: (NotificationResponse notificationResponse) {
+        // when app running click
+        if (notificationResponse.payload != null && notificationResponse.payload!.isNotEmpty) {
+          NotificationClickHelper.goToRoute(notificationResponse.payload);
         }
       },
     );
 
     FirebaseMessaging.instance.getInitialMessage().then(
-      (message) {
-        if (kDebugMode) {
-          print("FirebaseMessaging.instance.getInitialMessage");
-        }
+      (RemoteMessage? message) {
         if (message != null) {
           // NotificationClickHelper.goToRoute(jsonEncode(message.data));
           // if (message.data['_id'] != null) {
@@ -69,9 +65,7 @@ class LocalNotificationService {
     // 2. This method only call when App in forground it mean app must be opened
     FirebaseMessaging.onMessage.listen(
       (message) {
-        if (kDebugMode) {
-          print("FirebaseMessaging.onMessage.listen");
-        }
+
         if (message.notification != null) {
           // print(message.notification?.title);
           // print(message.notification?.body);f
@@ -88,8 +82,6 @@ class LocalNotificationService {
           }
 
           LocalNotificationService.showNotification(message);
-          //Get.put(NotificationsController()).getNotificationList();
-          print('LocalNotificationService.initialize: ${Get.isRegistered<EmployeeHomeController>()}');
           if (Get.isRegistered<EmployeeHomeController>()) {
             Get.find<EmployeeHomeController>().homeMethods();
           } else if (Get.isRegistered<AdminHomeController>()) {

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:mh/app/modules/employee/employee_home/widgets/emloyee_home_promotion_widget.dart';
 import 'package:mh/app/modules/employee/employee_home/widgets/employee_location_widget.dart';
+import 'package:mh/app/modules/employee/employee_home/widgets/employee_restaurant_address_widget.dart';
 import 'package:mh/app/modules/employee/employee_home/widgets/employee_todays_dashboard_widget.dart';
 import 'package:mh/app/routes/app_pages.dart';
 import '../../../../common/utils/exports.dart';
@@ -83,15 +84,11 @@ class EmployeeHomeView extends GetView<EmployeeHomeController> {
                             SizedBox(height: 20.h),
                             Text("Hi, ${controller.appController.user.value.employee?.name ?? "-"}",
                                 style: MyColors.l111111_dwhite(controller.context!).semiBold20),
-
-                            SizedBox(height: 20.h),
-
+                            SizedBox(height: 30.h),
                             const EmployeeHomePromotionWidget(),
-
-                           const EmployeeLocationDistanceWidget(),
-
-                            SizedBox(height: 40.h),
-
+                            const EmployeeLocationDistanceWidget(),
+                            const EmployeeRestaurantAddressWidget(),
+                            SizedBox(height: 30.h),
                             Row(
                               children: [
                                 Expanded(
@@ -138,9 +135,7 @@ class EmployeeHomeView extends GetView<EmployeeHomeController> {
                                 ),
                               ],
                             ),
-
                             SizedBox(height: 30.h),
-
                             Stack(
                               children: [
                                 CustomHelpSupport(
@@ -269,5 +264,4 @@ class EmployeeHomeView extends GetView<EmployeeHomeController> {
     style: MyColors.l777777_dtext(controller.context!).medium15,
   ));
 >>>>>>> main*/
-
 }

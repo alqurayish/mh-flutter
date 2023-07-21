@@ -243,7 +243,7 @@ class ClientShortlistedView extends GetView<ClientShortlistedController> {
                       employee.toTime != null &&
                       employee.employeeDetails?.hourlyRate != null)
                   ? 'Total Rate: £ ${controller.calculateTotalRate(fromDateStr: employee.fromDate.toString(), toDateStr: employee.toDate.toString(), fromTimeStr: employee.fromTime.toString(), toTimeStr: employee.toTime.toString(), hourlyRate: employee.employeeDetails?.hourlyRate ?? 0.0).toStringAsFixed(2)}'
-                  : 'Hourly Rate: £ ${employee.employeeDetails?.contractorHourlyRate!.toStringAsFixed(2) ?? '0.00'}',
+                  : 'Hourly Rate: £ ${employee.employeeDetails?.hourlyRate!.toStringAsFixed(2) ?? '0.00'}',
               style: const TextStyle(color: MyColors.c_FFFFFF),
             )))
       ],

@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+
 import '../../../../common/utils/exports.dart';
 import '../../../../common/widgets/custom_appbar_back_button.dart';
 import '../../../../common/widgets/custom_bottombar.dart';
@@ -83,13 +85,13 @@ class EmployeeDetailsView extends GetView<EmployeeDetailsController> {
         ],
       );
 
-  Widget _base({
-    required Widget child,
-    required String title,
-    String? position,
-    String? age,
-    String? rating,
-  }) =>
+  Widget _base(
+          {required Widget child,
+          required String title,
+          String? position,
+          String? age,
+          String? rating,
+          String? phone}) =>
       Container(
         padding: EdgeInsets.fromLTRB(35.w, 13.h, 35.w, 13.h),
         decoration: BoxDecoration(
@@ -108,6 +110,19 @@ class EmployeeDetailsView extends GetView<EmployeeDetailsController> {
               style: MyColors.l111111_dwhite(controller.context!).medium16,
             ),
             SizedBox(height: 10.h),
+            if (phone != null && phone.isNotEmpty)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(CupertinoIcons.phone_solid, color: MyColors.c_C6A34F, size: 20),
+                  Text(
+                    phone,
+                    textAlign: TextAlign.center,
+                    style: MyColors.l111111_dwhite(controller.context!).medium15,
+                  ),
+                ],
+              ),
+            if (phone != null && phone.isNotEmpty) SizedBox(height: 10.h),
             if (position != null && position.isNotEmpty)
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 3.0),
@@ -205,6 +220,7 @@ class EmployeeDetailsView extends GetView<EmployeeDetailsController> {
       );
 
   Widget get _basicInfo => _base(
+        phone: controller.employee.phoneNumber ?? '',
         position: controller.employee.positionName ?? "-",
         title: "${controller.employee.firstName ?? "-"} ${controller.employee.lastName ?? ""}",
         age: MyStrings.ageWithYears.trParams({"year": Utils.calculateAge(controller.employee.dateOfBirth)}),
@@ -214,7 +230,7 @@ class EmployeeDetailsView extends GetView<EmployeeDetailsController> {
             Row(
               children: [
                 _detailsItem(MyAssets.rate, MyStrings.rate.tr,
-                    "£${(controller.employee.contractorHourlyRate?.toStringAsFixed(2) ?? 0)}/hour"),
+                    "£${(controller.employee.hourlyRate?.toStringAsFixed(2) ?? 0)}/hour"),
                 const Spacer(),
                 _detailsItem(MyAssets.exp, MyStrings.exp.tr, "${(controller.employee.employeeExperience ?? 0)} years"),
               ],
