@@ -110,7 +110,7 @@ class EmployeeDetailsView extends GetView<EmployeeDetailsController> {
               style: MyColors.l111111_dwhite(controller.context!).medium16,
             ),
             SizedBox(height: 10.h),
-            if (phone != null && phone.isNotEmpty)
+            if (phone != null && phone.isNotEmpty && controller.fromWhere == "admin_home_view")
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -122,7 +122,7 @@ class EmployeeDetailsView extends GetView<EmployeeDetailsController> {
                   ),
                 ],
               ),
-            if (phone != null && phone.isNotEmpty) SizedBox(height: 10.h),
+            if (phone != null && phone.isNotEmpty && controller.fromWhere == "admin_home_view") SizedBox(height: 10.h),
             if (position != null && position.isNotEmpty)
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 3.0),

@@ -413,4 +413,12 @@ class EmployeeHomeController extends GetxController {
       });
     });
   }
+
+/*  bool get showEmployeeLocationDistanceWidget {
+    return showNormalText.value == true ||
+        singleNotification.value.hiredStatus?.toUpperCase() == "DENY" ||
+        loadingCurrentLocation.value ||
+        currentLocationDataLoaded.value == false ||
+        showSlider.value == true;
+  }*/
 }

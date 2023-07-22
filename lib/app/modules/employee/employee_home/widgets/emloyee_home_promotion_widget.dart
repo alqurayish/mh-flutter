@@ -33,14 +33,13 @@ class EmployeeHomePromotionWidget extends GetWidget<EmployeeHomeController> {
               child: controller.singleNotification.value.hiredStatus != null &&
                       controller.singleNotification.value.hiredStatus?.toUpperCase() == 'ALLOW'
                   ? Text(
-                      "You have been hired from ${DateFormat.yMMMMd().format(controller.singleNotification.value.fromDate!)}, ${timeConverter(time: controller.singleNotification.value.fromTime.toString()).format(context)} to ${DateFormat.yMMMMd().format(controller.singleNotification.value.toDate!)}, ${timeConverter(time: controller.singleNotification.value.toTime.toString()).format(context)} by ${controller.singleNotification.value.restaurantName}",
+                      "You have been hired from ${DateFormat.yMMMMd().format(controller.singleNotification.value.fromDate!)}, ${controller.singleNotification.value.fromTime} to ${DateFormat.yMMMMd().format(controller.singleNotification.value.toDate!)}, ${controller.singleNotification.value.toTime} by ${controller.singleNotification.value.restaurantName}",
                       style: MyColors.white.semiBold16)
                   : Row(
                       children: [
                         Expanded(
                           flex: 9,
-                          child:
-                              Text("${controller.singleNotification.value.text}", style: MyColors.white.semiBold16),
+                          child: Text("${controller.singleNotification.value.text}", style: MyColors.white.semiBold16),
                         ),
                         SizedBox(
                           width: 10.w,

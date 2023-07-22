@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
+import 'dart:developer';
 
 import 'package:dartz/dartz.dart';
 import 'package:device_info_plus/device_info_plus.dart';
@@ -367,6 +369,7 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
     if (response.statusCode == null) response = await get("short-list");
     if (response.statusCode == null) response = await get("short-list");
 
+    print('ApiHelperImpl.fetchShortlistEmployees: ${response.bodyString}}');
     return _convert<short_list_employees.ShortlistedEmployees>(
       response,
       short_list_employees.ShortlistedEmployees.fromJson,
