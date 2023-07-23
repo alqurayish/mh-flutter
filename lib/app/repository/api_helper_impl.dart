@@ -1,8 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:math';
-import 'dart:developer';
-
 import 'package:dartz/dartz.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -295,8 +292,6 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
     if (response.statusCode == null) response = await get(url);
     if (response.statusCode == null) response = await get(url);
 
-    print('ApiHelperImpl.getEmployees: ${url}');
-
     return _convert<Employees>(
       response,
       Employees.fromJson,
@@ -369,7 +364,6 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
     if (response.statusCode == null) response = await get("short-list");
     if (response.statusCode == null) response = await get("short-list");
 
-    print('ApiHelperImpl.fetchShortlistEmployees: ${response.bodyString}}');
     return _convert<short_list_employees.ShortlistedEmployees>(
       response,
       short_list_employees.ShortlistedEmployees.fromJson,
@@ -517,7 +511,6 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
     if (response.statusCode == null) response = await put("current-hired-employees/update", jsonEncode(data));
     if (response.statusCode == null) response = await put("current-hired-employees/update", jsonEncode(data));
 
-    print('ApiHelperImpl.checkout: ${response.bodyString}');
     return _convert<Response>(
       response,
       (Map<String, dynamic> data) {},

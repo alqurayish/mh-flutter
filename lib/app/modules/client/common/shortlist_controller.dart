@@ -8,6 +8,7 @@ import '../../../repository/api_helper.dart';
 import '../client_shortlisted/models/shortlisted_employees.dart';
 
 class ShortlistController extends GetxService {
+
   RxList<ShortList> shortList = <ShortList>[].obs;
 
   RxList<ShortList> selectedForHire = <ShortList>[].obs;

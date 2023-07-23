@@ -112,42 +112,27 @@ class ClientShortlistedController extends GetxController {
   }
 
   double calculateTotalRate(
-      {required String fromDateStr,
-      required String toDateStr,
-      required String fromTimeStr,
-      required String toTimeStr,
-      required double hourlyRate}) {
-    // Parse dates and times
-    DateFormat dateFormat = DateFormat("yyyy-MM-dd");
-    DateFormat timeFormat = DateFormat("HH:mm");
-    DateTime fromDate = dateFormat.parse(fromDateStr);
-    DateTime toDate = dateFormat.parse(toDateStr);
-    DateTime fromTime = timeFormat.parse(fromTimeStr);
-    DateTime toTime = timeFormat.parse(toTimeStr);
-
-    // Calculate the duration in hours
-    DateTime fromDateTime = DateTime(
-      fromDate.year,
-      fromDate.month,
-      fromDate.day,
-      fromTime.hour,
-      fromTime.minute,
-    );
-    DateTime toDateTime = DateTime(
-      toDate.year,
-      toDate.month,
-      toDate.day,
-      toTime.hour,
-      toTime.minute,
-    );
-
-    Duration duration = toDateTime.difference(fromDateTime);
-    int totalHours = duration.inHours;
-    // Calculate the total rate
-    double totalRate = totalHours * hourlyRate;
-
+      {required String fromTime, required String toTime, required String daysDifference, required double hourlyRate}) {
+    double totalRate =
+        int.parse(daysDifference.split(' ').first) * calculateHourDifference(fromTime, toTime) * hourlyRate;
     return totalRate;
   }
 
+  int calculateHourDifference(String fromTime, String toTime) {
+    // Parse the time strings into DateTime objects
+    DateFormat dateFormat = DateFormat("hh:mm a");
+    DateTime fromDateTime = dateFormat.parse(fromTime);
+    DateTime toDateTime = dateFormat.parse(toTime);
 
+    // If the 'toTime' is before the 'fromTime', it means it spans across two days
+    // We add one day (24 hours) to the 'toTime' to handle this case
+    if (toDateTime.isBefore(fromDateTime)) {
+      toDateTime = toDateTime.add(const Duration(hours: 24));
+    }
+
+    // Calculate the difference in hours
+    int differenceInMilliseconds = toDateTime.difference(fromDateTime).inMilliseconds;
+    double differenceInHours = differenceInMilliseconds / (1000 * 60 * 60);
+    return differenceInHours.round();
+  }
 }
