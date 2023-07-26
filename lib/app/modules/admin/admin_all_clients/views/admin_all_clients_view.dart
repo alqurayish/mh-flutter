@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../common/utils/exports.dart';
 import '../../../../common/widgets/custom_appbar.dart';
@@ -177,20 +178,23 @@ class AdminAllClientsView extends GetView<AdminAllClientsController> {
 
                       SizedBox(height: 8.h),
 
-                      Row(
-                        children: [
-                          const CircleAvatar(
-                            radius: 11.0,
-                              backgroundColor: MyColors.c_C6A34F,
-                              child: Icon(CupertinoIcons.phone, size: 15, color: MyColors.c_FFFFFF)),
-                          SizedBox(width: 5.w),
-                          Text(
-                            user.phoneNumber ?? " ",
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: MyColors.l111111_dwhite(controller.context!).regular14,
-                          ),
-                        ],
+                      InkResponse(
+                        onTap: () => launchUrl(Uri.parse("tel:${user.phoneNumber}")),
+                        child: Row(
+                          children: [
+                            const CircleAvatar(
+                                radius: 11.0,
+                                backgroundColor: MyColors.c_C6A34F,
+                                child: Icon(CupertinoIcons.phone, size: 15, color: MyColors.c_FFFFFF)),
+                            SizedBox(width: 5.w),
+                            Text(
+                              user.phoneNumber ?? " ",
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: MyColors.l111111_dwhite(controller.context!).regular14,
+                            ),
+                          ],
+                        ),
                       ),
                       SizedBox(height: 8.h),
                       // Row(

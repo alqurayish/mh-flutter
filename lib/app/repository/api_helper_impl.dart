@@ -722,6 +722,8 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
   EitherModel<ClientInvoice> getClientInvoice(String clientId) async {
     String url = "invoices?clientId=$clientId";
 
+    print('ApiHelperImpl.getClientInvoice: ${url}');
+
     var response = await get(url);
     if (response.statusCode == null) response = await get(url);
     if (response.statusCode == null) response = await get(url);

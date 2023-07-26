@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../common/utils/exports.dart';
 import '../../../../common/widgets/custom_appbar_back_button.dart';
@@ -111,16 +112,19 @@ class EmployeeDetailsView extends GetView<EmployeeDetailsController> {
             ),
             SizedBox(height: 10.h),
             if (phone != null && phone.isNotEmpty && controller.fromWhere == "admin_home_view")
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(CupertinoIcons.phone_solid, color: MyColors.c_C6A34F, size: 20),
-                  Text(
-                    phone,
-                    textAlign: TextAlign.center,
-                    style: MyColors.l111111_dwhite(controller.context!).medium15,
-                  ),
-                ],
+              InkResponse(
+                onTap: () => launchUrl(Uri.parse("tel:$phone")),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(CupertinoIcons.phone_solid, color: MyColors.c_C6A34F, size: 20),
+                    Text(
+                      phone,
+                      textAlign: TextAlign.center,
+                      style: MyColors.l111111_dwhite(controller.context!).medium15,
+                    ),
+                  ],
+                ),
               ),
             if (phone != null && phone.isNotEmpty && controller.fromWhere == "admin_home_view") SizedBox(height: 10.h),
             if (position != null && position.isNotEmpty)
