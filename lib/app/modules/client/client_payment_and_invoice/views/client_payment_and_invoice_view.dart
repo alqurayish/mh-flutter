@@ -1,7 +1,5 @@
 import 'package:horizontal_data_table/horizontal_data_table.dart';
 import 'package:mh/app/modules/client/client_payment_and_invoice/model/client_invoice.dart';
-import 'package:mh/app/routes/app_pages.dart';
-
 import '../../../../common/utils/exports.dart';
 import '../../../../common/widgets/custom_appbar.dart';
 import '../controllers/client_payment_and_invoice_controller.dart';
@@ -218,7 +216,8 @@ class ClientPaymentAndInvoiceView extends GetView<ClientPaymentAndInvoiceControl
                     backgroundColor: MyColors.c_C6A34F,
                     child: Icon(Icons.remove_red_eye_outlined, color: MyColors.c_FFFFFF, size: 20)),
               ),
-            ))
+            )
+        )
       ],
     );
   }

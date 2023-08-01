@@ -26,6 +26,7 @@ class MhEmployeesByIdController extends GetxController {
   @override
   void onInit() {
     position = Get.arguments[MyStrings.arg.data];
+    print('MhEmployeesByIdController.onInit: ${position.id}');
     super.onInit();
   }
 

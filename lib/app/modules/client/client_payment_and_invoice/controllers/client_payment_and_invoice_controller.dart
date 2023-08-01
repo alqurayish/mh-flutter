@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:dartz/dartz.dart';
-import 'package:mh/app/enums/currency_name.dart';
 import 'package:mh/app/modules/client/client_payment_and_invoice/model/client_invoice.dart';
 import 'package:mh/app/modules/stripe_payment/models/stripe_request_model.dart';
 import 'package:mh/app/modules/stripe_payment/models/stripe_response_model.dart';
@@ -28,12 +27,11 @@ class ClientPaymentAndInvoiceController extends GetxController {
   void onPayClick(int index) {
     _selectedInvoiceId = clientHomeController.clientInvoice.value.invoices![index].id ?? "";
     // _cardPayment(clientHomeController.clientInvoice.value.invoices![index].amount ?? 0);
-    print('ClientPaymentAndInvoiceController.onPayClick: $_selectedInvoiceId');
     makeStripePayment(
         stripeRequestModel: StripeRequestModel(
             amount: clientHomeController.clientInvoice.value.invoices![index].amount ?? 0,
             invoiceId: _selectedInvoiceId,
-            currency: _appController.user.value.client?.countryName == 'United Kingdom' ? 'eur' : 'dirham'));
+            currency: _appController.user.value.client?.countryName == 'United Kingdom' ? 'gbp' : 'aed'));
   }
 
   Future<void> _cardPayment(double amount) async {
@@ -79,7 +77,7 @@ class ClientPaymentAndInvoiceController extends GetxController {
             response.details != null &&
             response.details?.url != null &&
             response.details!.url!.isNotEmpty) {
-          Get.toNamed(Routes.stripePayment, arguments: [response.details?.url ?? '', _selectedInvoiceId]);
+          Get.toNamed(Routes.stripePayment, arguments: [response.details, _selectedInvoiceId]);
         }
       });
     });

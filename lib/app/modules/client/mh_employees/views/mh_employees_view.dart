@@ -37,7 +37,7 @@ class MhEmployeesView extends GetView<MhEmployeesController> {
                 ),
                 runSpacing: 20,
                 children: [
-                  ...controller.appController.allActivePositions.map((e) {
+                  ...controller.appController.allActivePositions.map((Position e) {
                     return _item(e);
                   }),
                 ],

@@ -115,6 +115,7 @@ class MyStrings {
   static const String selectDateRange = "selectDateRange";
   static const String applyRange = "applyRange";
   static const String rememberMeText = "Remember Me";
+  static const String paymentSucessText = "Payment Successful";
 }
 
 class _Arguements {

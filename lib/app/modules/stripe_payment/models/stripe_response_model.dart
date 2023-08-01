@@ -2,7 +2,7 @@ class StripeResponseModel {
   String? status;
   int? statusCode;
   String? message;
-  Details? details;
+  StripeResponseDetailsModel? details;
 
   StripeResponseModel(
       {this.status, this.statusCode, this.message, this.details});
@@ -12,18 +12,23 @@ class StripeResponseModel {
     statusCode = json['statusCode'];
     message = json['message'];
     details =
-    json['details'] != null ? Details.fromJson(json['details']) : null;
+    json['details'] != null ? StripeResponseDetailsModel.fromJson(json['details']) : null;
   }
 }
 
-class Details {
+class StripeResponseDetailsModel {
   String? id;
   String? url;
+  String? cancelUrl;
+  String? successUrl;
 
-  Details({this.id, this.url});
 
-  Details.fromJson(Map<String, dynamic> json) {
+  StripeResponseDetailsModel({this.id, this.url});
+
+  StripeResponseDetailsModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     url = json['url'];
+    cancelUrl = json['cancel_url'];
+    successUrl = json['success_url'];
   }
 }

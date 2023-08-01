@@ -5,27 +5,27 @@ import 'package:mh/app/common/widgets/custom_dialog.dart';
 import 'package:mh/app/common/widgets/custom_loader.dart';
 import 'package:mh/app/models/custom_error.dart';
 import 'package:mh/app/modules/client/client_home/controllers/client_home_controller.dart';
+import 'package:mh/app/modules/stripe_payment/views/stripe_payment_success_view.dart';
 import 'package:mh/app/repository/api_helper.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
+import '../models/stripe_response_model.dart';
+
 class StripePaymentController extends GetxController {
-  late String webViewUrl;
   late WebViewController webViewController;
 
   final ApiHelper _apiHelper = Get.find();
   final ClientHomeController clientHomeController = Get.find();
 
   RxBool isLoading = true.obs;
-
-  String cancelUrl = 'http://localhost:8000/api/cancel.html';
-  late String successUrl;
   late String invoiceId;
+
+ late StripeResponseDetailsModel details;
 
   @override
   void onInit() {
-    webViewUrl = Get.arguments[0];
+    details = Get.arguments[0];
     invoiceId = Get.arguments[1];
-    successUrl = "http://localhost:8000/api/success?invoiceId=$invoiceId";
     loadWebView();
     super.onInit();
   }
@@ -47,9 +47,10 @@ class StripePaymentController extends GetxController {
       ..setNavigationDelegate(
         NavigationDelegate(
           onPageStarted: (String url) async {
-            if (url == successUrl) {
+            print('StripePaymentController.loadWebView:$url');
+            if (url == details.successUrl) {
               onPaymentSuccess();
-            } else if (url == cancelUrl) {
+            } else if (url == details.cancelUrl) {
               CustomDialogue.information(
                 context: Get.context!,
                 title: "Payment Failed",
@@ -69,7 +70,7 @@ class StripePaymentController extends GetxController {
           },
         ),
       )
-      ..loadRequest(Uri.parse(webViewUrl));
+      ..loadRequest(Uri.parse(details.url ?? ''));
   }
 
   Future<void> onPaymentSuccess() async {
@@ -84,6 +85,7 @@ class StripePaymentController extends GetxController {
         Utils.errorDialog(Get.context!, customError..onRetry = clientHomeController.getClientInvoice);
       }, (Response response) {
         clientHomeController.getClientInvoice();
+        Get.offAll(() => const StripePaymentSuccessView());
       });
     });
   }

@@ -54,9 +54,14 @@ class MyAssets {
   static const toiletAssistant = "assets/icons/positions/toilet_assistant.png";
   static const waiter = "assets/icons/positions/waiter.png";
   static const defaultImage = "assets/icons/positions/default_position.png";
-
+  static const bartender = "assets/icons/positions/bartender.png";
+  static const receptionist = "assets/icons/positions/receptionist.png";
+  static const sousChef = "assets/icons/positions/sous_chef.png";
+  static const assistantManager = "assets/icons/positions/assistant_manager.png";
+  static const barBack = "assets/icons/positions/bar_back.png";
+  static const mixologist = "assets/icons/positions/mixologist.png";
+  static const pastryChef = "assets/icons/positions/pastry_chef.png";
   static const locationPin = "assets/icons/location_pin.png";
-
   static const msgSend = "assets/icons/msg_send.png";
 
 }
