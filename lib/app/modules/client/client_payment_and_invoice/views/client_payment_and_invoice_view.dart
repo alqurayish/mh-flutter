@@ -1,12 +1,12 @@
 import 'package:horizontal_data_table/horizontal_data_table.dart';
 import 'package:mh/app/modules/client/client_payment_and_invoice/model/client_invoice.dart';
+import 'package:mh/app/routes/app_pages.dart';
 
 import '../../../../common/utils/exports.dart';
 import '../../../../common/widgets/custom_appbar.dart';
 import '../controllers/client_payment_and_invoice_controller.dart';
 
-class ClientPaymentAndInvoiceView
-    extends GetView<ClientPaymentAndInvoiceController> {
+class ClientPaymentAndInvoiceView extends GetView<ClientPaymentAndInvoiceController> {
   const ClientPaymentAndInvoiceView({Key? key}) : super(key: key);
 
   @override
@@ -29,7 +29,7 @@ class ClientPaymentAndInvoiceView
                   ))
                 : HorizontalDataTable(
                     leftHandSideColumnWidth: 143.w,
-                    rightHandSideColumnWidth: 400.w,
+                    rightHandSideColumnWidth: 500.w,
                     isFixedHeader: true,
                     headerWidgets: _getTitleWidget(),
                     leftSideItemBuilder: _generateFirstColumnRow,
@@ -39,10 +39,8 @@ class ClientPaymentAndInvoiceView
                       height: 6.h,
                       color: MyColors.lFAFAFA_dframeBg(context),
                     ),
-                    leftHandSideColBackgroundColor:
-                        MyColors.lffffff_dbox(context),
-                    rightHandSideColBackgroundColor:
-                        MyColors.lffffff_dbox(context),
+                    leftHandSideColBackgroundColor: MyColors.lffffff_dbox(context),
+                    rightHandSideColBackgroundColor: MyColors.lffffff_dbox(context),
                   ),
       ),
     );
@@ -54,7 +52,6 @@ class ClientPaymentAndInvoiceView
         ),
       );
 
-
   List<Widget> _getTitleWidget() {
     return [
       _getTitleItemWidget('Week', 143.w),
@@ -62,6 +59,7 @@ class ClientPaymentAndInvoiceView
       _getTitleItemWidget('Amount', 100.w),
       _getTitleItemWidget('Invoice\nNo', 100.w),
       _getTitleItemWidget('Status', 100.w),
+      _getTitleItemWidget('View\nInvoice', 100.w),
     ];
   }
 
@@ -85,7 +83,7 @@ class ClientPaymentAndInvoiceView
 
     double height = 71.h;
 
-    if(invoice.status != "PAID") {
+    if (invoice.status != "PAID") {
       height = 100.h;
     }
 
@@ -100,26 +98,22 @@ class ClientPaymentAndInvoiceView
         child: Row(
           children: [
             const Spacer(),
-
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Center(
                   child: Text(
-                      "${invoice.fromWeekDate.toString().split(" ").first}\n-\n${invoice.toWeekDate.toString().split(" ").first}",
+                    "${invoice.fromWeekDate.toString().split(" ").first}\n-\n${invoice.toWeekDate.toString().split(" ").first}",
                     textAlign: TextAlign.center,
                     style: MyColors.l7B7B7B_dtext(context).semiBold13,
                   ),
                 ),
-
                 Visibility(
                   visible: invoice.status != "PAID",
                   child: Column(
                     children: [
-
                       const SizedBox(height: 10),
-
                       CustomButtons.button(
                         text: "Pay",
                         height: 25,
@@ -132,14 +126,12 @@ class ClientPaymentAndInvoiceView
                 ),
               ],
             ),
-
             const Spacer(),
-
             Container(
               width: 4,
               height: 71.h,
               decoration: BoxDecoration(
-                color: invoice.status == "PAID" ?  MyColors.c_00C92C : MyColors.c_FF5029,
+                color: invoice.status == "PAID" ? MyColors.c_00C92C : MyColors.c_FF5029,
                 borderRadius: BorderRadius.circular(20.0),
               ),
             ),
@@ -161,49 +153,72 @@ class ClientPaymentAndInvoiceView
         width: width,
         height: height,
         color: isPaid ? Colors.transparent : MyColors.c_FFEDEA,
-        child: child ?? Center(
-          child: Text.rich(
-            TextSpan(
-                text: value,
-                children: [
+        child: child ??
+            Center(
+              child: Text.rich(
+                TextSpan(text: value, children: [
                   TextSpan(
-                      text: (clientUpdatedValue == null) || (clientUpdatedValue == value) ? "" : '\n$clientUpdatedValue',
+                      text:
+                          (clientUpdatedValue == null) || (clientUpdatedValue == value) ? "" : '\n$clientUpdatedValue',
                       style: const TextStyle(
                         decoration: TextDecoration.lineThrough,
-                      )
-                  ),
-                ]
+                      )),
+                ]),
+                textAlign: TextAlign.center,
+                style: MyColors.l7B7B7B_dtext(controller.context!).semiBold13,
+              ),
             ),
-            textAlign: TextAlign.center,
-            style: MyColors.l7B7B7B_dtext(controller.context!).semiBold13,
-          ),
-        ),
       );
 
   Widget _generateRightHandSideColumnRow(BuildContext context, int index) {
-
     Invoice invoice = controller.clientHomeController.clientInvoice.value.invoices![index];
 
     double height = 71.h;
 
-    if(invoice.status != "PAID") {
+    if (invoice.status != "PAID") {
       height = 100.h;
     }
 
     return Row(
       children: <Widget>[
-        _cell(width: 100.w, height: height, value: (invoice.totalEmployee ?? 0).toString(), isPaid: invoice.status == "PAID"),
-        _cell(width: 100.w, height: height, value: '£ ${(invoice.amount ?? 0).toStringAsFixed(2)}', isPaid: invoice.status == "PAID"),
+        _cell(
+            width: 100.w,
+            height: height,
+            value: (invoice.totalEmployee ?? 0).toString(),
+            isPaid: invoice.status == "PAID"),
+        _cell(
+            width: 100.w,
+            height: height,
+            value: '£ ${(invoice.amount ?? 0).toStringAsFixed(2)}',
+            isPaid: invoice.status == "PAID"),
         _cell(width: 100.w, height: height, value: invoice.invoiceNumber ?? "-", isPaid: invoice.status == "PAID"),
-        _cell(width: 100.w,
+        _cell(
+          width: 100.w,
           height: height,
           value: "-",
           child: Center(
-            child: Text(invoice.status ?? "-",
+            child: Text(
+              invoice.status ?? "-",
               style: invoice.status == "PAID" ? MyColors.c_00C92C.semiBold18 : MyColors.c_FF5029.semiBold18,
             ),
           ),
-          isPaid: invoice.status == "PAID",),
+          isPaid: invoice.status == "PAID",
+        ),
+        _cell(
+            width: 100.w,
+            height: height,
+            value: "-",
+            isPaid: invoice.status == "PAID",
+            child: Padding(
+              padding: const EdgeInsets.all(27.0),
+              child: InkWell(
+                onTap: () => controller.onViewInvoicePress(invoice: invoice),
+                child: const CircleAvatar(
+                    radius: 10,
+                    backgroundColor: MyColors.c_C6A34F,
+                    child: Icon(Icons.remove_red_eye_outlined, color: MyColors.c_FFFFFF, size: 20)),
+              ),
+            ))
       ],
     );
   }

@@ -25,7 +25,7 @@ class EmployeeHomePromotionWidget extends GetWidget<EmployeeHomeController> {
           return InkWell(
             onTap: controller.onHiredYouTap,
             child: Container(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(15),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10.0),
                 color: Colors.purple.withOpacity(.6),
@@ -33,27 +33,24 @@ class EmployeeHomePromotionWidget extends GetWidget<EmployeeHomeController> {
               child: controller.singleNotification.value.hiredStatus != null &&
                       controller.singleNotification.value.hiredStatus?.toUpperCase() == 'ALLOW'
                   ? Text(
-                      "You have been hired from ${DateFormat.yMMMMd().format(controller.singleNotification.value.fromDate!)}, ${timeConverter(time: controller.singleNotification.value.fromTime.toString()).format(context)} to ${DateFormat.yMMMMd().format(controller.singleNotification.value.toDate!)}, ${timeConverter(time: controller.singleNotification.value.toTime.toString()).format(context)} by ${controller.singleNotification.value.restaurantName}",
+                      "You have been hired from ${DateFormat.yMMMMd().format(controller.singleNotification.value.fromDate!)}, ${controller.singleNotification.value.fromTime} to ${DateFormat.yMMMMd().format(controller.singleNotification.value.toDate!)}, ${controller.singleNotification.value.toTime} by ${controller.singleNotification.value.restaurantName}",
                       style: MyColors.white.semiBold16)
                   : Row(
                       children: [
                         Expanded(
-                          flex: 3,
+                          flex: 9,
                           child: Text("${controller.singleNotification.value.text}", style: MyColors.white.semiBold16),
                         ),
                         SizedBox(
                           width: 10.w,
                         ),
-                        Expanded(
+                        const Expanded(
                           flex: 1,
-                          child: Container(
-                            padding: const EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Colors.purple.withOpacity(.45),
-                            ),
-                            child: const Icon(
+                          child: CircleAvatar(
+                            backgroundColor: Colors.purple,
+                            child: Icon(
                               Icons.arrow_forward,
+                              size: 20,
                               color: MyColors.white,
                             ),
                           ),

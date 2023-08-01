@@ -7,7 +7,6 @@ import 'app/common/notification_service/local_notification_service.dart';
 import 'app/common/utils/initializer.dart';
 import 'app/mirko_hospitality.dart';
 
-// import 'package:device_preview/device_preview.dart';
 
 Future<void> backgroundHandler(RemoteMessage message) async {
   if (kDebugMode) {
@@ -23,7 +22,7 @@ Future<void> main() async {
   await Firebase.initializeApp();
   FirebaseMessaging.onBackgroundMessage(backgroundHandler);
 
-  FirebaseMessaging.instance.onTokenRefresh.listen((token) {
+  FirebaseMessaging.instance.onTokenRefresh.listen((String token) {
     if (kDebugMode) {
       print("=============== REFRESHED FCM TOKEN =================");
       print(token);
@@ -31,7 +30,7 @@ Future<void> main() async {
     // NotificationRepository().saveUUIDAndFcmToken(token : token);
   });
 
-  FirebaseMessaging.instance.getToken().then((value) {
+  FirebaseMessaging.instance.getToken().then((String? value) {
     if (kDebugMode) {
       print("=============== FCM TOKEN =================");
       print(value);

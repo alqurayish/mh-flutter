@@ -1,11 +1,14 @@
+import 'package:dartz/dartz.dart';
 import 'package:mh/app/common/controller/app_controller.dart';
 import 'package:mh/app/common/widgets/custom_dialog.dart';
+import 'package:mh/app/models/custom_error.dart';
 
 import '../../../common/utils/exports.dart';
 import '../../../repository/api_helper.dart';
 import '../client_shortlisted/models/shortlisted_employees.dart';
 
 class ShortlistController extends GetxService {
+
   RxList<ShortList> shortList = <ShortList>[].obs;
 
   RxList<ShortList> selectedForHire = <ShortList>[].obs;
@@ -40,7 +43,7 @@ class ShortlistController extends GetxService {
   Future<void> fetchShortListEmployees() async {
     isFetching.value = true;
 
-    await _apiHelper.fetchShortlistEmployees().then((response) {
+    await _apiHelper.fetchShortlistEmployees().then((Either<CustomError, ShortlistedEmployees> response) {
 
       isFetching.value = false;
 
@@ -49,7 +52,6 @@ class ShortlistController extends GetxService {
       }, (r) {
         shortList.value = r.shortList ?? [];
         shortList.refresh();
-
         totalShortlisted.value = shortList.length;
       });
 
@@ -78,6 +80,7 @@ class ShortlistController extends GetxService {
   }
 
   Future<void> _addEmployeeToShortlist(String employeeId) async {
+
     isFetching.value = true;
 
     Map<String, dynamic> data  = {"employeeId" : employeeId};

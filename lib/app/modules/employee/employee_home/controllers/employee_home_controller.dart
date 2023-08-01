@@ -34,6 +34,7 @@ class EmployeeHomeController extends GetxController {
 
   RxBool loading = false.obs;
   RxBool loadingCurrentLocation = false.obs;
+  RxBool currentLocationDataLoaded = false.obs;
 
   // done
   RxBool checkIn = false.obs;
@@ -74,7 +75,7 @@ class EmployeeHomeController extends GetxController {
     Get.toNamed(Routes.employeeDashboard);
   }
 
-  void onEmergencyCheckinCheckout() {
+  void onEmergencyCheckInCheckout() {
     Get.toNamed(Routes.employeeEmergencyCheckInOut);
   }
 
@@ -154,13 +155,14 @@ class EmployeeHomeController extends GetxController {
       if (currentLocation?.longitude != null) "long": currentLocation?.longitude.toString(),
       "breakTime": (hour * 60) + (min * 5),
       "checkOutDistance": double.parse(getDistance.toStringAsFixed(2)),
+      "totalWorkingHour":
+          double.parse((double.parse(dailyStatistics.workingHour.split(' ').first) / 60).toStringAsFixed(2))
     };
 
     CustomLoader.show(context!);
 
     await _apiHelper.checkout(data).then((response) {
       CustomLoader.hide(context!);
-
       response.fold((CustomError customError) {
         CustomDialogue.information(
           context: context!,
@@ -182,7 +184,7 @@ class EmployeeHomeController extends GetxController {
       "checkInDistance": double.parse(getDistance.toStringAsFixed(2)),
     };
 
-    await _apiHelper.checkin(data).then((response) {
+    await _apiHelper.checkIn(data).then((response) {
       response.fold((CustomError customError) {
         CustomDialogue.information(
           context: context!,
@@ -278,6 +280,7 @@ class EmployeeHomeController extends GetxController {
         showSlider.value = false;
       }, (Position position) {
         currentLocation = position;
+        currentLocationDataLoaded.value = true;
 
         if (getDistance > 200) {
           showSlider.value = false;
@@ -291,10 +294,10 @@ class EmployeeHomeController extends GetxController {
   }
 
   double get getDistance => LocationController.calculateDistance(
-        targetLat: double.parse(appController.user.value.employee!.hiredByLat!),
-        targetLong: double.parse(appController.user.value.employee!.hiredByLong!),
-        currentLat: currentLocation!.latitude,
-        currentLong: currentLocation!.longitude,
+      targetLat: double.parse(appController.user.value.employee!.hiredByLat!),
+      targetLong: double.parse(appController.user.value.employee!.hiredByLong!),
+      currentLat: currentLocation!.latitude, //23.76860969911456,
+      currentLong: currentLocation!.longitude //90.35406902432442
       );
 
   void _trackUnreadMsg() {
@@ -326,10 +329,9 @@ class EmployeeHomeController extends GetxController {
   }
 
   void onHiredYouTap() {
-    if (singleNotification.value.hiredStatus == null) {
+    if (singleNotification.value.hiredStatus == null || singleNotification.value.hiredStatus == "REQUESTED") {
       Get.bottomSheet(Container(
         color: MyColors.lightCard(context!),
-        //height: Get.width * 0.6,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -411,4 +413,12 @@ class EmployeeHomeController extends GetxController {
       });
     });
   }
+
+/*  bool get showEmployeeLocationDistanceWidget {
+    return showNormalText.value == true ||
+        singleNotification.value.hiredStatus?.toUpperCase() == "DENY" ||
+        loadingCurrentLocation.value ||
+        currentLocationDataLoaded.value == false ||
+        showSlider.value == true;
+  }*/
 }

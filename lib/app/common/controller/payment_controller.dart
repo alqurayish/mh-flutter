@@ -1,3 +1,4 @@
+import 'package:dartz/dartz.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
@@ -29,7 +30,7 @@ class PaymentController extends GetxController {
 
       CustomLoader.show(Get.context!);
 
-      await apiHelper.commons().then((response) {
+      await apiHelper.commons().then((Either<CustomError, Commons> response) {
         response.fold((CustomError customError) {
 
         }, (Commons commons) {

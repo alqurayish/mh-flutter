@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:mh/app/modules/employee/employee_home/widgets/emloyee_home_promotion_widget.dart';
-import 'package:mh/app/modules/employee/employee_home/widgets/slide_action_widget.dart';
+import 'package:mh/app/modules/employee/employee_home/widgets/employee_location_widget.dart';
+import 'package:mh/app/modules/employee/employee_home/widgets/employee_restaurant_address_widget.dart';
+import 'package:mh/app/modules/employee/employee_home/widgets/employee_todays_dashboard_widget.dart';
 import 'package:mh/app/routes/app_pages.dart';
 import '../../../../common/utils/exports.dart';
 import '../../../../common/widgets/custom_appbar.dart';
@@ -9,9 +11,10 @@ import '../../../../common/widgets/custom_feature_box.dart';
 import '../../../../common/widgets/custom_help_support.dart';
 import '../../../../common/widgets/custom_menu.dart';
 import '../controllers/employee_home_controller.dart';
+import '../widgets/employee_location_distance_widget.dart';
 
 class EmployeeHomeView extends GetView<EmployeeHomeController> {
-   const EmployeeHomeView({Key? key}) : super(key: key);
+  const EmployeeHomeView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,12 +29,6 @@ class EmployeeHomeView extends GetView<EmployeeHomeController> {
           centerTitle: false,
           visibleBack: false,
           actions: [
-            // IconButton(
-            //   onPressed: controller.onNotificationClick,
-            //   icon: const Icon(
-            //     Icons.notifications_outlined,
-            //   ),
-            // ),
             Obx(() => controller.notificationsController.unreadCount.value == 0
                 ? IconButton(
                     onPressed: () {
@@ -79,23 +76,19 @@ class EmployeeHomeView extends GetView<EmployeeHomeController> {
                   children: [
                     Expanded(
                       child: SingleChildScrollView(
+                        primary: false,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            SizedBox(height: 29.h),
-                            // _restaurantName(MyStrings.hiRestaurant.trParams({
-                            //   "restaurantName": controller.appController.user.value.client?.restaurantName ?? "owner of the",
-                            // })),
-                            _restaurantName("Hi, ${controller.appController.user.value.employee?.name ?? "-"}"),
-
                             SizedBox(height: 20.h),
-
-                            //_promotionText,
+                            Text("Hi, ${controller.appController.user.value.employee?.name ?? "-"}",
+                                style: MyColors.l111111_dwhite(controller.context!).semiBold20),
+                            SizedBox(height: 30.h),
                             const EmployeeHomePromotionWidget(),
-
-                            SizedBox(height: 40.h),
-
+                            const EmployeeLocationDistanceWidget(),
+                            const EmployeeRestaurantAddressWidget(),
+                            SizedBox(height: 30.h),
                             Row(
                               children: [
                                 Expanded(
@@ -113,7 +106,7 @@ class EmployeeHomeView extends GetView<EmployeeHomeController> {
                                         title: MyStrings.emergencyCheckInCheckOut.tr,
                                         icon: MyAssets.emergencyCheckInCheckout,
                                         iconHeight: 58.w,
-                                        onTap: controller.onEmergencyCheckinCheckout,
+                                        onTap: controller.onEmergencyCheckInCheckout,
                                       ),
                                       Positioned(
                                         left: 0,
@@ -142,9 +135,7 @@ class EmployeeHomeView extends GetView<EmployeeHomeController> {
                                 ),
                               ],
                             ),
-
                             SizedBox(height: 30.h),
-
                             Stack(
                               children: [
                                 CustomHelpSupport(
@@ -172,25 +163,9 @@ class EmployeeHomeView extends GetView<EmployeeHomeController> {
                       ),
                     ),
                     SizedBox(height: 30.h),
-                    _todayDashboard,
+                    const EmployeeTodayDashboardWidget(),
                     SizedBox(height: 30.h),
-                    Obx(
-                      () => controller.loading.value
-                          ? _loading("Fetching Today's Info")
-                          : controller.loadingCurrentLocation.value
-                              ? _loading("Get current location")
-                              : (controller.appController.user.value.employee?.isHired ?? false)
-                                  ? controller.isTodayInBetweenFromDateAndToDate
-                                      ? controller.locationFetchError.value.isNotEmpty
-                                          ? _locationFetchError
-                                          : controller.errorMsg.value.isNotEmpty
-                                              ? _errorMsg
-                                              : _checkInCheckout
-                                      : const Wrap()
-                                  /*  _massage(
-                                          "you hired from ${controller.appController.user.value.employee?.hiredFromDate.toString().split(" ").first} to ${controller.appController.user.value.employee?.hiredToDate.toString().split(" ").first}")*/
-                                  : _massage("You have not been hired yet"),
-                    ),
+                    const EmployeeLocationWidget(),
                     SizedBox(height: 30.h),
                   ],
                 ),
@@ -201,11 +176,6 @@ class EmployeeHomeView extends GetView<EmployeeHomeController> {
       ),
     );
   }
-
-  Widget _restaurantName(String name) => Text(
-        name,
-        style: MyColors.l111111_dwhite(controller.context!).semiBold20,
-      );
 
 /*<<<<<<< HEAD
   Widget get _promotionText => Obx(() => controller.appController.user.value.employee?.isHired ?? false
@@ -294,128 +264,4 @@ class EmployeeHomeView extends GetView<EmployeeHomeController> {
     style: MyColors.l777777_dtext(controller.context!).medium15,
   ));
 >>>>>>> main*/
-
-  Widget _loading(String msg) => Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const CupertinoActivityIndicator(),
-          const SizedBox(width: 10),
-          _massage(msg),
-        ],
-      );
-
-  Widget _massage(String msg) => Text(
-        msg,
-        textAlign: TextAlign.center,
-        style: MyColors.l111111_dffffff(controller.context!).regular12,
-      );
-
-  Widget get _locationFetchError => Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Icon(Icons.warning, color: Colors.amber),
-          const SizedBox(width: 10),
-          Text(
-            controller.locationFetchError.value,
-            style: MyColors.l111111_dffffff(controller.context!).regular16_5,
-          ),
-        ],
-      );
-
-  Widget get _errorMsg => Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Icon(Icons.info, color: Colors.blue),
-          const SizedBox(width: 10),
-          Expanded(
-            child: Text(
-              controller.errorMsg.value,
-              style: MyColors.l111111_dffffff(controller.context!).regular16_5,
-            ),
-          ),
-        ],
-      );
-
-  Widget get _todayDashboard => Obx(
-        () => Visibility(
-          visible: controller.checkIn.value &&
-              (controller.appController.user.value.employee?.isHired ?? false) &&
-              controller.isTodayInBetweenFromDateAndToDate,
-          child: Container(
-            padding: const EdgeInsets.symmetric(vertical: 12),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10.0),
-              border: Border.all(
-                width: .5,
-                color: MyColors.c_A6A6A6,
-              ),
-              color: MyColors.lightCard(controller.context!),
-            ),
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    _itemValue("Check In", controller.dailyStatistics.displayCheckInTime),
-                    _itemValue("Check Out", controller.dailyStatistics.displayCheckOutTime),
-                    _itemValue("Break", controller.dailyStatistics.displayBreakTime),
-                  ],
-                ),
-                const SizedBox(height: 7),
-                Divider(
-                  indent: Get.width * .1,
-                  endIndent: Get.width * .1,
-                  color: MyColors.c_A6A6A6,
-                ),
-                const SizedBox(height: 7),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    _itemValue("Working Time", controller.dailyStatistics.workingHour, valueFontSize: 18),
-                    _itemValue("Date", controller.dailyStatistics.date, valueFontSize: 14),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
-      );
-
-  Widget _itemValue(String text, String value, {double valueFontSize = 14}) => Column(
-        children: [
-          Text(
-            value,
-            style: MyColors.l7B7B7B_dtext(controller.context!).semiBold14.copyWith(fontSize: valueFontSize),
-          ),
-          const SizedBox(height: 5),
-          Text(
-            text,
-            style: MyColors.l7B7B7B_dtext(controller.context!).medium12,
-          ),
-        ],
-      );
-
-  Widget get _checkInCheckout => Obx(
-        () => Visibility(
-          visible: (!controller.checkIn.value || !controller.checkOut.value) &&
-              (controller.appController.user.value.employee?.isHired ?? false),
-          child: SlideActionWidget(
-            key: controller.key,
-            height: 74.h,
-            outerColor: MyColors.c_C6A34F,
-            elevation: 2,
-            submittedIcon: const CircularProgressIndicator.adaptive(backgroundColor: Colors.white),
-            onSubmit: controller.onCheckInCheckOut,
-            reversed: controller.checkIn.value,
-            child: Text(
-              !controller.checkIn.value && !controller.checkOut.value
-                  ? "Slide to check In  >>"
-                  : "<<  Slide to check Out",
-              textAlign: TextAlign.center,
-              style: MyColors.white.semiBold18,
-            ),
-          ),
-        ),
-      );
 }

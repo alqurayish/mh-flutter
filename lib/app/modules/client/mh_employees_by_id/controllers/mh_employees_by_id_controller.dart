@@ -50,6 +50,7 @@ class MhEmployeesByIdController extends GetxController {
     Get.toNamed(Routes.employeeDetails, arguments: {
       MyStrings.arg.data : employee,
       MyStrings.arg.showAsAdmin : false,
+      MyStrings.arg.fromWhere: MyStrings.arg.mhEmployeeViewByIdText
     });
   }
 

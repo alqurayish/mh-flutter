@@ -91,7 +91,7 @@ class ClientShortlistedView extends GetView<ClientShortlistedController> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   _name(employee.employeeDetails?.name ?? "-"),
-                                  _rating(employee.employeeDetails?.rating ?? 0),
+                                  _rating(employee.employeeDetails?.rating ?? 0.0),
                                   const Spacer(),
                                   Obx(
                                     () => controller.shortlistController.getIcon(
@@ -227,7 +227,7 @@ class ClientShortlistedView extends GetView<ClientShortlistedController> {
           ),
         ),
         Container(
-          margin: const EdgeInsets.only(bottom: 20.0),
+            margin: const EdgeInsets.only(bottom: 20.0),
             padding: const EdgeInsets.symmetric(horizontal: 10.0),
             height: 30.h,
             width: 200.w,
@@ -242,7 +242,7 @@ class ClientShortlistedView extends GetView<ClientShortlistedController> {
                       employee.fromTime != null &&
                       employee.toTime != null &&
                       employee.employeeDetails?.hourlyRate != null)
-                  ? 'Total Rate: £ ${controller.calculateTotalRate(fromDateStr: employee.fromDate.toString(), toDateStr: employee.toDate.toString(), fromTimeStr: employee.fromTime.toString(), toTimeStr: employee.toTime.toString(), hourlyRate: employee.employeeDetails?.hourlyRate ?? 0.0).toStringAsFixed(2)}'
+                  ? 'Total Rate: £ ${controller.calculateTotalRate(fromTime: employee.fromTime??'', toTime: employee.toTime??'', daysDifference: employee.fromDate!.differenceInDays(employee.toDate!), hourlyRate: employee.employeeDetails?.hourlyRate ?? 0.0).toStringAsFixed(2)}'
                   : 'Hourly Rate: £ ${employee.employeeDetails?.hourlyRate!.toStringAsFixed(2) ?? '0.00'}',
               style: const TextStyle(color: MyColors.c_FFFFFF),
             )))
@@ -269,7 +269,7 @@ class ClientShortlistedView extends GetView<ClientShortlistedController> {
         style: MyColors.l111111_dwhite(controller.context!).medium14,
       );
 
-  Widget _rating(int rating) => Visibility(
+  Widget _rating(double rating) => Visibility(
         visible: rating > 0,
         child: Row(
           children: [

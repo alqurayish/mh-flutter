@@ -26,8 +26,9 @@ class AdminAllEmployeesController extends GetxController {
 
   void onEmployeeClick(Employee employee) {
     Get.toNamed(Routes.employeeDetails, arguments: {
-      MyStrings.arg.data : employee,
-      MyStrings.arg.showAsAdmin : true,
+      MyStrings.arg.data: employee,
+      MyStrings.arg.showAsAdmin: true,
+      MyStrings.arg.fromWhere: 'admin_home_view'
     });
   }
 
@@ -43,7 +44,7 @@ class AdminAllEmployeesController extends GetxController {
   String getPositionLogo(String positionId) {
     var positions = appController.allActivePositions.where((element) => element.id == positionId);
 
-    if(positions.isEmpty) return MyAssets.defaultImage;
+    if (positions.isEmpty) return MyAssets.defaultImage;
 
     return positions.first.logo!;
   }
@@ -56,12 +57,11 @@ class AdminAllEmployeesController extends GetxController {
     String positionId,
   ) {
     _getEmployees(
-      rating: selectedRating,
-      experience: selectedExp,
-      minTotalHour: minTotalHour,
-      maxTotalHour: maxTotalHour,
-      positionId: positionId
-    );
+        rating: selectedRating,
+        experience: selectedExp,
+        minTotalHour: minTotalHour,
+        maxTotalHour: maxTotalHour,
+        positionId: positionId);
   }
 
   void onResetClick() {
@@ -82,36 +82,33 @@ class AdminAllEmployeesController extends GetxController {
 
     CustomLoader.show(context!);
 
-    await _apiHelper.getAllUsersFromAdmin(
+    await _apiHelper
+        .getAllUsersFromAdmin(
       positionId: positionId,
       rating: rating,
       employeeExperience: experience,
       minTotalHour: minTotalHour,
       maxTotalHour: maxTotalHour,
       requestType: "EMPLOYEE",
-    ).then((response) {
-
+    )
+        .then((response) {
       isLoading.value = false;
       CustomLoader.hide(context!);
 
       response.fold((CustomError customError) {
-
         Utils.errorDialog(context!, customError..onRetry = _getEmployees);
-
       }, (Employees employees) {
-
         this.employees.value = employees;
 
-        for(int i = 0; i < (this.employees.value.users ?? []).length; i++) {
+        for (int i = 0; i < (this.employees.value.users ?? []).length; i++) {
           var item = this.employees.value.users![i];
-          if(adminHomeController.chatUserIds.contains(item.id)) {
+          if (adminHomeController.chatUserIds.contains(item.id)) {
             this.employees.value.users?.removeAt(i);
             this.employees.value.users?.insert(0, item);
           }
         }
 
         this.employees.refresh();
-
       });
     });
   }

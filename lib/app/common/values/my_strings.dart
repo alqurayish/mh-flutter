@@ -79,6 +79,7 @@ class MyStrings {
   static const String dashboard = "dashboard";
   static const String myEmployees = "myEmployees";
   static const String invoicePayment = "invoicePayment";
+  static const String invoice = "Invoice";
   static const String helpSupport = "helpSupport";
   static const String myDashboard = "myDashboard";
   static const String emergencyCheckInCheckOut = "emergencyCheckInCheckOut";
@@ -128,6 +129,10 @@ class _Arguements {
   String clientId = "clientId";
   String employeeId = "employeeId";
   String supportChatDocId = "supportChatDocId";
+
+  String fromWhere = "fromWhere";
+  String clientSuggestedViewText = "client_suggested_view";
+  String mhEmployeeViewByIdText = "mh_employee_view_by_id";
 }
 
 class _PayloadScreen {

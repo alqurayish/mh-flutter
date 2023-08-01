@@ -67,13 +67,13 @@ class Details {
   String? cv;
   bool? verified;
   bool? active;
-  int? rating;
-  int? totalWorkingHour;
+  double? rating;
+  double? totalWorkingHour;
   double? hourlyRate;
-  int? clientDiscount;
+  double? clientDiscount;
   PushNotificationDetails? pushNotificationDetails;
  // List<String>? skills;
-  int? contractorHourlyRate;
+  double? contractorHourlyRate;
   //List<String>? menuPermission;
 
   Details(
@@ -175,10 +175,10 @@ class Details {
     cv = json['cv'];
     verified = json['verified'];
     active = json['active'];
-    rating = json['rating'];
-    totalWorkingHour = json['totalWorkingHour'];
-    hourlyRate = double.parse(json['hourlyRate'].toString());
-    clientDiscount = json['clientDiscount'];
+    rating = json['rating'] == null ? 0.0 : double.parse(json['rating'].toString());
+    totalWorkingHour = json['totalWorkingHour'] == null ? 0.0 : double.parse(json['totalWorkingHour'].toString());
+    hourlyRate = json['hourlyRate'] == null ? 0.0 : double.parse(json['hourlyRate'].toString());
+    clientDiscount = json['clientDiscount'] == null ? 0.0 : double.parse(json['clientDiscount'].toString());
     pushNotificationDetails = json['pushNotificationDetails'] != null
         ? PushNotificationDetails.fromJson(json['pushNotificationDetails'])
         : null;
@@ -188,7 +188,7 @@ class Details {
         skills!.add(v);
       });
     }*/
-    contractorHourlyRate = json['contractorHourlyRate'];
+    contractorHourlyRate = json['contractorHourlyRate'] == null ?0.0: double.parse(json['contractorHourlyRate'].toString());
     /*if (json['menuPermission'] != null) {
       menuPermission = <String>[];
       json['menuPermission'].forEach((v) {

@@ -92,7 +92,7 @@ abstract class ApiHelper {
 
   EitherModel<TodayCheckInOutDetails> dailyCheckInCheckoutDetails(String employeeId);
 
-  EitherModel<TodayCheckInOutDetails> checkin(Map<String, dynamic> data);
+  EitherModel<TodayCheckInOutDetails> checkIn(Map<String, dynamic> data);
 
   EitherModel<Response> checkout(Map<String, dynamic> data);
 
@@ -138,5 +138,7 @@ abstract class ApiHelper {
 
   EitherModel<SingleNotificationModelForEmployee> singleNotificationForEmployee();
 
-  EitherModel<SingleNotificationModelForEmployee> removeClientRequestFromAdmin({required String requestId});
+  EitherModel<SingleNotificationModelForEmployee> cancelClientRequestFromAdmin({required String requestId});
+
+  EitherModel<SingleNotificationModelForEmployee> cancelEmployeeSuggestionFromAdmin({required String employeeId,  required String requestId});
 }

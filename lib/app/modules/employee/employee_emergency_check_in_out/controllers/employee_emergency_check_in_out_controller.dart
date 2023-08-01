@@ -55,7 +55,7 @@ class EmployeeEmergencyCheckInOutController extends GetxController {
 
     CustomLoader.show(context!);
 
-    await _apiHelper.checkin(data).then((response) {
+    await _apiHelper.checkIn(data).then((response) {
 
       CustomLoader.hide(context!);
 

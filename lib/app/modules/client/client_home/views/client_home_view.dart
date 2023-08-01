@@ -78,7 +78,7 @@ class ClientHomeView extends GetView<ClientHomeController> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizedBox(height: 29.h),
+                        SizedBox(height: 20.h),
                         _restaurantName(MyStrings.hiRestaurant.trParams({
                           "restaurantName":
                               controller.appController.user.value.client?.restaurantName ?? "owner of the",
@@ -104,7 +104,7 @@ class ClientHomeView extends GetView<ClientHomeController> {
 
                         _employeeShortlisted,
 
-                        SizedBox(height: 40.h),
+                        SizedBox(height: 30.h),
 
                         Row(
                           children: [
@@ -142,7 +142,7 @@ class ClientHomeView extends GetView<ClientHomeController> {
                           ],
                         ),
 
-                        SizedBox(height: 30.h),
+                        SizedBox(height: 20.h),
 
                         Row(
                           children: [
@@ -184,7 +184,7 @@ class ClientHomeView extends GetView<ClientHomeController> {
                     ),
                   ),
                 ),
-                SizedBox(height: 30.h),
+                SizedBox(height: 20.h),
                 Stack(
                   children: [
                     CustomHelpSupport(
@@ -204,7 +204,7 @@ class ClientHomeView extends GetView<ClientHomeController> {
                     ),
                   ],
                 ),
-                SizedBox(height: 30.h),
+                SizedBox(height: 20.h),
               ],
             ),
           ),

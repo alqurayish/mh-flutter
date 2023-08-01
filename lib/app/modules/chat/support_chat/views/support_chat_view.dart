@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:mh/app/modules/chat/support_chat/widgets/support_chat_input_widget.dart';
 
 import '../../../../common/utils/exports.dart';
 import '../../../../common/widgets/custom_appbar_back_button.dart';

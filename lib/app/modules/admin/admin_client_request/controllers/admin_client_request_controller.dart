@@ -41,7 +41,7 @@ class AdminClientRequestController extends GetxController {
 
         CustomLoader.show(context!);
 
-        await _apiHelper.removeClientRequestFromAdmin(requestId: requestId).then((response) {
+        await _apiHelper.cancelClientRequestFromAdmin(requestId: requestId).then((response) {
           CustomLoader.hide(context!);
 
           response.fold((CustomError customError) {
@@ -54,5 +54,9 @@ class AdminClientRequestController extends GetxController {
         });
       },
     );
+  }
+
+  void calculateRequestListFromClient(){
+
   }
 }

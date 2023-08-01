@@ -2,12 +2,14 @@ class EmployeeDetails {
   String? employeeId;
   String? name;
   String? positionId;
+  String? positionName;
   String? presentAddress;
   String? permanentAddress;
   dynamic employeeExperience;
-  int? rating;
-  int? totalWorkingHour;
+  double? rating;
+  double? totalWorkingHour;
   double? hourlyRate;
+  double? contractorHourlyRate;
   String? sId;
   String? profilePicture;
   String? restaurantName;
@@ -21,12 +23,14 @@ class EmployeeDetails {
     this.employeeId,
     this.name,
     this.positionId,
+    this.positionName,
     this.presentAddress,
     this.permanentAddress,
     this.employeeExperience,
     this.rating,
     this.totalWorkingHour,
     this.hourlyRate,
+    this.contractorHourlyRate,
     this.sId,
     this.profilePicture,
     this.restaurantName,
@@ -39,12 +43,15 @@ class EmployeeDetails {
     employeeId = json['employeeId'];
     name = json['name'];
     positionId = json['positionId'];
+    positionName = json['positionName'];
     presentAddress = json['presentAddress'];
     permanentAddress = json['permanentAddress'];
     employeeExperience = json['employeeExperience'];
-    rating = json['rating'];
-    totalWorkingHour = json['totalWorkingHour'];
-    hourlyRate = double.parse(json['hourlyRate'].toString());
+    rating = json['rating'] == null ? 0.0 : double.parse(json['rating'].toString());
+    totalWorkingHour = json['totalWorkingHour'] == null ? 0.0 : double.parse(json['totalWorkingHour'].toString());
+    hourlyRate = json['hourlyRate'] == null ? 0.0 : double.parse(json['hourlyRate'].toString());
+    contractorHourlyRate =
+        json['contractorHourlyRate'] == null ? 0.0 : double.parse(json['contractorHourlyRate'].toString());
     sId = json['_id'];
     profilePicture = json['profilePicture'];
     restaurantName = json['restaurantName'];
@@ -58,12 +65,14 @@ class EmployeeDetails {
     data['employeeId'] = employeeId;
     data['name'] = name;
     data['positionId'] = positionId;
+    data['positionName'] = positionName;
     data['presentAddress'] = presentAddress;
     data['permanentAddress'] = permanentAddress;
     data['employeeExperience'] = employeeExperience;
     data['rating'] = rating;
     data['totalWorkingHour'] = totalWorkingHour;
     data['hourlyRate'] = hourlyRate;
+    data['contractorHourlyRate'] = contractorHourlyRate;
     data['_id'] = sId;
     data['profilePicture'] = profilePicture;
     data['restaurantName'] = restaurantName;

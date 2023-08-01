@@ -63,7 +63,7 @@ class ClientSuggestedEmployeesView extends GetView<ClientSuggestedEmployeesContr
 
   Widget _employeeItem(SuggestedEmployeeDetail employee) {
     return InkWell(
-      onTap: () => controller.onEmployeeItemClick(employeeDetail: employee),
+      onTap: () => controller.onEmployeeItemClick(employeeId: employee.employeeId ?? ''),
       child: Container(
         height: 92.h,
         margin: EdgeInsets.symmetric(horizontal: 24.w).copyWith(
@@ -125,7 +125,7 @@ class ClientSuggestedEmployeesView extends GetView<ClientSuggestedEmployeesContr
                   Row(
                     children: [
                       _detailsItem(MyAssets.exp, MyStrings.rate.tr,
-                          MyStrings.ratePerHour.trParams({"rate": "£${(employee.hourlyRate ?? 0)}"})),
+                          MyStrings.ratePerHour.trParams({"rate": "£${(employee.hourlyRate?.toStringAsFixed(2) ?? 0)}"})),
                       _detailsItem(
                           MyAssets.totalHour, MyStrings.totalHour.tr, (employee.totalWorkingHour ?? 0).toString()),
                     ],
@@ -134,7 +134,7 @@ class ClientSuggestedEmployeesView extends GetView<ClientSuggestedEmployeesContr
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       InkWell(
-                          onTap: controller.onCancelClick,
+                          onTap: () => controller.onCancelClick(employeeId: employee.employeeId ?? ''),
                           child: const Icon(
                             Icons.cancel,
                             color: Colors.red,

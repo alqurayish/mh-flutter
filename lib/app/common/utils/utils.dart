@@ -1,5 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:mh/app/modules/client/client_payment_and_invoice/model/client_invoice.dart';
+import 'package:pdf/pdf.dart';
 
 import '../../enums/error_from.dart';
 import '../../models/check_in_out_histories.dart';
@@ -8,6 +12,8 @@ import '../../models/employee_daily_statistics.dart';
 import '../controller/app_controller.dart';
 import '../widgets/custom_dialog.dart';
 import 'exports.dart';
+import 'package:pdf/widgets.dart' as pw;
+import 'package:path_provider/path_provider.dart';
 
 class Utils {
   static final Utils _instance = Utils._();
@@ -151,13 +157,13 @@ class Utils {
       totalWorkingTimeInMinute: 0,
     );
 
-    DateTime? employeeCheckin = element.checkInCheckOutDetails?.checkInTime;
+    DateTime? employeeCheckIn = element.checkInCheckOutDetails?.checkInTime;
     DateTime? employeeCheckout = element.checkInCheckOutDetails?.checkOutTime;
     DateTime? clientCheckIn = element.checkInCheckOutDetails?.clientCheckInTime;
     DateTime? clientCheckOut = element.checkInCheckOutDetails?.clientCheckOutTime;
 
-    if (employeeCheckin != null) {
-      dailyStatistics.employeeCheckInTime = "${employeeCheckin.toLocal().hour} : ${employeeCheckin.toLocal().minute}";
+    if (employeeCheckIn != null) {
+      dailyStatistics.employeeCheckInTime = "${employeeCheckIn.toLocal().hour} : ${employeeCheckIn.toLocal().minute}";
     }
     if (employeeCheckout != null) {
       dailyStatistics.employeeCheckOutTime =
@@ -178,7 +184,7 @@ class Utils {
       dailyStatistics.clientBreakTime = "${element.checkInCheckOutDetails?.clientBreakTime ?? 0} min";
     }
 
-    DateTime? tempCheckInTime = clientCheckIn ?? employeeCheckin;
+    DateTime? tempCheckInTime = clientCheckIn ?? employeeCheckIn;
     DateTime? tempCheckOutTime = clientCheckOut ?? employeeCheckout;
     int? tempBreakTime = (element.checkInCheckOutDetails?.clientBreakTime ?? 0) == 0
         ? (element.checkInCheckOutDetails?.breakTime ?? 0)
@@ -208,8 +214,114 @@ class Utils {
 
     dailyStatistics.restaurantName = element.restaurantDetails?.restaurantName ?? '';
     dailyStatistics.employeeName = element.employeeDetails?.name ?? '';
-    dailyStatistics.position = '-';
+    dailyStatistics.position = element.employeeDetails?.positionName ?? '';
     dailyStatistics.complain = '-';
     return dailyStatistics;
+  }
+
+  static String getCurrentTimeWithAMPM() {
+    DateTime now = DateTime.now();
+    String formattedTime = DateFormat('hh:mm a').format(now);
+    return formattedTime;
+  }
+
+  // Function to generate the PDF
+  static Future<File> generatePdfWithImageAndText({required Invoice invoice}) async {
+    final pw.Document pdf = pw.Document();
+    pw.MemoryImage? image;
+    File file;
+    file = await assetToFile(MyAssets.logo);
+    if (file.existsSync()) {
+      image = pw.MemoryImage(file.readAsBytesSync());
+    }
+
+    // Add a page to the PDF
+    pdf.addPage(
+      pw.Page(
+        build: (pw.Context context) {
+          return pw.Center(
+            child: pw.Column(
+              mainAxisAlignment: pw.MainAxisAlignment.center,
+              crossAxisAlignment: pw.CrossAxisAlignment.center,
+              children: [
+                pw.Image(image!, height: 100, width: 100),
+                pw.SizedBox(height: 20), // Add some spacing between image and text
+                pw.Text(
+                  'MH Premier Staffing Solutions',
+                  style: pw.TextStyle(
+                    color: PdfColor.fromHex('C6A34F'), // Set the text color to blue.
+                    fontSize: 30,
+                  ),
+                ),
+                pw.SizedBox(height: 30),
+                pw.Row(children: [
+                  pw.Expanded(
+                      flex: 1,
+                      child: pw.Column(crossAxisAlignment: pw.CrossAxisAlignment.start, children: [
+                        pw.Text('To:'),
+                        pw.SizedBox(height: 20),
+                        pw.Text('House: 35 (Rose garden), Road no: 08, Shekhertek, Adabor, Dhaka: 1208',
+                            style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+                      ])),
+                  pw.Expanded(flex: 1, child: pw.Wrap())
+                ]),
+                pw.SizedBox(height: 10),
+                pw.Row(children: [
+                  pw.Expanded(flex: 1, child: pw.Wrap()),
+                  pw.Expanded(
+                      flex: 1,
+                      child: pw.Column(crossAxisAlignment: pw.CrossAxisAlignment.end, children: [
+                        pw.Text('Invoice N: ${invoice.invoiceNumber}'),
+                        pw.Text('Invoice date: ${DateFormat('d MMMM, y').format(invoice.invoiceDate!)}'),
+                      ]))
+                ]),
+                pw.SizedBox(height: 30),
+                pw.Text('Total: £${invoice.amount}', style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 16)),
+                pw.SizedBox(height: 30),
+                pw.Row(children: [
+                  pw.Expanded(
+                      flex: 1,
+                      child: pw.Column(crossAxisAlignment: pw.CrossAxisAlignment.start, children: [
+                        pw.Text('Bank Transfer:',
+                            style: pw.TextStyle(
+                                decoration: pw.TextDecoration.underline,
+                                decorationColor: PdfColors.black, // Optional: Set the underline color
+                                decorationThickness: 10.0,
+                                fontSize: 16,
+                                fontWeight: pw.FontWeight.bold)),
+                        pw.Text('Invoice date: ${DateFormat('d MMMM, y').format(invoice.invoiceDate!)}'),
+                      ])),
+                  pw.Expanded(flex: 1, child: pw.Wrap()),
+                ]),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+
+    // Save the PDF to a file.
+    final appDocDir = await getApplicationDocumentsDirectory();
+    final String sPath = '${appDocDir.path}/invoice.pdf';
+    final File sFile = File(sPath);
+    await sFile.writeAsBytes(await pdf.save());
+
+    return sFile;
+  }
+
+  static Future<File> assetToFile(String assetPath) async {
+    // Load the asset data as a byte array
+    ByteData data = await rootBundle.load(assetPath);
+    List<int> bytes = data.buffer.asUint8List();
+
+    // Get the temporary directory where we can write the asset data
+    Directory tempDir = await getTemporaryDirectory();
+    String tempPath = '${tempDir.path}/${assetPath.split('/').last}';
+
+    // Write the asset data to a temporary file
+    File tempFile = File(tempPath);
+    await tempFile.writeAsBytes(bytes);
+
+    return tempFile;
   }
 }

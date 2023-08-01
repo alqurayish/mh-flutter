@@ -27,6 +27,7 @@ class Employee {
     this.employeeExperience,
     this.rating,
     this.totalWorkingHour,
+    this.hourlyRate,
     this.isReferPerson,
     this.isHired,
     this.hiredByRestaurantName,
@@ -64,10 +65,10 @@ class Employee {
   final String? licensesNo;
   final String? emmergencyContact;
   final String? countryName;
-  final String? sourceFrom;
   final String? employeeExperience;
-  final int? rating;
-  final int? totalWorkingHour;
+  final double? rating;
+  final double? totalWorkingHour;
+  final double? hourlyRate;
   final bool? isReferPerson;
   final bool? isHired;
   final DateTime? hiredFromDate;
@@ -79,11 +80,13 @@ class Employee {
   final String? hiredByRestaurantAddress;
   final bool? isMhEmployee;
   final List<String>? languages;
-  final int? clientDiscount;
+  final double? clientDiscount;
   final String? hiredByLat;
   final String? hiredByLong;
   final int? iat;
   final int? exp;
+  final String? sourceFrom;
+
 
   factory Employee.fromRawJson(String str) => Employee.fromJson(json.decode(str));
 
@@ -111,8 +114,9 @@ class Employee {
     countryName: json["countryName"],
     sourceFrom: json["sourceFrom"],
     employeeExperience: json["employeeExperience"].toString(),
-    rating: json["rating"],
-    totalWorkingHour: json["totalWorkingHour"],
+    hourlyRate: json["hourlyRate"] == null ? 0.0 : double.parse(json["hourlyRate"].toString()),
+    rating: json["rating"] == null ? 0.0 : double.parse(json["rating"].toString()),
+    totalWorkingHour: json["totalWorkingHour"] == null ? 0.0 : double.parse(json["totalWorkingHour"].toString()),
     isReferPerson: json["isReferPerson"],
     isHired: json["isHired"],
     hiredFromDate: json["hiredFromDate"] == null ? null : DateTime.parse(json["hiredFromDate"]),
@@ -124,7 +128,7 @@ class Employee {
     hiredByRestaurantAddress: json["hiredByRestaurantAddress"],
     isMhEmployee: json["isMhEmployee"],
     languages: json["languages"] == null ? [] : List<String>.from(json["languages"]!.map((x) => x)),
-    clientDiscount: json["clientDiscount"],
+    clientDiscount: json["clientDiscount"] == null ? 0.0 : double.parse(json['clientDiscount'].toString()),
     hiredByLat: json["hiredByLat"],
     hiredByLong: json["hiredByLong"],
     iat: json["iat"],
@@ -144,6 +148,7 @@ class Employee {
     "active": active,
     "employee": employee,
     "gender": gender,
+    "hourlyRate": hourlyRate,
     "dateOfBirth": dateOfBirth?.toIso8601String(),
     "presentAddress": presentAddress,
     "permanentAddress": permanentAddress,

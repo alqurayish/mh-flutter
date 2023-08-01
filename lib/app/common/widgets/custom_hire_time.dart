@@ -1,10 +1,103 @@
 import 'package:mh/app/common/widgets/custom_dialog.dart';
+import 'package:mh/app/common/widgets/timer_wheel_widget.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-
 import '../utils/exports.dart';
 
-class  CustomHireTime {
+class CustomHireTime {
   static void show(BuildContext context, Function(String fromTime, String toTime) onSuccessfullyTimeSelect) {
+    String fromTime = Utils.getCurrentTimeWithAMPM();
+    String toTime = Utils.getCurrentTimeWithAMPM();
+
+    showMaterialModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          color: MyColors.lightCard(context),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SizedBox(height: 19.h),
+                Center(
+                  child: Container(
+                    height: 4.h,
+                    width: 80.w,
+                    decoration: const BoxDecoration(
+                      color: MyColors.c_5C5C5C,
+                    ),
+                  ),
+                ),
+                SizedBox(height: 19.h),
+                _title(context, "From time"),
+                TimerWheelWidget(
+                  height: 150.h,
+                  width: 300.w,
+                  centerHighlightColor: MyColors.c_DDBD68.withOpacity(0.4),
+                  onTimeChanged: (String time) {
+                    fromTime = time;
+                  },
+                ),
+                SizedBox(height: 30.h),
+                _title(context, "To time"),
+                SizedBox(height: 11.h),
+                TimerWheelWidget(
+                  height: 150.h,
+                  width: 300.w,
+                  centerHighlightColor: MyColors.c_DDBD68.withOpacity(0.4),
+                  onTimeChanged: (String time) {
+                    toTime = time;
+                  },
+                ),
+                SizedBox(height: 30.h),
+                CustomButtons.button(
+                  text: "Done",
+                  onTap: () {
+                    if (fromTime == toTime) {
+                      CustomDialogue.information(
+                        context: context,
+                        title: "Invalid Time Range",
+                        description: "From-time and To-time should be same",
+                      );
+                    } else {
+                      Get.back(); // hide modal
+                      onSuccessfullyTimeSelect(fromTime, toTime);
+                    }
+                  },
+                  margin: const EdgeInsets.symmetric(horizontal: 18),
+                ),
+                SizedBox(height: 20.h),
+              ],
+            ),
+          ),
+        );
+      },
+    ).then((value) {
+      // call after close modal
+    });
+  }
+
+  static Widget _divider(BuildContext context) => Expanded(
+        child: Container(
+          height: 1,
+          color: MyColors.lD9D9D9_dstock(context),
+        ),
+      );
+
+  static Widget _title(BuildContext context, String text) => Row(
+        children: [
+          _divider(context),
+          SizedBox(width: 10.w),
+          Text(
+            text,
+            style: MyColors.l7B7B7B_dtext(context).semiBold16,
+          ),
+          SizedBox(width: 10.w),
+          _divider(context),
+        ],
+      );
+
+  /* static void show(BuildContext context, Function(String fromTime, String toTime) onSuccessfullyTimeSelect) {
     int fromTimeHour = 0;
     int fromTimeMin = 0;
     int toTimeHour = 0;
@@ -190,5 +283,5 @@ class  CustomHireTime {
             ),
           ),
         ),
-      );
+      );*/
 }

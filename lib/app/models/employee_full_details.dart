@@ -1,12 +1,11 @@
 import 'dart:convert';
-
-import 'push_notification_details.dart';
+import 'package:mh/app/models/employees_by_id.dart';
 
 class EmployeeFullDetails {
   final String? status;
   final int? statusCode;
   final String? message;
-  final Details? details;
+  final Employee? details;
 
   EmployeeFullDetails({
     this.status,
@@ -23,7 +22,7 @@ class EmployeeFullDetails {
     status: json["status"],
     statusCode: json["statusCode"],
     message: json["message"],
-    details: json["details"] == null ? null : Details.fromJson(json["details"]),
+    details: json["details"] == null ? null : Employee.fromJson(json["details"]),
   );
 
   Map<String, dynamic> toJson() => {
@@ -34,7 +33,7 @@ class EmployeeFullDetails {
   };
 }
 
-class Details {
+/*class Details {
   final String? id;
   final String? firstName;
   final String? lastName;
@@ -245,4 +244,4 @@ class Details {
     "higherEducation": higherEducation,
     "pushNotificationDetails": pushNotificationDetails?.toJson(),
   };
-}
+}*/

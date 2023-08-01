@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:mh/app/modules/client/invoice_pdf/bindings/invoice_pdf_binding.dart';
+import 'package:mh/app/modules/client/invoice_pdf/views/invoice_pdf_view.dart';
 
 import '../middleware/auth_middleware.dart';
 import '../modules/admin/admin_all_clients/bindings/admin_all_clients_binding.dart';
@@ -334,6 +336,11 @@ class AppPages {
       name: _Paths.notifications,
       page: () => const NotificationsView(),
       binding: NotificationsBinding(),
+    ),
+    GetPage(
+      name: _Paths.invoicePdf,
+      page: () => const InvoicePdfView(),
+      binding: InvoicePdfBinding(),
     ),
   ];
 }

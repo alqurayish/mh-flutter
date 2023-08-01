@@ -121,7 +121,7 @@ class ClientMyEmployeeView extends GetView<ClientMyEmployeeController> {
                                 Row(
                                   children: [
                                     _name(hiredHistory.employeeDetails?.name ?? "-"),
-                                    _rating(hiredHistory.employeeDetails?.rating ?? 0),
+                                    _rating(hiredHistory.employeeDetails?.rating ?? 0.0),
                                   ],
                                 ),
                               ],
@@ -193,7 +193,7 @@ class ClientMyEmployeeView extends GetView<ClientMyEmployeeController> {
     style: MyColors.l111111_dwhite(controller.context!).medium14,
   );
 
-  Widget _rating(int rating) => Visibility(
+  Widget _rating(double rating) => Visibility(
     visible: rating > 0,
     child: Row(
       children: [

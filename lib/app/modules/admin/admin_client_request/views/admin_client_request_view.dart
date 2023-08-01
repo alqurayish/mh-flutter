@@ -17,7 +17,8 @@ class AdminClientRequestView extends GetView<AdminClientRequestController> {
         title: 'Request',
       ),
       body: Obx(
-        () => (controller.adminHomeController.requestedEmployees.value.requestEmployees ?? []).isEmpty
+        () => (controller.adminHomeController.requestedEmployees.value.requestEmployees ?? []).isEmpty ||
+                controller.adminHomeController.numberOfRequestFromClient == 0
             ? const NoItemFound()
             : ListView.builder(
                 itemCount: (controller.adminHomeController.requestedEmployees.value.requestEmployees ?? []).length,

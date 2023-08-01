@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:dartz/dartz.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -205,8 +204,6 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
     if (response.statusCode == null) {
       response = await post("users/employee-register", jsonEncode(employeeRegistration.toJson));
     }
-
-    print('ApiHelperImpl.employeeRegister: ${jsonEncode(employeeRegistration.toJson)}');
 
     return _convert<ClientRegistrationResponse>(
       response,
@@ -495,7 +492,7 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
   }
 
   @override
-  EitherModel<TodayCheckInOutDetails> checkin(Map<String, dynamic> data) async {
+  EitherModel<TodayCheckInOutDetails> checkIn(Map<String, dynamic> data) async {
     var response = await post("current-hired-employees/create", jsonEncode(data));
     if (response.statusCode == null) response = await post("current-hired-employees/create", jsonEncode(data));
     if (response.statusCode == null) response = await post("current-hired-employees/create", jsonEncode(data));
@@ -597,9 +594,6 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
     if (response.statusCode == null) response = await get(url);
     if (response.statusCode == null) response = await get(url);
     if (response.statusCode == null) response = await get(url);
-
-    print('ApiHelperImpl.getCheckInOutHistory url: $url');
-
     return _convert<CheckInCheckOutHistory>(
       response,
       CheckInCheckOutHistory.fromJson,
@@ -612,7 +606,6 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
     if (response.statusCode == null) response = await get("check-in-check-out-histories/list");
     if (response.statusCode == null) response = await get("check-in-check-out-histories/list");
     if (response.statusCode == null) response = await get("check-in-check-out-histories/list");
-
     return _convert<CheckInCheckOutHistory>(
       response,
       CheckInCheckOutHistory.fromJson,
@@ -814,13 +807,29 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
   }
 
   @override
-  EitherModel<SingleNotificationModelForEmployee> removeClientRequestFromAdmin({required String requestId}) async {
+  EitherModel<SingleNotificationModelForEmployee> cancelClientRequestFromAdmin({required String requestId}) async {
     String url = "request-employees/remove/$requestId";
 
     var response = await delete(url);
     if (response.statusCode == null) response = await delete(url);
     if (response.statusCode == null) response = await delete(url);
     if (response.statusCode == null) response = await delete(url);
+
+    return _convert<SingleNotificationModelForEmployee>(
+      response,
+      SingleNotificationModelForEmployee.fromJson,
+    ).fold((CustomError l) => left(l), (SingleNotificationModelForEmployee r) => right(r));
+  }
+
+  @override
+  EitherModel<SingleNotificationModelForEmployee> cancelEmployeeSuggestionFromAdmin(
+      {required String employeeId, required String requestId}) async {
+    String url = "request-employees/cancel-suggest/$requestId";
+
+    var response = await patch(url, jsonEncode({"employeeId": employeeId}));
+    if (response.statusCode == null) response = await patch(url, jsonEncode({"employeeId": employeeId}));
+    if (response.statusCode == null) response = await patch(url, jsonEncode({"employeeId": employeeId}));
+    if (response.statusCode == null) response = await patch(url, jsonEncode({"employeeId": employeeId}));
 
     return _convert<SingleNotificationModelForEmployee>(
       response,
