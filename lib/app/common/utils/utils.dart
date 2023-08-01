@@ -287,7 +287,7 @@ class Utils {
                                 decorationThickness: 10.0,
                                 fontSize: 16,
                                 fontWeight: pw.FontWeight.bold)),
-                        pw.Text('Invoice Date: ${DateFormat('d MMMM, y').format(invoice.invoiceDate!)}'),
+                        pw.Text('Invoice date: ${DateFormat('d MMMM, y').format(invoice.invoiceDate!)}'),
                       ])),
                   pw.Expanded(flex: 1, child: pw.Wrap()),
                 ]),

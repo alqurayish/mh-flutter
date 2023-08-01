@@ -1,6 +1,4 @@
 import 'package:get/get.dart';
-import 'package:mh/app/modules/client/invoice_pdf/bindings/invoice_pdf_binding.dart';
-import 'package:mh/app/modules/client/invoice_pdf/views/invoice_pdf_view.dart';
 
 import '../middleware/auth_middleware.dart';
 import '../modules/admin/admin_all_clients/bindings/admin_all_clients_binding.dart';
@@ -51,6 +49,8 @@ import '../modules/client/employee_details/bindings/employee_details_binding.dar
 import '../modules/client/employee_details/views/employee_details_view.dart';
 import '../modules/client/hire_status/bindings/hire_status_binding.dart';
 import '../modules/client/hire_status/views/hire_status_view.dart';
+import '../modules/client/invoice_pdf/bindings/invoice_pdf_binding.dart';
+import '../modules/client/invoice_pdf/views/invoice_pdf_view.dart';
 import '../modules/client/mh_employees/bindings/mh_employees_binding.dart';
 import '../modules/client/mh_employees/views/mh_employees_view.dart';
 import '../modules/client/mh_employees_by_id/bindings/mh_employees_by_id_binding.dart';
@@ -75,6 +75,8 @@ import '../modules/notifications/bindings/notifications_binding.dart';
 import '../modules/notifications/views/notifications_view.dart';
 import '../modules/splash/bindings/splash_binding.dart';
 import '../modules/splash/views/splash_view.dart';
+import '../modules/stripe_payment/bindings/stripe_payment_binding.dart';
+import '../modules/stripe_payment/views/stripe_payment_view.dart';
 import '../modules/terms_and_condition/bindings/terms_and_condition_binding.dart';
 import '../modules/terms_and_condition/views/terms_and_condition_view.dart';
 
@@ -341,6 +343,11 @@ class AppPages {
       name: _Paths.invoicePdf,
       page: () => const InvoicePdfView(),
       binding: InvoicePdfBinding(),
+    ),
+    GetPage(
+      name: _Paths.stripePayment,
+      page: () => const StripePaymentView(),
+      binding: StripePaymentBinding(),
     ),
   ];
 }

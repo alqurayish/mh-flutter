@@ -2,6 +2,8 @@ import 'package:mh/app/modules/employee/employee_home/models/single_notification
 import 'package:mh/app/modules/notifications/models/notification_response_model.dart';
 import 'package:mh/app/modules/notifications/models/notification_update_request_model.dart';
 import 'package:mh/app/modules/notifications/models/notification_update_response_model.dart';
+import 'package:mh/app/modules/stripe_payment/models/stripe_request_model.dart';
+import 'package:mh/app/modules/stripe_payment/models/stripe_response_model.dart';
 
 import '../common/utils/exports.dart';
 import '../common/utils/type_def.dart';
@@ -140,5 +142,8 @@ abstract class ApiHelper {
 
   EitherModel<SingleNotificationModelForEmployee> cancelClientRequestFromAdmin({required String requestId});
 
-  EitherModel<SingleNotificationModelForEmployee> cancelEmployeeSuggestionFromAdmin({required String employeeId,  required String requestId});
+  EitherModel<SingleNotificationModelForEmployee> cancelEmployeeSuggestionFromAdmin(
+      {required String employeeId, required String requestId});
+
+  EitherModel<StripeResponseModel> stripePayment({required StripeRequestModel stripeRequestModel});
 }

@@ -1,3 +1,4 @@
+import 'package:dartz/dartz.dart';
 import 'package:mh/app/common/local_storage/storage_helper.dart';
 import 'package:mh/app/modules/auth/login/model/login_credentials_model.dart';
 
@@ -64,7 +65,7 @@ class LoginController extends GetxController implements LoginViewInterface {
 
     CustomLoader.show(context!);
 
-    await _apiHelper.login(login).then((response) {
+    await _apiHelper.login(login).then((Either<CustomError, LoginResponse> response) {
       CustomLoader.hide(context!);
 
       response.fold((CustomError customError) {

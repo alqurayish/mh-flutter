@@ -55,6 +55,8 @@ dependencies:
   # check token expire or not
   jwt_decoder: ^2.0.1
 
+  webview_flutter: ^4.2.2
+
   expandable_page_view: ^1.0.17
 
   states_rebuilder: ^6.3.0

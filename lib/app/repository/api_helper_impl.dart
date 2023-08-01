@@ -8,6 +8,8 @@ import 'package:mh/app/modules/employee/employee_home/models/single_notification
 import 'package:mh/app/modules/notifications/models/notification_response_model.dart';
 import 'package:mh/app/modules/notifications/models/notification_update_request_model.dart';
 import 'package:mh/app/modules/notifications/models/notification_update_response_model.dart';
+import 'package:mh/app/modules/stripe_payment/models/stripe_request_model.dart';
+import 'package:mh/app/modules/stripe_payment/models/stripe_response_model.dart';
 import 'package:mh/app/repository/server_urls.dart';
 
 import '../common/controller/app_error_controller.dart';
@@ -835,5 +837,20 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
       response,
       SingleNotificationModelForEmployee.fromJson,
     ).fold((CustomError l) => left(l), (SingleNotificationModelForEmployee r) => right(r));
+  }
+
+  @override
+  EitherModel<StripeResponseModel> stripePayment({required StripeRequestModel stripeRequestModel}) async {
+    String url = "payment/create-session";
+
+    var response = await post(url, jsonEncode(stripeRequestModel.toJson()));
+    if (response.statusCode == null) await post(url, jsonEncode(stripeRequestModel.toJson()));
+    if (response.statusCode == null) await post(url, jsonEncode(stripeRequestModel.toJson()));
+    if (response.statusCode == null) await post(url, jsonEncode(stripeRequestModel.toJson()));
+    print('ApiHelperImpl.stripePayment: ${response.bodyString}');
+    return _convert<StripeResponseModel>(
+      response,
+      StripeResponseModel.fromJson,
+    ).fold((CustomError l) => left(l), (StripeResponseModel r) => right(r));
   }
 }
