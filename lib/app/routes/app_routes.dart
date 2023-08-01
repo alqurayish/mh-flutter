@@ -47,6 +47,7 @@ abstract class Routes {
   static const clientEmployeeChat = _Paths.clientEmployeeChat;
   static const supportChat = _Paths.supportChat;
   static const notifications = _Paths.notifications;
+  static const invoicePdf = _Paths.invoicePdf;
 }
 
 abstract class _Paths {
@@ -98,4 +99,5 @@ abstract class _Paths {
   static const clientEmployeeChat = '/client-employee-chat';
   static const supportChat = '/support-chat';
   static const notifications = '/notifications';
+  static const invoicePdf = '/invoice-pdf';
 }

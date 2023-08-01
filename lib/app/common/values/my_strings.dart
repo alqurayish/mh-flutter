@@ -79,6 +79,7 @@ class MyStrings {
   static const String dashboard = "dashboard";
   static const String myEmployees = "myEmployees";
   static const String invoicePayment = "invoicePayment";
+  static const String invoice = "Invoice";
   static const String helpSupport = "helpSupport";
   static const String myDashboard = "myDashboard";
   static const String emergencyCheckInCheckOut = "emergencyCheckInCheckOut";

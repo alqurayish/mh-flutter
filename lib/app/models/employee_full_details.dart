@@ -1,8 +1,5 @@
 import 'dart:convert';
-
 import 'package:mh/app/models/employees_by_id.dart';
-
-import 'push_notification_details.dart';
 
 class EmployeeFullDetails {
   final String? status;

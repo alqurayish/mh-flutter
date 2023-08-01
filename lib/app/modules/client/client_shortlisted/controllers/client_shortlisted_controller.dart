@@ -16,10 +16,6 @@ class ClientShortlistedController extends GetxController {
 
   final ShortlistController shortlistController = Get.find();
 
-  @override
-  void onInit() {
-    super.onInit();
-  }
 
   void onSelectClick(ShortList shortList) {
     shortlistController.onSelectClick(shortList);

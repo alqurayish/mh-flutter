@@ -1,3 +1,6 @@
+import 'dart:io';
+import 'package:mh/app/modules/client/client_payment_and_invoice/model/client_invoice.dart';
+import 'package:mh/app/routes/app_pages.dart';
 import '../../../../common/controller/app_controller.dart';
 import '../../../../common/controller/payment_controller.dart';
 import '../../../../common/utils/exports.dart';
@@ -8,6 +11,8 @@ import '../../client_home/controllers/client_home_controller.dart';
 
 class ClientPaymentAndInvoiceController extends GetxController {
   BuildContext? context;
+
+  File? invoiceFile;
 
   final AppController _appController = Get.find();
   final ApiHelper _apiHelper = Get.find();
@@ -33,24 +38,21 @@ class ClientPaymentAndInvoiceController extends GetxController {
   Future<void> onPaymentSuccess() async {
     CustomLoader.show(context!);
 
-    Map<String, dynamic> data = {
-      "id": _selectedInvoiceId,
-      "status": "PAID"
-    };
+    Map<String, dynamic> data = {"id": _selectedInvoiceId, "status": "PAID"};
 
     await _apiHelper.updatePaymentStatus(data).then((response) {
       CustomLoader.hide(context!);
 
       response.fold((CustomError customError) {
-
         Utils.errorDialog(context!, customError..onRetry = clientHomeController.getClientInvoice);
-
       }, (Response response) {
-
         clientHomeController.getClientInvoice();
-
       });
-
     });
+  }
+
+  void onViewInvoicePress({required Invoice invoice}) async {
+    invoiceFile = await Utils.generatePdfWithImageAndText(invoice: invoice);
+    Get.toNamed(Routes.invoicePdf, arguments: [invoiceFile]);
   }
 }
