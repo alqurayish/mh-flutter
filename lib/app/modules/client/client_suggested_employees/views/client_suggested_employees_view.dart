@@ -1,3 +1,4 @@
+import 'package:mh/app/common/controller/app_controller.dart';
 import 'package:mh/app/models/requested_employees.dart';
 
 import '../../../../common/utils/exports.dart';
@@ -124,8 +125,13 @@ class ClientSuggestedEmployeesView extends GetView<ClientSuggestedEmployeesContr
                   SizedBox(height: 10.h),
                   Row(
                     children: [
-                      _detailsItem(MyAssets.exp, MyStrings.rate.tr,
-                          MyStrings.ratePerHour.trParams({"rate": "£${(employee.hourlyRate?.toStringAsFixed(2) ?? 0)}"})),
+                      _detailsItem(
+                          MyAssets.exp,
+                          MyStrings.rate.tr,
+                          MyStrings.ratePerHour.trParams({
+                            "rate":
+                                "${Utils.getCurrencySymbol(Get.find<AppController>().user.value.client?.countryName ?? '')}${(employee.hourlyRate?.toStringAsFixed(2) ?? 0)}"
+                          })),
                       _detailsItem(
                           MyAssets.totalHour, MyStrings.totalHour.tr, (employee.totalWorkingHour ?? 0).toString()),
                     ],

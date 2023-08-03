@@ -1,8 +1,9 @@
 import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
-import 'package:mh/app/modules/client/client_payment_and_invoice/model/client_invoice.dart';
+import 'package:mh/app/modules/client/client_payment_and_invoice/model/client_invoice_model.dart';
 import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart';
 import '../../enums/error_from.dart';
 import '../../models/check_in_out_histories.dart';
 import '../../models/custom_error.dart';
@@ -224,7 +225,7 @@ class Utils {
   }
 
   // Function to generate the PDF
-  static Future<File> generatePdfWithImageAndText({required Invoice invoice}) async {
+  static Future<File> generatePdfWithImageAndText({required InvoiceModel invoice}) async {
     final pw.Document pdf = pw.Document();
     pw.MemoryImage? image;
     File file;
@@ -242,8 +243,8 @@ class Utils {
               mainAxisAlignment: pw.MainAxisAlignment.center,
               crossAxisAlignment: pw.CrossAxisAlignment.center,
               children: [
-                pw.Image(image!, height: 100, width: 100),
-                pw.SizedBox(height: 20), // Add some spacing between image and text
+                pw.Image(image!, height: 120, width: 120),
+                pw.SizedBox(height: 30), // Add some spacing between image and text
                 pw.Text(
                   'MH Premier Staffing Solutions',
                   style: pw.TextStyle(
@@ -251,19 +252,21 @@ class Utils {
                     fontSize: 30,
                   ),
                 ),
-                pw.SizedBox(height: 30),
+                pw.SizedBox(height: 70),
                 pw.Row(children: [
                   pw.Expanded(
                       flex: 1,
                       child: pw.Column(crossAxisAlignment: pw.CrossAxisAlignment.start, children: [
                         pw.Text('To:'),
-                        pw.SizedBox(height: 20),
-                        pw.Text('House: 35 (Rose garden), Road no: 08, Shekhertek, Adabor, Dhaka: 1208',
-                            style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+                        pw.SizedBox(height: 10),
+                        pw.Text(invoice.restaurantName ?? "", style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+                        pw.Text(invoice.restaurantAddress ?? '', style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+                        pw.Text(invoice.restaurantEmail ?? '', style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+                        pw.Text(invoice.restaurantPhone ?? '', style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
                       ])),
                   pw.Expanded(flex: 1, child: pw.Wrap())
                 ]),
-                pw.SizedBox(height: 10),
+                pw.SizedBox(height: 20),
                 pw.Row(children: [
                   pw.Expanded(flex: 1, child: pw.Wrap()),
                   pw.Expanded(
@@ -273,21 +276,24 @@ class Utils {
                         pw.Text('Invoice date: ${DateFormat('d MMMM, y').format(invoice.invoiceDate!)}'),
                       ]))
                 ]),
-                pw.SizedBox(height: 30),
-                pw.Text('Total: £${invoice.amount}', style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 16)),
-                pw.SizedBox(height: 30),
+                pw.SizedBox(height: 70),
+                pw.Text(
+                    '${invoice.restaurantName ?? ''} week from ${DateFormat('d MMMM, y').format(invoice.fromWeekDate!)} to ${DateFormat('d MMMM, y').format(invoice.toWeekDate!)}',
+                    style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 16)),
+                pw.SizedBox(height: 10),
+                pw.Text(
+                    'Total: ${getCurrencySymbol(Get.find<AppController>().user.value.client?.countryName ?? '')}${invoice.amount}',
+                    style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 16)),
+                pw.SizedBox(height: 70),
                 pw.Row(children: [
                   pw.Expanded(
                       flex: 1,
                       child: pw.Column(crossAxisAlignment: pw.CrossAxisAlignment.start, children: [
-                        pw.Text('Bank Transfer:',
-                            style: pw.TextStyle(
-                                decoration: pw.TextDecoration.underline,
-                                decorationColor: PdfColors.black, // Optional: Set the underline color
-                                decorationThickness: 10.0,
-                                fontSize: 16,
-                                fontWeight: pw.FontWeight.bold)),
-                        pw.Text('Invoice date: ${DateFormat('d MMMM, y').format(invoice.invoiceDate!)}'),
+                        pw.Text('Bank Transfer:', style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+                        pw.Text('MH Premier Staffing Solutions'),
+                        pw.Text('48 Warwick St Regent Street W1B 5AW London'),
+                        pw.Text('+44 20 3980 9360'),
+                        pw.Text('info@mhpremierstaffingsolutions.com'),
                       ])),
                   pw.Expanded(flex: 1, child: pw.Wrap()),
                 ]),
@@ -321,5 +327,17 @@ class Utils {
     await tempFile.writeAsBytes(bytes);
 
     return tempFile;
+  }
+
+  static String getCurrencySymbol(String countryName) {
+    switch (countryName.toLowerCase()) {
+      case 'united kingdom':
+        return '£';
+      case 'united arab emirates':
+        return 'د.إ';
+      // Add more cases for other countries as needed
+      default:
+        return '\$';
+    }
   }
 }

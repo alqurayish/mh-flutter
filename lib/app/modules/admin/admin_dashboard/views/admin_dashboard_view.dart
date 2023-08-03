@@ -1,4 +1,5 @@
 import 'package:horizontal_data_table/horizontal_data_table.dart';
+import 'package:mh/app/common/controller/app_controller.dart';
 import 'package:mh/app/common/style/my_decoration.dart';
 import 'package:mh/app/common/utils/validators.dart';
 import 'package:mh/app/common/widgets/custom_dropdown.dart';
@@ -142,7 +143,7 @@ class AdminDashboardView extends GetView<AdminDashboardController> {
                                 child: _itemValue(
                                     "Hours", (controller.totalWorkingTimeInMinutes.value / 60).toStringAsFixed(1))),
                             _vDivider,
-                            Expanded(child: _itemValue("Amount", "£${controller.amount.value}")),
+                            Expanded(child: _itemValue("Amount", "${Utils.getCurrencySymbol(Get.find<AppController>().user.value.admin?.countryName ?? '')}${controller.amount.value}")),
                           ],
                         ),
                       ),

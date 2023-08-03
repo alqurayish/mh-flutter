@@ -53,11 +53,9 @@ class AppController extends GetxService {
         if (temp.role == "CLIENT") {
           user.value.userType = UserType.client;
           user.value.client = temp;
-          parseCurrency(countryName: user.value.client?.countryName ?? '');
         } else if (temp.role == "EMPLOYEE") {
           user.value.userType = UserType.employee;
           user.value.employee = Employee.fromJson(JwtDecoder.decode(StorageHelper.getToken));
-          parseCurrency(countryName: user.value.employee?.countryName ?? '');
         } else if (temp.role == "ADMIN") {
           user.value.userType = UserType.admin;
           user.value.admin = Admin.fromJson(JwtDecoder.decode(StorageHelper.getToken));
@@ -198,17 +196,6 @@ class AppController extends GetxService {
   Future<void> _updateFCMToken({bool isLogin = true}) async {
     if (Get.isRegistered<ApiHelper>()) {
       await Get.find<ApiHelper>().updateFcmToken(isLogin: isLogin);
-    }
-  }
-
-  CurrencyName parseCurrency({required String countryName}) {
-    switch (countryName) {
-      case 'United Kingdom':
-        return CurrencyName.pound;
-      case 'Dubai':
-        return CurrencyName.dirHam;
-      default:
-        throw ArgumentError('Invalid country name: $countryName');
     }
   }
 }

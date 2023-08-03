@@ -1,3 +1,5 @@
+import 'package:mh/app/common/controller/app_controller.dart';
+
 import '../../../../common/utils/exports.dart';
 import '../../../../common/widgets/custom_appbar.dart';
 import '../../../../common/widgets/custom_bottombar.dart';
@@ -242,8 +244,8 @@ class ClientShortlistedView extends GetView<ClientShortlistedController> {
                       employee.fromTime != null &&
                       employee.toTime != null &&
                       employee.employeeDetails?.hourlyRate != null)
-                  ? 'Total Rate: £ ${controller.calculateTotalRate(fromTime: employee.fromTime??'', toTime: employee.toTime??'', daysDifference: employee.fromDate!.differenceInDays(employee.toDate!), hourlyRate: employee.employeeDetails?.hourlyRate ?? 0.0).toStringAsFixed(2)}'
-                  : 'Hourly Rate: £ ${employee.employeeDetails?.hourlyRate!.toStringAsFixed(2) ?? '0.00'}',
+                  ? 'Total Rate: ${Utils.getCurrencySymbol(Get.find<AppController>().user.value.client?.countryName ?? '')}${controller.calculateTotalRate(fromTime: employee.fromTime??'', toTime: employee.toTime??'', daysDifference: employee.fromDate!.differenceInDays(employee.toDate!), hourlyRate: employee.employeeDetails?.hourlyRate ?? 0.0).toStringAsFixed(2)}'
+                  : 'Hourly Rate: ${Utils.getCurrencySymbol(Get.find<AppController>().user.value.client?.countryName ?? '')}${employee.employeeDetails?.hourlyRate!.toStringAsFixed(2) ?? '0.00'}',
               style: const TextStyle(color: MyColors.c_FFFFFF),
             )))
       ],

@@ -1,4 +1,5 @@
 import 'package:badges/badges.dart' as badge;
+import 'package:mh/app/common/controller/app_controller.dart';
 
 import '../../../../common/utils/exports.dart';
 import '../../../../common/widgets/custom_appbar.dart';
@@ -207,7 +208,7 @@ class MhEmployeesByIdView extends GetView<MhEmployeesByIdController> {
 
                       Row(
                         children: [
-                          _detailsItem(MyAssets.rate, MyStrings.rate.tr, "£${(user.hourlyRate ?? 0.0).toStringAsFixed(2)}"),
+                          _detailsItem(MyAssets.rate, MyStrings.rate.tr, "${Utils.getCurrencySymbol(Get.find<AppController>().user.value.client?.countryName ?? '')}${(user.hourlyRate ?? 0.0).toStringAsFixed(2)}"),
                         ],
                       ),
 

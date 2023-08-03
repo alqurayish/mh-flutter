@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:dartz/dartz.dart';
-import 'package:mh/app/modules/client/client_payment_and_invoice/model/client_invoice.dart';
+import 'package:mh/app/modules/client/client_payment_and_invoice/model/client_invoice_model.dart';
 import 'package:mh/app/modules/stripe_payment/models/stripe_request_model.dart';
 import 'package:mh/app/modules/stripe_payment/models/stripe_response_model.dart';
 import 'package:mh/app/routes/app_pages.dart';
@@ -17,7 +17,7 @@ class ClientPaymentAndInvoiceController extends GetxController {
 
   File? invoiceFile;
 
-  final AppController _appController = Get.find();
+  final AppController appController = Get.find();
   final ApiHelper _apiHelper = Get.find();
 
   ClientHomeController clientHomeController = Get.find();
@@ -25,13 +25,17 @@ class ClientPaymentAndInvoiceController extends GetxController {
   String _selectedInvoiceId = "";
 
   void onPayClick(int index) {
-    _selectedInvoiceId = clientHomeController.clientInvoice.value.invoices![index].id ?? "";
+    _selectedInvoiceId = clientHomeController.clientInvoice.value.invoices![index].sId ?? "";
     // _cardPayment(clientHomeController.clientInvoice.value.invoices![index].amount ?? 0);
     makeStripePayment(
         stripeRequestModel: StripeRequestModel(
             amount: clientHomeController.clientInvoice.value.invoices![index].amount ?? 0,
             invoiceId: _selectedInvoiceId,
-            currency: _appController.user.value.client?.countryName == 'United Kingdom' ? 'gbp' : 'aed'));
+            currency: appController.user.value.client?.countryName?.toLowerCase() == 'united kingdom'
+                ? 'gbp'
+                : appController.user.value.client?.countryName?.toLowerCase() == 'united arab emirates'
+                    ? 'aed'
+                    : 'usd'));
   }
 
   Future<void> _cardPayment(double amount) async {
@@ -39,7 +43,7 @@ class ClientPaymentAndInvoiceController extends GetxController {
     paymentController.makePayment(
       amount: amount,
       currency: "EUR",
-      customerName: _appController.user.value.userName,
+      customerName: appController.user.value.userName,
     );
   }
 
@@ -59,7 +63,7 @@ class ClientPaymentAndInvoiceController extends GetxController {
     });
   }
 
-  void onViewInvoicePress({required Invoice invoice}) async {
+  void onViewInvoicePress({required InvoiceModel invoice}) async {
     invoiceFile = await Utils.generatePdfWithImageAndText(invoice: invoice);
     Get.toNamed(Routes.invoicePdf, arguments: [invoiceFile]);
   }

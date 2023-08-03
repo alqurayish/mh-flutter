@@ -1,3 +1,5 @@
+import 'package:mh/app/common/controller/app_controller.dart';
+
 import '../../../../common/utils/exports.dart';
 import '../../../../common/widgets/custom_appbar.dart';
 import '../../../../common/widgets/custom_network_image.dart';
@@ -82,7 +84,7 @@ class ClientMyEmployeeView extends GetView<ClientMyEmployeeController> {
                 width: 122.w,
                 child: CustomButtons.button(
                   height: 28.w,
-                  text: "£${hiredHistory.employeeDetails?.hourlyRate ?? 0} /h",
+                  text: "${Utils.getCurrencySymbol(Get.find<AppController>().user.value.client?.countryName ?? '')}${hiredHistory.employeeDetails?.hourlyRate ?? 0} /h",
                   margin: EdgeInsets.zero,
                   fontSize: 12,
                   customButtonStyle: CustomButtonStyle.radiusTopBottomCorner,

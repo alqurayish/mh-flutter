@@ -1,5 +1,7 @@
 import 'package:horizontal_data_table/horizontal_data_table.dart';
-import 'package:mh/app/modules/client/client_payment_and_invoice/model/client_invoice.dart';
+import 'package:mh/app/common/controller/app_controller.dart';
+import 'package:mh/app/common/values/constants.dart';
+import 'package:mh/app/modules/client/client_payment_and_invoice/model/client_invoice_model.dart';
 import '../../../../common/utils/exports.dart';
 import '../../../../common/widgets/custom_appbar.dart';
 import '../controllers/client_payment_and_invoice_controller.dart';
@@ -77,7 +79,7 @@ class ClientPaymentAndInvoiceView extends GetView<ClientPaymentAndInvoiceControl
   }
 
   Widget _generateFirstColumnRow(BuildContext context, int index) {
-    Invoice invoice = controller.clientHomeController.clientInvoice.value.invoices![index];
+    InvoiceModel invoice = controller.clientHomeController.clientInvoice.value.invoices![index];
 
     double height = 71.h;
 
@@ -169,7 +171,7 @@ class ClientPaymentAndInvoiceView extends GetView<ClientPaymentAndInvoiceControl
       );
 
   Widget _generateRightHandSideColumnRow(BuildContext context, int index) {
-    Invoice invoice = controller.clientHomeController.clientInvoice.value.invoices![index];
+    InvoiceModel invoice = controller.clientHomeController.clientInvoice.value.invoices![index];
 
     double height = 71.h;
 
@@ -187,7 +189,8 @@ class ClientPaymentAndInvoiceView extends GetView<ClientPaymentAndInvoiceControl
         _cell(
             width: 100.w,
             height: height,
-            value: '£ ${(invoice.amount ?? 0).toStringAsFixed(2)}',
+            value:
+                '${Utils.getCurrencySymbol(Get.find<AppController>().user.value.client?.countryName ?? '')}${(invoice.amount ?? 0).toStringAsFixed(2)}',
             isPaid: invoice.status == "PAID"),
         _cell(width: 100.w, height: height, value: invoice.invoiceNumber ?? "-", isPaid: invoice.status == "PAID"),
         _cell(
@@ -207,17 +210,18 @@ class ClientPaymentAndInvoiceView extends GetView<ClientPaymentAndInvoiceControl
             height: height,
             value: "-",
             isPaid: invoice.status == "PAID",
-            child: Padding(
-              padding: const EdgeInsets.all(27.0),
-              child: InkWell(
-                onTap: () => controller.onViewInvoicePress(invoice: invoice),
-                child: const CircleAvatar(
-                    radius: 10,
-                    backgroundColor: MyColors.c_C6A34F,
-                    child: Icon(Icons.remove_red_eye_outlined, color: MyColors.c_FFFFFF, size: 20)),
-              ),
-            )
-        )
+            child: Visibility(
+                visible: invoice.status == "PAID",
+                child: Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: InkWell(
+                    onTap: () => controller.onViewInvoicePress(invoice: invoice),
+                    child: const CircleAvatar(
+                        radius: 10,
+                        backgroundColor: MyColors.c_C6A34F,
+                        child: Icon(Icons.remove_red_eye_outlined, color: MyColors.c_FFFFFF, size: 20)),
+                  ),
+                )))
       ],
     );
   }

@@ -1,3 +1,5 @@
+import 'package:mh/app/common/controller/app_controller.dart';
+
 import '../../../../common/utils/exports.dart';
 import '../../../../common/widgets/custom_appbar.dart';
 import '../../../../common/widgets/custom_filter.dart';
@@ -191,7 +193,7 @@ class AdminClientRequestPositionEmployeesView extends GetView<AdminClientRequest
                       SizedBox(height: 8.h),
                       Row(
                         children: [
-                          _detailsItem(MyAssets.rate, MyStrings.rate.tr, "£${user.hourlyRate ?? 0}"),
+                          _detailsItem(MyAssets.rate, MyStrings.rate.tr, "${Utils.getCurrencySymbol(Get.find<AppController>().user.value.admin?.countryName ?? '')}${user.hourlyRate ?? 0}"),
                         ],
                       ),
                     ],

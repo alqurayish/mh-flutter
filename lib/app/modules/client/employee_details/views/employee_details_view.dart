@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:mh/app/common/controller/app_controller.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../common/utils/exports.dart';
@@ -234,7 +235,7 @@ class EmployeeDetailsView extends GetView<EmployeeDetailsController> {
             Row(
               children: [
                 _detailsItem(MyAssets.rate, MyStrings.rate.tr,
-                    "£${(controller.employee.hourlyRate?.toStringAsFixed(2) ?? 0)}/hour"),
+                    "${Utils.getCurrencySymbol(Get.find<AppController>().user.value.client?.countryName ?? '')}${(controller.employee.hourlyRate?.toStringAsFixed(2) ?? 0)}/hour"),
                 const Spacer(),
                 _detailsItem(MyAssets.exp, MyStrings.exp.tr, "${(controller.employee.employeeExperience ?? 0)} years"),
               ],

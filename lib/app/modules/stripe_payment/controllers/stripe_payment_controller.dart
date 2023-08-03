@@ -47,7 +47,6 @@ class StripePaymentController extends GetxController {
       ..setNavigationDelegate(
         NavigationDelegate(
           onPageStarted: (String url) async {
-            print('StripePaymentController.loadWebView:$url');
             if (url == details.successUrl) {
               onPaymentSuccess();
             } else if (url == details.cancelUrl) {
