@@ -84,6 +84,8 @@ class RegisterView extends GetView<RegisterController> {
             SizedBox(height: 37.h),
 
             CustomButtons.button(
+              height: 48,
+              customButtonStyle: CustomButtonStyle.radiusTopBottomCorner,
               text: MyStrings.register.tr,
               onTap: controller.onContinuePressed,
               margin: const EdgeInsets.symmetric(horizontal: 18),

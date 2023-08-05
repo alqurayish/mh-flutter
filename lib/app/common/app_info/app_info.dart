@@ -4,9 +4,9 @@ import '../../enums/server_url.dart';
 class AppInfo {
   AppInfo._();
 
-  static const String appName = "Mirco Hospitality";
+  static const String appName = "MH Premier Staffing Solutions";
 
-  static const String version = "2.0.1";
+  static const String version = "2.0.2";
 
   /// it must change [releaseMode] when release
   static const ReleaseMode releaseMode = ReleaseMode.release;

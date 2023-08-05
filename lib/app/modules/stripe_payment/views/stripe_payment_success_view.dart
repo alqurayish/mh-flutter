@@ -21,28 +21,14 @@ class StripePaymentSuccessView extends StatelessWidget {
               Lottie.asset('assets/lottie/payment_success.json', height: 250, width: 250),
                Text(MyStrings.paymentSucessText, style: MyColors.l111111_dwhite(Get.context!).semiBold20),
                SizedBox(height: Get.width*0.4),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  CustomButtons.button(
-                    customButtonStyle: CustomButtonStyle.radiusTopBottomCorner,
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                    text: 'VIEW INVOICE',
-                    onTap: () {
-                      Get.toNamed(Routes.invoicePdf);
-                    },
-                    margin: const EdgeInsets.symmetric(horizontal: 0),
-                  ),
-                  CustomButtons.button(
-                    customButtonStyle: CustomButtonStyle.radiusTopBottomCorner,
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                    text: 'BACK TO HOME',
-                    onTap: () {
-                      Get.offAllNamed(Routes.clientHome);
-                    },
-                    margin: const EdgeInsets.symmetric(horizontal: 0),
-                  ),
-                ],
+              CustomButtons.button(
+                customButtonStyle: CustomButtonStyle.radiusTopBottomCorner,
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                text: 'BACK TO HOME',
+                onTap: () {
+                  Get.offAllNamed(Routes.clientHome);
+                },
+                margin: const EdgeInsets.symmetric(horizontal: 20),
               ),
             ],
           ),
