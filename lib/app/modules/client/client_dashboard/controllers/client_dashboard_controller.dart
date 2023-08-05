@@ -1,3 +1,4 @@
+import 'package:dartz/dartz.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../common/controller/app_controller.dart';
@@ -191,7 +192,7 @@ class ClientDashboardController extends GetxController {
 
     loading.value = true;
 
-    await _apiHelper.getHiredEmployeesByDate(date: dashboardDate.value.toString().split(" ").first).then((response) {
+    await _apiHelper.getHiredEmployeesByDate(date: dashboardDate.value.toString().split(" ").first).then((Either<CustomError, HiredEmployeesByDate> response) {
 
       response.fold((CustomError customError) {
         loading.value = false;

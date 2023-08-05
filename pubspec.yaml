@@ -21,7 +21,7 @@ dependencies:
   cached_network_image: ^3.2.3
 
   # image picker form local
-  image_picker: ^1.0.1
+  image_picker: ^1.0.2
   image_cropper: ^4.0.1
 
   file_picker: ^5.3.3
@@ -34,7 +34,7 @@ dependencies:
 
   http_parser: ^4.0.2
 
-  share_plus: ^7.0.2
+  share_plus: ^7.1.0
 
   # check ui in different device
 #  device_preview: ^1.1.0

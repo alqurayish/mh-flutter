@@ -7,7 +7,6 @@ class InvoicePdfView extends GetView<InvoicePdfController> {
   const InvoicePdfView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    controller.enableFullScreen();
     controller.context = context;
     return Scaffold(
       floatingActionButton: FloatingActionButton(

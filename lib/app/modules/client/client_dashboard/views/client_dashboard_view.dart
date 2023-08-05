@@ -181,7 +181,7 @@ class ClientDashboardView extends GetView<ClientDashboardController> {
         child: _employeeDetails(
           hiredHistory.employeeDetails?.employeeId ?? "",
           hiredHistory.employeeDetails?.name ?? "-",
-          Utils.getPositionName(hiredHistory.employeeDetails!.positionId!),
+          Utils.getPositionName(hiredHistory.employeeDetails?.positionId??''),
           hiredHistory.employeeDetails?.profilePicture ?? "",
         ),
       ),

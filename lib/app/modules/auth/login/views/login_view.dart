@@ -61,7 +61,9 @@ class LoginView extends GetView<LoginController> {
             // _forgotPassword,x
             SizedBox(height: 57.h),
             CustomButtons.button(
+              customButtonStyle: CustomButtonStyle.radiusTopBottomCorner,
               text: MyStrings.login.tr,
+              height: 48,
               onTap: controller.onLoginPressed,
               margin: const EdgeInsets.symmetric(horizontal: 18),
             ),

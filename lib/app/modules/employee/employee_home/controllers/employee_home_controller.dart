@@ -294,11 +294,12 @@ class EmployeeHomeController extends GetxController {
   }
 
   double get getDistance => LocationController.calculateDistance(
-      targetLat: double.parse(appController.user.value.employee!.hiredByLat!),
-      targetLong: double.parse(appController.user.value.employee!.hiredByLong!),
-      currentLat: currentLocation!.latitude, //23.76860969911456,
-      currentLong: currentLocation!.longitude //90.35406902432442
-      );
+      targetLat: double.parse(singleNotification.value.hiredByLat ?? ''),
+      targetLong: double.parse(singleNotification.value.hiredByLong ?? ''),
+      currentLat: //currentLocation!.latitude,
+          23.76860969911456,
+      currentLong: // currentLocation!.longitude
+          90.35406902432442);
 
   void _trackUnreadMsg() {
     if (appController.user.value.employee?.isHired ?? false) {

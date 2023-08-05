@@ -56,7 +56,4 @@ class InvoicePdfController extends GetxController {
     await Share.shareXFiles([xFile], text: 'Invoice PDF Download');
   }
 
-  void enableFullScreen() {
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
-  }
 }

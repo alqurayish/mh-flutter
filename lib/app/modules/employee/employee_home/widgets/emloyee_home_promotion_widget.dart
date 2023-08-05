@@ -21,7 +21,23 @@ class EmployeeHomePromotionWidget extends GetWidget<EmployeeHomeController> {
             controller.singleNotification.value.hiredStatus?.toUpperCase() == 'DENY') {
           return Text(MyStrings.exploreTheFeaturesOfMhAppBelow.tr,
               style: MyColors.l777777_dtext(controller.context!).medium15);
-        } else {
+        } else if (controller.singleNotification.value.hiredStatus != null &&
+            controller.singleNotification.value.hiredStatus?.toUpperCase() == 'ALLOW' &&
+            controller.singleNotification.value.fromDate != null &&
+            controller.singleNotification.value.fromTime != null &&
+            controller.singleNotification.value.toDate != null &&
+            controller.singleNotification.value.toTime != null) {
+          return Container(
+              padding: const EdgeInsets.all(15),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10.0),
+                color: Colors.purple.withOpacity(.6),
+              ),
+              child: Text(
+                  "You have been hired from date: ${DateFormat.yMMMMd().format(controller.singleNotification.value.fromDate!)} to ${DateFormat.yMMMMd().format(controller.singleNotification.value.toDate!)} | from time ${controller.singleNotification.value.fromTime} to ${controller.singleNotification.value.toTime} by ${controller.singleNotification.value.restaurantName}",
+                  style: MyColors.white.semiBold16));
+        } else if (controller.singleNotification.value.hiredStatus == null ||
+            controller.singleNotification.value.hiredStatus == "REQUESTED") {
           return InkWell(
             onTap: controller.onHiredYouTap,
             child: Container(
@@ -30,35 +46,32 @@ class EmployeeHomePromotionWidget extends GetWidget<EmployeeHomeController> {
                 borderRadius: BorderRadius.circular(10.0),
                 color: Colors.purple.withOpacity(.6),
               ),
-              child: controller.singleNotification.value.hiredStatus != null &&
-                      controller.singleNotification.value.hiredStatus?.toUpperCase() == 'ALLOW'
-                  ? Text(
-                      "You have been hired from ${DateFormat.yMMMMd().format(controller.singleNotification.value.fromDate!)}, ${controller.singleNotification.value.fromTime} to ${DateFormat.yMMMMd().format(controller.singleNotification.value.toDate!)}, ${controller.singleNotification.value.toTime} by ${controller.singleNotification.value.restaurantName}",
-                      style: MyColors.white.semiBold16)
-                  : Row(
-                      children: [
-                        Expanded(
-                          flex: 9,
-                          child: Text("${controller.singleNotification.value.text}", style: MyColors.white.semiBold16),
-                        ),
-                        SizedBox(
-                          width: 10.w,
-                        ),
-                        const Expanded(
-                          flex: 1,
-                          child: CircleAvatar(
-                            backgroundColor: Colors.purple,
-                            child: Icon(
-                              Icons.arrow_forward,
-                              size: 20,
-                              color: MyColors.white,
-                            ),
-                          ),
-                        ),
-                      ],
+              child: Row(
+                children: [
+                  Expanded(
+                    flex: 9,
+                    child: Text("${controller.singleNotification.value.text}", style: MyColors.white.semiBold16),
+                  ),
+                  SizedBox(
+                    width: 10.w,
+                  ),
+                  const Expanded(
+                    flex: 1,
+                    child: CircleAvatar(
+                      backgroundColor: Colors.purple,
+                      child: Icon(
+                        Icons.arrow_forward,
+                        size: 20,
+                        color: MyColors.white,
+                      ),
                     ),
+                  ),
+                ],
+              ),
             ),
           );
+        } else {
+          return const Wrap();
         }
       }
     });
