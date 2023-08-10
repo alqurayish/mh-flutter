@@ -50,9 +50,11 @@ class EmployeeLocationWidget extends GetWidget<EmployeeHomeController> {
         children: [
           const Icon(Icons.warning, color: Colors.amber),
           const SizedBox(width: 10),
-          Text(
-            controller.locationFetchError.value,
-            style: MyColors.l111111_dffffff(controller.context!).regular16_5,
+          Flexible(
+            child: Text(
+              controller.locationFetchError.value,
+              style: MyColors.l111111_dffffff(controller.context!).regular16_5,
+            ),
           ),
         ],
       );
@@ -63,7 +65,7 @@ class EmployeeLocationWidget extends GetWidget<EmployeeHomeController> {
         children: [
           const Icon(Icons.info, color: Colors.blue),
           const SizedBox(width: 10),
-          Expanded(
+          Flexible(
             child: Text(
               controller.errorMsg.value,
               style: MyColors.l111111_dffffff(controller.context!).regular16_5,

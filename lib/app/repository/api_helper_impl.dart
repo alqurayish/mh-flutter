@@ -5,6 +5,7 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get/get_connect/http/src/request/request.dart';
 import 'package:mh/app/modules/employee/employee_home/models/single_notification_model_for_employee.dart';
+import 'package:mh/app/modules/employee/employee_payment_history/models/employee_payment_history_model.dart';
 import 'package:mh/app/modules/notifications/models/notification_response_model.dart';
 import 'package:mh/app/modules/notifications/models/notification_update_request_model.dart';
 import 'package:mh/app/modules/notifications/models/notification_update_response_model.dart';
@@ -559,8 +560,6 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
     if (response.statusCode == null) response = await get(url);
     if (response.statusCode == null) response = await get(url);
 
-    print('ApiHelperImpl.getHiredEmployeesByDate: ${url}');
-
     return _convert<HiredEmployeesByDate>(
       response,
       HiredEmployeesByDate.fromJson,
@@ -854,5 +853,20 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
       response,
       StripeResponseModel.fromJson,
     ).fold((CustomError l) => left(l), (StripeResponseModel r) => right(r));
+  }
+
+  @override
+  EitherModel<EmployeePaymentHistory> employeePaymentHistory({required String employeeId}) async {
+    String url = "employee-invoices?employeeId=$employeeId";
+
+    var response = await get(url);
+    if (response.statusCode == null) await get(url);
+    if (response.statusCode == null) await get(url);
+    if (response.statusCode == null) await get(url);
+
+    return _convert<EmployeePaymentHistory>(
+      response,
+      EmployeePaymentHistory.fromJson,
+    ).fold((CustomError l) => left(l), (EmployeePaymentHistory r) => right(r));
   }
 }

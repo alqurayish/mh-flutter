@@ -1,4 +1,5 @@
 import 'package:mh/app/modules/employee/employee_home/models/single_notification_model_for_employee.dart';
+import 'package:mh/app/modules/employee/employee_payment_history/models/employee_payment_history_model.dart';
 import 'package:mh/app/modules/notifications/models/notification_response_model.dart';
 import 'package:mh/app/modules/notifications/models/notification_update_request_model.dart';
 import 'package:mh/app/modules/notifications/models/notification_update_response_model.dart';
@@ -146,4 +147,6 @@ abstract class ApiHelper {
       {required String employeeId, required String requestId});
 
   EitherModel<StripeResponseModel> stripePayment({required StripeRequestModel stripeRequestModel});
+
+  EitherModel<EmployeePaymentHistory> employeePaymentHistory({required String employeeId});
 }

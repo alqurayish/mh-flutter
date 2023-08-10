@@ -2,6 +2,8 @@ import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:mh/app/modules/client/client_payment_and_invoice/model/client_invoice_model.dart';
+import 'package:mh/app/modules/employee/employee_payment_history/models/employee_payment_history_model.dart';
+import 'package:mh/app/modules/employee/employee_payment_history/models/employee_payment_model.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
 import '../../enums/error_from.dart';
@@ -216,6 +218,33 @@ class Utils {
     dailyStatistics.position = element.employeeDetails?.positionName ?? '';
     dailyStatistics.complain = '-';
     return dailyStatistics;
+  }
+
+  static EmployeePaymentModel employeePaymentHistory(EmployeePaymentHistoryModel element) {
+    EmployeePaymentModel employeePayment = EmployeePaymentModel(
+        week: "-",
+        contractor: '-',
+        restaurantName: '-',
+        position: '-',
+        contractorPerHoursRate: 0.0,
+        totalHours: 0.0,
+        amount: 0.0,
+        status: '-');
+
+    DateTime? fromDate = element.fromDate;
+    DateTime? toDate = element.toDate;
+
+    if (fromDate != null && toDate != null) {
+      employeePayment.week = "${fromDate.toLocal().dMMMy} - ${toDate.toLocal().dMMMy}";
+    }
+    employeePayment.contractor = element.employeeName ?? '';
+    employeePayment.restaurantName = element.restaurantName ?? '';
+    employeePayment.position = element.positionName ?? '';
+    employeePayment.contractorPerHoursRate = element.contractorHourlyRate ?? 0.0;
+    employeePayment.totalHours = element.totalHours ?? 0.0;
+    employeePayment.amount = element.amount ?? 0.0;
+    employeePayment.status = element.status ?? '';
+    return employeePayment;
   }
 
   static String getCurrentTimeWithAMPM() {

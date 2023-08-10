@@ -8,7 +8,6 @@ import '../../../../common/utils/exports.dart';
 import '../../../../common/widgets/custom_appbar.dart';
 import '../../../../common/widgets/custom_badge.dart';
 import '../../../../common/widgets/custom_feature_box.dart';
-import '../../../../common/widgets/custom_help_support.dart';
 import '../../../../common/widgets/custom_menu.dart';
 import '../controllers/employee_home_controller.dart';
 import '../widgets/employee_location_distance_widget.dart';
@@ -75,6 +74,7 @@ class EmployeeHomeView extends GetView<EmployeeHomeController> {
                 child: Column(
                   children: [
                     Expanded(
+                      flex: 4,
                       child: SingleChildScrollView(
                         primary: false,
                         child: Column(
@@ -136,6 +136,45 @@ class EmployeeHomeView extends GetView<EmployeeHomeController> {
                               ],
                             ),
                             SizedBox(height: 30.h),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: CustomFeatureBox(
+                                    title: MyStrings.paymentHistory.tr,
+                                    icon: MyAssets.invoicePayment,
+                                    onTap: controller.onPaymentHistoryClick,
+                                  ),
+                                ),
+                                SizedBox(width: 24.w),
+                                Expanded(
+                                  child:  Stack(
+                                    children: [
+                                      CustomFeatureBox(
+                                        onTap: controller.onHelpAndSupportClick,
+                                        title: MyStrings.helpSupport.tr,
+                                        icon: MyAssets.helpSupport,
+                                      ),
+                                      Obx(
+                                            () => Positioned(
+                                          top: 0,
+                                          right: 5,
+                                          child: Visibility(
+                                            visible:
+                                            (controller.unreadMsgFromClient.value + controller.unreadMsgFromAdmin.value) >
+                                                0,
+                                            child: CustomBadge(
+                                              (controller.unreadMsgFromClient.value + controller.unreadMsgFromAdmin.value)
+                                                  .toString(),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                           /* SizedBox(height: 30.h),
                             Stack(
                               children: [
                                 CustomHelpSupport(
@@ -157,16 +196,25 @@ class EmployeeHomeView extends GetView<EmployeeHomeController> {
                                   ),
                                 ),
                               ],
-                            ),
+                            ),*/
                           ],
                         ),
                       ),
                     ),
-                    SizedBox(height: 30.h),
-                    const EmployeeTodayDashboardWidget(),
-                    SizedBox(height: 30.h),
-                    const EmployeeLocationWidget(),
-                    SizedBox(height: 30.h),
+                    Expanded(
+                      flex: 1,
+                        child: SingleChildScrollView(
+                          primary: false,
+                      child: Column(
+                        children: [
+                          SizedBox(height: 30.h),
+                          const EmployeeTodayDashboardWidget(),
+                          SizedBox(height: 30.h),
+                          const EmployeeLocationWidget(),
+                          SizedBox(height: 30.h),
+                        ],
+                      ),
+                    ))
                   ],
                 ),
               ),

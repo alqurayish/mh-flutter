@@ -20,6 +20,7 @@ import '../utils/logcat.dart';
 import '../values/my_assets.dart';
 
 class AppController extends GetxService {
+
   Rx<Commons>? commons = Commons().obs;
 
   RxList<Position> allActivePositions = <Position>[].obs;

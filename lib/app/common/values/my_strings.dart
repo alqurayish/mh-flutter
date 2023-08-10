@@ -13,7 +13,7 @@ class MyStrings {
   static _PayloadScreen get payloadScreen => _PayloadScreen();
 
   // validation
-  static const String required = "required";
+  static const String required = "This field is required";
   static const String invalidEmailAddress = "invalidEmailAddress";
   static const String atLeast1CharNeeded = "atLeast1CharNeeded";
   static const String atLeast1DigitNeeded = "atLeast1DigitNeeded";
@@ -83,6 +83,7 @@ class MyStrings {
   static const String invoice = "Invoice";
   static const String helpSupport = "helpSupport";
   static const String myDashboard = "myDashboard";
+  static const String paymentHistory = "Payment History";
   static const String emergencyCheckInCheckOut = "emergencyCheckInCheckOut";
   static const String areShowing = "areShowing";
   static const String exp = "exp";

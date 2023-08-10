@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:mh/app/modules/employee/employee_payment_history/bindings/employee_payment_history_binding.dart';
+import 'package:mh/app/modules/employee/employee_payment_history/views/employee_payment_history_view.dart';
 
 import '../middleware/auth_middleware.dart';
 import '../modules/admin/admin_all_clients/bindings/admin_all_clients_binding.dart';
@@ -348,6 +350,11 @@ class AppPages {
       name: _Paths.stripePayment,
       page: () => const StripePaymentView(),
       binding: StripePaymentBinding(),
+    ),
+    GetPage(
+      name: _Paths.EMPLOYEE_PAYMENT_HISTORY,
+      page: () => const EmployeePaymentHistoryView(),
+      binding: EmployeePaymentHistoryBinding(),
     ),
   ];
 }

@@ -423,4 +423,8 @@ class EmployeeHomeController extends GetxController {
         currentLocationDataLoaded.value == false ||
         showSlider.value == true;
   }*/
+
+  void onPaymentHistoryClick(){
+    Get.toNamed(Routes.employeePaymentHistory);
+  }
 }
