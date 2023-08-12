@@ -148,6 +148,7 @@ class EmployeeHomeController extends GetxController {
 
   Future<void> onBreakTimePickDone(int hour, int min) async {
     Map<String, dynamic> data = {
+      "checkOutTime": DateTime.now().toLocal().toString(),
       "id": todayCheckInOutDetails.value.details!.id!,
       "employeeId": appController.user.value.userId,
       "checkOut": true,
@@ -177,6 +178,7 @@ class EmployeeHomeController extends GetxController {
 
   Future<void> _onCheckIn() async {
     Map<String, dynamic> data = {
+      "checkInTime": DateTime.now().toLocal().toString(),
       "employeeId": appController.user.value.userId,
       "checkIn": true,
       if (currentLocation?.latitude != null) "lat": currentLocation!.latitude.toString(),
@@ -297,9 +299,9 @@ class EmployeeHomeController extends GetxController {
       targetLat: double.parse(singleNotification.value.hiredByLat ?? ''),
       targetLong: double.parse(singleNotification.value.hiredByLong ?? ''),
       currentLat: currentLocation!.latitude,
-      // 23.76860969911456,
+      //23.79714497663383,
       currentLong: currentLocation!.longitude
-      // 90.35406902432442
+      //90.42769130319357
       );
 
   void _trackUnreadMsg() {
@@ -424,7 +426,7 @@ class EmployeeHomeController extends GetxController {
         showSlider.value == true;
   }*/
 
-  void onPaymentHistoryClick(){
+  void onPaymentHistoryClick() {
     Get.toNamed(Routes.employeePaymentHistory);
   }
 }

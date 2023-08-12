@@ -8,21 +8,23 @@ class CustomFeatureBox extends StatelessWidget {
   final Function() onTap;
   final double? iconHeight;
   final bool loading;
+  final double? height;
 
-  const CustomFeatureBox({
-    Key? key,
-    required this.title,
-    required this.icon,
-    this.visibleMH = false,
-    required this.onTap,
-    this.iconHeight,
-    this.loading = false,
-  }) : super(key: key);
+  const CustomFeatureBox(
+      {Key? key,
+      required this.title,
+      required this.icon,
+      this.visibleMH = false,
+      required this.onTap,
+      this.iconHeight,
+      this.loading = false,
+      this.height})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 156.h,
+      height: height ?? 150.h,
       decoration: MyDecoration.cardBoxDecoration(context: context),
       child: Material(
         type: MaterialType.transparency,
@@ -31,21 +33,20 @@ class CustomFeatureBox extends StatelessWidget {
           onTap: loading ? null : onTap,
           child: loading
               ? const Center(
-                child: CircularProgressIndicator.adaptive(
+                  child: CircularProgressIndicator.adaptive(
                     backgroundColor: MyColors.c_C6A34F,
                   ),
-              )
+                )
               : Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Image.asset(
                       icon,
-                      width: iconHeight ?? 70.w,
-                      height: iconHeight ?? 70.w,
+                      width: iconHeight ?? 60.w,
+                      height: iconHeight ?? 60.w,
                     ),
-                    SizedBox(
-                        height: iconHeight == null ? 6.h : 70.w - iconHeight!),
+                    SizedBox(height: iconHeight == null ? 6.h : 70.w - iconHeight!),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -60,7 +61,7 @@ class CustomFeatureBox extends StatelessWidget {
                         Text(
                           title,
                           textAlign: TextAlign.center,
-                          style: MyColors.l111111_dwhite(context).medium16,
+                          style: MyColors.l111111_dwhite(context).medium15,
                         ),
                       ],
                     ),

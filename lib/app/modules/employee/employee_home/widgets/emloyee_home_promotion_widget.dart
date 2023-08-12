@@ -35,7 +35,7 @@ class EmployeeHomePromotionWidget extends GetWidget<EmployeeHomeController> {
               ),
               child: Text(
                   "You have been hired from date: ${DateFormat.yMMMMd().format(controller.singleNotification.value.fromDate!)} to ${DateFormat.yMMMMd().format(controller.singleNotification.value.toDate!)} | from time ${controller.singleNotification.value.fromTime} to ${controller.singleNotification.value.toTime} by ${controller.singleNotification.value.restaurantName}",
-                  style: MyColors.white.semiBold16));
+                  style: MyColors.white.semiBold15));
         } else if (controller.singleNotification.value.hiredStatus == null ||
             controller.singleNotification.value.hiredStatus == "REQUESTED") {
           return InkWell(
@@ -50,7 +50,7 @@ class EmployeeHomePromotionWidget extends GetWidget<EmployeeHomeController> {
                 children: [
                   Expanded(
                     flex: 9,
-                    child: Text("${controller.singleNotification.value.text}", style: MyColors.white.semiBold16),
+                    child: Text("${controller.singleNotification.value.text}", style: MyColors.white.semiBold15),
                   ),
                   SizedBox(
                     width: 10.w,

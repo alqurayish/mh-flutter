@@ -14,11 +14,11 @@ class EmployeeLocationDistanceWidget extends GetWidget<EmployeeHomeController> {
           controller.singleNotification.value.hiredStatus?.toUpperCase() == "DENY" ||
           controller.loadingCurrentLocation.value ||
           controller.currentLocationDataLoaded.value == false ||
-          controller.showSlider.value == true) {
+          controller.showSlider.value == true || controller.getDistance < 200) {
         return const Wrap();
       } else {
         return Container(
-          margin: const EdgeInsets.only(top: 15.0),
+          margin: const EdgeInsets.only(top: 10.0),
           padding: const EdgeInsets.all(15),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10.0),
@@ -26,7 +26,7 @@ class EmployeeLocationDistanceWidget extends GetWidget<EmployeeHomeController> {
           ),
           child: Text(
               'The restaurant is situated at a distance of ${(controller.getDistance / 1000).toStringAsFixed(2)} kilometers from your current location.',
-              style: MyColors.white.semiBold15),
+              style: MyColors.white.semiBold13),
         );
       }
     });

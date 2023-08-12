@@ -63,17 +63,16 @@ class EmployeeHomeView extends GetView<EmployeeHomeController> {
             ),
           ],
         ),
-        body: RefreshIndicator(
-          onRefresh: controller.refreshPage,
-          child: SingleChildScrollView(
-            physics: const AlwaysScrollableScrollPhysics(),
-            child: SizedBox(
-              height: Get.height * 0.85,
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 24.w),
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          child: RefreshIndicator(
+            onRefresh: controller.refreshPage,
+            child: SingleChildScrollView(
+              child: SizedBox(
+                height: MediaQuery.of(context).size.height,
                 child: Column(
                   children: [
-                    Expanded(
+                    Flexible(
                       flex: 4,
                       child: SingleChildScrollView(
                         primary: false,
@@ -81,14 +80,14 @@ class EmployeeHomeView extends GetView<EmployeeHomeController> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            SizedBox(height: 20.h),
+                            SizedBox(height: 15.h),
                             Text("Hi, ${controller.appController.user.value.employee?.name ?? "-"}",
                                 style: MyColors.l111111_dwhite(controller.context!).semiBold20),
                             SizedBox(height: 30.h),
                             const EmployeeHomePromotionWidget(),
                             const EmployeeLocationDistanceWidget(),
                             const EmployeeRestaurantAddressWidget(),
-                            SizedBox(height: 30.h),
+                            SizedBox(height: 20.h),
                             Row(
                               children: [
                                 Expanded(
@@ -98,14 +97,13 @@ class EmployeeHomeView extends GetView<EmployeeHomeController> {
                                     onTap: controller.onDashboardClick,
                                   ),
                                 ),
-                                SizedBox(width: 24.w),
+                                SizedBox(width: 20.w),
                                 Expanded(
                                   child: Stack(
                                     children: [
                                       CustomFeatureBox(
                                         title: MyStrings.emergencyCheckInCheckOut.tr,
                                         icon: MyAssets.emergencyCheckInCheckout,
-                                        iconHeight: 58.w,
                                         onTap: controller.onEmergencyCheckInCheckout,
                                       ),
                                       Positioned(
@@ -135,7 +133,7 @@ class EmployeeHomeView extends GetView<EmployeeHomeController> {
                                 ),
                               ],
                             ),
-                            SizedBox(height: 30.h),
+                            SizedBox(height: 15.h),
                             Row(
                               children: [
                                 Expanded(
@@ -145,9 +143,9 @@ class EmployeeHomeView extends GetView<EmployeeHomeController> {
                                     onTap: controller.onPaymentHistoryClick,
                                   ),
                                 ),
-                                SizedBox(width: 24.w),
+                                SizedBox(width: 20.w),
                                 Expanded(
-                                  child:  Stack(
+                                  child: Stack(
                                     children: [
                                       CustomFeatureBox(
                                         onTap: controller.onHelpAndSupportClick,
@@ -155,15 +153,16 @@ class EmployeeHomeView extends GetView<EmployeeHomeController> {
                                         icon: MyAssets.helpSupport,
                                       ),
                                       Obx(
-                                            () => Positioned(
+                                        () => Positioned(
                                           top: 0,
                                           right: 5,
                                           child: Visibility(
-                                            visible:
-                                            (controller.unreadMsgFromClient.value + controller.unreadMsgFromAdmin.value) >
+                                            visible: (controller.unreadMsgFromClient.value +
+                                                    controller.unreadMsgFromAdmin.value) >
                                                 0,
                                             child: CustomBadge(
-                                              (controller.unreadMsgFromClient.value + controller.unreadMsgFromAdmin.value)
+                                              (controller.unreadMsgFromClient.value +
+                                                      controller.unreadMsgFromAdmin.value)
                                                   .toString(),
                                             ),
                                           ),
@@ -174,7 +173,7 @@ class EmployeeHomeView extends GetView<EmployeeHomeController> {
                                 ),
                               ],
                             ),
-                           /* SizedBox(height: 30.h),
+                            /* SizedBox(height: 30.h),
                             Stack(
                               children: [
                                 CustomHelpSupport(
@@ -201,20 +200,21 @@ class EmployeeHomeView extends GetView<EmployeeHomeController> {
                         ),
                       ),
                     ),
-                    Expanded(
-                      flex: 1,
+                    Flexible(
+                        flex: 1,
                         child: SingleChildScrollView(
                           primary: false,
-                      child: Column(
-                        children: [
-                          SizedBox(height: 30.h),
-                          const EmployeeTodayDashboardWidget(),
-                          SizedBox(height: 30.h),
-                          const EmployeeLocationWidget(),
-                          SizedBox(height: 30.h),
-                        ],
-                      ),
-                    ))
+                          physics: const NeverScrollableScrollPhysics(),
+                          child: Column(
+                            children: [
+                              SizedBox(height: 15.h),
+                              const EmployeeTodayDashboardWidget(),
+                              SizedBox(height: 15.h),
+                              const EmployeeLocationWidget(),
+                              SizedBox(height: 15.h),
+                            ],
+                          ),
+                        ))
                   ],
                 ),
               ),
@@ -224,92 +224,4 @@ class EmployeeHomeView extends GetView<EmployeeHomeController> {
       ),
     );
   }
-
-/*<<<<<<< HEAD
-  Widget get _promotionText => Obx(() => controller.appController.user.value.employee?.isHired ?? false
-      ? InkWell(
-          onTap: controller.onHiredYouTap,
-          child: Container(
-            padding: const EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10.0),
-              color: Colors.purple.withOpacity(.6),
-            ),
-            child: Row(
-              children: [
-                Expanded(
-                  flex: 3,
-                  child: Text(
-                      "${(controller.appController.user.value.employee?.hiredByRestaurantName ?? "").toUpperCase()} hired you from ${controller.appController.user.value.employee?.hiredFromDate.toString().split(" ").first} to ${controller.appController.user.value.employee?.hiredToDate.toString().split(" ").first}",
-                      style: MyColors.white.semiBold16),
-                ),
-                SizedBox(
-                  width: 10.w,
-                ),
-                Expanded(
-                  flex: 1,
-                  child: Container(
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.purple.withOpacity(.45),
-                    ),
-                    child: const Icon(
-                      Icons.arrow_forward,
-                      color: MyColors.white,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        )
-      : Text(MyStrings.exploreTheFeaturesOfMhAppBelow.tr, style: MyColors.l777777_dtext(controller.context!).medium15));
-=======
-  Widget get _promotionText => Obx(() => (controller.appController.user.value.employee?.isHired ?? false) ?
-      Text.rich(
-    TextSpan(
-        text: (controller.appController.user.value.employee?.hiredByRestaurantName ?? "").toUpperCase(),
-        style: MyColors.c_C6A34F.semiBold16,
-        children: [
-          TextSpan(
-            text: " booked  you from ",
-            style: MyColors.l111111_dffffff(controller.context!).regular16,
-          ),
-          TextSpan(
-            text: controller.appController.user.value.employee?.hiredFromDate.toString().split(" ").first,
-            style: MyColors.l111111_dffffff(controller.context!).semiBold16,
-          ),
-          TextSpan(
-            text: " to ",
-            style: MyColors.l111111_dffffff(controller.context!).regular16,
-          ),
-          TextSpan(
-            text: controller.appController.user.value.employee?.hiredToDate.toString().split(" ").first,
-            style: MyColors.l111111_dffffff(controller.context!).semiBold16,
-          ),
-          TextSpan(
-            text: ". Everyday at ",
-            style: MyColors.l111111_dffffff(controller.context!).regular16,
-          ),
-          TextSpan(
-            text: controller.appController.user.value.employee?.hiredFromTime,
-            style: MyColors.l111111_dffffff(controller.context!).semiBold16,
-          ),
-          TextSpan(
-            text: " to ",
-            style: MyColors.l111111_dffffff(controller.context!).regular16,
-          ),
-          TextSpan(
-            text: controller.appController.user.value.employee?.hiredToTime,
-            style: MyColors.l111111_dffffff(controller.context!).semiBold16,
-          ),
-        ]
-    ),
-  )
-      : Text(
-    MyStrings.exploreTheFeaturesOfMhAppBelow.tr,
-    style: MyColors.l777777_dtext(controller.context!).medium15,
-  ));
->>>>>>> main*/
 }

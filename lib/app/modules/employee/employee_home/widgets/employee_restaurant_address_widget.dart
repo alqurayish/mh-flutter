@@ -13,14 +13,14 @@ class EmployeeRestaurantAddressWidget extends GetWidget<EmployeeHomeController> 
     return Obx(() => Visibility(
         visible: controller.singleNotification.value.hiredStatus?.toUpperCase() == "ALLOW",
         child: Container(
-          margin: const EdgeInsets.only(top: 15.0),
-          padding: const EdgeInsets.all(20),
+          margin: const EdgeInsets.only(top: 10.0),
+          padding: const EdgeInsets.all(15.0),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10.0),
             color: Colors.teal.withOpacity(0.7),
           ),
           child: Text("The restaurant address is: ${controller.singleNotification.value.restaurantAddress ?? ''}",
-              style: MyColors.white.semiBold15),
+              style: MyColors.white.semiBold13),
         )));
   }
 }

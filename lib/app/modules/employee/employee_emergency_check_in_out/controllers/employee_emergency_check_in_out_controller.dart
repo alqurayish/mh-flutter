@@ -45,6 +45,7 @@ class EmployeeEmergencyCheckInOutController extends GetxController {
 
   Future<void> _checkIn() async {
     Map<String, dynamic> data = {
+      "checkInTime": DateTime.now().toLocal().toString(),
       "employeeId": employeeHomeController.appController.user.value.userId,
       "emmergencyCheckIn": true,
       "emmergencyCheckInComment": emergencyReason.text.trim(),
@@ -78,6 +79,7 @@ class EmployeeEmergencyCheckInOutController extends GetxController {
 
   Future<void> onBreakTimePickDone(int hour, int min) async {
     Map<String, dynamic> data = {
+      "checkOutTime": DateTime.now().toLocal().toString(),
       "id": employeeHomeController.todayCheckInOutDetails.value.details!.id!,
       "employeeId": employeeHomeController.appController.user.value.userId,
       "emmergencyCheckOut": true,
