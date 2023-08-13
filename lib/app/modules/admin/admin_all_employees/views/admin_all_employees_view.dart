@@ -291,7 +291,7 @@ class AdminAllEmployeesView extends GetView<AdminAllEmployeesController> {
                 shape: BoxShape.circle,
                 color: isHired == true && isSuggested == true
                     ? MyColors.c_00C92C
-                    : isHired == false && isSuggested == true
+                    : isHired == true && isSuggested == false
                         ? MyColors.c_FFA800
                         : MyColors.c_FF5029,
               ),
@@ -302,7 +302,7 @@ class AdminAllEmployeesView extends GetView<AdminAllEmployeesController> {
                 "Hired",
                 style: MyColors.l111111_dwhite(controller.context!).medium10,
               )
-            else if (isHired == false && isSuggested == true)
+            else if (isHired == true && isSuggested == false)
               Text("Waiting", style: MyColors.l111111_dwhite(controller.context!).medium10)
             else
               Text("Available", style: MyColors.l111111_dwhite(controller.context!).medium10)

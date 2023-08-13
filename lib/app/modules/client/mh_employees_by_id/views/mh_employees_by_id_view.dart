@@ -18,8 +18,8 @@ class MhEmployeesByIdView extends GetView<MhEmployeesByIdController> {
 
     return Scaffold(
       appBar: CustomAppbar.appbar(
-        title: controller.position.name ?? "Employees",
-        context: context,
+          title: controller.position.name ?? "Employees",
+          context: context,
           centerTitle: true,
           actions: [
             Obx(
@@ -50,7 +50,9 @@ class MhEmployeesByIdView extends GetView<MhEmployeesByIdController> {
           ]),
       body: Obx(
         () => (controller.employees.value.users ?? []).isEmpty
-            ? controller.isLoading.value ? const SizedBox() : const NoItemFound()
+            ? controller.isLoading.value
+                ? const SizedBox()
+                : const NoItemFound()
             : Column(
                 children: [
                   _resultCountWithFilter(),
@@ -84,9 +86,7 @@ class MhEmployeesByIdView extends GetView<MhEmployeesByIdController> {
             " ${controller.position.name ?? "Employees"} are showing",
             style: MyColors.l111111_dwhite(controller.context!).semiBold16,
           ),
-
           const Spacer(),
-
           GestureDetector(
             onTap: () => CustomFilter.customFilter(
               controller.context!,
@@ -100,7 +100,10 @@ class MhEmployeesByIdView extends GetView<MhEmployeesByIdController> {
                 shape: BoxShape.circle,
                 color: MyColors.c_DDBD68,
               ),
-              child: const Icon(Icons.filter_list_rounded, color: Colors.white,),
+              child: const Icon(
+                Icons.filter_list_rounded,
+                color: Colors.white,
+              ),
             ),
           ),
         ],
@@ -135,21 +138,26 @@ class MhEmployeesByIdView extends GetView<MhEmployeesByIdController> {
                 width: 122.w,
                 child: CustomButtons.button(
                   height: 28.w,
-                  text: (user.isHired ?? false) ? "Booked" : "Book Now",
+                  text: (user.isHired == true && user.isSuggested == true)
+                      ? "Booked"
+                      : (user.isHired == true && user.isSuggested == false)
+                          ? "Waiting"
+                          : "Book Now",
                   margin: EdgeInsets.zero,
                   fontSize: 12,
                   customButtonStyle: CustomButtonStyle.radiusTopBottomCorner,
-                  onTap: (user.isHired ?? false) ? null : () => controller.onBookNowClick(user),
+                  onTap: (user.isHired == false && user.isSuggested == false)
+                      ? () => controller.onBookNowClick(user)
+                      : null,
                 ),
               ),
             ),
-
             Positioned(
               right: 5,
               top: 3,
               child: Obx(
                 () => Visibility(
-                  visible: !(user.isHired ?? false),
+                  visible: (user.isSuggested == false && user.isHired == false),
                   child: controller.shortlistController.getIcon(
                     user.id!,
                     controller.shortlistController.isFetching.value,
@@ -157,15 +165,12 @@ class MhEmployeesByIdView extends GetView<MhEmployeesByIdController> {
                 ),
               ),
             ),
-
             Row(
               children: [
                 _image((user.profilePicture ?? "").imageUrl),
-
                 Expanded(
                   child: Column(
                     children: [
-
                       Row(
                         children: [
                           Expanded(
@@ -185,33 +190,28 @@ class MhEmployeesByIdView extends GetView<MhEmployeesByIdController> {
                           ),
                         ],
                       ),
-
                       SizedBox(height: 8.h),
-
                       const Divider(
                         thickness: .5,
                         height: 1,
                         color: MyColors.c_D9D9D9,
                         endIndent: 13,
                       ),
-
                       SizedBox(height: 8.h),
-
                       Row(
                         children: [
                           _detailsItem(MyAssets.exp, MyStrings.exp.tr, (user.employeeExperience ?? 0).toString()),
-                          _detailsItem(MyAssets.totalHour, MyStrings.totalHour.tr, (user.totalWorkingHour ?? 0).toString()),
+                          _detailsItem(
+                              MyAssets.totalHour, MyStrings.totalHour.tr, (user.totalWorkingHour ?? 0).toString()),
                         ],
                       ),
-
                       SizedBox(height: 8.h),
-
                       Row(
                         children: [
-                          _detailsItem(MyAssets.rate, MyStrings.rate.tr, "${Utils.getCurrencySymbol(Get.find<AppController>().user.value.client?.countryName ?? '')}${(user.hourlyRate ?? 0.0).toStringAsFixed(2)}"),
+                          _detailsItem(MyAssets.rate, MyStrings.rate.tr,
+                              "${Utils.getCurrencySymbol(Get.find<AppController>().user.value.client?.countryName ?? '')}${(user.hourlyRate ?? 0.0).toStringAsFixed(2)}"),
                         ],
                       ),
-
                     ],
                   ),
                 ),
@@ -293,5 +293,4 @@ class MhEmployeesByIdView extends GetView<MhEmployeesByIdController> {
           ],
         ),
       );
-
 }
