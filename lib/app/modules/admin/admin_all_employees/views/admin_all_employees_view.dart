@@ -17,22 +17,22 @@ class AdminAllEmployeesView extends GetView<AdminAllEmployeesController> {
 
     return Scaffold(
       appBar: CustomAppbar.appbar(
-          title: "Employees",
-          context: context,
-          centerTitle: true,
+        title: "Employees",
+        context: context,
+        centerTitle: true,
       ),
       body: Obx(
         () => (controller.employees.value.users ?? []).isEmpty
             ? controller.isLoading.value
                 ? const SizedBox()
                 : Column(
-                  children: [
-                    _resultCountWithFilter(),
-                    const Spacer(),
-                    const NoItemFound(),
-                    const Spacer(),
-                  ],
-                )
+                    children: [
+                      _resultCountWithFilter(),
+                      const Spacer(),
+                      const NoItemFound(),
+                      const Spacer(),
+                    ],
+                  )
             : Column(
                 children: [
                   _resultCountWithFilter(),
@@ -66,9 +66,7 @@ class AdminAllEmployeesView extends GetView<AdminAllEmployeesController> {
             " Employees are showing",
             style: MyColors.l111111_dwhite(controller.context!).semiBold16,
           ),
-
           const Spacer(),
-
           GestureDetector(
             onTap: () => CustomFilter.customFilter(
               controller.context!,
@@ -83,7 +81,10 @@ class AdminAllEmployeesView extends GetView<AdminAllEmployeesController> {
                 shape: BoxShape.circle,
                 color: MyColors.c_DDBD68,
               ),
-              child: const Icon(Icons.filter_list_rounded, color: Colors.white,),
+              child: const Icon(
+                Icons.filter_list_rounded,
+                color: Colors.white,
+              ),
             ),
           ),
         ],
@@ -118,7 +119,8 @@ class AdminAllEmployeesView extends GetView<AdminAllEmployeesController> {
                 width: 122.w,
                 child: CustomButtons.button(
                   height: 28.w,
-                  text: "${Utils.getCurrencySymbol(Get.find<AppController>().user.value.admin?.countryName ?? '')}${user.hourlyRate ?? 0} / hour",
+                  text:
+                      "${Utils.getCurrencySymbol(Get.find<AppController>().user.value.admin?.countryName ?? '')}${user.hourlyRate ?? 0} / hour",
                   margin: EdgeInsets.zero,
                   fontSize: 12,
                   customButtonStyle: CustomButtonStyle.radiusTopBottomCorner,
@@ -126,7 +128,6 @@ class AdminAllEmployeesView extends GetView<AdminAllEmployeesController> {
                 ),
               ),
             ),
-
             Positioned(
               right: 7,
               top: 4,
@@ -136,20 +137,19 @@ class AdminAllEmployeesView extends GetView<AdminAllEmployeesController> {
                   child: Icon(
                     Icons.chat,
                     size: 20,
-                    color: controller.adminHomeController.chatUserIds.contains(user.id) ? MyColors.c_C6A34F : MyColors.stock,
+                    color: controller.adminHomeController.chatUserIds.contains(user.id)
+                        ? MyColors.c_C6A34F
+                        : MyColors.stock,
                   ),
                 ),
               ),
             ),
-
             Row(
               children: [
                 _image((user.profilePicture ?? "").imageUrl),
-
                 Expanded(
                   child: Column(
                     children: [
-
                       Row(
                         children: [
                           Expanded(
@@ -169,31 +169,26 @@ class AdminAllEmployeesView extends GetView<AdminAllEmployeesController> {
                           ),
                         ],
                       ),
-
                       SizedBox(height: 8.h),
-
                       const Divider(
                         thickness: .5,
                         height: 1,
                         color: MyColors.c_D9D9D9,
                         endIndent: 13,
                       ),
-
                       SizedBox(height: 8.h),
-
                       Row(
                         children: [
                           _detailsItem(controller.getPositionLogo(user.positionId!), user.positionName ?? "", ""),
-                          _activeStatus(user.isHired ?? false),
+                          _activeStatus(isHired: user.isHired ?? false, isSuggested: user.isSuggested ?? false),
                           const SizedBox(width: 7),
                         ],
                       ),
-
                       SizedBox(height: 8.h),
-
                       Row(
                         children: [
-                          _detailsItem(MyAssets.totalHour, MyStrings.totalHour.tr, (user.totalWorkingHour ?? 0).toString()),
+                          _detailsItem(
+                              MyAssets.totalHour, MyStrings.totalHour.tr, (user.totalWorkingHour ?? 0).toString()),
                         ],
                       ),
                     ],
@@ -208,53 +203,53 @@ class AdminAllEmployeesView extends GetView<AdminAllEmployeesController> {
   }
 
   Widget _image(String profilePicture) => Container(
-    margin: const EdgeInsets.fromLTRB(16, 16, 13, 16),
-    width: 74.w,
-    height: 74.w,
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(5),
-      color: Colors.grey.withOpacity(.1),
-    ),
-    child: CustomNetworkImage(
-      url: profilePicture,
-      radius: 5,
-    ),
-  );
+        margin: const EdgeInsets.fromLTRB(16, 16, 13, 16),
+        width: 74.w,
+        height: 74.w,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(5),
+          color: Colors.grey.withOpacity(.1),
+        ),
+        child: CustomNetworkImage(
+          url: profilePicture,
+          radius: 5,
+        ),
+      );
 
   Widget _name(String name) => Text(
-    name,
-    maxLines: 1,
-    overflow: TextOverflow.ellipsis,
-    style: MyColors.l111111_dwhite(controller.context!).medium14,
-  );
+        name,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+        style: MyColors.l111111_dwhite(controller.context!).medium14,
+      );
 
   Widget _rating(int rating) => Visibility(
-    visible: rating > 0,
-    child: Row(
-      children: [
-        SizedBox(width: 10.w),
-        Container(
-          height: 2.h,
-          width: 2.h,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: MyColors.l111111_dwhite(controller.context!),
-          ),
+        visible: rating > 0,
+        child: Row(
+          children: [
+            SizedBox(width: 10.w),
+            Container(
+              height: 2.h,
+              width: 2.h,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: MyColors.l111111_dwhite(controller.context!),
+              ),
+            ),
+            SizedBox(width: 10.w),
+            const Icon(
+              Icons.star,
+              color: MyColors.c_FFA800,
+              size: 16,
+            ),
+            SizedBox(width: 2.w),
+            Text(
+              rating.toString(),
+              style: MyColors.l111111_dwhite(controller.context!).medium14,
+            ),
+          ],
         ),
-        SizedBox(width: 10.w),
-        const Icon(
-          Icons.star,
-          color: MyColors.c_FFA800,
-          size: 16,
-        ),
-        SizedBox(width: 2.w),
-        Text(
-          rating.toString(),
-          style: MyColors.l111111_dwhite(controller.context!).medium14,
-        ),
-      ],
-    ),
-  );
+      );
 
   Widget _detailsItem(String icon, String title, String value) => Expanded(
         child: Row(
@@ -278,7 +273,7 @@ class AdminAllEmployeesView extends GetView<AdminAllEmployeesController> {
         ),
       );
 
-  Widget _activeStatus(bool isHired) => Container(
+  Widget _activeStatus({required bool isHired, required bool isSuggested}) => Container(
         padding: const EdgeInsets.symmetric(
           horizontal: 5,
           vertical: 2,
@@ -294,16 +289,23 @@ class AdminAllEmployeesView extends GetView<AdminAllEmployeesController> {
               width: 11,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: isHired ? MyColors.c_00C92C : MyColors.c_FF5029,
+                color: isHired == true && isSuggested == true
+                    ? MyColors.c_00C92C
+                    : isHired == false && isSuggested == true
+                        ? MyColors.c_FFA800
+                        : MyColors.c_FF5029,
               ),
             ),
-
             const SizedBox(width: 5),
-
-            Text(
-              isHired ? "Hired" : "Available",
-              style: MyColors.l111111_dwhite(controller.context!).medium10,
-            ),
+            if (isHired == true && isSuggested == true)
+              Text(
+                "Hired",
+                style: MyColors.l111111_dwhite(controller.context!).medium10,
+              )
+            else if (isHired == false && isSuggested == true)
+              Text("Waiting", style: MyColors.l111111_dwhite(controller.context!).medium10)
+            else
+              Text("Available", style: MyColors.l111111_dwhite(controller.context!).medium10)
           ],
         ),
       );
