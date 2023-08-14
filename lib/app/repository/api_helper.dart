@@ -1,3 +1,4 @@
+import 'package:mh/app/modules/employee/employee_home/models/review_dialog_model.dart';
 import 'package:mh/app/modules/employee/employee_home/models/single_notification_model_for_employee.dart';
 import 'package:mh/app/modules/employee/employee_payment_history/models/employee_payment_history_model.dart';
 import 'package:mh/app/modules/notifications/models/notification_response_model.dart';
@@ -149,4 +150,6 @@ abstract class ApiHelper {
   EitherModel<StripeResponseModel> stripePayment({required StripeRequestModel stripeRequestModel});
 
   EitherModel<EmployeePaymentHistory> employeePaymentHistory({required String employeeId});
+
+  EitherModel<ReviewDialogModel> showReviewDialog();
 }

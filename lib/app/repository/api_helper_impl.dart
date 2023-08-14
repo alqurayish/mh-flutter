@@ -4,6 +4,7 @@ import 'package:dartz/dartz.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get/get_connect/http/src/request/request.dart';
+import 'package:mh/app/modules/employee/employee_home/models/review_dialog_model.dart';
 import 'package:mh/app/modules/employee/employee_home/models/single_notification_model_for_employee.dart';
 import 'package:mh/app/modules/employee/employee_payment_history/models/employee_payment_history_model.dart';
 import 'package:mh/app/modules/notifications/models/notification_response_model.dart';
@@ -868,5 +869,20 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
       response,
       EmployeePaymentHistory.fromJson,
     ).fold((CustomError l) => left(l), (EmployeePaymentHistory r) => right(r));
+  }
+
+  @override
+  EitherModel<ReviewDialogModel> showReviewDialog() async {
+    String url = "review/view-eligible";
+
+    var response = await get(url);
+    if (response.statusCode == null) await get(url);
+    if (response.statusCode == null) await get(url);
+    if (response.statusCode == null) await get(url);
+
+    return _convert<ReviewDialogModel>(
+      response,
+      ReviewDialogModel.fromJson,
+    ).fold((CustomError l) => left(l), (ReviewDialogModel r) => right(r));
   }
 }

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:mh/app/modules/employee/employee_home/models/review_dialog_model.dart';
 import 'package:mh/app/modules/employee/employee_home/models/single_notification_model_for_employee.dart';
 import 'package:mh/app/modules/employee/employee_home/widgets/slide_action_widget.dart';
 import 'package:mh/app/modules/notifications/controllers/notifications_controller.dart';
@@ -62,6 +63,12 @@ class EmployeeHomeController extends GetxController {
   void onInit() {
     homeMethods();
     super.onInit();
+  }
+
+  @override
+  void onReady() {
+    showReviewBottomSheet();
+    super.onReady();
   }
 
   void homeMethods() {
@@ -428,5 +435,23 @@ class EmployeeHomeController extends GetxController {
 
   void onPaymentHistoryClick() {
     Get.toNamed(Routes.employeePaymentHistory);
+  }
+
+  void showReviewBottomSheet() {
+    _apiHelper.showReviewDialog().then((Either<CustomError, ReviewDialogModel> responseData) {
+      responseData.fold((CustomError customError) {
+        Utils.errorDialog(context!, customError..onRetry = _getSingleNotification);
+      }, (ReviewDialogModel response) {
+        if (response.status == "success" &&
+            response.statusCode == 200 &&
+            response.reviewDialogDetailsModel != null &&
+            response.reviewDialogDetailsModel!.isNotEmpty) {
+          Get.bottomSheet(SizedBox(
+            height: Get.width,
+            child: const Text('Hello'),
+          ));
+        }
+      });
+    });
   }
 }
