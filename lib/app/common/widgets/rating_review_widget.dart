@@ -1,3 +1,5 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:mh/app/common/extensions/extensions.dart';
@@ -18,9 +20,11 @@ class RatingReviewWidget extends StatelessWidget {
   final OnCancelClick onCancelClick;
   final TextEditingController tecReview;
   final OnReviewSubmit onReviewSubmit;
+  final String reviewFor;
 
   const RatingReviewWidget(
       {super.key,
+      required this.reviewFor,
       required this.onRatingUpdate,
       required this.onReviewSubmit,
       required this.onCancelClick,
@@ -40,17 +44,35 @@ class RatingReviewWidget extends StatelessWidget {
             child: Center(
                 child: Column(
               children: [
-                SizedBox(
-                  height: 100,
-                  width: 100,
-                  child: CustomNetworkImage(
-                    radius: 5,
-                    url: reviewDialogDetailsModel.restaurantDetails?.profileImage ??
-                        'https://logowik.com/content/uploads/images/restaurant9491.logowik.com.webp',
+                const SizedBox(height: 10),
+                ClipOval(
+                  child: CachedNetworkImage(
+                    imageUrl: reviewFor == 'client'
+                        ? reviewDialogDetailsModel.restaurantDetails?.profileImage ??
+                            'https://logowik.com/content/uploads/images/restaurant9491.logowik.com.webp'
+                        : (reviewDialogDetailsModel.employeeDetails?.profilePicture ?? '').imageUrl,
+                    imageBuilder: (context, imageProvider) => Container(
+                      width: 45 * 2,
+                      height: 45 * 2,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                          image: imageProvider,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                    placeholder: (context, url) =>
+                        const CupertinoActivityIndicator(), // Placeholder widget while loading
+                    errorWidget: (context, url, error) =>
+                        const Icon(Icons.image_not_supported_outlined), // Error widget if image fails to load
                   ),
                 ),
                 const SizedBox(height: 10),
-                Text('${reviewDialogDetailsModel.restaurantDetails?.restaurantName}',
+                Text(
+                    reviewFor == 'client'
+                        ? reviewDialogDetailsModel.restaurantDetails?.restaurantName ?? ''
+                        : reviewDialogDetailsModel.employeeDetails?.name ?? '',
                     style: MyColors.l111111_dwhite(context).semiBold16),
                 const SizedBox(height: 20),
                 RatingBar.builder(
@@ -85,7 +107,9 @@ class RatingReviewWidget extends StatelessWidget {
                   onTap: () {
                     onReviewSubmit(
                         id: reviewDialogDetailsModel.id ?? '',
-                        reviewForId: reviewDialogDetailsModel.restaurantDetails?.hiredBy ?? '');
+                        reviewForId: reviewFor == 'client'
+                            ? reviewDialogDetailsModel.restaurantDetails?.hiredBy ?? ''
+                            : reviewDialogDetailsModel.employeeDetails?.employeeId ?? '');
                   },
                   text: "Submit",
                   customButtonStyle: CustomButtonStyle.radiusTopBottomCorner,
@@ -101,7 +125,9 @@ class RatingReviewWidget extends StatelessWidget {
               onTap: () {
                 onCancelClick(
                     id: reviewDialogDetailsModel.id ?? '',
-                    reviewForId: reviewDialogDetailsModel.restaurantDetails?.hiredBy ?? '',
+                    reviewForId: reviewFor == 'client'
+                        ? reviewDialogDetailsModel.restaurantDetails?.hiredBy ?? ''
+                        : reviewDialogDetailsModel.employeeDetails?.employeeId ?? '',
                     manualRating: 5.0);
               },
               child: const CircleAvatar(

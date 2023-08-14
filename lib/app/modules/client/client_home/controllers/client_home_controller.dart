@@ -1,4 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dartz/dartz.dart';
+import 'package:mh/app/common/widgets/rating_review_widget.dart';
+import 'package:mh/app/modules/employee/employee_home/models/common_response_model.dart';
+import 'package:mh/app/modules/employee/employee_home/models/review_dialog_model.dart';
+import 'package:mh/app/modules/employee/employee_home/models/review_request_model.dart';
 import 'package:mh/app/modules/notifications/controllers/notifications_controller.dart';
 import '../../../../common/controller/app_controller.dart';
 import '../../../../common/utils/exports.dart';
@@ -31,10 +36,19 @@ class ClientHomeController extends GetxController {
 
   RxList<Map<String, dynamic>> employeeChatDetails = <Map<String, dynamic>>[].obs;
 
+  RxDouble rating = 0.0.obs;
+  TextEditingController tecReview = TextEditingController();
+
   @override
   void onInit() {
     homeMethods();
     super.onInit();
+  }
+
+  @override
+  void onReady() {
+    Future.delayed(const Duration(seconds: 2), () => showReviewBottomSheet());
+    super.onReady();
   }
 
   void onMhEmployeeClick() {
@@ -208,5 +222,83 @@ class ClientHomeController extends GetxController {
     _trackUnreadMsg();
     fetchRequestEmployees();
     notificationsController.getNotificationList();
+  }
+
+  void showReviewBottomSheet() {
+    _apiHelper.showReviewDialog().then((Either<CustomError, ReviewDialogModel> responseData) {
+      responseData.fold((CustomError customError) {
+        Utils.errorDialog(context!, customError..onRetry);
+      }, (ReviewDialogModel response) {
+        if (response.status == "success" &&
+            response.statusCode == 200 &&
+            response.reviewDialogDetailsModel != null &&
+            response.reviewDialogDetailsModel!.isNotEmpty) {
+          Get.bottomSheet(RatingReviewWidget(
+                  reviewFor: 'employee',
+                  onCancelClick: onCancelClick,
+                  onRatingUpdate: onRatingUpdate,
+                  onReviewSubmit: onReviewSubmitClick,
+                  reviewDialogDetailsModel: response.reviewDialogDetailsModel!.first,
+                  tecReview: tecReview)
+              //reviewDialogWidget(reviewDialogDetails: response.reviewDialogDetailsModel!.first)
+              );
+        }
+      });
+    });
+  }
+
+  void onReviewSubmitClick({required String id, required String reviewForId}) {
+    Get.back();
+
+    CustomLoader.show(context!);
+
+    ReviewRequestModel reviewRequestModel =
+        ReviewRequestModel(rating: rating.value, reviewForId: reviewForId, comment: tecReview.text, hiredId: id);
+
+    _apiHelper
+        .giveReview(reviewRequestModel: reviewRequestModel)
+        .then((Either<CustomError, CommonResponseModel> responseData) {
+      CustomLoader.hide(context!);
+      responseData.fold((CustomError customError) {
+        Utils.errorDialog(context!, customError..onRetry);
+      }, (CommonResponseModel response) {
+        if (response.status == "success" && response.statusCode == 201) {
+          tecReview.clear();
+          Get.rawSnackbar(
+              snackPosition: SnackPosition.BOTTOM,
+              margin: const EdgeInsets.all(10.0),
+              title: 'Success',
+              message: 'Thanks for your review...',
+              backgroundColor: Colors.green.shade600,
+              borderRadius: 10.0);
+        }
+      });
+    });
+  }
+
+  void onCancelClick({required String id, required String reviewForId, required double manualRating}) {
+    Get.back();
+
+    CustomLoader.show(context!);
+
+    ReviewRequestModel reviewRequestModel =
+        ReviewRequestModel(rating: manualRating, reviewForId: reviewForId, comment: tecReview.text, hiredId: id);
+
+    _apiHelper
+        .giveReview(reviewRequestModel: reviewRequestModel)
+        .then((Either<CustomError, CommonResponseModel> responseData) {
+      CustomLoader.hide(context!);
+      responseData.fold((CustomError customError) {
+        Utils.errorDialog(context!, customError..onRetry);
+      }, (CommonResponseModel response) {
+        if (response.status == "success" && response.statusCode == 201) {
+          tecReview.clear();
+        }
+      });
+    });
+  }
+
+  void onRatingUpdate(double rat) {
+    rating.value = rat;
   }
 }
