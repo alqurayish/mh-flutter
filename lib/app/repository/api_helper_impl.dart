@@ -4,7 +4,9 @@ import 'package:dartz/dartz.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get/get_connect/http/src/request/request.dart';
+import 'package:mh/app/modules/employee/employee_home/models/common_response_model.dart';
 import 'package:mh/app/modules/employee/employee_home/models/review_dialog_model.dart';
+import 'package:mh/app/modules/employee/employee_home/models/review_request_model.dart';
 import 'package:mh/app/modules/employee/employee_home/models/single_notification_model_for_employee.dart';
 import 'package:mh/app/modules/employee/employee_payment_history/models/employee_payment_history_model.dart';
 import 'package:mh/app/modules/notifications/models/notification_response_model.dart';
@@ -884,5 +886,20 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
       response,
       ReviewDialogModel.fromJson,
     ).fold((CustomError l) => left(l), (ReviewDialogModel r) => right(r));
+  }
+
+  @override
+  EitherModel<CommonResponseModel> giveReview({required ReviewRequestModel reviewRequestModel}) async {
+    String url = "review/create";
+
+    var response = await post(url, jsonEncode(reviewRequestModel.toJson()));
+    if (response.statusCode == null) await post(url, jsonEncode(reviewRequestModel.toJson()));
+    if (response.statusCode == null) await post(url, jsonEncode(reviewRequestModel.toJson()));
+    if (response.statusCode == null) await post(url, jsonEncode(reviewRequestModel.toJson()));
+
+    return _convert<CommonResponseModel>(
+      response,
+      CommonResponseModel.fromJson,
+    ).fold((CustomError l) => left(l), (CommonResponseModel r) => right(r));
   }
 }

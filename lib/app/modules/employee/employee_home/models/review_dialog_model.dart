@@ -18,18 +18,14 @@ class ReviewDialogModel {
 }
 
 class ReviewDialogDetailsModel {
-  String? sId;
-  String? employeeId;
-  String? hiredBy;
+  String? id;
   EmployeeDetails? employeeDetails;
   RestaurantDetails? restaurantDetails;
 
-  ReviewDialogDetailsModel({this.sId, this.employeeId, this.hiredBy, this.employeeDetails, this.restaurantDetails});
+  ReviewDialogDetailsModel({this.id, this.employeeDetails, this.restaurantDetails});
 
   ReviewDialogDetailsModel.fromJson(Map<String, dynamic> json) {
-    sId = json['_id'];
-    employeeId = json['employeeId'];
-    hiredBy = json['hiredBy'];
+    id = json['_id'];
     employeeDetails = json['employeeDetails'] != null ? EmployeeDetails.fromJson(json['employeeDetails']) : null;
     restaurantDetails =
         json['restaurantDetails'] != null ? RestaurantDetails.fromJson(json['restaurantDetails']) : null;
@@ -37,29 +33,28 @@ class ReviewDialogDetailsModel {
 }
 
 class EmployeeDetails {
+  String? employeeId;
   String? name;
   String? profilePicture;
-  String? sId;
 
-  EmployeeDetails({this.name, this.profilePicture, this.sId});
+  EmployeeDetails({this.employeeId, this.name, this.profilePicture});
 
   EmployeeDetails.fromJson(Map<String, dynamic> json) {
+    employeeId = json['employeeId'];
     name = json['name'];
     profilePicture = json['profilePicture'];
-    sId = json['_id'];
   }
 }
 
 class RestaurantDetails {
   String? hiredBy;
   String? restaurantName;
-  String? sId;
+  String? profileImage;
 
-  RestaurantDetails({this.hiredBy, this.restaurantName, this.sId});
+  RestaurantDetails({this.hiredBy, this.restaurantName, this.profileImage});
 
   RestaurantDetails.fromJson(Map<String, dynamic> json) {
     hiredBy = json['hiredBy'];
     restaurantName = json['restaurantName'];
-    sId = json['_id'];
   }
 }
