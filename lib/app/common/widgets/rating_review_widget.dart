@@ -6,7 +6,6 @@ import 'package:mh/app/common/extensions/extensions.dart';
 import 'package:mh/app/common/style/my_decoration.dart';
 import 'package:mh/app/common/values/my_color.dart';
 import 'package:mh/app/common/widgets/custom_buttons.dart';
-import 'package:mh/app/common/widgets/custom_network_image.dart';
 import 'package:mh/app/enums/custom_button_style.dart';
 import 'package:mh/app/modules/employee/employee_home/models/review_dialog_model.dart';
 
@@ -40,11 +39,15 @@ class RatingReviewWidget extends StatelessWidget {
             decoration: const BoxDecoration(
                 borderRadius: BorderRadius.only(topLeft: Radius.circular(10.0), topRight: Radius.circular(10.0)),
                 color: Colors.white),
-            height: 380,
+            height: 400,
             child: Center(
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const SizedBox(height: 10),
+                Text("Rate your working journey".toUpperCase(), style: MyColors.l111111_dwhite(context).semiBold16),
+                const SizedBox(height: 20),
                 ClipOval(
                   child: CachedNetworkImage(
                     imageUrl: reviewFor == 'client'
@@ -52,8 +55,8 @@ class RatingReviewWidget extends StatelessWidget {
                             'https://logowik.com/content/uploads/images/restaurant9491.logowik.com.webp'
                         : (reviewDialogDetailsModel.employeeDetails?.profilePicture ?? '').imageUrl,
                     imageBuilder: (context, imageProvider) => Container(
-                      width: 45 * 2,
-                      height: 45 * 2,
+                      width: 35 * 2,
+                      height: 35 * 2,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         image: DecorationImage(
@@ -73,8 +76,8 @@ class RatingReviewWidget extends StatelessWidget {
                     reviewFor == 'client'
                         ? reviewDialogDetailsModel.restaurantDetails?.restaurantName ?? ''
                         : reviewDialogDetailsModel.employeeDetails?.name ?? '',
-                    style: MyColors.l111111_dwhite(context).semiBold16),
-                const SizedBox(height: 20),
+                    style: MyColors.l111111_dwhite(context).semiBold15),
+                const SizedBox(height: 10),
                 RatingBar.builder(
                   initialRating: 0.0,
                   minRating: 1,
@@ -87,11 +90,11 @@ class RatingReviewWidget extends StatelessWidget {
                   ),
                   onRatingUpdate: onRatingUpdate,
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 10),
                 TextFormField(
                   controller: tecReview,
                   keyboardType: TextInputType.multiline,
-                  minLines: 2,
+                  minLines: 1,
                   maxLines: null,
                   cursorColor: MyColors.c_C6A34F,
                   style: MyColors.l111111_dwhite(context).regular14,
@@ -100,7 +103,7 @@ class RatingReviewWidget extends StatelessWidget {
                     label: "Comment if any (optional)",
                   ),
                 ),
-                const SizedBox(height: 30),
+                const SizedBox(height: 20),
                 CustomButtons.button(
                   height: 48,
                   margin: EdgeInsets.zero,
@@ -131,9 +134,9 @@ class RatingReviewWidget extends StatelessWidget {
                     manualRating: 5.0);
               },
               child: const CircleAvatar(
-                radius: 15.0,
+                radius: 13.0,
                 backgroundColor: Colors.red,
-                child: Icon(Icons.clear, color: Colors.white, size: 20),
+                child: Icon(Icons.clear, color: Colors.white, size: 15),
               ),
             ),
           ),

@@ -145,8 +145,9 @@ class AdminAllClientsView extends GetView<AdminAllClientsController> {
                                 SizedBox(height: 16.h),
                                 Row(
                                   children: [
-                                    _name(user.restaurantName ?? ""),
-                                    _rating(user.rating ?? 0),
+                                    Flexible(flex: user.rating! > 0.0 ? 2 : 7, child: _name(user.restaurantName ?? "")),
+                                    Expanded(flex: 2, child: _rating(user.rating ?? 0.0)),
+                                    const Expanded(flex: 2, child: Wrap()),
                                   ],
                                 ),
                               ],
@@ -215,11 +216,13 @@ class AdminAllClientsView extends GetView<AdminAllClientsController> {
 
   Widget _name(String name) => Text(
         name,
-        style: MyColors.c_C6A34F.semiBold18,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+        style: MyColors.c_C6A34F.semiBold16,
       );
 
-  Widget _rating(int rating) => Visibility(
-        visible: rating > 0,
+  Widget _rating(double rating) => Visibility(
+        visible: rating > 0.0,
         child: Row(
           children: [
             SizedBox(width: 10.w),

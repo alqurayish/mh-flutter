@@ -24,9 +24,24 @@ class EmployeeSelfProfileView extends GetView<EmployeeSelfProfileController> {
             key: controller.formKeyClient,
             child: Column(
               children: [
-                SizedBox(height: 40.h),
+                SizedBox(height: 20.h),
 
                 _backButtonImageBookmark,
+                SizedBox(height: 10.h),
+                Obx(() => Container(
+                  width: 100,
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+                  decoration: const BoxDecoration(
+                    color: MyColors.c_C6A34F,
+                    borderRadius: BorderRadius.only(topRight: Radius.circular(10.0), bottomLeft: Radius.circular(10.0))
+                  ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(Icons.star, color: Colors.white, size:15),
+                        Text(controller.rating.value, style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
+                      ],
+                    ))),
 
                 SizedBox(height: 40.h),
 

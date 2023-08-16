@@ -181,8 +181,8 @@ class MhEmployeesByIdView extends GetView<MhEmployeesByIdController> {
                                 SizedBox(height: 16.h),
                                 Row(
                                   children: [
-                                    Expanded(child: _name("${user.firstName ?? "-"} ${user.lastName ?? ""}")),
-                                    _rating(user.rating ?? 0),
+                                    Expanded(flex: 1, child: _name("${user.firstName ?? "-"} ${user.lastName ?? ""}")),
+                                    Expanded(flex: 1, child: _rating(user.rating ?? 0.0)),
                                   ],
                                 ),
                               ],
@@ -244,11 +244,10 @@ class MhEmployeesByIdView extends GetView<MhEmployeesByIdController> {
         style: MyColors.l111111_dwhite(controller.context!).medium14,
       );
 
-  Widget _rating(int rating) => Visibility(
-        visible: rating > 0,
+  Widget _rating(double rating) => Visibility(
+        visible: rating > 0.0,
         child: Row(
           children: [
-            SizedBox(width: 10.w),
             Container(
               height: 2.h,
               width: 2.h,

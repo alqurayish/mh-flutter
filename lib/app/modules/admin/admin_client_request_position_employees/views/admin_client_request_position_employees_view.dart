@@ -167,7 +167,7 @@ class AdminClientRequestPositionEmployeesView extends GetView<AdminClientRequest
                                 Row(
                                   children: [
                                     Expanded(child: _name("${user.firstName ?? "-"} ${user.lastName ?? ""}")),
-                                    _rating(user.rating ?? 0),
+                                    _rating(user.rating ?? 0.0),
                                   ],
                                 ),
                               ],
@@ -228,7 +228,7 @@ class AdminClientRequestPositionEmployeesView extends GetView<AdminClientRequest
         style: MyColors.l111111_dwhite(controller.context!).medium14,
       );
 
-  Widget _rating(int rating) => Visibility(
+  Widget _rating(double rating) => Visibility(
         visible: rating > 0,
         child: Row(
           children: [

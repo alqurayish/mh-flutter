@@ -160,8 +160,11 @@ class AdminAllEmployeesView extends GetView<AdminAllEmployeesController> {
                                 SizedBox(height: 16.h),
                                 Row(
                                   children: [
-                                    Expanded(child: _name("${user.firstName ?? "-"} ${user.lastName ?? ""}")),
-                                    _rating(user.rating ?? 0),
+                                    Expanded(
+                                        flex: user.rating! > 0.0 ? 2 : 4,
+                                        child: _name("${user.firstName ?? "-"} ${user.lastName ?? ""}")),
+                                    Expanded(flex: 2, child: _rating(user.rating ?? 0)),
+                                    const Expanded(flex: 2, child: Wrap()),
                                   ],
                                 ),
                               ],
@@ -223,11 +226,10 @@ class AdminAllEmployeesView extends GetView<AdminAllEmployeesController> {
         style: MyColors.l111111_dwhite(controller.context!).medium14,
       );
 
-  Widget _rating(int rating) => Visibility(
-        visible: rating > 0,
+  Widget _rating(double rating) => Visibility(
+        visible: rating > 0.0,
         child: Row(
           children: [
-            SizedBox(width: 10.w),
             Container(
               height: 2.h,
               width: 2.h,

@@ -48,14 +48,14 @@ class ClientMyEmployeeView extends GetView<ClientMyEmployeeController> {
       );
 
   Widget get _showEmployeeList => ListView.builder(
-    padding: EdgeInsets.symmetric(vertical: 20.h),
-    itemCount: controller.employees.value.hiredHistories?.length ?? 0,
-    itemBuilder: (context, index) {
-      return _employeeItem(
-        controller.employees.value.hiredHistories![index],
+        padding: EdgeInsets.symmetric(vertical: 20.h),
+        itemCount: controller.employees.value.hiredHistories?.length ?? 0,
+        itemBuilder: (context, index) {
+          return _employeeItem(
+            controller.employees.value.hiredHistories![index],
+          );
+        },
       );
-    },
-  );
 
   Widget _employeeItem(HiredHistory hiredHistory) {
     return Container(
@@ -84,7 +84,8 @@ class ClientMyEmployeeView extends GetView<ClientMyEmployeeController> {
                 width: 122.w,
                 child: CustomButtons.button(
                   height: 28.w,
-                  text: "${Utils.getCurrencySymbol(Get.find<AppController>().user.value.client?.countryName ?? '')}${hiredHistory.employeeDetails?.hourlyRate ?? 0} /h",
+                  text:
+                      "${Utils.getCurrencySymbol(Get.find<AppController>().user.value.client?.countryName ?? '')}${hiredHistory.employeeDetails?.hourlyRate ?? 0} /h",
                   margin: EdgeInsets.zero,
                   fontSize: 12,
                   customButtonStyle: CustomButtonStyle.radiusTopBottomCorner,
@@ -92,26 +93,22 @@ class ClientMyEmployeeView extends GetView<ClientMyEmployeeController> {
                 ),
               ),
             ),
-
             Positioned(
               right: 5,
               top: 3,
               child: Obx(
-                    () => controller.shortlistController.getIcon(
-                      hiredHistory.id!,
-                      controller.shortlistController.isFetching.value,
-                    ),
+                () => controller.shortlistController.getIcon(
+                  hiredHistory.id!,
+                  controller.shortlistController.isFetching.value,
+                ),
               ),
             ),
-
             Row(
               children: [
                 _image((hiredHistory.employeeDetails?.profilePicture ?? "").imageUrl),
-
                 Expanded(
                   child: Column(
                     children: [
-
                       Row(
                         children: [
                           Expanded(
@@ -122,8 +119,11 @@ class ClientMyEmployeeView extends GetView<ClientMyEmployeeController> {
                                 SizedBox(height: 16.h),
                                 Row(
                                   children: [
-                                    _name(hiredHistory.employeeDetails?.name ?? "-"),
-                                    _rating(hiredHistory.employeeDetails?.rating ?? 0.0),
+                                    Expanded(
+                                        flex: hiredHistory.employeeDetails!.rating! > 0.0 ? 2 : 4,
+                                        child: _name(hiredHistory.employeeDetails?.name ?? "-")),
+                                    Expanded(flex: 2, child: _rating(hiredHistory.employeeDetails?.rating ?? 0.0)),
+                                    const Expanded(flex: 2, child: Wrap())
                                   ],
                                 ),
                               ],
@@ -131,40 +131,34 @@ class ClientMyEmployeeView extends GetView<ClientMyEmployeeController> {
                           ),
                         ],
                       ),
-
                       SizedBox(height: 8.h),
-
                       const Divider(
                         thickness: .5,
                         height: 1,
                         color: MyColors.c_D9D9D9,
                         endIndent: 13,
                       ),
-
                       SizedBox(height: 8.h),
-
                       Row(
                         children: [
-                          _detailsItem(MyAssets.exp, "", Utils.getPositionName(hiredHistory.employeeDetails?.positionId ?? "")),
+                          _detailsItem(
+                              MyAssets.exp, "", Utils.getPositionName(hiredHistory.employeeDetails?.positionId ?? "")),
                         ],
                       ),
-
                       SizedBox(height: 8.h),
-
                       Row(
                         children: [
-                          _detailsItem(MyAssets.calender, "", "${hiredHistory.fromDate.toString().split(" ").first} - ${hiredHistory.toDate.toString().split(" ").first}  ( ${hiredHistory.fromDate!.differenceInDays(hiredHistory.toDate!)})"),
+                          _detailsItem(MyAssets.calender, "",
+                              "${hiredHistory.fromDate.toString().split(" ").first} - ${hiredHistory.toDate.toString().split(" ").first}  ( ${hiredHistory.fromDate!.differenceInDays(hiredHistory.toDate!)})"),
                         ],
                       ),
-
                       SizedBox(height: 8.h),
-
                       Row(
                         children: [
-                          _detailsItem(MyAssets.totalHour, MyStrings.totalHour.tr, (hiredHistory.employeeDetails?.totalWorkingHour ?? 0).toString()),
+                          _detailsItem(MyAssets.totalHour, MyStrings.totalHour.tr,
+                              (hiredHistory.employeeDetails?.totalWorkingHour ?? 0).toString()),
                         ],
                       ),
-
                     ],
                   ),
                 ),
@@ -177,71 +171,72 @@ class ClientMyEmployeeView extends GetView<ClientMyEmployeeController> {
   }
 
   Widget _image(String profilePicture) => Container(
-    margin: const EdgeInsets.fromLTRB(16, 16, 13, 16),
-    width: 74.w,
-    height: 74.w,
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(5),
-      color: Colors.grey.withOpacity(.1),
-    ),
-    child: CustomNetworkImage(
-      url: profilePicture,
-      radius: 5,
-    ),
-  );
+        margin: const EdgeInsets.fromLTRB(16, 16, 13, 16),
+        width: 74.w,
+        height: 74.w,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(5),
+          color: Colors.grey.withOpacity(.1),
+        ),
+        child: CustomNetworkImage(
+          url: profilePicture,
+          radius: 5,
+        ),
+      );
 
   Widget _name(String name) => Text(
-    name,
-    style: MyColors.l111111_dwhite(controller.context!).medium14,
-  );
+        name,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+        style: MyColors.l111111_dwhite(controller.context!).medium14,
+      );
 
   Widget _rating(double rating) => Visibility(
-    visible: rating > 0,
-    child: Row(
-      children: [
-        SizedBox(width: 10.w),
-        Container(
-          height: 2.h,
-          width: 2.h,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: MyColors.l111111_dwhite(controller.context!),
-          ),
+        visible: rating > 0.0,
+        child: Row(
+          children: [
+            Container(
+              height: 2.h,
+              width: 2.h,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: MyColors.l111111_dwhite(controller.context!),
+              ),
+            ),
+            SizedBox(width: 10.w),
+            const Icon(
+              Icons.star,
+              color: MyColors.c_FFA800,
+              size: 16,
+            ),
+            SizedBox(width: 2.w),
+            Text(
+              rating.toString(),
+              style: MyColors.l111111_dwhite(controller.context!).medium14,
+            ),
+          ],
         ),
-        SizedBox(width: 10.w),
-        const Icon(
-          Icons.star,
-          color: MyColors.c_FFA800,
-          size: 16,
-        ),
-        SizedBox(width: 2.w),
-        Text(
-          rating.toString(),
-          style: MyColors.l111111_dwhite(controller.context!).medium14,
-        ),
-      ],
-    ),
-  );
+      );
 
   Widget _detailsItem(String icon, String title, String value) => Expanded(
-    child: Row(
-      children: [
-        Image.asset(
-          icon,
-          width: 14.w,
-          height: 14.w,
+        child: Row(
+          children: [
+            Image.asset(
+              icon,
+              width: 14.w,
+              height: 14.w,
+            ),
+            SizedBox(width: 10.w),
+            Text(
+              title,
+              style: MyColors.l7B7B7B_dtext(controller.context!).medium11,
+            ),
+            SizedBox(width: 3.w),
+            Text(
+              value,
+              style: MyColors.l111111_dwhite(controller.context!).medium11,
+            ),
+          ],
         ),
-        SizedBox(width: 10.w),
-        Text(
-          title,
-          style: MyColors.l7B7B7B_dtext(controller.context!).medium11,
-        ),
-        SizedBox(width: 3.w),
-        Text(
-          value,
-          style: MyColors.l111111_dwhite(controller.context!).medium11,
-        ),
-      ],
-    ),
-  );
+      );
 }

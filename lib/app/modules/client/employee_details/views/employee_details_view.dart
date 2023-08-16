@@ -92,7 +92,8 @@ class EmployeeDetailsView extends GetView<EmployeeDetailsController> {
           required String title,
           String? position,
           String? age,
-          String? rating,
+          double? rating,
+          int? totalRating,
           String? phone}) =>
       Container(
         padding: EdgeInsets.fromLTRB(35.w, 13.h, 35.w, 13.h),
@@ -161,7 +162,7 @@ class EmployeeDetailsView extends GetView<EmployeeDetailsController> {
                       ),
                       SizedBox(width: 3.w),
                       Text(
-                        rating ?? "0",
+                        "${rating ?? 0.0} (${totalRating ?? 0})",
                         style: MyColors.l111111_dwhite(controller.context!).medium12,
                       ),
                     ],
@@ -229,6 +230,8 @@ class EmployeeDetailsView extends GetView<EmployeeDetailsController> {
         position: controller.employee.positionName ?? "-",
         title: "${controller.employee.firstName ?? "-"} ${controller.employee.lastName ?? ""}",
         age: MyStrings.ageWithYears.trParams({"year": Utils.calculateAge(controller.employee.dateOfBirth)}),
+        rating: controller.employee.rating ?? 0.0,
+        totalRating: controller.employee.totalRating ?? 0,
         child: Column(
           children: [
             SizedBox(height: 5.h),

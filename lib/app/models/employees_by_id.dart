@@ -83,7 +83,8 @@ class Employee {
       this.verified,
       this.noOfEmployee,
       this.employeeExperience,
-      this.rating,
+      this.rating = 0.0,
+      this.totalRating = 0,
       this.totalWorkingHour,
       this.hourlyRate,
       this.contractorHourlyRate,
@@ -137,7 +138,8 @@ class Employee {
   final bool? verified;
   final int? noOfEmployee;
   final dynamic employeeExperience;
-  final int? rating;
+  final double? rating;
+  final int? totalRating;
   final int? totalWorkingHour;
   final double? hourlyRate;
   final List<dynamic>? certificates;
@@ -196,7 +198,8 @@ class Employee {
           json["contractorHourlyRate"] == null ? 0.0 : double.parse(json["contractorHourlyRate"].toString()),
       noOfEmployee: json["noOfEmployee"],
       employeeExperience: json["employeeExperience"],
-      rating: json["rating"],
+      rating: json["rating"] == null ? 0.0 : double.parse(json["rating"].toString()),
+      totalRating: json["totalRating"],
       totalWorkingHour: json["totalWorkingHour"],
       hourlyRate: json["hourlyRate"] == null ? 0.0 : double.parse(json["hourlyRate"].toString()),
       certificates: json["certificates"] == null ? [] : List<dynamic>.from(json["certificates"]!.map((x) => x)),
@@ -253,6 +256,7 @@ class Employee {
         "noOfEmployee": noOfEmployee,
         "employeeExperience": employeeExperience,
         "rating": rating,
+        "totalRating": totalRating,
         "totalWorkingHour": totalWorkingHour,
         "hourlyRate": hourlyRate,
         "certificates": certificates == null ? [] : List<dynamic>.from(certificates!.map((x) => x)),
