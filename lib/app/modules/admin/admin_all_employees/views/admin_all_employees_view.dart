@@ -299,15 +299,13 @@ class AdminAllEmployeesView extends GetView<AdminAllEmployeesController> {
               ),
             ),
             const SizedBox(width: 5),
-            if (isHired == true && isSuggested == true)
-              Text(
-                "Hired",
-                style: MyColors.l111111_dwhite(controller.context!).medium10,
-              )
-            else if (isHired == true && isSuggested == false)
-              Text("Waiting", style: MyColors.l111111_dwhite(controller.context!).medium10)
-            else
-              Text("Available", style: MyColors.l111111_dwhite(controller.context!).medium10)
+            Text(
+                (isHired == true && isSuggested == false)
+                    ? "Booked"
+                    : (isHired == false && isSuggested == true)
+                        ? "Waiting"
+                        : "Available",
+                style: MyColors.l111111_dwhite(controller.context!).medium10)
           ],
         ),
       );

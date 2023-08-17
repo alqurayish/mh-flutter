@@ -25,7 +25,8 @@ class ClientPaymentAndInvoiceView extends GetView<ClientPaymentAndInvoiceControl
                     child: Text(
                     "No invoice found",
                     style: MyColors.l111111_dwhite(context).semiBold16,
-                  ))
+                  )
+        )
                 : HorizontalDataTable(
                     leftHandSideColumnWidth: 143.w,
                     rightHandSideColumnWidth: 500.w,

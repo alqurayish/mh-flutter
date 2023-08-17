@@ -227,7 +227,7 @@ class Utils {
         position: '-',
         contractorPerHoursRate: 0.0,
         totalHours: 0.0,
-        amount: 0.0,
+        employeeAmount: 0.0,
         status: '-');
 
     DateTime? fromDate = element.fromDate;
@@ -241,7 +241,7 @@ class Utils {
     employeePayment.position = element.positionName ?? '';
     employeePayment.contractorPerHoursRate = element.contractorHourlyRate ?? 0.0;
     employeePayment.totalHours = element.totalHours ?? 0.0;
-    employeePayment.amount = element.amount ?? 0.0;
+    employeePayment.employeeAmount = element.employeeAmount ?? 0.0;
     employeePayment.status = element.status ?? '';
     return employeePayment;
   }

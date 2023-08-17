@@ -129,7 +129,7 @@ class EmployeePaymentHistoryView extends GetView<EmployeePaymentHistoryControlle
         _cell(
             width: 100.w,
             widget: Text(
-              controller.employeePaymentHistory(index).contractorPerHoursRate.toString(),
+            '${Utils.getCurrencySymbol(controller.appController.user.value.employee?.countryName ?? "")}${controller.employeePaymentHistory(index).contractorPerHoursRate}',
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.center,
@@ -147,7 +147,7 @@ class EmployeePaymentHistoryView extends GetView<EmployeePaymentHistoryControlle
         _cell(
             width: 100.w,
             widget: Text(
-              "${Utils.getCurrencySymbol(controller.appController.user.value.employee?.countryName ?? "")}${controller.employeePaymentHistory(index).amount}",
+              "${Utils.getCurrencySymbol(controller.appController.user.value.employee?.countryName ?? "")}${controller.employeePaymentHistory(index).employeeAmount}",
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.center,

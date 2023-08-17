@@ -25,7 +25,7 @@ class EmployeeLocationDistanceWidget extends GetWidget<EmployeeHomeController> {
             color: MyColors.c_C6A34F.withOpacity(.6),
           ),
           child: Text(
-              'The restaurant is situated at a distance of ${(controller.getDistance / 1000).toStringAsFixed(2)} kilometers from your current location.',
+              'The restaurant is situated at a distance of ${(controller.getDistance / 1609).toStringAsFixed(1)} miles from your current location.',
               style: MyColors.white.semiBold13),
         );
       }

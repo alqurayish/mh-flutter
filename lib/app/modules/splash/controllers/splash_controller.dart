@@ -53,7 +53,7 @@ class SplashController extends GetxController {
             context: context!,
             title: "Update Available!",
             description:
-                "New version ${commons.appVersion!.first.appVersion} has been released. Please update your app for better experience",
+                "New version (${commons.appVersion!.first.appVersion}) has been released. Please update your app for better using experience.",
             buttonText: "Update",
             onTap: () {
               launchApp(

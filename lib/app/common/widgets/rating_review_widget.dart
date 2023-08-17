@@ -36,13 +36,13 @@ class RatingReviewWidget extends StatelessWidget {
       children: [
         Container(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            decoration: const BoxDecoration(
-                borderRadius: BorderRadius.only(topLeft: Radius.circular(10.0), topRight: Radius.circular(10.0)),
-                color: Colors.white),
+            decoration: BoxDecoration(
+                borderRadius: const BorderRadius.only(topLeft: Radius.circular(10.0), topRight: Radius.circular(10.0)),
+                color: MyColors.lightCard(context)),
             height: 400,
             child: Center(
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const SizedBox(height: 10),

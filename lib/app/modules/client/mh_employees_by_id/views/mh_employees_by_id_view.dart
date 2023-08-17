@@ -138,9 +138,9 @@ class MhEmployeesByIdView extends GetView<MhEmployeesByIdController> {
                 width: 122.w,
                 child: CustomButtons.button(
                   height: 28.w,
-                  text: (user.isHired == true && user.isSuggested == true)
+                  text: (user.isHired == true && user.isSuggested == false)
                       ? "Booked"
-                      : (user.isHired == true && user.isSuggested == false)
+                      : (user.isHired == false && user.isSuggested == true)
                           ? "Waiting"
                           : "Book Now",
                   margin: EdgeInsets.zero,
@@ -181,8 +181,11 @@ class MhEmployeesByIdView extends GetView<MhEmployeesByIdController> {
                                 SizedBox(height: 16.h),
                                 Row(
                                   children: [
-                                    Expanded(flex: 1, child: _name("${user.firstName ?? "-"} ${user.lastName ?? ""}")),
-                                    Expanded(flex: 1, child: _rating(user.rating ?? 0.0)),
+                                    Flexible(
+                                        flex: user.rating! > 0.0 ? 3 : 4,
+                                        child: _name("${user.firstName ?? "-"} ${user.lastName ?? ""}")),
+                                    Expanded(flex: 2, child: _rating(user.rating ?? 0.0)),
+                                    const Expanded(flex: 2, child: Wrap()),
                                   ],
                                 ),
                               ],
@@ -248,6 +251,7 @@ class MhEmployeesByIdView extends GetView<MhEmployeesByIdController> {
         visible: rating > 0.0,
         child: Row(
           children: [
+            SizedBox(width: 10.w),
             Container(
               height: 2.h,
               width: 2.h,

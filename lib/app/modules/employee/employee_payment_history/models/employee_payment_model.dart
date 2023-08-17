@@ -5,7 +5,7 @@ class EmployeePaymentModel {
   String position;
   double contractorPerHoursRate;
   double totalHours;
-  double amount;
+  double employeeAmount;
   String status;
 
   EmployeePaymentModel({
@@ -15,7 +15,7 @@ class EmployeePaymentModel {
     required this.position,
     required this.contractorPerHoursRate,
     required this.totalHours,
-    required this.amount,
+    required this.employeeAmount,
     required this.status,
   });
 }

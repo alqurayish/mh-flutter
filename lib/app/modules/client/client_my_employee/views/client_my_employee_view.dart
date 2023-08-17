@@ -119,8 +119,8 @@ class ClientMyEmployeeView extends GetView<ClientMyEmployeeController> {
                                 SizedBox(height: 16.h),
                                 Row(
                                   children: [
-                                    Expanded(
-                                        flex: hiredHistory.employeeDetails!.rating! > 0.0 ? 2 : 4,
+                                    Flexible(
+                                        flex: hiredHistory.employeeDetails!.rating! > 0.0 ? 3 : 4,
                                         child: _name(hiredHistory.employeeDetails?.name ?? "-")),
                                     Expanded(flex: 2, child: _rating(hiredHistory.employeeDetails?.rating ?? 0.0)),
                                     const Expanded(flex: 2, child: Wrap())
@@ -192,9 +192,10 @@ class ClientMyEmployeeView extends GetView<ClientMyEmployeeController> {
       );
 
   Widget _rating(double rating) => Visibility(
-        visible: rating > 0.0,
+        visible: rating == 0.0,
         child: Row(
           children: [
+            SizedBox(width: 10.w),
             Container(
               height: 2.h,
               width: 2.h,
