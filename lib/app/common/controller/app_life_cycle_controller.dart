@@ -63,6 +63,8 @@ class AppLifecycleController extends GetxController with WidgetsBindingObserver 
           print('App detached');
         }
         break;
+      case AppLifecycleState.hidden:
+        // TODO: Handle this case.
     }
   }
 
