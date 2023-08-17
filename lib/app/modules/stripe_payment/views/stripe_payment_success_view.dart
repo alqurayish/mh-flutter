@@ -1,11 +1,5 @@
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
-import 'package:mh/app/common/extensions/extensions.dart';
 import 'package:mh/app/common/utils/exports.dart';
-import 'package:mh/app/common/values/my_color.dart';
-import 'package:mh/app/common/values/my_strings.dart';
-import 'package:mh/app/common/widgets/custom_buttons.dart';
 import 'package:mh/app/routes/app_pages.dart';
 
 class StripePaymentSuccessView extends StatelessWidget {

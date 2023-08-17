@@ -1,7 +1,6 @@
 import 'package:get/get.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:mh/app/common/widgets/custom_loader.dart';
-import 'package:mh/app/enums/currency_name.dart';
 import 'package:mh/app/models/admin.dart';
 import 'package:mh/app/repository/api_helper.dart';
 

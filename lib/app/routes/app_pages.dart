@@ -352,7 +352,7 @@ class AppPages {
       binding: StripePaymentBinding(),
     ),
     GetPage(
-      name: _Paths.EMPLOYEE_PAYMENT_HISTORY,
+      name: _Paths.employeePaymentHistory,
       page: () => const EmployeePaymentHistoryView(),
       binding: EmployeePaymentHistoryBinding(),
     ),
