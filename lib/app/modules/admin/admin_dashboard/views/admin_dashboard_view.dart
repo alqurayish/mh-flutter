@@ -145,7 +145,7 @@ class AdminDashboardView extends GetView<AdminDashboardController> {
                             _vDivider,
                             Expanded(
                                 child: _itemValue("Amount",
-                                    "${Utils.getCurrencySymbol(Get.find<AppController>().user.value.admin?.countryName ?? '')}${controller.amount.value}")),
+                                    "${Utils.getCurrencySymbol(Get.find<AppController>().user.value.admin?.countryName ?? '')}${controller.amount.value.toStringAsFixed(2)}")),
                           ],
                         ),
                       ),

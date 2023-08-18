@@ -311,10 +311,10 @@ class EmployeeHomeController extends GetxController {
   double get getDistance => LocationController.calculateDistance(
       targetLat: double.parse(singleNotification.value.hiredByLat ?? ''),
       targetLong: double.parse(singleNotification.value.hiredByLong ?? ''),
-      currentLat: //currentLocation!.latitude,
-      23.79714497663383,
-      currentLong: //currentLocation!.longitude
-      90.42769130319357
+      currentLat: currentLocation!.latitude,
+      //23.79714497663383,
+      currentLong: currentLocation!.longitude
+      //90.42769130319357
       );
 
   void _trackUnreadMsg() {

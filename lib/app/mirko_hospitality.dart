@@ -38,6 +38,11 @@ class MirkoHospitality extends StatelessWidget {
           theme: AppTheme.light,
           darkTheme: AppTheme.dark,
           themeMode: ThemeMode.system,
+          supportedLocales: const [
+            Locale('en', 'US'), // English
+            Locale('bn', 'BD'), // Bangla
+            // Add more supported locales
+          ],
         );
       },
     );

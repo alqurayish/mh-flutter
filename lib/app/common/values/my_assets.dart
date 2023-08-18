@@ -37,6 +37,9 @@ class MyAssets {
 
   static const clientFixedLogo = "assets/images/client_fixed_logo.png";
 
+  //Custom Map Style
+  static const customMapStyle = 'assets/map_style/custom_map_style.txt';
+
   // position
   static const barista = "assets/icons/positions/barista.png";
   static const chef = "assets/icons/positions/chef.png";
@@ -63,7 +66,6 @@ class MyAssets {
   static const pastryChef = "assets/icons/positions/pastry_chef.png";
   static const locationPin = "assets/icons/location_pin.png";
   static const msgSend = "assets/icons/msg_send.png";
-
 }
 
 class _Lottie {
@@ -77,6 +79,7 @@ class _Lottie {
   String hireFailed = "assets/lottie/hire_failed.json";
   String notFound = "assets/lottie/not_found.json";
   String noNotification = "assets/lottie/no_notification.json";
+  String mapLoading = "assets/lottie/map_loading.json";
 }
 
 class _PaymentMethod {

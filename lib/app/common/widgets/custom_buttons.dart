@@ -9,6 +9,7 @@ class CustomButtons {
 
   static Widget button({
     String text = "Continue",
+    Color? backgroundColor,
     Function()? onTap,
     EdgeInsets? margin,
     EdgeInsets? padding,
@@ -21,7 +22,7 @@ class CustomButtons {
         height: height ?? 48.h,
         margin: margin ?? EdgeInsets.symmetric(horizontal: 37.0.w),
         padding: padding,
-        decoration: _getButtonStyle(customButtonStyle, context, onTap != null),
+        decoration: _getButtonStyle(customButtonStyle, context, onTap != null, color: backgroundColor),
         child: Material(
           type: MaterialType.transparency,
           child: InkWell(
@@ -32,7 +33,7 @@ class CustomButtons {
                 text,
                 style: TextStyle(
                   fontSize: fontSize ?? 18.sp,
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.bold,
                   color: _getTextColor(customButtonStyle),
                 ),
               ),
@@ -43,9 +44,9 @@ class CustomButtons {
 
   /// styles
   static BoxDecoration _regular(BorderRadius radius) => BoxDecoration(
-    color: MyColors.c_C6A34F,
-    borderRadius: radius,
-  );
+        color: MyColors.c_C6A34F,
+        borderRadius: radius,
+      );
 
   static BoxDecoration _outline(BorderRadius radius, context) => BoxDecoration(
         color: MyColors.lightCard(context),
@@ -56,18 +57,18 @@ class CustomButtons {
         ),
       );
 
-  static BoxDecoration _radiusTopBottomCorner(BorderRadius radius, bool isActive) => BoxDecoration(
-    color: isActive ? MyColors.c_C6A34F : MyColors.c_A6A6A6,
-    borderRadius: radius,
-  );
+  static BoxDecoration _radiusTopBottomCorner(BorderRadius radius, bool isActive, {Color? color}) => BoxDecoration(
+        color: isActive ? color ?? MyColors.c_C6A34F : MyColors.c_A6A6A6,
+        borderRadius: radius,
+      );
 
   /// helper
-  static BoxDecoration _getButtonStyle(CustomButtonStyle customButtonStyle, context, bool isActive) {
+  static BoxDecoration _getButtonStyle(CustomButtonStyle customButtonStyle, context, bool isActive, {Color? color}) {
     switch (customButtonStyle) {
       case CustomButtonStyle.outline:
         return _outline(_getRadius(customButtonStyle), context);
       case CustomButtonStyle.radiusTopBottomCorner:
-        return _radiusTopBottomCorner(_getRadius(customButtonStyle), isActive);
+        return _radiusTopBottomCorner(_getRadius(customButtonStyle), isActive, color: color);
       case CustomButtonStyle.regular:
       default:
         return _regular(_getRadius(customButtonStyle));

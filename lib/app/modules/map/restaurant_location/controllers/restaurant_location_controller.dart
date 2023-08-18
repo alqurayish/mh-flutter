@@ -1,17 +1,19 @@
 import 'dart:async';
 
+import 'package:dartz/dartz.dart';
+import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:mh/app/models/custom_error.dart';
+import 'package:mh/app/modules/map/restaurant_location/models/google_auto_complete_search_model.dart';
+import 'package:mh/app/modules/map/restaurant_location/models/lat_lng_model.dart';
 
 import '../../../../common/controller/location_controller.dart';
 import '../../../../common/utils/exports.dart';
-import '../../../../models/address_to_lat_lng.dart';
-import '../../../../repository/api_helper.dart';
 import '../../../auth/register/controllers/register_controller.dart';
 import '../../../client/client_self_profile/controllers/client_self_profile_controller.dart';
 
 class RestaurantLocationController extends GetxController {
-
   BuildContext? context;
 
   // current location
@@ -19,15 +21,12 @@ class RestaurantLocationController extends GetxController {
 
   Set<Marker> markersList = {};
 
+  GoogleMapController? mapController;
 
-  final Completer<GoogleMapController> mapController = Completer<GoogleMapController>();
-
-  RxBool fetchCurrentLocation = true.obs;
+  RxBool mapLoaded = false.obs;
   RxString locationFetchError = "".obs;
 
-  RxBool findAddress = false.obs;
-
-  final ApiHelper _apiHelper = Get.find();
+  RxBool showAutoCompleteSearchWidget = false.obs;
 
   /// default mh lat long
   Rx<LatLng> latLng = const LatLng(
@@ -35,106 +34,162 @@ class RestaurantLocationController extends GetxController {
     LocationController.mhLong,
   ).obs;
 
-  TextEditingController tecAddress = TextEditingController();
+  RxList<GoogleAutoCompleteSearchModel> googleAutoCompleteSearchList = <GoogleAutoCompleteSearchModel>[].obs;
+  RxBool autoCompleteDataLoaded = false.obs;
+  RxString locationText = ''.obs;
+  RxBool confirmButtonDisable = false.obs;
+  Timer? _debounce;
+
+  TextEditingController tecAutoCompleteSearch = TextEditingController();
+  RxString autoCompleteSearchQuery = ''.obs;
+  Rx<Uint8List> locationIcon = Uint8List(1).obs;
+  bool goToOnMapIdle = true;
 
   @override
   void onInit() {
-    _getCurrentLocation();
+    LocationController.getBytesFromAsset(MyAssets.locationPin, 100).then((Uint8List val) {
+      locationIcon.value = val;
+      _getCurrentLocation();
+    });
     super.onInit();
   }
 
-  void onAddressSearch() {
-    findAddress.value = true;
-    _apiHelper.addressToLatLng(tecAddress.text.trim()).then((value) {
-      findAddress.value = false;
+  @override
+  void onClose() {
+    _debounce?.cancel();
+    mapController?.dispose();
+    tecAutoCompleteSearch.dispose();
+    super.onClose();
+  }
 
-      value.fold((l) {
-        tecAddress.text = "${latLng.value.latitude}, ${latLng.value.longitude}";
-      }, (r) async {
-        AddressToLatLng addressToLatLng = AddressToLatLng.fromJson(r.body[0]);
-        // tecAddress.text = addressToLatLng.displayName ?? "${latLng.value.latitude}, ${latLng.value.longitude}";
-
-        latLng.value = LatLng(
-          double.parse(addressToLatLng.lat ?? "0"),
-          double.parse(addressToLatLng.lon ?? "0"),
-        );
-
-        latLng.refresh();
-
-        final GoogleMapController controller = await mapController.future;
-        controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-          target: LatLng(latLng.value.latitude, latLng.value.longitude),
-          zoom: 14.4746,
-        )));
-      });
+  void onAddressSearch(String query) {
+    autoCompleteSearchQuery.value = query;
+    if (_debounce?.isActive ?? false) _debounce?.cancel();
+    _debounce = Timer(const Duration(milliseconds: 500), () {
+      if (query.isNotEmpty) {
+        LocationController.autoCompleteSearchForGoogle(input: query)
+            .then((List<GoogleAutoCompleteSearchModel> responseData) {
+          googleAutoCompleteSearchList.value = responseData;
+          autoCompleteDataLoaded.value = true;
+        });
+      } else {
+        googleAutoCompleteSearchList.clear();
+      }
     });
   }
 
   void onConfirmPressed() {
-    if(Get.isRegistered<RegisterController>()) {
+    if (Get.isRegistered<RegisterController>()) {
       final RegisterController registerController = Get.find();
 
       registerController.restaurantLat = latLng.value.latitude;
       registerController.restaurantLong = latLng.value.longitude;
-      registerController.restaurantAddressFromMap.value = tecAddress.text.trim();
-      registerController.tecClientAddress.text = tecAddress.text.trim();
-    }
-    else if(Get.isRegistered<ClientSelfProfileController>()) {
+      registerController.restaurantAddressFromMap.value = locationText.value.trim();
+      registerController.tecClientAddress.text = locationText.value.trim();
+    } else if (Get.isRegistered<ClientSelfProfileController>()) {
       final ClientSelfProfileController profileController = Get.find();
 
       profileController.restaurantLat = latLng.value.latitude;
       profileController.restaurantLong = latLng.value.longitude;
-      profileController.restaurantAddressFromMap.value = tecAddress.text.trim();
-      profileController.tecRestaurantAddress.text = tecAddress.text.trim();
+      profileController.restaurantAddressFromMap.value = locationText.value.trim();
+      profileController.tecRestaurantAddress.text = locationText.value.trim();
     }
 
     Get.back();
   }
 
-  void onCameraMove(CameraPosition? position) {
-    if(position?.target != null && latLng.value != position?.target) {
-      latLng.value = position!.target;
-      latLng.refresh();
-    }
+  void onCameraMove(CameraPosition position) {
+    confirmButtonDisable.value = true;
+    latLng.value = position.target;
+    latLng.refresh();
+    loadMarker(latLng: latLng.value);
+  }
+
+  void onMapTap(LatLng l) {
+    latLng.value = l;
+    latLng.refresh();
+    loadMarker(latLng: latLng.value);
+    getAddressFromLatLng();
   }
 
   void onCameraIdle() {
-    tecAddress.text = "Fetching address...";
-    findAddress.value = true;
-    _apiHelper.latLngToAddress(latLng.value.latitude, latLng.value.longitude).then((value) {
-      findAddress.value = false;
-
-      value.fold((l) {
-        tecAddress.text = "${latLng.value.latitude}, ${latLng.value.longitude}";
-      }, (r) {
-        tecAddress.text = r.displayName ?? "${latLng.value.latitude}, ${latLng.value.longitude}";
-      });
-    });
+    confirmButtonDisable.value = false;
+    if (goToOnMapIdle == true) {
+      locationText.value = "Fetching address...";
+      getAddressFromLatLng();
+    }
   }
 
-  void _getCurrentLocation () {
-    LocationController.determinePosition().then((value) {
-
-      value.fold((l) {
+  void _getCurrentLocation() {
+    LocationController.determinePosition().then((Either<CustomError, Position> value) {
+      value.fold((CustomError l) {
         locationFetchError.value = l.msg;
       }, (Position position) {
         location = position;
-
         latLng.value = LatLng(location!.latitude, location!.longitude);
-
-        markersList.add(
-          Marker(
-            markerId: const MarkerId('0'),
-            position: latLng.value,
-          ),
-        );
+        loadMarker(latLng: latLng.value);
+        getAddressFromLatLng();
       });
-
-      fetchCurrentLocation.value = false;
-
     });
   }
 
+  void onSearchLocationClick() {
+    showAutoCompleteSearchWidget.value = !showAutoCompleteSearchWidget.value;
+  }
 
+  void onAddressClick({required String addressText}) {
+    getLatLngFromAddress(addressText: addressText);
+  }
 
+  void onClearClick() {
+    autoCompleteSearchQuery.value = '';
+    tecAutoCompleteSearch.clear();
+    googleAutoCompleteSearchList.clear();
+  }
+
+  void loadMarker({required LatLng latLng}) {
+    markersList.add(
+      Marker(
+        infoWindow: const InfoWindow(title: "Welcome Back!", snippet: 'Move this marker to your desired location'),
+        icon: BitmapDescriptor.fromBytes(locationIcon.value),
+        markerId: const MarkerId('0'),
+        position: latLng,
+      ),
+    );
+  }
+
+  void onMapCreated(GoogleMapController c) async {
+    String value = await DefaultAssetBundle.of(Get.context!).loadString(MyAssets.customMapStyle);
+    mapController = c;
+    mapController?.setMapStyle(value);
+  }
+
+  void getAddressFromLatLng() {
+    LocationController.getAddressFromLatLngForGoogle(lat: latLng.value.latitude, lng: latLng.value.longitude)
+        .then((String responseData) {
+      if (responseData.isNotEmpty) {
+        locationText.value = responseData;
+        mapLoaded.value = true;
+      }
+    });
+  }
+
+  void getLatLngFromAddress({required String addressText}) {
+    Utils.unFocus();
+    goToOnMapIdle = false;
+    LocationController.getLatLngFromAddressForGoogle(address: addressText).then((LatLngModel? responseData) {
+      if (responseData != null) {
+        latLng.value = LatLng(responseData.lat!, responseData.lng!);
+
+        final CameraPosition newCameraPosition = CameraPosition(
+          target: LatLng(latLng.value.latitude, latLng.value.longitude),
+          zoom: 17.50,
+        );
+        mapController?.animateCamera(CameraUpdate.newCameraPosition(newCameraPosition));
+        loadMarker(latLng: latLng.value);
+        locationText.value = addressText;
+        onClearClick();
+      }
+    });
+  }
 }

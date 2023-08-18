@@ -9,6 +9,7 @@ import 'package:mh/app/modules/employee/employee_home/models/review_dialog_model
 import 'package:mh/app/modules/employee/employee_home/models/review_request_model.dart';
 import 'package:mh/app/modules/employee/employee_home/models/single_notification_model_for_employee.dart';
 import 'package:mh/app/modules/employee/employee_payment_history/models/employee_payment_history_model.dart';
+import 'package:mh/app/modules/map/restaurant_location/models/google_auto_complete_search_model.dart';
 import 'package:mh/app/modules/notifications/models/notification_response_model.dart';
 import 'package:mh/app/modules/notifications/models/notification_update_request_model.dart';
 import 'package:mh/app/modules/notifications/models/notification_update_response_model.dart';
@@ -902,4 +903,11 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
       CommonResponseModel.fromJson,
     ).fold((CustomError l) => left(l), (CommonResponseModel r) => right(r));
   }
+
+  @override
+  EitherModel<GoogleAutoCompleteSearchModel> autoCompleteSearch({required String query}) {
+    // TODO: implement autoCompleteSearch
+    throw UnimplementedError();
+  }
 }
+
