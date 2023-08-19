@@ -82,7 +82,7 @@ class MyStrings {
   static const String stripePayment = "Stripe Payment";
   static const String invoice = "Invoice";
   static const String helpSupport = "helpSupport";
-  static const String myDashboard = "myDashboard";
+  static const String myDashboard = "My Dashboard";
   static const String paymentHistory = "Payment History";
   static const String emergencyCheckInCheckOut = "emergencyCheckInCheckOut";
   static const String areShowing = "areShowing";

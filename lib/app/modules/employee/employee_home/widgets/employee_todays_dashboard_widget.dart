@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:mh/app/common/extensions/extensions.dart';
 import 'package:mh/app/common/values/my_color.dart';
@@ -9,62 +10,67 @@ class EmployeeTodayDashboardWidget extends GetWidget<EmployeeHomeController> {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(
+    return Column(
+      children: [
+        SizedBox(height: 15.h),
+        Obx(
           () => Visibility(
-        visible: controller.checkIn.value &&
-            (controller.appController.user.value.employee?.isHired ?? false) &&
-            controller.isTodayInBetweenFromDateAndToDate,
-        child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 12),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10.0),
-            border: Border.all(
-              width: .5,
-              color: MyColors.c_A6A6A6,
+            visible: controller.checkIn.value == true && controller.appController.user.value.employee?.isHired == true,
+            child: Container(
+              padding: const EdgeInsets.symmetric(vertical: 12),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10.0),
+                border: Border.all(
+                  width: .5,
+                  color: MyColors.c_A6A6A6,
+                ),
+                color: MyColors.lightCard(controller.context!),
+              ),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      _itemValue("Check In", controller.dailyStatistics.displayCheckInTime),
+                      _itemValue("Check Out", controller.dailyStatistics.displayCheckOutTime),
+                      _itemValue("Break", controller.dailyStatistics.displayBreakTime),
+                    ],
+                  ),
+                  const SizedBox(height: 7),
+                  Divider(
+                    indent: Get.width * .1,
+                    endIndent: Get.width * .1,
+                    color: MyColors.c_A6A6A6,
+                  ),
+                  const SizedBox(height: 7),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      _itemValue("Working Time", controller.dailyStatistics.workingHour, valueFontSize: 18),
+                      _itemValue("Date", controller.dailyStatistics.date, valueFontSize: 14),
+                    ],
+                  ),
+                ],
+              ),
             ),
-            color: MyColors.lightCard(controller.context!),
-          ),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  _itemValue("Check In", controller.dailyStatistics.displayCheckInTime),
-                  _itemValue("Check Out", controller.dailyStatistics.displayCheckOutTime),
-                  _itemValue("Break", controller.dailyStatistics.displayBreakTime),
-                ],
-              ),
-              const SizedBox(height: 7),
-              Divider(
-                indent: Get.width * .1,
-                endIndent: Get.width * .1,
-                color: MyColors.c_A6A6A6,
-              ),
-              const SizedBox(height: 7),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  _itemValue("Working Time", controller.dailyStatistics.workingHour, valueFontSize: 18),
-                  _itemValue("Date", controller.dailyStatistics.date, valueFontSize: 14),
-                ],
-              ),
-            ],
           ),
         ),
-      ),
+        SizedBox(height: 15.h),
+      ],
     );
   }
+
   Widget _itemValue(String text, String value, {double valueFontSize = 14}) => Column(
-    children: [
-      Text(
-        value,
-        style: MyColors.l7B7B7B_dtext(controller.context!).semiBold14.copyWith(fontSize: valueFontSize),
-      ),
-      const SizedBox(height: 5),
-      Text(
-        text,
-        style: MyColors.l7B7B7B_dtext(controller.context!).medium12,
-      ),
-    ],
-  );
+        children: [
+          Text(
+            value,
+            style: MyColors.l7B7B7B_dtext(controller.context!).semiBold14.copyWith(fontSize: valueFontSize),
+          ),
+          const SizedBox(height: 5),
+          Text(
+            text,
+            style: MyColors.l7B7B7B_dtext(controller.context!).medium12,
+          ),
+        ],
+      );
 }

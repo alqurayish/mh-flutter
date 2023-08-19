@@ -51,7 +51,7 @@ class EmployeeEmergencyCheckInOutController extends GetxController {
       "emmergencyCheckInComment": emergencyReason.text.trim(),
       if(employeeHomeController.currentLocation?.latitude != null) "lat": employeeHomeController.currentLocation?.latitude.toString(),
       if(employeeHomeController.currentLocation?.longitude != null) "long": employeeHomeController.currentLocation?.longitude.toString(),
-      if(employeeHomeController.currentLocation?.latitude != null && employeeHomeController.currentLocation?.longitude != null) "checkInDistance": double.parse(employeeHomeController.getDistance.toStringAsFixed(2)),
+      if(employeeHomeController.currentLocation?.latitude != null && employeeHomeController.currentLocation?.longitude != null) "checkInDistance": double.parse(employeeHomeController.distanceFromEmployeeToRestaurant.value.toStringAsFixed(2)),
     };
 
     CustomLoader.show(context!);
@@ -87,7 +87,7 @@ class EmployeeEmergencyCheckInOutController extends GetxController {
       if(employeeHomeController.currentLocation?.latitude != null) "lat": employeeHomeController.currentLocation!.latitude.toString(),
       if(employeeHomeController.currentLocation?.longitude != null) "long": employeeHomeController.currentLocation?.longitude.toString(),
       "breakTime": (hour * 60) + (min * 5),
-      if(employeeHomeController.currentLocation?.latitude != null && employeeHomeController.currentLocation?.longitude != null) "checkOutDistance": double.parse(employeeHomeController.getDistance.toStringAsFixed(2)),
+      if(employeeHomeController.currentLocation?.latitude != null && employeeHomeController.currentLocation?.longitude != null) "checkOutDistance": double.parse(employeeHomeController.distanceFromEmployeeToRestaurant.value.toStringAsFixed(2)),
     };
 
     CustomLoader.show(context!);
