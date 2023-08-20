@@ -52,18 +52,18 @@ class AdminHomeController extends GetxController {
   }
 
   int getTotalRequestByPosition(int index) {
-    return (requestedEmployees.value.requestEmployees?[index].clientRequestDetails ?? [])
+    return (requestedEmployees.value.requestEmployeeList?[index].clientRequestDetails ?? [])
         .fold(0, (previousValue, element) => previousValue + (element.numOfEmployee ?? 0));
   }
 
   int getTotalSuggestByPosition(int index) {
-    return requestedEmployees.value.requestEmployees?[index].suggestedEmployeeDetails?.length ?? 0;
+    return requestedEmployees.value.requestEmployeeList?[index].suggestedEmployeeDetails?.length ?? 0;
   }
 
   int get getTotalSuggestLeft {
     int total = 0;
 
-    for (int i = 0; i < (requestedEmployees.value.requestEmployees ?? []).length; i++) {
+    for (int i = 0; i < (requestedEmployees.value.requestEmployeeList ?? []).length; i++) {
       total += getTotalRequestByPosition(i) - getTotalSuggestByPosition(i);
     }
 
@@ -123,7 +123,7 @@ class AdminHomeController extends GetxController {
 
   void calculateNumberOfRequestFromClient() {
     numberOfRequestFromClient = 0;
-    for (var i in requestedEmployees.value.requestEmployees!) {
+    for (var i in requestedEmployees.value.requestEmployeeList!) {
       if (i.suggestedEmployeeDetails!.isEmpty) {
         numberOfRequestFromClient += 1;
       }

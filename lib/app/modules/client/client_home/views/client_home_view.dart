@@ -271,7 +271,7 @@ class ClientHomeView extends GetView<ClientHomeController> {
 
   Widget get _suggestedEmployees => Obx(
         () => Visibility(
-          visible: (controller.requestedEmployees.value.requestEmployees ?? []).isNotEmpty,
+          visible: (controller.requestedEmployees.value.requestEmployeeList ?? []).isNotEmpty,
           child: GestureDetector(
             onTap: controller.onSuggestedEmployeesClick,
             child: Container(

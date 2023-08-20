@@ -52,7 +52,7 @@ class AdminClientRequestPositionEmployeesController extends GetxController {
 
   List<SuggestedEmployeeDetail> suggestedEmployees() {
     return (adminHomeController.requestedEmployees.value
-                .requestEmployees?[adminClientRequestPositionsController.selectedIndex].suggestedEmployeeDetails ??
+                .requestEmployeeList?[adminClientRequestPositionsController.selectedIndex].suggestedEmployeeDetails ??
             [])
         .where((element) => element.positionId == clientRequestDetail.positionId)
         .toList();
@@ -70,7 +70,7 @@ class AdminClientRequestPositionEmployeesController extends GetxController {
 
   Future<void> onSuggestClick(Employee employee) async {
     int total = (adminHomeController.requestedEmployees.value
-                    .requestEmployees?[adminClientRequestPositionsController.selectedIndex].clientRequestDetails ??
+                    .requestEmployeeList?[adminClientRequestPositionsController.selectedIndex].clientRequestDetails ??
                 [])
             .firstWhere((element) => element.positionId == clientRequestDetail.positionId)
             .numOfEmployee ??
@@ -88,7 +88,7 @@ class AdminClientRequestPositionEmployeesController extends GetxController {
 
       Map<String, dynamic> data = {
         "id": adminHomeController
-            .requestedEmployees.value.requestEmployees![adminClientRequestPositionsController.selectedIndex].id,
+            .requestedEmployees.value.requestEmployeeList![adminClientRequestPositionsController.selectedIndex].id,
         "employeeIds": [employee.id]
       };
 
@@ -190,7 +190,7 @@ class AdminClientRequestPositionEmployeesController extends GetxController {
   }
 
   void findRequestId({required String employeeId}) {
-    for (var i in adminHomeController.requestedEmployees.value.requestEmployees!) {
+    for (var i in adminHomeController.requestedEmployees.value.requestEmployeeList!) {
       for (var v in i.suggestedEmployeeDetails!) {
         if (v.employeeId == employeeId) {
           requestId = i.id ?? "";

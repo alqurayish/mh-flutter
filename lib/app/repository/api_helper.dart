@@ -1,3 +1,4 @@
+import 'package:mh/app/modules/client/client_suggested_employees/models/short_list_request_model.dart';
 import 'package:mh/app/modules/employee/employee_home/models/common_response_model.dart';
 import 'package:mh/app/modules/employee/employee_home/models/review_dialog_model.dart';
 import 'package:mh/app/modules/employee/employee_home/models/review_request_model.dart';
@@ -156,4 +157,6 @@ abstract class ApiHelper {
   EitherModel<ReviewDialogModel> showReviewDialog();
 
   EitherModel<CommonResponseModel> giveReview({required ReviewRequestModel reviewRequestModel});
+
+  EitherModel<CommonResponseModel> addToShortlistNew({required ShortListRequestModel shortListRequestModel});
 }

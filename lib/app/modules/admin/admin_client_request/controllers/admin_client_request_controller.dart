@@ -15,7 +15,7 @@ class AdminClientRequestController extends GetxController {
   final ApiHelper _apiHelper = Get.find();
 
   String getRestaurantName(int index) {
-    return adminHomeController.requestedEmployees.value.requestEmployees?[index].clientDetails?.restaurantName ?? "-";
+    return adminHomeController.requestedEmployees.value.requestEmployeeList?[index].clientDetails?.restaurantName ?? "-";
   }
 
   String getSuggested(int index) {

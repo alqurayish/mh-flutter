@@ -159,8 +159,9 @@ class MhEmployeesByIdView extends GetView<MhEmployeesByIdController> {
                 () => Visibility(
                   visible: (user.isSuggested == false && user.isHired == false),
                   child: controller.shortlistController.getIcon(
-                    user.id!,
-                    controller.shortlistController.isFetching.value,
+                   employeeId: user.id!,
+                    isFetching:  controller.shortlistController.isFetching.value,
+                    fromWhere: ''
                   ),
                 ),
               ),

@@ -55,7 +55,7 @@ class ClientSuggestedEmployeesView extends GetView<ClientSuggestedEmployeesContr
             child: const Text("No employee suggest yet"),
           )
         else
-          ...employees.map((e) {
+          ...employees.map((SuggestedEmployeeDetail e) {
             return _employeeItem(e);
           }),
       ],
@@ -98,15 +98,14 @@ class ClientSuggestedEmployeesView extends GetView<ClientSuggestedEmployeesContr
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                _name(employee.name ?? "-"),
+                                Expanded(child: _name(employee.name ?? "-")),
                                 _rating(employee.rating ?? 0),
                                 const Spacer(),
-                                Obx(
-                                  () => controller.shortlistController.getIcon(
-                                    employee.employeeId!,
-                                    controller.shortlistController.isFetching.value,
-                                  ),
-                                ),
+                                Obx(() => controller.shortlistController.getIcon(
+                                    employeeId: employee.employeeId!,
+                                    isFetching: controller.shortlistController.isFetching.value,
+                                    fromWhere: 'Requested Employees',
+                                    id: controller.getRequestId(employeeId: employee.employeeId ?? ""))),
                                 SizedBox(width: 9.w),
                               ],
                             ),
@@ -178,8 +177,8 @@ class ClientSuggestedEmployeesView extends GetView<ClientSuggestedEmployeesContr
         style: MyColors.l111111_dwhite(controller.context!).medium14,
       );
 
-  Widget _rating(int rating) => Visibility(
-        visible: rating > 0,
+  Widget _rating(double rating) => Visibility(
+        visible: rating > 0.0,
         child: Row(
           children: [
             SizedBox(width: 10.w),

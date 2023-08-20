@@ -17,11 +17,11 @@ class AdminClientRequestView extends GetView<AdminClientRequestController> {
         title: 'Request',
       ),
       body: Obx(
-        () => (controller.adminHomeController.requestedEmployees.value.requestEmployees ?? []).isEmpty ||
+        () => (controller.adminHomeController.requestedEmployees.value.requestEmployeeList ?? []).isEmpty ||
                 controller.adminHomeController.numberOfRequestFromClient == 0
             ? const NoItemFound()
             : ListView.builder(
-                itemCount: (controller.adminHomeController.requestedEmployees.value.requestEmployees ?? []).length,
+                itemCount: (controller.adminHomeController.requestedEmployees.value.requestEmployeeList ?? []).length,
                 itemBuilder: (context, index) {
                   return int.parse(controller.getSuggested(index).split(' ')[2]) > 0 ? const Wrap() : _item(index);
                 },
@@ -78,7 +78,7 @@ class AdminClientRequestView extends GetView<AdminClientRequestController> {
                   InkWell(
                     onTap: () => controller.onCancelClick(
                         requestId:
-                            controller.adminHomeController.requestedEmployees.value.requestEmployees?[index].id ?? ''),
+                            controller.adminHomeController.requestedEmployees.value.requestEmployeeList?[index].id ?? ''),
                     child: const Icon(
                       Icons.cancel,
                       color: Colors.red,

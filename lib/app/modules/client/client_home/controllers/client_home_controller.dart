@@ -121,7 +121,7 @@ class ClientHomeController extends GetxController {
   int countTotalRequestedEmployees() {
     int total = 0;
 
-    for (RequestEmployee element in requestedEmployees.value.requestEmployees ?? []) {
+    for (RequestedEmployeeModel element in requestedEmployees.value.requestEmployeeList ?? []) {
       total += (element.clientRequestDetails ?? [])
           .fold(0, (previousValue, element) => previousValue + (element.numOfEmployee ?? 0));
     }
@@ -132,7 +132,7 @@ class ClientHomeController extends GetxController {
   int countSuggestedEmployees() {
     int total = 0;
 
-    for (RequestEmployee element in requestedEmployees.value.requestEmployees ?? []) {
+    for (RequestedEmployeeModel element in requestedEmployees.value.requestEmployeeList ?? []) {
       total += (element.suggestedEmployeeDetails ?? []).length;
     }
 

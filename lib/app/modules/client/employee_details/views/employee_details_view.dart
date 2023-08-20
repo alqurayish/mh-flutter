@@ -78,8 +78,9 @@ class EmployeeDetailsView extends GetView<EmployeeDetailsController> {
               child: Visibility(
                 visible: !(controller.employee.isHired ?? false),
                 child: controller.shortlistController.getIcon(
-                  controller.employee.id!,
-                  controller.shortlistController.isFetching.value,
+                  employeeId: controller.employee.id!,
+                  isFetching: controller.shortlistController.isFetching.value,
+                  fromWhere: ''
                 ),
               ),
             ),

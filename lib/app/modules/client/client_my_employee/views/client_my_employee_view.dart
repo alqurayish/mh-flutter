@@ -98,9 +98,9 @@ class ClientMyEmployeeView extends GetView<ClientMyEmployeeController> {
               top: 3,
               child: Obx(
                 () => controller.shortlistController.getIcon(
-                  hiredHistory.id!,
-                  controller.shortlistController.isFetching.value,
-                ),
+                    employeeId: hiredHistory.id!,
+                    isFetching: controller.shortlistController.isFetching.value,
+                    fromWhere: ''),
               ),
             ),
             Row(

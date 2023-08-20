@@ -97,8 +97,9 @@ class ClientShortlistedView extends GetView<ClientShortlistedController> {
                                   const Spacer(),
                                   Obx(
                                     () => controller.shortlistController.getIcon(
-                                      employee.employeeId!,
-                                      controller.shortlistController.isFetching.value,
+                                     employeeId: employee.employeeId!,
+                                     isFetching: controller.shortlistController.isFetching.value,
+                                      fromWhere: ''
                                     ),
                                   ),
                                   // Obx(

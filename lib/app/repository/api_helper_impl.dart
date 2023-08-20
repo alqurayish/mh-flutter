@@ -4,12 +4,12 @@ import 'package:dartz/dartz.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get/get_connect/http/src/request/request.dart';
+import 'package:mh/app/modules/client/client_suggested_employees/models/short_list_request_model.dart';
 import 'package:mh/app/modules/employee/employee_home/models/common_response_model.dart';
 import 'package:mh/app/modules/employee/employee_home/models/review_dialog_model.dart';
 import 'package:mh/app/modules/employee/employee_home/models/review_request_model.dart';
 import 'package:mh/app/modules/employee/employee_home/models/single_notification_model_for_employee.dart';
 import 'package:mh/app/modules/employee/employee_payment_history/models/employee_payment_history_model.dart';
-import 'package:mh/app/modules/map/restaurant_location/models/google_auto_complete_search_model.dart';
 import 'package:mh/app/modules/notifications/models/notification_response_model.dart';
 import 'package:mh/app/modules/notifications/models/notification_update_request_model.dart';
 import 'package:mh/app/modules/notifications/models/notification_update_response_model.dart';
@@ -905,9 +905,18 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
   }
 
   @override
-  EitherModel<GoogleAutoCompleteSearchModel> autoCompleteSearch({required String query}) {
-    // TODO: implement autoCompleteSearch
-    throw UnimplementedError();
+  EitherModel<CommonResponseModel> addToShortlistNew({required ShortListRequestModel shortListRequestModel}) async {
+    String url = "request-employees/short-list-create";
+
+    var response = await post(url, jsonEncode(shortListRequestModel.toJson()));
+    if (response.statusCode == null) await post(url, jsonEncode(shortListRequestModel.toJson()));
+    if (response.statusCode == null) await post(url, jsonEncode(shortListRequestModel.toJson()));
+    if (response.statusCode == null) await post(url, jsonEncode(shortListRequestModel.toJson()));
+    print('ApiHelperImpl.addToShortlistNew: ${response.bodyString}');
+    print('ApiHelperImpl.addToShortlistNew: ${shortListRequestModel.toJson()}');
+    return _convert<CommonResponseModel>(
+      response,
+      CommonResponseModel.fromJson,
+    ).fold((CustomError l) => left(l), (CommonResponseModel r) => right(r));
   }
 }
-

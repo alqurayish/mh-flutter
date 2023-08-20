@@ -21,7 +21,7 @@ class AdminClientRequestPositionsController extends GetxController {
     selectedIndex = Get.arguments[MyStrings.arg.data];
 
     for (Position element in appController.allActivePositions) {
-      for(ClientRequestDetail requestedPosition in adminHomeController.requestedEmployees.value.requestEmployees?[selectedIndex].clientRequestDetails ?? []) {
+      for(ClientRequestDetail requestedPosition in adminHomeController.requestedEmployees.value.requestEmployeeList?[selectedIndex].clientRequestDetails ?? []) {
         if(requestedPosition.positionId == element.id) {
           positions.add(element);
         }
@@ -34,13 +34,13 @@ class AdminClientRequestPositionsController extends GetxController {
 
 
   String getSuggested(Position position) {
-    int total = (adminHomeController.requestedEmployees.value.requestEmployees?[selectedIndex].clientRequestDetails ?? []).firstWhere((element) => element.positionId == position.id).numOfEmployee ?? 0;
-    int suggested = (adminHomeController.requestedEmployees.value.requestEmployees?[selectedIndex].suggestedEmployeeDetails ?? []).where((element) => element.positionId == position.id).length;
+    int total = (adminHomeController.requestedEmployees.value.requestEmployeeList?[selectedIndex].clientRequestDetails ?? []).firstWhere((element) => element.positionId == position.id).numOfEmployee ?? 0;
+    int suggested = (adminHomeController.requestedEmployees.value.requestEmployeeList?[selectedIndex].suggestedEmployeeDetails ?? []).where((element) => element.positionId == position.id).length;
     return "$suggested of $total";
   }
 
   void onPositionClick(Position position) {
-    ClientRequestDetail clientRequestDetail = (adminHomeController.requestedEmployees.value.requestEmployees?[selectedIndex].clientRequestDetails ?? []).firstWhere((element) => element.positionId == position.id);
+    ClientRequestDetail clientRequestDetail = (adminHomeController.requestedEmployees.value.requestEmployeeList?[selectedIndex].clientRequestDetails ?? []).firstWhere((element) => element.positionId == position.id);
     Get.toNamed(Routes.adminClientRequestPositionEmployees, arguments: {
       MyStrings.arg.data : clientRequestDetail,
     });

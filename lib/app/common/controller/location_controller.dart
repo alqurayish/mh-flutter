@@ -1,8 +1,6 @@
 import 'dart:convert';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/services.dart';
-import 'package:geocoder2/geocoder2.dart';
-import 'package:geocoder_buddy/geocoder_buddy.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:mh/app/common/app_info/app_credentials.dart';
 import 'package:mh/app/modules/map/restaurant_location/models/google_auto_complete_search_model.dart';

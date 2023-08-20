@@ -28,7 +28,7 @@ class ClientSuggestedEmployeesController extends GetxController {
     List<String> ids = [];
     List<ClientRequestDetail> idsWithCounts = [];
 
-    for (RequestEmployee element in clientHomeController.requestedEmployees.value.requestEmployees ?? []) {
+    for (RequestedEmployeeModel element in clientHomeController.requestedEmployees.value.requestEmployeeList ?? []) {
       for (ClientRequestDetail positions in element.clientRequestDetails ?? []) {
         if (ids.contains(positions.id)) {
           idsWithCounts[ids.indexOf(positions.id!)].numOfEmployee =
@@ -46,7 +46,7 @@ class ClientSuggestedEmployeesController extends GetxController {
   List<SuggestedEmployeeDetail> getUniquePositionEmployees(String positionId) {
     List<SuggestedEmployeeDetail> employees = [];
 
-    for (RequestEmployee element in clientHomeController.requestedEmployees.value.requestEmployees ?? []) {
+    for (RequestedEmployeeModel element in clientHomeController.requestedEmployees.value.requestEmployeeList ?? []) {
       for (SuggestedEmployeeDetail employee in element.suggestedEmployeeDetails ?? []) {
         if (employee.positionId == positionId) {
           employees.add(employee);
@@ -102,7 +102,7 @@ class ClientSuggestedEmployeesController extends GetxController {
   }
 
   void findRequestId({required String employeeId}) {
-    for (var i in clientHomeController.requestedEmployees.value.requestEmployees!) {
+    for (var i in clientHomeController.requestedEmployees.value.requestEmployeeList!) {
       for (var v in i.suggestedEmployeeDetails!) {
         if (v.employeeId == employeeId) {
           requestId = i.id ?? "";
@@ -110,5 +110,16 @@ class ClientSuggestedEmployeesController extends GetxController {
         }
       }
     }
+  }
+
+  String getRequestId({required String employeeId}) {
+    for (var i in clientHomeController.requestedEmployees.value.requestEmployeeList!) {
+      for (var v in i.suggestedEmployeeDetails!) {
+        if (v.employeeId == employeeId) {
+          return i.id ?? "";
+        }
+      }
+    }
+    return '';
   }
 }
