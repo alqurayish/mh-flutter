@@ -14,7 +14,9 @@ class EmployeeHomePromotionWidget extends GetWidget<EmployeeHomeController> {
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      if (controller.singleNotification.value.hiredStatus?.toUpperCase() == "DENY" ||
+      if (controller.singleNotificationDataLoaded.value == false) {
+        return const Center(child: CupertinoActivityIndicator());
+      } else if (controller.singleNotification.value.hiredStatus?.toUpperCase() == "DENY" ||
           controller.singleNotification.value.hiredStatus == null) {
         return Text(MyStrings.exploreTheFeaturesOfMhAppBelow.tr,
             style: MyColors.l777777_dtext(controller.context!).medium15);

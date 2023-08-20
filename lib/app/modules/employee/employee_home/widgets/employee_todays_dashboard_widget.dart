@@ -13,10 +13,11 @@ class EmployeeTodayDashboardWidget extends GetWidget<EmployeeHomeController> {
     return Column(
       children: [
         SizedBox(height: 15.h),
-        Obx(
-          () => Visibility(
-            visible: controller.checkIn.value == true && controller.appController.user.value.employee?.isHired == true,
-            child: Container(
+        Obx(() {
+          if (controller.todayDetailsDataLoaded.value == false) {
+            return const Center(child: Wrap());
+          } else if (controller.showTodayDashBoard == true) {
+            return Container(
               padding: const EdgeInsets.symmetric(vertical: 12),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10.0),
@@ -52,9 +53,11 @@ class EmployeeTodayDashboardWidget extends GetWidget<EmployeeHomeController> {
                   ),
                 ],
               ),
-            ),
-          ),
-        ),
+            );
+          } else {
+            return const Wrap();
+          }
+        }),
         SizedBox(height: 15.h),
       ],
     );

@@ -14,47 +14,32 @@ class EmployeeHomeBodyWidget extends GetWidget<EmployeeHomeController> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-      child: RefreshIndicator(
-        onRefresh: controller.refreshPage,
-        child: SingleChildScrollView(
-          child: SizedBox(
-            height: MediaQuery.of(context).size.height,
-            child: const Column(
+    return RefreshIndicator(
+      onRefresh: controller.refreshPage,
+      child: SizedBox(
+        height: MediaQuery.of(context).size.height*0.8,
+        child: const SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
+          primary: true,
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20.0),
+            child: Column(
+             mainAxisAlignment: MainAxisAlignment.center,
+             crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Flexible(
-                  flex: 4,
-                  child: SingleChildScrollView(
-                    primary: false,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        EmployeeNameWidget(),
-                        EmployeeHomePromotionWidget(),
-                        EmployeeLocationDistanceWidget(),
-                        EmployeeRestaurantAddressWidget(),
-                        EmployeeHomeCardWidget()
-                      ],
-                    ),
-                  ),
-                ),
-                Flexible(
-                    flex: 1,
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          EmployeeTodayDashboardWidget(),
-                          EmployeeLocationWidget(),
-                        ],
-                      ),
-                    ))
+                EmployeeNameWidget(),
+                EmployeeHomePromotionWidget(),
+                EmployeeLocationDistanceWidget(),
+                EmployeeRestaurantAddressWidget(),
+                EmployeeHomeCardWidget(),
+                EmployeeTodayDashboardWidget(),
+                EmployeeLocationWidget(),
               ],
             ),
           ),
         ),
       ),
     );
+
   }
 }

@@ -44,12 +44,14 @@ class EmployeeHomeController extends GetxController {
 
   Position? currentLocation;
   Rx<TodayCheckInOutDetails> todayCheckInOutDetails = TodayCheckInOutDetails().obs;
+  RxBool todayDetailsDataLoaded = false.obs;
 
   // unread msg track
   RxInt unreadMsgFromClient = 0.obs;
   RxInt unreadMsgFromAdmin = 0.obs;
 
   Rx<NotificationModel> singleNotification = NotificationModel().obs;
+  RxBool singleNotificationDataLoaded = false.obs;
 
   RxDouble rating = 0.0.obs;
   TextEditingController tecReview = TextEditingController();
@@ -71,12 +73,11 @@ class EmployeeHomeController extends GetxController {
   }
 
   void homeMethods() {
+    notificationsController.getNotificationList;
     _getCurrentLocation();
     _getSingleNotification();
     _getTodayCheckInOutDetails();
     _trackUnreadMsg();
-    notificationsController.getNotificationList;
-    employeeHomeDataLoaded.value = true;
   }
 
   void onDashboardClick() {
@@ -170,6 +171,7 @@ class EmployeeHomeController extends GetxController {
   }
 
   Future<void> _onCheckIn() async {
+    CustomLoader.show(context!);
     Map<String, dynamic> data = {
       "checkInTime": DateTime.now().toLocal().toString(),
       "employeeId": appController.user.value.userId,
@@ -180,6 +182,7 @@ class EmployeeHomeController extends GetxController {
     };
 
     await _apiHelper.checkIn(data).then((response) {
+      CustomLoader.hide(context!);
       response.fold((CustomError customError) {
         CustomDialogue.information(
           context: context!,
@@ -201,6 +204,7 @@ class EmployeeHomeController extends GetxController {
   }
 
   Future<void> refreshPage() async {
+
     checkIn.value = false;
 
     checkOut.value = false;
@@ -210,8 +214,8 @@ class EmployeeHomeController extends GetxController {
     homeMethods();
   }
 
-  void _getTodayCheckInOutDetails() {
-    _apiHelper.clientDetails(appController.user.value.userId).then((response) {
+  Future<void> _getTodayCheckInOutDetails() async {
+    await _apiHelper.clientDetails(appController.user.value.userId).then((response) {
       response.fold((CustomError customError) {
         Utils.errorDialog(context!, customError..onRetry = _getTodayCheckInOutDetails);
       }, (UserInfo userInfo) {
@@ -220,9 +224,17 @@ class EmployeeHomeController extends GetxController {
       });
     });
 
-    if (appController.user.value.employee?.isHired == false) return;
+    if (!(appController.user.value.employee?.isHired ?? false)) {
+      todayDetailsDataLoaded.value = true;
+      return;
+    }
+    // if (loading.value) return;
 
-    _apiHelper.getTodayCheckInOutDetails(appController.user.value.userId).then((response) {
+    // loading.value = true;
+
+    await _apiHelper.getTodayCheckInOutDetails(appController.user.value.userId).then((response) {
+      //loading.value = false;
+
       response.fold((CustomError customError) {
         Utils.errorDialog(context!, customError..onRetry = _getTodayCheckInOutDetails);
       }, (TodayCheckInOutDetails details) {
@@ -231,19 +243,20 @@ class EmployeeHomeController extends GetxController {
 
         // check in
         if (details.details == null ||
-            (details.details!.checkInCheckOutDetails!.checkIn == false &&
-                details.details!.checkInCheckOutDetails!.emmergencyCheckIn == false)) {
+            (!details.details!.checkInCheckOutDetails!.checkIn! &&
+                !details.details!.checkInCheckOutDetails!.emmergencyCheckIn!)) {
           checkIn.value = false;
           checkOut.value = false;
         }
         // check out
-        else if (details.details!.checkInCheckOutDetails!.checkOut == false &&
-            details.details!.checkInCheckOutDetails!.emmergencyCheckOut == false) {
+        else if (!details.details!.checkInCheckOutDetails!.checkOut! &&
+            !details.details!.checkInCheckOutDetails!.emmergencyCheckOut!) {
           checkIn.value = true;
         } else {
           checkIn.value = true;
           checkOut.value = true;
         }
+        todayDetailsDataLoaded.value = true;
       });
     });
   }
@@ -264,9 +277,9 @@ class EmployeeHomeController extends GetxController {
         targetLat: double.parse(singleNotification.value.hiredByLat ?? ''),
         targetLong: double.parse(singleNotification.value.hiredByLong ?? ''),
         currentLat: //currentLocation!.latitude,
-            23.76860877859993,
+            23.81195717731293,
         currentLong: //currentLocation!.longitude
-            90.35736713558437);
+            90.35603307187557);
   }
 
   void _trackUnreadMsg() {
@@ -295,6 +308,8 @@ class EmployeeHomeController extends GetxController {
         unreadMsgFromAdmin.value = data["${appController.user.value.userId}_unread"];
       }
     });
+
+    employeeHomeDataLoaded.value = true;
   }
 
   void onHiredYouTap() {
@@ -353,6 +368,7 @@ class EmployeeHomeController extends GetxController {
           singleNotification.refresh();
           getDistance();
         }
+        singleNotificationDataLoaded.value = true;
       });
     });
   }
@@ -371,7 +387,8 @@ class EmployeeHomeController extends GetxController {
         Utils.errorDialog(context!, customError);
       }, (NotificationUpdateResponseModel responseModel) {
         if (responseModel.status == 'success' && responseModel.statusCode == 200) {
-          homeMethods();
+          _getSingleNotification();
+          _getTodayCheckInOutDetails();
         }
       });
     });
@@ -462,6 +479,7 @@ class EmployeeHomeController extends GetxController {
   bool get showHiredWidget {
     return singleNotification.value.hiredStatus != null &&
         singleNotification.value.hiredStatus?.toUpperCase() == 'ALLOW' &&
+        appController.user.value.employee?.isHired == true &&
         singleNotification.value.fromDate != null &&
         singleNotification.value.fromTime != null &&
         singleNotification.value.toDate != null &&
@@ -470,12 +488,20 @@ class EmployeeHomeController extends GetxController {
 
   bool get showCheckInCheckOutWidget {
     return singleNotification.value.hiredStatus?.toUpperCase() == "ALLOW" &&
-        distanceFromEmployeeToRestaurant.value < 200;
+        distanceFromEmployeeToRestaurant.value < 200 &&
+        appController.user.value.employee?.isHired == true &&
+        (checkIn.value == false || checkOut.value == false);
   }
 
   bool get showDistanceWidget {
     return (singleNotification.value.hiredStatus?.toUpperCase() == "REQUESTED" ||
             singleNotification.value.hiredStatus?.toUpperCase() == "ALLOW") &&
         distanceFromEmployeeToRestaurant.value > 200;
+  }
+
+  bool get showTodayDashBoard {
+    return checkIn.value == true &&
+        appController.user.value.employee?.isHired == true &&
+        singleNotification.value.hiredStatus?.toUpperCase() == "ALLOW";
   }
 }

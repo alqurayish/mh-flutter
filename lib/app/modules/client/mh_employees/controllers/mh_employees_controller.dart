@@ -15,7 +15,7 @@ class MhEmployeesController extends GetxController {
     }
 
     Get.toNamed(Routes.mhEmployeesById, arguments: {
-      MyStrings.arg.data: position,
+      MyStrings.arg.data: position
     });
   }
 }

@@ -16,13 +16,13 @@ class ApiErrorHandle {
         return left(CustomError(
           errorCode: response.statusCode ?? 422,
           errorFrom: ErrorFrom.api,
-          msg: response.body["message"],
+          msg: response.body["message"].toString(),
         ));
       default:
         return left(CustomError(
           errorCode: response.statusCode ?? 1001,
           errorFrom: ErrorFrom.api,
-          msg: response.body["message"] ?? "Something Wrong",
+          msg: response.body["message"].toString(),
         ));
     }
   }

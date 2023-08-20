@@ -136,7 +136,7 @@ class ShortlistController extends GetxService {
       onTap: () {
         if (!_appController.hasPermission()) return;
 
-        _onBookmarkClick(employeeId: employeeId, fromWhere: 'Requested Employees', id: id);
+        _onBookmarkClick(employeeId: employeeId, fromWhere: fromWhere, id: id);
       },
       child: (this.isFetching.value || deleteFromShortlist.value) && employeeId == _selectedId
           ? const SizedBox(

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 import 'package:dartz/dartz.dart';
 import 'package:device_info_plus/device_info_plus.dart';
@@ -576,7 +577,7 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
     if (response.statusCode == null) response = await get("current-hired-employees/details/$employeeId");
     if (response.statusCode == null) response = await get("current-hired-employees/details/$employeeId");
     if (response.statusCode == null) response = await get("current-hired-employees/details/$employeeId");
-
+    log('Todays: ${response.bodyString}');
     return _convert<TodayCheckInOutDetails>(
       response,
       TodayCheckInOutDetails.fromJson,
@@ -912,8 +913,6 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
     if (response.statusCode == null) await post(url, jsonEncode(shortListRequestModel.toJson()));
     if (response.statusCode == null) await post(url, jsonEncode(shortListRequestModel.toJson()));
     if (response.statusCode == null) await post(url, jsonEncode(shortListRequestModel.toJson()));
-    print('ApiHelperImpl.addToShortlistNew: ${response.bodyString}');
-    print('ApiHelperImpl.addToShortlistNew: ${shortListRequestModel.toJson()}');
     return _convert<CommonResponseModel>(
       response,
       CommonResponseModel.fromJson,
