@@ -15,7 +15,7 @@ class EmployeeNameWidget extends GetWidget<EmployeeHomeController> {
         SizedBox(height: 15.h),
         Text("Hi, ${controller.appController.user.value.employee?.name ?? "-"}",
             style: MyColors.l111111_dwhite(controller.context!).semiBold20),
-        SizedBox(height: 30.h),
+        SizedBox(height: 20.h),
       ],
     );
   }

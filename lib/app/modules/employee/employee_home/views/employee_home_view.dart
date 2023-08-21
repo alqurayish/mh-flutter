@@ -58,6 +58,17 @@ class EmployeeHomeView extends GetView<EmployeeHomeController> {
               ),
             ],
           ),
+          floatingActionButtonLocation: FloatingActionButtonLocation.endContained,
+          floatingActionButton: Obx(() => controller.employeeHomeDataLoaded.value == true
+              ? FloatingActionButton.extended(
+            backgroundColor: MyColors.c_C6A34F,
+              onPressed: controller.refreshPage, label:  Row(
+                children: [
+                  const Icon(CupertinoIcons.refresh, color: MyColors.white),
+                  Text(' Refresh', style: MyColors.white.semiBold16),
+                ],
+              ))
+              : const Wrap()),
           body: Obx(() => controller.employeeHomeDataLoaded.value == false
               ? Center(child: CustomLoader.loading())
               : const EmployeeHomeBodyWidget())),

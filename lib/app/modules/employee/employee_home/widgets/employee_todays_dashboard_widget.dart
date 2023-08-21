@@ -58,7 +58,6 @@ class EmployeeTodayDashboardWidget extends GetWidget<EmployeeHomeController> {
             return const Wrap();
           }
         }),
-        SizedBox(height: 15.h),
       ],
     );
   }

@@ -10,9 +10,11 @@ class EmployeeRestaurantAddressWidget extends GetWidget<EmployeeHomeController> 
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() => Visibility(
-        visible: controller.singleNotification.value.hiredStatus?.toUpperCase() == "ALLOW",
-        child: Container(
+    return Obx(() {
+      if (controller.singleNotificationDataLoaded.value == false) {
+        return const Wrap();
+      } else if (controller.showRestaurantAddress == true) {
+        return Container(
           margin: const EdgeInsets.only(top: 10.0),
           padding: const EdgeInsets.all(15.0),
           decoration: BoxDecoration(
@@ -21,6 +23,10 @@ class EmployeeRestaurantAddressWidget extends GetWidget<EmployeeHomeController> 
           ),
           child: Text("The restaurant address is: ${controller.singleNotification.value.restaurantAddress ?? ''}",
               style: MyColors.white.semiBold13),
-        )));
+        );
+      } else {
+        return const Wrap();
+      }
+    });
   }
 }

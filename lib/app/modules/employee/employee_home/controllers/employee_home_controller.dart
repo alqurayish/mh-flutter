@@ -203,13 +203,13 @@ class EmployeeHomeController extends GetxController {
     key.currentState?.reset();
   }
 
-  Future<void> refreshPage() async {
-
+  void refreshPage() {
     checkIn.value = false;
-
     checkOut.value = false;
-
-    locationFetchError = "".obs;
+    locationFetchError.value = "";
+    employeeHomeDataLoaded.value = false;
+    todayDetailsDataLoaded.value = false;
+    singleNotificationDataLoaded.value = false;
 
     homeMethods();
   }
@@ -276,10 +276,11 @@ class EmployeeHomeController extends GetxController {
     distanceFromEmployeeToRestaurant.value = LocationController.calculateDistance(
         targetLat: double.parse(singleNotification.value.hiredByLat ?? ''),
         targetLong: double.parse(singleNotification.value.hiredByLong ?? ''),
-        currentLat: //currentLocation!.latitude,
-            23.81195717731293,
-        currentLong: //currentLocation!.longitude
-            90.35603307187557);
+        currentLat: currentLocation!.latitude,
+        // 23.81195717731293,
+        currentLong: currentLocation!.longitude
+        // 90.35603307187557
+        );
   }
 
   void _trackUnreadMsg() {
@@ -503,5 +504,10 @@ class EmployeeHomeController extends GetxController {
     return checkIn.value == true &&
         appController.user.value.employee?.isHired == true &&
         singleNotification.value.hiredStatus?.toUpperCase() == "ALLOW";
+  }
+
+  bool get showRestaurantAddress {
+    return singleNotification.value.hiredStatus?.toUpperCase() == "ALLOW" &&
+        appController.user.value.employee?.isHired == true;
   }
 }
