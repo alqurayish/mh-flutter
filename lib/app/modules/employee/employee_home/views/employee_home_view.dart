@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:mh/app/common/widgets/custom_loader.dart';
 import 'package:mh/app/modules/employee/employee_home/widgets/employee_home_body_widget.dart';
 import 'package:mh/app/routes/app_pages.dart';
 import '../../../../common/utils/exports.dart';
@@ -23,6 +22,15 @@ class EmployeeHomeView extends GetView<EmployeeHomeController> {
             centerTitle: false,
             visibleBack: false,
             actions: [
+              Padding(
+                padding: const EdgeInsets.only(right: 15.0),
+                child: IconButton(
+                  onPressed: controller.onCalenderClick,
+                  icon: const Icon(
+                    CupertinoIcons.calendar,
+                  ),
+                ),
+              ),
               Obx(() => controller.notificationsController.unreadCount.value == 0
                   ? IconButton(
                       onPressed: () {
@@ -53,24 +61,13 @@ class EmployeeHomeView extends GetView<EmployeeHomeController> {
                   );
                 },
                 icon: const Icon(
-                  Icons.person_outline_rounded,
+                  CupertinoIcons.person,
                 ),
-              ),
+              )
             ],
           ),
-          floatingActionButtonLocation: FloatingActionButtonLocation.endContained,
-          floatingActionButton: Obx(() => controller.employeeHomeDataLoaded.value == true
-              ? FloatingActionButton.extended(
-            backgroundColor: MyColors.c_C6A34F,
-              onPressed: controller.refreshPage, label:  Row(
-                children: [
-                  const Icon(CupertinoIcons.refresh, color: MyColors.white),
-                  Text(' Refresh', style: MyColors.white.semiBold16),
-                ],
-              ))
-              : const Wrap()),
           body: Obx(() => controller.employeeHomeDataLoaded.value == false
-              ? Center(child: CustomLoader.loading())
+              ? Center(child: Container(color: Colors.red, height: 100, width: 100,))
               : const EmployeeHomeBodyWidget())),
     );
   }

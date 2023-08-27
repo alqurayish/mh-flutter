@@ -386,7 +386,7 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
     if (response.statusCode == null) response = await post("short-list/create", jsonEncode(data));
     if (response.statusCode == null) response = await post("short-list/create", jsonEncode(data));
     if (response.statusCode == null) response = await post("short-list/create", jsonEncode(data));
-
+    log('AddToShortList: ${response.bodyString}');
     return _convert<Response>(
       response,
       (Map<String, dynamic> data) {},
@@ -913,6 +913,7 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
     if (response.statusCode == null) await post(url, jsonEncode(shortListRequestModel.toJson()));
     if (response.statusCode == null) await post(url, jsonEncode(shortListRequestModel.toJson()));
     if (response.statusCode == null) await post(url, jsonEncode(shortListRequestModel.toJson()));
+    log('AddToShortListNew: ${response.bodyString}');
     return _convert<CommonResponseModel>(
       response,
       CommonResponseModel.fromJson,

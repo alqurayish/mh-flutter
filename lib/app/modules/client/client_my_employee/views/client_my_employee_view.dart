@@ -192,7 +192,7 @@ class ClientMyEmployeeView extends GetView<ClientMyEmployeeController> {
       );
 
   Widget _rating(double rating) => Visibility(
-        visible: rating == 0.0,
+        visible: rating > 0.0,
         child: Row(
           children: [
             SizedBox(width: 10.w),

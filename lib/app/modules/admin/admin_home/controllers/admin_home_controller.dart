@@ -121,6 +121,17 @@ class AdminHomeController extends GetxController {
     notificationsController.getNotificationList();
   }
 
+  void refreshPage(){
+    homeMethods();
+    Get.rawSnackbar(
+        snackPosition: SnackPosition.BOTTOM,
+        margin: const EdgeInsets.all(10.0),
+        title: 'Success',
+        message: 'This page has been refreshed...',
+        backgroundColor: Colors.green.shade600,
+        borderRadius: 10.0);
+  }
+
   void calculateNumberOfRequestFromClient() {
     numberOfRequestFromClient = 0;
     for (var i in requestedEmployees.value.requestEmployeeList!) {

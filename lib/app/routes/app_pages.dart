@@ -1,6 +1,4 @@
 import 'package:get/get.dart';
-import 'package:mh/app/modules/employee/employee_payment_history/bindings/employee_payment_history_binding.dart';
-import 'package:mh/app/modules/employee/employee_payment_history/views/employee_payment_history_view.dart';
 
 import '../middleware/auth_middleware.dart';
 import '../modules/admin/admin_all_clients/bindings/admin_all_clients_binding.dart';
@@ -23,6 +21,8 @@ import '../modules/auth/login_register_hints/bindings/login_register_hints_bindi
 import '../modules/auth/login_register_hints/views/login_register_hints_view.dart';
 import '../modules/auth/register/bindings/register_binding.dart';
 import '../modules/auth/register/views/register_view.dart';
+import '../modules/calender/bindings/calender_binding.dart';
+import '../modules/calender/views/calender_view.dart';
 import '../modules/chat/client_employee_chat/bindings/client_employee_chat_binding.dart';
 import '../modules/chat/client_employee_chat/views/client_employee_chat_view.dart';
 import '../modules/chat/support_chat/bindings/support_chat_binding.dart';
@@ -67,6 +67,8 @@ import '../modules/employee/employee_emergency_check_in_out/bindings/employee_em
 import '../modules/employee/employee_emergency_check_in_out/views/employee_emergency_check_in_out_view.dart';
 import '../modules/employee/employee_home/bindings/employee_home_binding.dart';
 import '../modules/employee/employee_home/views/employee_home_view.dart';
+import '../modules/employee/employee_payment_history/bindings/employee_payment_history_binding.dart';
+import '../modules/employee/employee_payment_history/views/employee_payment_history_view.dart';
 import '../modules/employee/employee_register_success/bindings/employee_register_success_binding.dart';
 import '../modules/employee/employee_register_success/views/employee_register_success_view.dart';
 import '../modules/employee/employee_self_profile/bindings/employee_self_profile_binding.dart';
@@ -355,6 +357,11 @@ class AppPages {
       name: _Paths.employeePaymentHistory,
       page: () => const EmployeePaymentHistoryView(),
       binding: EmployeePaymentHistoryBinding(),
+    ),
+    GetPage(
+      name: _Paths.calender,
+      page: () => const CalenderView(),
+      binding: CalenderBinding(),
     ),
   ];
 }

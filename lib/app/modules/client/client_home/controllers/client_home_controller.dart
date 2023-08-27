@@ -205,7 +205,9 @@ class ClientHomeController extends GetxController {
   Future<void> getClientInvoice() async {
     isLoading.value = true;
 
-    await _apiHelper.getClientInvoice(appController.user.value.userId).then((response) {
+    await _apiHelper
+        .getClientInvoice(appController.user.value.userId)
+        .then((Either<CustomError, ClientInvoiceModel> response) {
       isLoading.value = false;
 
       response.fold((CustomError customError) {
@@ -218,10 +220,21 @@ class ClientHomeController extends GetxController {
   }
 
   void homeMethods() {
+    notificationsController.getNotificationList();
     getClientInvoice();
     _trackUnreadMsg();
     fetchRequestEmployees();
-    notificationsController.getNotificationList();
+  }
+
+  void refreshPage() {
+    homeMethods();
+    Get.rawSnackbar(
+        snackPosition: SnackPosition.BOTTOM,
+        margin: const EdgeInsets.all(10.0),
+        title: 'Success',
+        message: 'This page has been refreshed...',
+        backgroundColor: Colors.green.shade600,
+        borderRadius: 10.0);
   }
 
   void showReviewBottomSheet() {

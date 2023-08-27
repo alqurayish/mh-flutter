@@ -33,9 +33,7 @@ class EmployeeHomeCardWidget extends GetWidget<EmployeeHomeController> {
                   bottom: 0,
                   child: Obx(
                     () => Visibility(
-                      visible: (controller.appController.user.value.employee?.isHired == true)
-                          ? ((controller.checkIn.value == true && controller.checkOut.value == true))
-                          : true,
+                      visible: controller.showEmergencyCheckInCheckOut == true,
                       child: Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10.0),

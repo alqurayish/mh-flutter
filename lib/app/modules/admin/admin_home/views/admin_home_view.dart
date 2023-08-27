@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:mh/app/common/widgets/custom_badge.dart';
+import 'package:mh/app/common/widgets/refresh_widget.dart';
 import 'package:mh/app/routes/app_pages.dart';
 
 import '../../../../common/utils/exports.dart';
@@ -75,7 +76,18 @@ class AdminHomeView extends GetView<AdminHomeController> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizedBox(height: 29.h),
-                        _restaurantName("Hi, ${controller.appController.user.value.admin?.name ?? "-"}"),
+                        Row(
+                          children: [
+                            Expanded(
+                              flex: 10,
+                                child: _restaurantName("Hi, ${controller.appController.user.value.admin?.name ?? "-"}")),
+                            const SizedBox(width: 10),
+                            Expanded(
+                                flex: 1,
+                                child: RefreshWidget(onTap: controller.refreshPage)
+                            )
+                          ],
+                        ),
                         SizedBox(height: 20.h),
                         _promotionText,
                         SizedBox(height: 40.h),
@@ -176,6 +188,8 @@ class AdminHomeView extends GetView<AdminHomeController> {
 
   Widget _restaurantName(String name) => Text(
         name,
+        maxLines: 2,
+        overflow: TextOverflow.ellipsis,
         style: MyColors.l111111_dwhite(controller.context!).semiBold20,
       );
 

@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:mh/app/common/widgets/refresh_widget.dart';
 import 'package:mh/app/routes/app_pages.dart';
 
 import '../../../../common/utils/exports.dart';
@@ -33,26 +34,26 @@ class ClientHomeView extends GetView<ClientHomeController> {
             // ),
             Obx(() => controller.notificationsController.unreadCount.value == 0
                 ? IconButton(
-                onPressed: () {
-                  Get.toNamed(Routes.notifications);
-                },
-                icon: const Icon(CupertinoIcons.bell))
+                    onPressed: () {
+                      Get.toNamed(Routes.notifications);
+                    },
+                    icon: const Icon(CupertinoIcons.bell))
                 : InkWell(
-              onTap: () {
-                Get.toNamed(Routes.notifications);
-              },
-              child: Padding(
-                padding:  EdgeInsets.only(top: 15.h, right: 15.w),
-                child: Badge(
-                  backgroundColor: MyColors.c_C6A34F,
-                  label: Obx(() {
-                    return Text(controller.notificationsController.unreadCount.toString(),
-                        style: const TextStyle(color: MyColors.c_FFFFFF));
-                  }),
-                  child: const Icon(CupertinoIcons.bell),
-                ),
-              ),
-            )),
+                    onTap: () {
+                      Get.toNamed(Routes.notifications);
+                    },
+                    child: Padding(
+                      padding: EdgeInsets.only(top: 15.h, right: 15.w),
+                      child: Badge(
+                        backgroundColor: MyColors.c_C6A34F,
+                        label: Obx(() {
+                          return Text(controller.notificationsController.unreadCount.toString(),
+                              style: const TextStyle(color: MyColors.c_FFFFFF));
+                        }),
+                        child: const Icon(CupertinoIcons.bell),
+                      ),
+                    ),
+                  )),
             IconButton(
               onPressed: () {
                 CustomMenu.accountMenu(
@@ -79,10 +80,19 @@ class ClientHomeView extends GetView<ClientHomeController> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizedBox(height: 20.h),
-                        _restaurantName(MyStrings.hiRestaurant.trParams({
-                          "restaurantName":
-                              controller.appController.user.value.client?.restaurantName ?? "owner of the",
-                        })),
+                        Row(
+                          children: [
+                            Expanded(
+                              flex: 10,
+                              child: _restaurantName(MyStrings.hiRestaurant.trParams({
+                                "restaurantName":
+                                    controller.appController.user.value.client?.restaurantName ?? "owner of the",
+                              })),
+                            ),
+                            const SizedBox(width: 10),
+                            Expanded(flex: 1, child: RefreshWidget(onTap: controller.refreshPage))
+                          ],
+                        ),
                         SizedBox(height: 20.h),
 
                         _promotionText,
@@ -215,6 +225,8 @@ class ClientHomeView extends GetView<ClientHomeController> {
 
   Widget _restaurantName(String name) => Text(
         name,
+        maxLines: 2,
+        overflow: TextOverflow.ellipsis,
         style: MyColors.l111111_dwhite(controller.context!).semiBold20,
       );
 

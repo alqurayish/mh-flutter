@@ -50,6 +50,7 @@ abstract class Routes {
   static const invoicePdf = _Paths.invoicePdf;
   static const stripePayment = _Paths.stripePayment;
   static const employeePaymentHistory = _Paths.employeePaymentHistory;
+  static const calender = _Paths.calender;
 }
 
 abstract class _Paths {
@@ -104,4 +105,5 @@ abstract class _Paths {
   static const invoicePdf = '/invoice-pdf';
   static const stripePayment = '/stripe-payment';
   static const employeePaymentHistory = '/employee-payment-history';
+  static const calender = '/calender';
 }

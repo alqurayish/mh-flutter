@@ -210,8 +210,14 @@ class EmployeeHomeController extends GetxController {
     employeeHomeDataLoaded.value = false;
     todayDetailsDataLoaded.value = false;
     singleNotificationDataLoaded.value = false;
-
     homeMethods();
+    Get.rawSnackbar(
+        snackPosition: SnackPosition.BOTTOM,
+        margin: const EdgeInsets.all(10.0),
+        title: 'Success',
+        message: 'This page has been refreshed...',
+        backgroundColor: Colors.green.shade600,
+        borderRadius: 10.0);
   }
 
   Future<void> _getTodayCheckInOutDetails() async {
@@ -273,14 +279,16 @@ class EmployeeHomeController extends GetxController {
   }
 
   void getDistance() {
-    distanceFromEmployeeToRestaurant.value = LocationController.calculateDistance(
-        targetLat: double.parse(singleNotification.value.hiredByLat ?? ''),
-        targetLong: double.parse(singleNotification.value.hiredByLong ?? ''),
-        currentLat: currentLocation!.latitude,
-        // 23.81195717731293,
-        currentLong: currentLocation!.longitude
-        // 90.35603307187557
-        );
+    if (currentLocation != null) {
+      distanceFromEmployeeToRestaurant.value = LocationController.calculateDistance(
+          targetLat: double.parse(singleNotification.value.hiredByLat ?? ''),
+          targetLong: double.parse(singleNotification.value.hiredByLong ?? ''),
+          currentLat: currentLocation!.latitude,
+          // 23.81195717731293,
+          currentLong: currentLocation!.longitude
+          // 90.35603307187557
+          );
+    }
   }
 
   void _trackUnreadMsg() {
@@ -509,5 +517,16 @@ class EmployeeHomeController extends GetxController {
   bool get showRestaurantAddress {
     return singleNotification.value.hiredStatus?.toUpperCase() == "ALLOW" &&
         appController.user.value.employee?.isHired == true;
+  }
+
+  bool get showEmergencyCheckInCheckOut {
+    return appController.user.value.employee?.isHired == true &&
+        singleNotification.value.hiredStatus?.toUpperCase() == "ALLOW" &&
+        distanceFromEmployeeToRestaurant.value > 200 &&
+        checkIn.value == false;
+  }
+
+  void onCalenderClick() {
+    Get.toNamed(Routes.calender);
   }
 }
