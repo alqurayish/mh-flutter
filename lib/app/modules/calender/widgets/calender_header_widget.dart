@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mh/app/common/utils/exports.dart';
 import 'package:mh/app/modules/calender/widgets/calender_status_widget.dart';
 
 class CalenderHeaderWidget extends StatelessWidget {
@@ -7,17 +8,37 @@ class CalenderHeaderWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
-        CalenderStatusWidget(backgroundColor: Colors.black, title: 'Unavailable'),
-        CalenderStatusWidget(backgroundColor: Colors.red, title: 'Booked'),
-        CalenderStatusWidget(
-          backgroundColor: Colors.yellow,
-          title: 'Pending',
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            CalenderStatusWidget(backgroundColor: Colors.black, title: 'Unavailable'),
+            SizedBox(height: 10),
+            CalenderStatusWidget(backgroundColor: Colors.red, title: 'Booked')
+          ],
         ),
-        CalenderStatusWidget(
-          backgroundColor: Colors.green,
-          title: 'Available',
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            CalenderStatusWidget(
+              backgroundColor: Colors.green,
+              title: 'Available',
+            ),
+            SizedBox(height: 10),
+            CalenderStatusWidget(
+              backgroundColor: Colors.yellow,
+              title: 'Pending',
+            )
+          ],
+        ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            CalenderStatusWidget(backgroundColor: MyColors.c_C6A34F, title: 'Selected'),
+            SizedBox(height: 10),
+            CalenderStatusWidget(backgroundColor: Colors.grey, title: 'Disabled')
+          ],
         ),
       ],
     );

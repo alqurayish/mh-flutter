@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mh/app/common/utils/exports.dart';
 
@@ -33,27 +32,27 @@ class CalendarViewState extends State<CalenderWidget> {
   }
 
   Widget _buildMonth(DateTime month) {
-    final today = DateTime.now();
-    final daysInMonth = DateTime(month.year, month.month + 1, 0).day;
-    final firstDayWeekday = (DateTime(month.year, month.month, 1).weekday + 5) % 7 + 1;
-    final weeks = (daysInMonth + firstDayWeekday - 1) ~/ 7 + 1;
+    final DateTime today = DateTime.now();
+    final int daysInMonth = DateTime(month.year, month.month + 1, 0).day;
+    final int firstDayWeekday = (DateTime(month.year, month.month, 1).weekday + 5) % 7 + 1;
+    final int weeks = (daysInMonth + firstDayWeekday - 1) ~/ 7 + 1;
 
     return GridView.builder(
       itemCount: weeks * 7,
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 7),
       itemBuilder: (context, index) {
-        final day = index + 1 - firstDayWeekday;
+        final int day = index + 1 - firstDayWeekday;
         if (day <= 0 || day > daysInMonth) {
           return Container();
         }
-        final currentDate = DateTime(month.year, month.month, day);
-        final isSelected = _selectedDates.contains(currentDate);
-        final isInRange = _rangeStartDate != null &&
+        final DateTime currentDate = DateTime(month.year, month.month, day);
+        final bool isSelected = _selectedDates.contains(currentDate);
+        final bool isInRange = _rangeStartDate != null &&
             _rangeEndDate != null &&
             currentDate.isAfter(_rangeStartDate!) &&
             currentDate.isBefore(_rangeEndDate!.add(const Duration(days: 1)));
 
-        final isToday =
+        final bool isToday =
             currentDate.year == today.year && currentDate.month == today.month && currentDate.day == today.day;
 
         return GestureDetector(

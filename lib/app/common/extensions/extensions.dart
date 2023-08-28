@@ -2,6 +2,7 @@
 
 import 'package:dartz/dartz.dart';
 import 'package:intl/intl.dart';
+import 'package:mh/app/modules/calender/models/calender_model.dart';
 
 import '../../enums/selected_payment_method.dart';
 import '../utils/exports.dart';
@@ -53,7 +54,6 @@ extension PaymentMethods on SelectedPaymentMethod {
 }
 
 extension TextColor on Color {
-
   TextStyle get regular9 => _textStyle(FontWeight.w400, 9);
   TextStyle get regular10 => _textStyle(FontWeight.w400, 10);
   TextStyle get regular11 => _textStyle(FontWeight.w400, 11);
@@ -112,4 +112,19 @@ extension TextColor on Color {
         fontSize: size.sp,
         color: this,
       );
+}
+
+extension DateRangeExtension on List<CalenderDataModel> {
+  bool containsDate(DateTime date) {
+    for (final CalenderDataModel range in this) {
+      final fromDate = DateTime.parse(range.startDate ?? '');
+      final toDate = DateTime.parse(range.endDate ?? '');
+
+      if (date.isAfter(fromDate.subtract(const Duration(days: 1))) &&
+          date.isBefore(toDate.add(const Duration(days: 1)))) {
+        return true;
+      }
+    }
+    return false;
+  }
 }

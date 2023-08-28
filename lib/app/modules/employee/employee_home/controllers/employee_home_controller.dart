@@ -75,7 +75,7 @@ class EmployeeHomeController extends GetxController {
   void homeMethods() {
     notificationsController.getNotificationList;
     _getCurrentLocation();
-    _getSingleNotification();
+   // _getSingleNotification();
     _getTodayCheckInOutDetails();
     _trackUnreadMsg();
   }

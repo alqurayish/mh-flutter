@@ -14,7 +14,7 @@ class ApiHelperImplementWithFileUpload {
     SendPort responseSendPort = data["responseReceivePort"];
 
     Response? result = await _uploadData(
-      "${ServerUrls.serverUrlUser}users/employee-register",
+      "${ServerUrls.serverLiveUrlUser}users/employee-register",
       data,
       postMethod: true,
     );

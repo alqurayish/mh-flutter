@@ -52,7 +52,7 @@ import 'api_helper.dart';
 class ApiHelperImpl extends GetConnect implements ApiHelper {
   @override
   void onInit() {
-    httpClient.baseUrl = ServerUrls.serverUrlUser;
+    httpClient.baseUrl = ServerUrls.serverTestUrlUser;
     httpClient.timeout = const Duration(seconds: 120);
 
     httpClient.addRequestModifier<dynamic>((Request request) {
@@ -457,7 +457,7 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
     if (response.statusCode == null) response = await get("search?q=$query&format=jsonv2");
     if (response.statusCode == null) response = await get("search?q=$query&format=jsonv2");
     if (response.statusCode == null) response = await get("search?q=$query&format=jsonv2");
-    httpClient.baseUrl = ServerUrls.serverUrlUser;
+    httpClient.baseUrl = ServerUrls.serverLiveUrlUser;
 
     return _convert<Response>(
       response,
@@ -473,7 +473,7 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
     if (response.statusCode == null) response = await get("reverse?lat=$lat&lon=$lng&format=jsonv2");
     if (response.statusCode == null) response = await get("reverse?lat=$lat&lon=$lng&format=jsonv2");
     if (response.statusCode == null) response = await get("reverse?lat=$lat&lon=$lng&format=jsonv2");
-    httpClient.baseUrl = ServerUrls.serverUrlUser;
+    httpClient.baseUrl = ServerUrls.serverLiveUrlUser;
 
     return _convert<LatLngToAddress>(
       response,
@@ -914,7 +914,6 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
     if (response.statusCode == null) await post(url, jsonEncode(shortListRequestModel.toJson()));
     if (response.statusCode == null) await post(url, jsonEncode(shortListRequestModel.toJson()));
     if (response.statusCode == null) await post(url, jsonEncode(shortListRequestModel.toJson()));
-    log('AddToShortListNew: ${response.bodyString}');
     return _convert<CommonResponseModel>(
       response,
       CommonResponseModel.fromJson,
@@ -922,8 +921,19 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
   }
 
   @override
-  EitherModel<CalenderModel> getCalenderData({required String employeeId}) {
-    // TODO: implement getCalenderData
-    throw UnimplementedError();
+  EitherModel<CalenderModel> getCalenderData({required String employeeId}) async {
+    String url = "users/working-history/$employeeId";
+
+    Response response = await get(url);
+    if (response.statusCode == null) await get(url);
+    if (response.statusCode == null) await get(url);
+    if (response.statusCode == null) await get(url);
+
+    print('ApiHelperImpl.getCalenderData: ${response.bodyString}');
+
+    return _convert<CalenderModel>(
+      response,
+      CalenderModel.fromJson,
+    ).fold((CustomError l) => left(l), (CalenderModel r) => right(r));
   }
 }
