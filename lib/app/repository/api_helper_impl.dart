@@ -5,6 +5,7 @@ import 'package:dartz/dartz.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get/get_connect/http/src/request/request.dart';
+import 'package:mh/app/modules/calender/models/calender_model.dart';
 import 'package:mh/app/modules/client/client_suggested_employees/models/short_list_request_model.dart';
 import 'package:mh/app/modules/employee/employee_home/models/common_response_model.dart';
 import 'package:mh/app/modules/employee/employee_home/models/review_dialog_model.dart';
@@ -918,5 +919,11 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
       response,
       CommonResponseModel.fromJson,
     ).fold((CustomError l) => left(l), (CommonResponseModel r) => right(r));
+  }
+
+  @override
+  EitherModel<CalenderModel> getCalenderData({required String employeeId}) {
+    // TODO: implement getCalenderData
+    throw UnimplementedError();
   }
 }
