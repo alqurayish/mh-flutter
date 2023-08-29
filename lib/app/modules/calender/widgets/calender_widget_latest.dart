@@ -9,7 +9,7 @@ class CalenderWidgetLatest extends GetWidget<CalenderController> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 500,
+      height: MediaQuery.of(context).size.height*0.47,
       child: Column(
         children: [
           const SizedBox(height: 20),
@@ -46,14 +46,13 @@ class CalenderWidgetLatest extends GetWidget<CalenderController> {
               },
             ),
           ),
-          const SizedBox(height: 20),
           Obx(() => Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
                       decoration: BoxDecoration(
                           color: controller.selectedDate.value.month == DateTime.now().month
-                              ? Colors.blue
+                              ? MyColors.c_C6A34F
                               : Colors.grey.shade400,
                           borderRadius: BorderRadius.circular(5.0)),
                       width: 30,
@@ -64,27 +63,11 @@ class CalenderWidgetLatest extends GetWidget<CalenderController> {
                       height: 5,
                       decoration: BoxDecoration(
                           color: controller.selectedDate.value.month != DateTime.now().month
-                              ? Colors.blue
+                              ? MyColors.c_C6A34F
                               : Colors.grey.shade400,
                           borderRadius: BorderRadius.circular(5.0))),
                 ],
-              )),
-          const SizedBox(height: 20),
-          Container(
-            width: Get.width * 0.6,
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10.0),
-            decoration: BoxDecoration(borderRadius: BorderRadius.circular(20.0), color: MyColors.c_C6A34F),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Icon(Icons.calendar_month, color: Colors.white),
-               Obx(() =>  Text(' ${controller.selectedDates.length}',
-                   style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 24))),
-                const Text(' Days have been selected',
-                    style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12)),
-              ],
-            ),
-          ),
+              ))
         ],
       ),
     );

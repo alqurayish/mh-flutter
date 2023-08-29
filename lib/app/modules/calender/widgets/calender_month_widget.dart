@@ -28,8 +28,7 @@ class CalenderMonthWidget extends StatelessWidget {
         Color containerColor = Colors.transparent;
 
         bool canTapDate = false;
-
-        if (currentDate == today) {
+        if (currentDate.toString().substring(0, 10) == today.toString().substring(0, 10)) {
           borderColor = MyColors.c_C6A34F; // Today's date should be red
         } else if (controller.dateListModel.value.bookedDates!.containsDate(currentDate)) {
           textColor = Colors.red; // Booked dates should be red
@@ -44,26 +43,32 @@ class CalenderMonthWidget extends StatelessWidget {
           canTapDate = true;
         }
 
-        final isSelected = controller.selectedDates.contains(currentDate);
-        if (isSelected) {
-          containerColor = MyColors.c_C6A34F;
-          textColor = Colors.white; // Change container color for selected dates
-        }
-
         return GestureDetector(
           onTap: canTapDate ? () => controller.onDateClick(currentDate: currentDate) : null,
-          child: Container(
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(color: borderColor),
-              color: isSelected ? MyColors.c_C6A34F : containerColor,
-            ),
-            child: Text(
-              day.toString(),
-              style: TextStyle(color: textColor), // Text color based on textColor variable
-            ),
-          ),
+          child: Obx(() {
+            final bool isSelected = controller.selectedDates.contains(currentDate);
+            if (isSelected == true) {
+              containerColor = MyColors.c_C6A34F;
+              textColor = Colors.white; // Change container color for selected dates
+            } else if(isSelected == false && canTapDate == true){
+              containerColor = Colors.transparent;
+              textColor = Colors.green;
+            }
+            return Container(
+              margin: const EdgeInsets.all(5.0),
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(color: borderColor),
+                color: isSelected ? MyColors.c_C6A34F : containerColor,
+              ),
+              child: Text(
+                day.toString(),
+                style:
+                    TextStyle(color: textColor, fontWeight: FontWeight.bold), // Text color based on textColor variable
+              ),
+            );
+          }),
         );
       },
     );

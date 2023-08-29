@@ -66,6 +66,10 @@ class MyAssets {
   static const pastryChef = "assets/icons/positions/pastry_chef.png";
   static const locationPin = "assets/icons/location_pin.png";
   static const msgSend = "assets/icons/msg_send.png";
+
+  //Calender View
+  static const String calender1 = 'assets/icons/calender1.png';
+  static const String calender2 = 'assets/icons/calender2.png';
 }
 
 class _Lottie {

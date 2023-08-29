@@ -147,7 +147,8 @@ class LoginView extends GetView<LoginController> {
         ),
       );
 
-  Widget get _rememberMeWidget => Obx(() => Padding(
+  Widget get _rememberMeWidget =>
+      Obx(() => Padding(
         padding: EdgeInsets.only(left: 5.w),
         child: Row(
           children: [
@@ -158,7 +159,7 @@ class LoginView extends GetView<LoginController> {
                   borderRadius: BorderRadius.circular(2.0),
                 ),
                 side: MaterialStateBorderSide.resolveWith(
-                      (states) => const BorderSide(width: 2.0, color: MyColors.c_C6A34F),
+                      (Set<MaterialState> states) => const BorderSide(width: 2.0, color: MyColors.c_C6A34F),
                 ),
                 value: controller.rememberMe.value,
                 onChanged: controller.onRememberMePressed),
