@@ -36,7 +36,9 @@ class EmployeeDateRangeWidget extends GetWidget<CalenderController> {
                     ],
                   ),
                 ),
-                Obx(() => Padding(
+                Obx(() => Visibility(
+                    visible: controller.rangeEndDate.value == null,
+                    child: Padding(
                       padding: EdgeInsets.only(left: 5.w),
                       child: Row(
                         children: [
@@ -54,7 +56,7 @@ class EmployeeDateRangeWidget extends GetWidget<CalenderController> {
                           Text('Same as Start Date', style: MyColors.black.medium15),
                         ],
                       ),
-                    ))
+                    )))
               ],
             ),
           )

@@ -32,6 +32,7 @@ class CalenderController extends GetxController {
   //For employee only
   RxList<Dates> unavailableDateList = <Dates>[].obs;
   RxBool sameAsStartDate = false.obs;
+
   //For client only
 
   @override
@@ -67,31 +68,33 @@ class CalenderController extends GetxController {
     if (currentDate.isBefore(DateTime.now()) || selectedDate.value == currentDate) {
       return; // Skip processing for previous dates and current date
     }
-    if (selectedDates.length >= 2) {
+
+    if (selectedDates.length == 2) {
       selectedDates.clear();
-    }
-    if (rangeStartDate.value == null || rangeEndDate.value != null) {
       rangeStartDate.value = currentDate;
       rangeEndDate.value = null;
+      print('CalenderController.onDateClick 1');
+    } else if (rangeStartDate.value == null) {
+      rangeStartDate.value = currentDate;
+      print('CalenderController.onDateClick 2');
     } else if (rangeStartDate.value != null && currentDate.isBefore(rangeStartDate.value!)) {
       rangeEndDate.value = rangeStartDate.value;
       rangeStartDate.value = currentDate;
-    } else if (currentDate != rangeStartDate.value) {
+      print('CalenderController.onDateClick 3');
+    } else if (rangeEndDate.value == null && currentDate != rangeStartDate.value) {
       rangeEndDate.value = currentDate;
-    } else if (currentDate == rangeStartDate.value) {
-      selectedDates.removeWhere((DateTime element) => element == currentDate);
-      rangeStartDate.value = null;
-    } else if (currentDate == rangeEndDate.value) {
-      selectedDates.removeWhere((DateTime element) => element == currentDate);
-      rangeEndDate.value = null;
-    }
-
-    if (selectedDates.contains(currentDate)) {
-      selectedDates.remove(currentDate);
+      print('CalenderController.onDateClick 4');
     } else {
-      selectedDates.add(currentDate);
+      print(
+          'CalenderController.onDateClick: ${rangeStartDate.value}, ${rangeEndDate.value}, ${sameAsStartDate.value}, $currentDate');
+
+      rangeEndDate.value = null;
+      rangeStartDate.value = null;
+      sameAsStartDate.value = false;
+      print('CalenderController.onDateClick 5');
     }
 
+    loadSelectedDates(currentDate: currentDate);
     loadUnavailableDates();
   }
 
@@ -139,17 +142,12 @@ class CalenderController extends GetxController {
 
   //For employee only
   void onSameAsStartDatePressed(bool? value) {
-    sameAsStartDate.value = value ?? false;
+    sameAsStartDate.value = !sameAsStartDate.value;
     if (sameAsStartDate.value == true) {
       rangeEndDate.value = rangeStartDate.value;
     } else {
       rangeEndDate.value = null;
     }
-  }
-
-  //For employee only
-  bool get showEmployeeDateRangeWidget {
-    return rangeStartDate.value != null || selectedDates.isNotEmpty;
   }
 
   //For employee only
@@ -161,5 +159,14 @@ class CalenderController extends GetxController {
   //For employee only
   bool get disableSubmitButton {
     return rangeStartDate.value == null || rangeEndDate.value == null;
+  }
+
+  //For employee only
+  void loadSelectedDates({required DateTime currentDate}) {
+    if (selectedDates.contains(currentDate)) {
+      selectedDates.remove(currentDate);
+    } else {
+      selectedDates.add(currentDate);
+    }
   }
 }

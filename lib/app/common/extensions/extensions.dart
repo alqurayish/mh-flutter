@@ -128,3 +128,9 @@ extension DateRangeExtension on List<CalenderDataModel> {
     return false;
   }
 }
+
+extension DateExtension on DateTime {
+  int daysUntil(DateTime other) {
+    return other.difference(this).inDays + 1;
+  }
+}
