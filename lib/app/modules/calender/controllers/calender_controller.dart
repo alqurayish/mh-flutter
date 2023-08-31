@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:mh/app/common/controller/app_controller.dart';
+import 'package:mh/app/common/extensions/extensions.dart';
 import 'package:mh/app/common/utils/utils.dart';
 import 'package:mh/app/common/widgets/custom_loader.dart';
 import 'package:mh/app/models/custom_error.dart';
@@ -17,6 +18,7 @@ class CalenderController extends GetxController {
   final ApiHelper _apiHelper = Get.find();
 
   Rx<DateListModel> dateListModel = DateListModel().obs;
+  List<CalenderDataModel> totalDateList = <CalenderDataModel>[];
   RxBool dateDataLoading = true.obs;
 
   final List<String> dayNames = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
@@ -59,6 +61,8 @@ class CalenderController extends GetxController {
       }, (CalenderModel response) {
         if (response.status == "success" && response.statusCode == 200 && response.dateList != null) {
           dateListModel.value = response.dateList!;
+          dateListModel.refresh();
+          loadTotalDateList();
         }
       });
     });
@@ -73,25 +77,22 @@ class CalenderController extends GetxController {
       selectedDates.clear();
       rangeStartDate.value = currentDate;
       rangeEndDate.value = null;
-      print('CalenderController.onDateClick 1');
     } else if (rangeStartDate.value == null) {
       rangeStartDate.value = currentDate;
-      print('CalenderController.onDateClick 2');
+    } else if (totalDateList.anyDatesExistInRange(
+            rangeStart: rangeStartDate.value.toString().substring(0, 10),
+            rangeEnd: currentDate.toString().substring(0, 10)) ==
+        true) {
+      Utils.showSnackBar(message: 'You cannot select this range', isTrue: false);
     } else if (rangeStartDate.value != null && currentDate.isBefore(rangeStartDate.value!)) {
       rangeEndDate.value = rangeStartDate.value;
       rangeStartDate.value = currentDate;
-      print('CalenderController.onDateClick 3');
     } else if (rangeEndDate.value == null && currentDate != rangeStartDate.value) {
       rangeEndDate.value = currentDate;
-      print('CalenderController.onDateClick 4');
     } else {
-      print(
-          'CalenderController.onDateClick: ${rangeStartDate.value}, ${rangeEndDate.value}, ${sameAsStartDate.value}, $currentDate');
-
       rangeEndDate.value = null;
       rangeStartDate.value = null;
       sameAsStartDate.value = false;
-      print('CalenderController.onDateClick 5');
     }
 
     loadSelectedDates(currentDate: currentDate);
@@ -166,7 +167,29 @@ class CalenderController extends GetxController {
     if (selectedDates.contains(currentDate)) {
       selectedDates.remove(currentDate);
     } else {
-      selectedDates.add(currentDate);
+      if (totalDateList.anyDatesExistInRange(
+              rangeStart: rangeStartDate.value.toString().substring(0, 10),
+              rangeEnd: currentDate.toString().substring(0, 10)) ==
+          false) {
+        selectedDates.add(currentDate);
+      }
     }
+  }
+
+  //For employee only
+  int get totalSelectedDays {
+    if (rangeStartDate.value == null || rangeEndDate.value == null) {
+      return 0;
+    } else {
+      return rangeStartDate.value!.daysUntil(rangeEndDate.value!);
+    }
+  }
+
+  void loadTotalDateList() {
+    totalDateList = <CalenderDataModel>[
+      ...dateListModel.value.unavailableDates ?? [],
+      ...dateListModel.value.pendingDates ?? [],
+      ...dateListModel.value.bookedDates ?? [],
+    ];
   }
 }

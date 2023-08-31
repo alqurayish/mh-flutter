@@ -131,6 +131,31 @@ extension DateRangeExtension on List<CalenderDataModel> {
 
 extension DateExtension on DateTime {
   int daysUntil(DateTime other) {
-    return other.difference(this).inDays + 1;
+    // Calculate the difference in days
+    Duration difference = other.difference(this);
+
+    // Add 1 to include both start and end dates in the count
+    int count = difference.inDays + 1;
+
+    return count;
   }
 }
+
+
+extension DateListExtension on List<CalenderDataModel> {
+  bool anyDatesExistInRange({required String rangeStart, required String rangeEnd}) {
+    DateTime startDate = DateTime.parse(rangeStart);
+    DateTime endDate = DateTime.parse(rangeEnd);
+
+    return any((dateModel) {
+      DateTime modelStartDate = DateTime.parse(dateModel.startDate!);
+      DateTime modelEndDate = DateTime.parse(dateModel.endDate!);
+
+      return (modelStartDate.isAfter(startDate) && modelStartDate.isBefore(endDate)) ||
+          (modelEndDate.isAfter(startDate) && modelEndDate.isBefore(endDate)) ||
+          (modelStartDate.isBefore(startDate) && modelEndDate.isAfter(endDate)) ||
+          (modelStartDate.isAtSameMomentAs(startDate) || modelEndDate.isAtSameMomentAs(endDate));
+    });
+  }
+}
+

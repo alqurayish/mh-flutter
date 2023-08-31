@@ -9,8 +9,8 @@ class SelectedDaysCountWidget extends GetWidget<CalenderController> {
 
   @override
   Widget build(BuildContext context) {
-    return  Container(
-      margin:  EdgeInsets.only(bottom: MediaQuery.of(context).size.height*0.03),
+    return Container(
+      margin: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.03),
       width: MediaQuery.of(context).size.width * 0.6,
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10.0),
       decoration: BoxDecoration(borderRadius: BorderRadius.circular(30.0), color: MyColors.c_C6A34F),
@@ -18,7 +18,7 @@ class SelectedDaysCountWidget extends GetWidget<CalenderController> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Image.asset(MyAssets.calender1, height: 20, width: 20),
-          Obx(() =>  Text(' ${controller.selectedDates.length}',
+          Obx(() => Text(' ${controller.totalSelectedDays}',
               style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 24))),
           const Text(' Days have been selected',
               style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12)),
