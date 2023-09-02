@@ -73,10 +73,11 @@ class CalenderController extends GetxController {
       return; // Skip processing for previous dates and current date
     }
 
-    if (selectedDates.length == 2) {
+    if (selectedDates.length == 2 || (rangeStartDate.value != null && rangeEndDate.value != null)) {
       selectedDates.clear();
       rangeStartDate.value = currentDate;
       rangeEndDate.value = null;
+      sameAsStartDate.value = false;
     } else if (rangeStartDate.value == null) {
       rangeStartDate.value = currentDate;
     } else if (totalDateList.anyDatesExistInRange(

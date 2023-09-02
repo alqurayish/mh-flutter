@@ -929,8 +929,6 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
     if (response.statusCode == null) await get(url);
     if (response.statusCode == null) await get(url);
     if (response.statusCode == null) await get(url);
-    print('Response: ${response.bodyString}');
-    print('url: $url');
     return _convert<CalenderModel>(
       response,
       CalenderModel.fromJson,
