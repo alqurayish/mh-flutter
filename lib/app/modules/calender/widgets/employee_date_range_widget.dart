@@ -52,7 +52,7 @@ class EmployeeDateRangeWidget extends GetWidget<CalenderController> {
                                 (states) => const BorderSide(width: 2.0, color: MyColors.c_C6A34F),
                               ),
                               value: controller.sameAsStartDate.value,
-                              onChanged: controller.onSameAsStartDatePressed),
+                              onChanged: controller.onSameAsStartDatePressedForEmployee),
                           Text('Same as Start Date', style: MyColors.black.medium15),
                         ],
                       ),

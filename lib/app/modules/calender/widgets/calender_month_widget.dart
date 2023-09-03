@@ -47,9 +47,21 @@ class CalenderMonthWidget extends StatelessWidget {
           onTap: canTapDate ? () => controller.onDateClick(currentDate: currentDate) : null,
           child: Obx(() {
             final bool isSelected = controller.selectedDates.contains(currentDate);
+            final bool isDateInRange =
+                controller.requestDateList.any((dateRange) => controller.isDateInSelectedRange(currentDate, dateRange));
+            // Check if the current date is the start or end of a date range
+            final isRangeStart = controller.requestDateList.any((dateRange) =>
+                dateRange.startDate != null &&
+                (DateTime.parse(dateRange.startDate ?? '')).isAtSameMomentAs(currentDate));
+            final isRangeEnd = controller.requestDateList.any((dateRange) =>
+                dateRange.endDate != null && DateTime.parse(dateRange.endDate ?? '').isAtSameMomentAs(currentDate));
+
             if (isSelected == true) {
               containerColor = MyColors.c_C6A34F;
-              textColor = Colors.white; // Change container color for selected dates
+              textColor = MyColors.white; // Change container color for selected dates
+            } else if (isDateInRange == true) {
+              containerColor = MyColors.c_DDBD68.withOpacity(0.8);
+              textColor = MyColors.white;
             } else if (isSelected == false && canTapDate == true) {
               containerColor = Colors.transparent;
               textColor = Colors.green;
@@ -62,7 +74,8 @@ class CalenderMonthWidget extends StatelessWidget {
                 border: Border.all(color: borderColor),
                 color: isSelected ? MyColors.c_C6A34F : containerColor,
               ),
-              child: Text(
+              child:
+              Text(
                 day.toString(),
                 style:
                     TextStyle(color: textColor, fontWeight: FontWeight.bold), // Text color based on textColor variable

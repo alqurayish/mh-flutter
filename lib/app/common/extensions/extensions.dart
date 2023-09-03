@@ -141,7 +141,6 @@ extension DateExtension on DateTime {
   }
 }
 
-
 extension DateListExtension on List<CalenderDataModel> {
   bool anyDatesExistInRange({required String rangeStart, required String rangeEnd}) {
     DateTime startDate = DateTime.parse(rangeStart);
@@ -166,4 +165,26 @@ extension DateTimeExtensions on DateTime {
     return '${age.toStringAsFixed(1)} years';
   }
 }
+
+extension DateTimeWithAMPMExtensions on DateTime {
+  String formatTimeWithAMPM() {
+    DateFormat dateFormat = DateFormat('h:mm a');
+    return dateFormat.format(this);
+  }
+}
+
+extension DateTimeWithExactDateYearWeekdayExtensions on DateTime {
+  String formatDateWithWeekday() {
+    DateFormat dateFormat = DateFormat('E, d MMM, y');
+    return dateFormat.format(this);
+  }
+}
+
+extension DateTimeWithMonthYearExtensions on DateTime {
+  String formatMonthYear() {
+    DateFormat dateFormat = DateFormat('MMMM y');
+    return dateFormat.format(this);
+  }
+}
+
 

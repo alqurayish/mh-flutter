@@ -9,12 +9,12 @@ class CalenderWidgetLatest extends GetWidget<CalenderController> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: MediaQuery.of(context).size.height*0.47,
+      height: MediaQuery.of(context).size.height * 0.47,
       child: Column(
         children: [
           const SizedBox(height: 20),
           Obx(() => Text(
-                DateFormat.yMMMM().format(controller.selectedDate.value),
+                controller.selectedDate.value.formatMonthYear(),
                 style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               )),
           const SizedBox(height: 20),

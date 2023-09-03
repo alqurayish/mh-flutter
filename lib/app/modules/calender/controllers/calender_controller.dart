@@ -35,13 +35,14 @@ class CalenderController extends GetxController {
   Rx<DateTime?> rangeStartDate = Rx<DateTime?>(null);
   Rx<DateTime?> rangeEndDate = Rx<DateTime?>(null);
 
+  //For client only
+
   //For employee only
   RxList<Dates> unavailableDateList = <Dates>[].obs;
   RxBool sameAsStartDate = false.obs;
 
   //For client only
-  RxList<AddToShortListRequestModel> addToShortListRequestList = <AddToShortListRequestModel>[].obs;
-  Rx<RequestDate> requestDateModel = RequestDate().obs;
+  RxList<RequestDate> requestDateList = <RequestDate>[].obs;
 
   @override
   void onInit() {
@@ -59,7 +60,7 @@ class CalenderController extends GetxController {
 
   void onDateClick({required DateTime currentDate}) {
     if (Get.isRegistered<ClientHomeController>() == true) {
-      onDateClickForClient(currentDate: currentDate);
+      onDateClickForShortList(currentDate: currentDate);
     } else if (Get.isRegistered<EmployeeHomeController>() == true) {
       onDateClickForEmployee(currentDate: currentDate);
     } else {
@@ -171,7 +172,7 @@ class CalenderController extends GetxController {
   }
 
   //For employee only
-  void onSameAsStartDatePressed(bool? value) {
+  void onSameAsStartDatePressedForEmployee(bool? value) {
     sameAsStartDate.value = !sameAsStartDate.value;
     if (sameAsStartDate.value == true) {
       rangeEndDate.value = rangeStartDate.value;
@@ -218,35 +219,95 @@ class CalenderController extends GetxController {
 
   ///---------------- For Client only ----------------------------------
 
-  void onDateClickForClient({required DateTime currentDate}) {
-    if (currentDate.isBefore(DateTime.now()) || selectedDate.value == currentDate) {
+  void onDateClickForShortList({required DateTime currentDate}) {
+    if (currentDate.isBefore(DateTime.now()) ||
+        selectedDate.value == currentDate ||
+        selectedDates.contains(currentDate) == true ||
+        requestDateList.any((dateRange) => isDateInSelectedRange(currentDate, dateRange)) == true) {
       return; // Skip processing for previous dates and current date
     }
 
-    if (selectedDates.length == 2 || (rangeStartDate.value != null && rangeEndDate.value != null)) {
-      selectedDates.clear();
+    if (rangeStartDate.value == null) {
       rangeStartDate.value = currentDate;
-      rangeEndDate.value = null;
-      sameAsStartDate.value = false;
-    } else if (rangeStartDate.value == null) {
-      rangeStartDate.value = currentDate;
-    } else if (totalDateList.anyDatesExistInRange(
-        rangeStart: rangeStartDate.value.toString().substring(0, 10),
-        rangeEnd: currentDate.toString().substring(0, 10)) ==
-        true) {
+      print('CalenderController.onDateClickForClient 1');
+    } else if (inValidRange(currentDate: currentDate) == true) {
+      print('CalenderController.onDateClickForClient 2');
       Utils.showSnackBar(message: 'You cannot select this range', isTrue: false);
     } else if (rangeStartDate.value != null && currentDate.isBefore(rangeStartDate.value!)) {
       rangeEndDate.value = rangeStartDate.value;
       rangeStartDate.value = currentDate;
-    } else if (rangeEndDate.value == null && currentDate != rangeStartDate.value) {
+      print('CalenderController.onDateClickForClient 3');
+    } else if (rangeEndDate.value == null) {
       rangeEndDate.value = currentDate;
+      print('CalenderController.onDateClickForClient 4');
     } else {
-      rangeEndDate.value = null;
-      rangeStartDate.value = null;
-      sameAsStartDate.value = false;
+      print('CalenderController.onDateClickForClient 5');
     }
 
     loadSelectedDates(currentDate: currentDate);
-    loadUnavailableDates();
+    loadRequestedDateList(currentDate: currentDate);
+  }
+
+  void loadRequestedDateList({required DateTime currentDate}) {
+    if (inValidRange(currentDate: currentDate) == false) {
+      if (rangeStartDate.value != null && rangeEndDate.value == null) {
+        requestDateList.add(RequestDate(
+          startDate: rangeStartDate.value.toString().substring(0, 10),
+        ));
+      } else if (rangeEndDate.value != null && rangeStartDate.value != null) {
+        requestDateList.removeWhere(
+            (RequestDate element) => element.startDate == rangeStartDate.value.toString().substring(0, 10));
+        requestDateList
+            .removeWhere((RequestDate element) => element.startDate == rangeEndDate.value.toString().substring(0, 10));
+        requestDateList.add(RequestDate(
+          startDate: rangeStartDate.value.toString().substring(0, 10),
+          endDate: rangeEndDate.value.toString().substring(0, 10),
+        ));
+
+        rangeStartDate.value = null;
+        rangeEndDate.value = null;
+      }
+
+      requestDateList.refresh();
+    }
+  }
+
+  void onRemoveClickForShortList({required int index}) {
+    if (requestDateList[index].startDate != null) {
+      selectedDates.remove(DateTime.parse(requestDateList[index].startDate ?? ''));
+    }
+    if (requestDateList[index].endDate != null) {
+      selectedDates.remove(DateTime.parse(requestDateList[index].endDate ?? ''));
+    }
+
+    selectedDates.refresh();
+    requestDateList.removeAt(index);
+    requestDateList.refresh();
+    sameAsStartDate.value = false;
+  }
+
+  bool inValidRange({required DateTime currentDate}) {
+    return totalDateList.anyDatesExistInRange(
+        rangeStart: rangeStartDate.value.toString().substring(0, 10),
+        rangeEnd: currentDate.toString().substring(0, 10));
+  }
+
+  void onSameAsStartDatePressedForShortList(bool? value) {
+    sameAsStartDate.value = !sameAsStartDate.value;
+    if (sameAsStartDate.value == true) {
+      rangeEndDate.value = rangeStartDate.value;
+    } else {
+      rangeEndDate.value = null;
+    }
+
+    loadRequestedDateList(currentDate: rangeStartDate.value!);
+  }
+
+  bool isDateInSelectedRange(DateTime currentDate, RequestDate dateRange) {
+    if (dateRange.startDate != null && dateRange.endDate != null) {
+      return currentDate.isAfter(DateTime.parse(dateRange.startDate!)) &&
+          currentDate.isBefore((DateTime.parse(dateRange.endDate!)).add(const Duration(days: 1)));
+    }
+    return false;
   }
 }

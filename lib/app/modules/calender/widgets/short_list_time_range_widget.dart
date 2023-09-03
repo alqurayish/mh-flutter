@@ -1,0 +1,96 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:mh/app/common/extensions/extensions.dart';
+import 'package:mh/app/common/values/my_assets.dart';
+import 'package:mh/app/common/values/my_color.dart';
+import 'package:mh/app/modules/calender/controllers/calender_controller.dart';
+import 'package:mh/app/modules/client/client_shortlisted/models/add_to_shortlist_request_model.dart';
+
+class ShortListTimeRangeWidget extends StatelessWidget {
+  final RequestDate requestDate;
+  final int index;
+  const ShortListTimeRangeWidget({Key? key, required this.requestDate, required this.index}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 100,
+      decoration: BoxDecoration(color: Colors.grey.shade200, borderRadius: BorderRadius.circular(10.0)),
+      margin: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.11, left: 15.0, right: 15.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    Image.asset(MyAssets.calender2, height: 20, width: 20),
+                    Text(' ${DateTime.parse(requestDate.startDate ?? "").formatDateWithWeekday()}  -  ',
+                        style: MyColors.black.medium12),
+                    if (requestDate.endDate == null)
+                      Text('Select End Date', style: MyColors.c_7B7B7B.medium12)
+                    else
+                      Text(DateTime.parse(requestDate.endDate ?? "").formatDateWithWeekday(),
+                          style: MyColors.black.medium12),
+                  ],
+                ),
+                InkWell(onTap: ()=> Get.find<CalenderController>().onRemoveClickForShortList(index: index), child: const Icon(Icons.remove, color: Colors.red))
+              ],
+            ),
+          ),
+          Obx(() => Visibility(
+              visible: requestDate.endDate == null,
+              child: Padding(
+                padding: EdgeInsets.only(left: 5.w),
+                child: Row(
+                  children: [
+                    Checkbox(
+                        activeColor: MyColors.c_C6A34F,
+                        checkColor: MyColors.c_FFFFFF,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(2.0),
+                        ),
+                        side: MaterialStateBorderSide.resolveWith(
+                          (states) => const BorderSide(width: 2.0, color: MyColors.c_C6A34F),
+                        ),
+                        value: Get.find<CalenderController>().sameAsStartDate.value,
+                        onChanged: Get.find<CalenderController>().onSameAsStartDatePressedForShortList),
+                    Text('Same as Start Date', style: MyColors.black.medium15),
+                  ],
+                ),
+              ))),
+          Visibility(
+              visible: requestDate.startDate != null && requestDate.endDate != null,
+              child: Padding(
+                padding: EdgeInsets.only(left: 5.w),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    _timeWidget(time: '8.00 AM'),
+                    const Text('-'),
+                    _timeWidget(time: '09:00 AM'),
+                  ],
+                ),
+              )),
+        ],
+      ),
+    );
+  }
+
+  Widget _timeWidget({required String time}) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 2.0),
+      decoration: BoxDecoration(
+          color: MyColors.lightCard(Get.context!),
+          border: Border.all(color: Colors.grey.shade400),
+          borderRadius: BorderRadius.circular(5.0)),
+      child: Row(
+        children: [Image.asset(MyAssets.clock, height: 20, width: 20), const SizedBox(width: 10), Text(time)],
+      ),
+    );
+  }
+}
