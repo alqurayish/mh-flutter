@@ -70,6 +70,7 @@ class MyAssets {
   //Calender View
   static const String calender1 = 'assets/icons/calender1.png';
   static const String calender2 = 'assets/icons/calender2.png';
+  static const String clock = 'assets/icons/clock.png';
 }
 
 class _Lottie {

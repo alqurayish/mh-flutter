@@ -30,14 +30,14 @@ class CalenderMonthWidget extends StatelessWidget {
         bool canTapDate = false;
         if (currentDate.toString().substring(0, 10) == today.toString().substring(0, 10)) {
           borderColor = MyColors.c_C6A34F; // Today's date should be red
+        } else if (currentDate.isBefore(DateTime.now()) || controller.selectedDate.value == currentDate) {
+          textColor = Colors.grey;
         } else if (controller.dateListModel.value.bookedDates!.containsDate(currentDate)) {
           textColor = Colors.red; // Booked dates should be red
         } else if (controller.dateListModel.value.pendingDates!.containsDate(currentDate)) {
           textColor = Colors.yellow; // Pending dates should be yellow
         } else if (controller.dateListModel.value.unavailableDates!.containsDate(currentDate)) {
           textColor = Colors.black; // Unavailable dates should be black
-        } else if (currentDate.isBefore(DateTime.now()) || controller.selectedDate.value == currentDate) {
-          textColor = Colors.grey;
         } else {
           textColor = Colors.green; // Available days should be green
           canTapDate = true;
@@ -50,7 +50,7 @@ class CalenderMonthWidget extends StatelessWidget {
             if (isSelected == true) {
               containerColor = MyColors.c_C6A34F;
               textColor = Colors.white; // Change container color for selected dates
-            } else if(isSelected == false && canTapDate == true){
+            } else if (isSelected == false && canTapDate == true) {
               containerColor = Colors.transparent;
               textColor = Colors.green;
             }

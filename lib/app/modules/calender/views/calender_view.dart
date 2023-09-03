@@ -6,6 +6,8 @@ import 'package:mh/app/modules/calender/widgets/calender_header_widget.dart';
 import 'package:mh/app/modules/calender/widgets/calender_widget_latest.dart';
 import 'package:mh/app/modules/calender/widgets/employee_date_range_widget.dart';
 import 'package:mh/app/modules/calender/widgets/selected_days_count_widget.dart';
+import 'package:mh/app/modules/calender/widgets/short_list_date_range_widget.dart';
+import 'package:mh/app/modules/employee/employee_home/controllers/employee_home_controller.dart';
 import '../controllers/calender_controller.dart';
 
 class CalenderView extends GetView<CalenderController> {
@@ -39,10 +41,12 @@ class CalenderView extends GetView<CalenderController> {
                 alignment: Alignment.bottomCenter,
                 child: SelectedDaysCountWidget(),
               )),
-              const Positioned.fill(
+              Positioned.fill(
                   child: Align(
                 alignment: Alignment.bottomCenter,
-                child: EmployeeDateRangeWidget(),
+                child: Get.isRegistered<EmployeeHomeController>()
+                    ? const EmployeeDateRangeWidget()
+                    : const ShortListDateRangeWidget(),
               )),
             ],
           );

@@ -36,10 +36,12 @@ class MhEmployeesByIdController extends GetxController {
   }
 
   Future<void> onBookNowClick(Employee employee) async {
-    if(!_appController.hasPermission()) return;
+    if (!_appController.hasPermission()) return;
 
-    await shortlistController.onBookNowClick(employee.id!);
-    goToShortListedPage();
+    Get.toNamed(Routes.calender, arguments: employee.id ?? '');
+
+    /*await shortlistController.onBookNowClick(employee.id!);
+    goToShortListedPage();*/
   }
 
   void goToShortListedPage() {
@@ -48,8 +50,8 @@ class MhEmployeesByIdController extends GetxController {
 
   void onEmployeeClick(Employee employee) {
     Get.toNamed(Routes.employeeDetails, arguments: {
-      MyStrings.arg.data : employee,
-      MyStrings.arg.showAsAdmin : false,
+      MyStrings.arg.data: employee,
+      MyStrings.arg.showAsAdmin: false,
       MyStrings.arg.fromWhere: MyStrings.arg.mhEmployeeViewByIdText
     });
   }
@@ -66,26 +68,23 @@ class MhEmployeesByIdController extends GetxController {
 
     CustomLoader.show(context!);
 
-    await _apiHelper.getEmployees(
+    await _apiHelper
+        .getEmployees(
       positionId: position.id,
       rating: rating,
       employeeExperience: experience,
       minTotalHour: minTotalHour,
       maxTotalHour: maxTotalHour,
-    ).then((Either<CustomError, Employees> response) {
-
+    )
+        .then((Either<CustomError, Employees> response) {
       isLoading.value = false;
       CustomLoader.hide(context!);
 
       response.fold((CustomError customError) {
-
         Utils.errorDialog(context!, customError..onRetry = _getEmployees);
-
       }, (Employees employees) {
-
         this.employees.value = employees;
         this.employees.refresh();
-
       });
     });
   }

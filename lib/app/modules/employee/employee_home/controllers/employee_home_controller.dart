@@ -527,6 +527,6 @@ class EmployeeHomeController extends GetxController {
   }
 
   void onCalenderClick() {
-    Get.toNamed(Routes.calender);
+    Get.toNamed(Routes.calender, arguments: appController.user.value.employee?.id??0);
   }
 }

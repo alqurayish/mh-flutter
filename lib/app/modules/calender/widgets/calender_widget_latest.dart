@@ -27,7 +27,7 @@ class CalenderWidgetLatest extends GetWidget<CalenderController> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: controller.dayNames
-                  .map((dayName) => Text(
+                  .map((String dayName) => Text(
                         dayName,
                         style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                       ))

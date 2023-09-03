@@ -60,6 +60,7 @@ class EmployeeDateRangeWidget extends GetWidget<CalenderController> {
               ],
             ),
           )
-        : const Wrap());
+        : const Wrap()
+    );
   }
 }

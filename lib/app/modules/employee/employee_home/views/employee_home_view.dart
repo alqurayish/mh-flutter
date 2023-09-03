@@ -34,7 +34,7 @@ class EmployeeHomeView extends GetView<EmployeeHomeController> {
               Obx(() => controller.notificationsController.unreadCount.value == 0
                   ? IconButton(
                       onPressed: () {
-                        Get.toNamed(Routes.notifications);
+                        Get.toNamed(Routes.notifications, arguments: controller.appController.user.value.employee?.id??'');
                       },
                       icon: const Icon(CupertinoIcons.bell))
                   : InkWell(

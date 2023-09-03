@@ -78,10 +78,9 @@ class EmployeeDetailsView extends GetView<EmployeeDetailsController> {
               child: Visibility(
                 visible: !(controller.employee.isHired ?? false),
                 child: controller.shortlistController.getIcon(
-                  employeeId: controller.employee.id!,
-                  isFetching: controller.shortlistController.isFetching.value,
-                  fromWhere: ''
-                ),
+                    employeeId: controller.employee.id!,
+                    isFetching: controller.shortlistController.isFetching.value,
+                    fromWhere: ''),
               ),
             ),
           ),
@@ -230,7 +229,7 @@ class EmployeeDetailsView extends GetView<EmployeeDetailsController> {
         phone: controller.employee.phoneNumber ?? '',
         position: controller.employee.positionName ?? "-",
         title: "${controller.employee.firstName ?? "-"} ${controller.employee.lastName ?? ""}",
-        age: MyStrings.ageWithYears.trParams({"year": Utils.calculateAge(controller.employee.dateOfBirth)}),
+        age: 'Age: ${controller.employee.dateOfBirth?.calculateAge() ?? 0.0}',
         rating: controller.employee.rating ?? 0.0,
         totalRating: controller.employee.totalRating ?? 0,
         child: Column(

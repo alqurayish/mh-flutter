@@ -159,3 +159,11 @@ extension DateListExtension on List<CalenderDataModel> {
   }
 }
 
+extension DateTimeExtensions on DateTime {
+  String calculateAge() {
+    final DateTime currentDate = DateTime.now();
+    final double age = currentDate.year - year + (currentDate.month - month) / 12;
+    return '${age.toStringAsFixed(1)} years';
+  }
+}
+

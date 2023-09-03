@@ -1,6 +1,5 @@
 import 'package:badges/badges.dart' as badge;
 import 'package:mh/app/common/controller/app_controller.dart';
-
 import '../../../../common/utils/exports.dart';
 import '../../../../common/widgets/custom_appbar.dart';
 import '../../../../common/widgets/custom_filter.dart';
@@ -113,7 +112,6 @@ class MhEmployeesByIdView extends GetView<MhEmployeesByIdController> {
 
   Widget _employeeItem(Employee user) {
     return Container(
-      height: 105.h,
       margin: EdgeInsets.symmetric(horizontal: 24.w).copyWith(
         bottom: 20.h,
       ),
@@ -132,37 +130,13 @@ class MhEmployeesByIdView extends GetView<MhEmployeesByIdController> {
         child: Stack(
           children: [
             Positioned(
-              right: 0,
-              bottom: 0,
-              child: SizedBox(
-                width: 122.w,
-                child: CustomButtons.button(
-                  height: 28.w,
-                  text: (user.isHired == true && user.isSuggested == false)
-                      ? "Booked"
-                      : (user.isHired == false && user.isSuggested == true)
-                          ? "Waiting"
-                          : "Book Now",
-                  margin: EdgeInsets.zero,
-                  fontSize: 12,
-                  customButtonStyle: CustomButtonStyle.radiusTopBottomCorner,
-                  onTap: (user.isHired == false && user.isSuggested == false)
-                      ? () => controller.onBookNowClick(user)
-                      : null,
-                ),
-              ),
-            ),
-            Positioned(
               right: 5,
               top: 3,
               child: Obx(
                 () => Visibility(
                   visible: (user.isSuggested == false && user.isHired == false),
                   child: controller.shortlistController.getIcon(
-                   employeeId: user.id!,
-                    isFetching:  controller.shortlistController.isFetching.value,
-                    fromWhere: ''
-                  ),
+                      employeeId: user.id!, isFetching: controller.shortlistController.isFetching.value, fromWhere: ''),
                 ),
               ),
             ),
@@ -204,18 +178,35 @@ class MhEmployeesByIdView extends GetView<MhEmployeesByIdController> {
                       SizedBox(height: 8.h),
                       Row(
                         children: [
-                          _detailsItem(MyAssets.exp, MyStrings.exp.tr, (user.employeeExperience ?? 0).toString()),
+                          _detailsItem(MyAssets.exp, MyStrings.exp.tr, "${user.employeeExperience ?? 0} years"),
                           _detailsItem(
-                              MyAssets.totalHour, MyStrings.totalHour.tr, (user.totalWorkingHour ?? 0).toString()),
+                              MyAssets.totalHour, MyStrings.totalHour.tr, "${user.totalWorkingHour ?? 0} hours"),
                         ],
                       ),
                       SizedBox(height: 8.h),
+                      Row(children: [
+                        _detailsItem(MyAssets.rate, MyStrings.rate.tr,
+                            "${Utils.getCurrencySymbol(Get.find<AppController>().user.value.client?.countryName ?? '')}${(user.hourlyRate ?? 0.0).toStringAsFixed(2)}"),
+                        _detailsItem(MyAssets.manager, MyStrings.age.tr, user.dateOfBirth?.calculateAge() ?? ''),
+                      ]),
+                      SizedBox(height: 4.h),
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          _detailsItem(MyAssets.rate, MyStrings.rate.tr,
-                              "${Utils.getCurrencySymbol(Get.find<AppController>().user.value.client?.countryName ?? '')}${(user.hourlyRate ?? 0.0).toStringAsFixed(2)}"),
+                          _detailsItem(MyAssets.calender2, '', '35 Days (Aug & Sep)'),
+                          CustomButtons.button(
+                            padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                            height: 23,
+                            text: "Book Now",
+                            margin: EdgeInsets.zero,
+                            fontSize: 12,
+                            customButtonStyle: CustomButtonStyle.radiusTopBottomCorner,
+                            onTap: (user.isHired == false && user.isSuggested == false)
+                                ? () => controller.onBookNowClick(user)
+                                : null,
+                          ),
                         ],
-                      ),
+                      )
                     ],
                   ),
                 ),

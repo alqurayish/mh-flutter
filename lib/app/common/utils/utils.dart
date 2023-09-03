@@ -74,10 +74,6 @@ class Utils {
     }
   }
 
-  static String calculateAge(DateTime? dateTime) {
-    return (DateTime.now().year - (dateTime ?? DateTime.now()).year).toString();
-  }
-
   static bool isPositionActive(String positionId) {
     return (Get.find<AppController>().commons?.value.positions ?? [])
         .where((element) => element.id == positionId && (element.active ?? false))

@@ -8,11 +8,15 @@ import 'package:mh/app/common/widgets/custom_loader.dart';
 import 'package:mh/app/models/custom_error.dart';
 import 'package:mh/app/modules/calender/models/calender_model.dart';
 import 'package:mh/app/modules/calender/models/update_unavailable_date_request_model.dart';
+import 'package:mh/app/modules/client/client_home/controllers/client_home_controller.dart';
+import 'package:mh/app/modules/client/client_shortlisted/models/add_to_shortlist_request_model.dart';
+import 'package:mh/app/modules/employee/employee_home/controllers/employee_home_controller.dart';
 import 'package:mh/app/modules/employee/employee_home/models/common_response_model.dart';
 import 'package:mh/app/repository/api_helper.dart';
 
 class CalenderController extends GetxController {
   BuildContext? context;
+  String employeeId = '';
 
   final AppController appController = Get.find();
   final ApiHelper _apiHelper = Get.find();
@@ -36,9 +40,12 @@ class CalenderController extends GetxController {
   RxBool sameAsStartDate = false.obs;
 
   //For client only
+  RxList<AddToShortListRequestModel> addToShortListRequestList = <AddToShortListRequestModel>[].obs;
+  Rx<RequestDate> requestDateModel = RequestDate().obs;
 
   @override
   void onInit() {
+    employeeId = Get.arguments;
     _getCalenderData();
     pageController = PageController(initialPage: currentPageIndex.value);
     super.onInit();
@@ -50,11 +57,19 @@ class CalenderController extends GetxController {
     super.onClose();
   }
 
+  void onDateClick({required DateTime currentDate}) {
+    if (Get.isRegistered<ClientHomeController>() == true) {
+      onDateClickForClient(currentDate: currentDate);
+    } else if (Get.isRegistered<EmployeeHomeController>() == true) {
+      onDateClickForEmployee(currentDate: currentDate);
+    } else {
+      Utils.showSnackBar(message: 'Something went wrong', isTrue: true);
+    }
+  }
+
   void _getCalenderData() {
     dateDataLoading.value = true;
-    _apiHelper
-        .getCalenderData(employeeId: appController.user.value.userId)
-        .then((Either<CustomError, CalenderModel> responseData) {
+    _apiHelper.getCalenderData(employeeId: employeeId).then((Either<CustomError, CalenderModel> responseData) {
       dateDataLoading.value = false;
       responseData.fold((CustomError customError) {
         Utils.errorDialog(context!, customError..onRetry = _getCalenderData);
@@ -68,7 +83,23 @@ class CalenderController extends GetxController {
     });
   }
 
-  void onDateClick({required DateTime currentDate}) {
+  void loadTotalDateList() {
+    totalDateList = <CalenderDataModel>[
+      ...dateListModel.value.unavailableDates ?? [],
+      ...dateListModel.value.pendingDates ?? [],
+      ...dateListModel.value.bookedDates ?? [],
+    ];
+  }
+
+  void onPageChanged(int index) {
+    currentPageIndex.value = index;
+    selectedDate.value = DateTime.now().add(Duration(days: index * 30));
+  }
+
+  ///---------------- For employee only -------------------
+
+  //For employee only
+  void onDateClickForEmployee({required DateTime currentDate}) {
     if (currentDate.isBefore(DateTime.now()) || selectedDate.value == currentDate) {
       return; // Skip processing for previous dates and current date
     }
@@ -100,11 +131,7 @@ class CalenderController extends GetxController {
     loadUnavailableDates();
   }
 
-  void onPageChanged(int index) {
-    currentPageIndex.value = index;
-    selectedDate.value = DateTime.now().add(Duration(days: index * 30));
-  }
-
+  //For employees only
   void updateUnavailableDates() {
     CustomLoader.show(context!);
     UpdateUnavailableDateRequestModel updateUnavailableDateRequestModel =
@@ -128,6 +155,7 @@ class CalenderController extends GetxController {
     });
   }
 
+  //For employees only
   void loadUnavailableDates() {
     if (rangeStartDate.value != null && rangeEndDate.value != null) {
       unavailableDateList.add(Dates(
@@ -186,11 +214,39 @@ class CalenderController extends GetxController {
     }
   }
 
-  void loadTotalDateList() {
-    totalDateList = <CalenderDataModel>[
-      ...dateListModel.value.unavailableDates ?? [],
-      ...dateListModel.value.pendingDates ?? [],
-      ...dateListModel.value.bookedDates ?? [],
-    ];
+  ///-------------------------------------------------------------------
+
+  ///---------------- For Client only ----------------------------------
+
+  void onDateClickForClient({required DateTime currentDate}) {
+    if (currentDate.isBefore(DateTime.now()) || selectedDate.value == currentDate) {
+      return; // Skip processing for previous dates and current date
+    }
+
+    if (selectedDates.length == 2 || (rangeStartDate.value != null && rangeEndDate.value != null)) {
+      selectedDates.clear();
+      rangeStartDate.value = currentDate;
+      rangeEndDate.value = null;
+      sameAsStartDate.value = false;
+    } else if (rangeStartDate.value == null) {
+      rangeStartDate.value = currentDate;
+    } else if (totalDateList.anyDatesExistInRange(
+        rangeStart: rangeStartDate.value.toString().substring(0, 10),
+        rangeEnd: currentDate.toString().substring(0, 10)) ==
+        true) {
+      Utils.showSnackBar(message: 'You cannot select this range', isTrue: false);
+    } else if (rangeStartDate.value != null && currentDate.isBefore(rangeStartDate.value!)) {
+      rangeEndDate.value = rangeStartDate.value;
+      rangeStartDate.value = currentDate;
+    } else if (rangeEndDate.value == null && currentDate != rangeStartDate.value) {
+      rangeEndDate.value = currentDate;
+    } else {
+      rangeEndDate.value = null;
+      rangeStartDate.value = null;
+      sameAsStartDate.value = false;
+    }
+
+    loadSelectedDates(currentDate: currentDate);
+    loadUnavailableDates();
   }
 }

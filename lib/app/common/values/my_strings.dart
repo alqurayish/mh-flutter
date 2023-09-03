@@ -103,6 +103,7 @@ class MyStrings {
   static const String resetData = "resetData";
   static const String apply = "apply";
   static const String ageWithYears = "ageWithYears";
+  static const String age = "Age:";
   static const String review = "Review";
   static const String countTime = "countTime";
   static const String licenseNo = "licenseNo";
