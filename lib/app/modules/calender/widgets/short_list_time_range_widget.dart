@@ -22,7 +22,7 @@ class ShortListTimeRangeWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            padding: const EdgeInsets.symmetric(horizontal: 15.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -38,7 +38,10 @@ class ShortListTimeRangeWidget extends StatelessWidget {
                           style: MyColors.black.medium12),
                   ],
                 ),
-                InkWell(onTap: ()=> Get.find<CalenderController>().onRemoveClickForShortList(index: index), child: const Icon(Icons.remove, color: Colors.red))
+                const SizedBox(width: 20),
+                InkWell(
+                    onTap: () => Get.find<CalenderController>().onRemoveClickForShortList(index: index),
+                    child: const Icon(Icons.remove, color: Colors.red))
               ],
             ),
           ),
@@ -63,27 +66,52 @@ class ShortListTimeRangeWidget extends StatelessWidget {
                   ],
                 ),
               ))),
-          Visibility(
-              visible: requestDate.startDate != null && requestDate.endDate != null,
-              child: Padding(
-                padding: EdgeInsets.only(left: 5.w),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    _timeWidget(time: '8.00 AM'),
-                    const Text('-'),
-                    _timeWidget(time: '09:00 AM'),
-                  ],
-                ),
-              )),
+          if (requestDate.startDate != null &&
+              requestDate.endDate != null &&
+              requestDate.startTime == null &&
+              requestDate.endTime == null)
+            _selectTimeRangeWidget(index: index)
+          else if (requestDate.startTime != null && requestDate.endTime != null)
+            _timeRangeWidget(requestDate: requestDate)
         ],
       ),
     );
   }
 
+  Widget _selectTimeRangeWidget({required int index}) {
+    return InkWell(
+      onTap: () => Get.find<CalenderController>().showTimePickerBottomSheet(index: index),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 2.0),
+        decoration: BoxDecoration(
+            color: MyColors.lightCard(Get.context!),
+            border: Border.all(color: Colors.grey.shade400),
+            borderRadius: BorderRadius.circular(5.0)),
+        child: Row(
+          children: [
+            Image.asset(MyAssets.clock, height: 20, width: 20),
+            const SizedBox(width: 10),
+            const Text('Select Time Range')
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _timeRangeWidget({required RequestDate requestDate}) {
+    return Row(
+      children: [
+        _timeWidget(time: requestDate.startTime ?? ''),
+        const Text('  -  '),
+        _timeWidget(time: requestDate.endTime ?? ''),
+      ],
+    );
+  }
+
   Widget _timeWidget({required String time}) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 2.0),
+      width: 130,
+      padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 2.0),
       decoration: BoxDecoration(
           color: MyColors.lightCard(Get.context!),
           border: Border.all(color: Colors.grey.shade400),

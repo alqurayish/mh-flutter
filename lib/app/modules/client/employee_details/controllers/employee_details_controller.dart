@@ -24,11 +24,8 @@ class EmployeeDetailsController extends GetxController {
   }
 
   Future<void> onBookNowClick() async {
-    if(!_appController.hasPermission()) return;
-
-    await shortlistController.onBookNowClick(employee.id!);
-
-    Get.toNamed(Routes.clientShortlisted);
+    if (!_appController.hasPermission()) return;
+    Get.toNamed(Routes.calender, arguments: employee.id ?? '');
   }
 
   // only admin chat with employee

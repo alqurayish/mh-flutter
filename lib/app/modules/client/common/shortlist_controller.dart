@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:mh/app/common/controller/app_controller.dart';
 import 'package:mh/app/common/widgets/custom_dialog.dart';
 import 'package:mh/app/models/custom_error.dart';
+import 'package:mh/app/modules/client/client_shortlisted/models/add_to_shortlist_request_model.dart';
 import 'package:mh/app/modules/client/client_suggested_employees/models/short_list_request_model.dart';
 import 'package:mh/app/modules/employee/employee_home/models/common_response_model.dart';
 
@@ -71,7 +72,7 @@ class ShortlistController extends GetxService {
     return shortList.where((employee) => employee.employeeDetails!.positionId == position).toList();
   }
 
-  Future<void> onBookNowClick(String employeeId) async {
+  Future<void> onBookNowClick({required String employeeId, required List<RequestDate> requestDateList}) async {
     _selectedId = employeeId;
     if (_isEmployeeAddedInShortlist(employeeId)) return;
 
@@ -83,7 +84,7 @@ class ShortlistController extends GetxService {
 
     Map<String, dynamic> data = {"employeeId": employeeId};
 
-    await _apiHelper.addToShortlist(data).then((response) {
+    await _apiHelper.addToShortlist(data).then((Either<CustomError, Response> response) {
       response.fold((l) {
         Logcat.msg(l.msg);
         isFetching.value = false;
@@ -242,7 +243,9 @@ class ShortlistController extends GetxService {
 
     ShortListRequestModel shortListRequestModel = ShortListRequestModel(id: id, employeeId: employeeId);
 
-    await _apiHelper.addToShortlistNew(shortListRequestModel: shortListRequestModel).then((Either<CustomError, CommonResponseModel> response) {
+    await _apiHelper
+        .addToShortlistNew(shortListRequestModel: shortListRequestModel)
+        .then((Either<CustomError, CommonResponseModel> response) {
       response.fold((l) {
         Logcat.msg(l.msg);
         isFetching.value = false;

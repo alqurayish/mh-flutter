@@ -72,8 +72,8 @@ class EmployeeDetailsView extends GetView<EmployeeDetailsController> {
             ),
           ),
           const Spacer(),
-          Obx(
-            () => Visibility(
+         /* Obx(
+            () => Visibility(c
               visible: !controller.showAsAdmin,
               child: Visibility(
                 visible: !(controller.employee.isHired ?? false),
@@ -83,7 +83,7 @@ class EmployeeDetailsView extends GetView<EmployeeDetailsController> {
                     fromWhere: ''),
               ),
             ),
-          ),
+          ),*/
         ],
       );
 
@@ -237,7 +237,7 @@ class EmployeeDetailsView extends GetView<EmployeeDetailsController> {
             SizedBox(height: 5.h),
             Row(
               children: [
-                _detailsItem(MyAssets.rate, MyStrings.rate.tr,
+                _detailsItem(MyAssets.rate, '${MyStrings.rate.tr}:',
                     "${Utils.getCurrencySymbol(Get.find<AppController>().user.value.client?.countryName ?? '')}${(controller.employee.hourlyRate?.toStringAsFixed(2) ?? 0)}/hour"),
                 const Spacer(),
                 _detailsItem(MyAssets.exp, MyStrings.exp.tr, "${(controller.employee.employeeExperience ?? 0)} years"),
@@ -247,13 +247,19 @@ class EmployeeDetailsView extends GetView<EmployeeDetailsController> {
             Row(
               children: [
                 _detailsItem(
-                    MyAssets.totalHour, MyStrings.totalHour.tr, "${(controller.employee.totalWorkingHour ?? 0)} H"),
+                    MyAssets.totalHour, '${MyStrings.totalHour.tr}:', "${(controller.employee.totalWorkingHour ?? 0)} H"),
                 const Spacer(),
                 _detailsItem(MyAssets.review, MyStrings.review.tr, "1 time"),
               ],
             ),
             SizedBox(height: 18.h),
-            _detailsItem(MyAssets.license, MyStrings.licenseNo.tr, controller.employee.licensesNo ?? "-"),
+            Row(
+              children: [
+                _detailsItem(MyAssets.license, MyStrings.licenseNo.tr, controller.employee.licensesNo ?? "-"),
+                const Spacer(),
+                _detailsItem(MyAssets.calender2, 'Free: ', controller.employee.available ?? "-"),
+              ],
+            ),
             SizedBox(height: 5.h),
           ],
         ),
@@ -307,16 +313,14 @@ class EmployeeDetailsView extends GetView<EmployeeDetailsController> {
     return controller.fromWhere == MyStrings.arg.mhEmployeeViewByIdText
         ? CustomBottomBar(
             child: CustomButtons.button(
-              onTap: controller.showAsAdmin
-                  ? controller.onChatClick
-                  : (controller.employee.isHired ?? false)
-                      ? null
-                      : controller.onBookNowClick,
-              text: controller.showAsAdmin
-                  ? "Chat"
-                  : (controller.employee.isHired ?? false)
-                      ? "Booked"
-                      : "Book Now",
+              onTap: (controller.employee.available == null ||
+                      int.parse(controller.employee.available!.split(' ').first) <= 0)
+                  ? null
+                  : controller.onBookNowClick,
+              text: (controller.employee.available == null ||
+                      int.parse(controller.employee.available!.split(' ').first) <= 0)
+                  ? "Booked"
+                  : "Book Now",
               height: 52.h,
               customButtonStyle: CustomButtonStyle.radiusTopBottomCorner,
             ),

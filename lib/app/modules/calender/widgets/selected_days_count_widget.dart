@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mh/app/common/extensions/extensions.dart';
 import 'package:mh/app/common/values/my_assets.dart';
 import 'package:mh/app/common/values/my_color.dart';
 import 'package:mh/app/modules/calender/controllers/calender_controller.dart';
+import 'package:mh/app/modules/employee/employee_home/controllers/employee_home_controller.dart';
 
 class SelectedDaysCountWidget extends GetWidget<CalenderController> {
   const SelectedDaysCountWidget({Key? key}) : super(key: key);
@@ -18,7 +20,8 @@ class SelectedDaysCountWidget extends GetWidget<CalenderController> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Image.asset(MyAssets.calender1, height: 20, width: 20),
-          Obx(() => Text(' ${controller.totalSelectedDays}',
+          Obx(() => Text(
+              ' ${Get.isRegistered<EmployeeHomeController>() == true ? controller.totalSelectedDays : controller.requestDateList.calculateTotalDays()}',
               style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 24))),
           const Text(' Days have been selected',
               style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12)),

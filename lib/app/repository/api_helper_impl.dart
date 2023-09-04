@@ -949,4 +949,6 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
       CommonResponseModel.fromJson,
     ).fold((CustomError l) => left(l), (CommonResponseModel r) => right(r));
   }
+
+
 }

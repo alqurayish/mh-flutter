@@ -1,3 +1,5 @@
+import 'package:mh/app/common/utils/exports.dart';
+
 class AddToShortListRequestModel {
   final String employeeId;
   final List<RequestDate> requestDate;
@@ -18,7 +20,7 @@ class RequestDate {
   String? startTime;
   String? endTime;
 
-  RequestDate({ this.startDate,  this.endDate,  this.startTime,  this.endTime});
+  RequestDate({this.startDate, this.endDate, this.startTime, this.endTime});
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

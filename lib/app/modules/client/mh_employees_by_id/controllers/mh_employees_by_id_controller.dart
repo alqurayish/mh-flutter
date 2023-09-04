@@ -15,7 +15,6 @@ class MhEmployeesByIdController extends GetxController {
 
   final AppController _appController = Get.find();
   final ApiHelper _apiHelper = Get.find();
-  final ShortlistController shortlistController = Get.find();
 
   late Position position;
 
@@ -37,15 +36,7 @@ class MhEmployeesByIdController extends GetxController {
 
   Future<void> onBookNowClick(Employee employee) async {
     if (!_appController.hasPermission()) return;
-
     Get.toNamed(Routes.calender, arguments: employee.id ?? '');
-
-    /*await shortlistController.onBookNowClick(employee.id!);
-    goToShortListedPage();*/
-  }
-
-  void goToShortListedPage() {
-    Get.toNamed(Routes.clientShortlisted);
   }
 
   void onEmployeeClick(Employee employee) {

@@ -3,6 +3,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:intl/intl.dart';
 import 'package:mh/app/modules/calender/models/calender_model.dart';
+import 'package:mh/app/modules/client/client_shortlisted/models/add_to_shortlist_request_model.dart';
 
 import '../../enums/selected_payment_method.dart';
 import '../utils/exports.dart';
@@ -187,4 +188,38 @@ extension DateTimeWithMonthYearExtensions on DateTime {
   }
 }
 
+extension RequestDateListExtension on List<RequestDate?> {
+  int calculateTotalDays() {
+    int totalDays = 0;
+    for (var requestDate in this) {
+      if (requestDate != null && requestDate.startDate != null && requestDate.endDate != null) {
+        DateTime? startDate = DateTime.tryParse(requestDate.startDate!);
+        DateTime? endDate = DateTime.tryParse(requestDate.endDate!);
 
+        if (startDate != null && endDate != null) {
+          int daysDifference = endDate.difference(startDate).inDays + 1;
+          totalDays += daysDifference;
+        }
+      }
+    }
+    return totalDays;
+  }
+}
+
+extension RequestDateListExtensions on List<RequestDate> {
+  bool hasNullAttributes() {
+    if (isEmpty) {
+      return true;
+    } else {
+      for (var request in this) {
+        if (request.startDate == null ||
+            request.endDate == null ||
+            request.startTime == null ||
+            request.endTime == null) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+}

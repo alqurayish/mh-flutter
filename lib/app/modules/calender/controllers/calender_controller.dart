@@ -1,18 +1,26 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:mh/app/common/controller/app_controller.dart';
 import 'package:mh/app/common/extensions/extensions.dart';
 import 'package:mh/app/common/utils/utils.dart';
+import 'package:mh/app/common/values/my_color.dart';
+import 'package:mh/app/common/widgets/custom_buttons.dart';
+import 'package:mh/app/common/widgets/custom_dialog.dart';
 import 'package:mh/app/common/widgets/custom_loader.dart';
+import 'package:mh/app/common/widgets/timer_wheel_widget.dart';
 import 'package:mh/app/models/custom_error.dart';
 import 'package:mh/app/modules/calender/models/calender_model.dart';
 import 'package:mh/app/modules/calender/models/update_unavailable_date_request_model.dart';
 import 'package:mh/app/modules/client/client_home/controllers/client_home_controller.dart';
 import 'package:mh/app/modules/client/client_shortlisted/models/add_to_shortlist_request_model.dart';
+import 'package:mh/app/modules/client/common/shortlist_controller.dart';
 import 'package:mh/app/modules/employee/employee_home/controllers/employee_home_controller.dart';
 import 'package:mh/app/modules/employee/employee_home/models/common_response_model.dart';
 import 'package:mh/app/repository/api_helper.dart';
+import 'package:mh/app/routes/app_pages.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class CalenderController extends GetxController {
   BuildContext? context;
@@ -43,6 +51,7 @@ class CalenderController extends GetxController {
 
   //For client only
   RxList<RequestDate> requestDateList = <RequestDate>[].obs;
+  final ShortlistController shortlistController = Get.find();
 
   @override
   void onInit() {
@@ -228,21 +237,16 @@ class CalenderController extends GetxController {
     }
 
     if (rangeStartDate.value == null) {
+      sameAsStartDate.value = false;
       rangeStartDate.value = currentDate;
-      print('CalenderController.onDateClickForClient 1');
     } else if (inValidRange(currentDate: currentDate) == true) {
-      print('CalenderController.onDateClickForClient 2');
       Utils.showSnackBar(message: 'You cannot select this range', isTrue: false);
     } else if (rangeStartDate.value != null && currentDate.isBefore(rangeStartDate.value!)) {
       rangeEndDate.value = rangeStartDate.value;
       rangeStartDate.value = currentDate;
-      print('CalenderController.onDateClickForClient 3');
     } else if (rangeEndDate.value == null) {
       rangeEndDate.value = currentDate;
-      print('CalenderController.onDateClickForClient 4');
-    } else {
-      print('CalenderController.onDateClickForClient 5');
-    }
+    } else {}
 
     loadSelectedDates(currentDate: currentDate);
     loadRequestedDateList(currentDate: currentDate);
@@ -284,6 +288,7 @@ class CalenderController extends GetxController {
     requestDateList.removeAt(index);
     requestDateList.refresh();
     sameAsStartDate.value = false;
+    rangeStartDate.value = null;
   }
 
   bool inValidRange({required DateTime currentDate}) {
@@ -309,5 +314,107 @@ class CalenderController extends GetxController {
           currentDate.isBefore((DateTime.parse(dateRange.endDate!)).add(const Duration(days: 1)));
     }
     return false;
+  }
+
+  void showTimePickerBottomSheet({required int index}) {
+    requestDateList[index].startTime = Utils.getCurrentTimeWithAMPM();
+    requestDateList[index].endTime = Utils.getCurrentTimeWithAMPM();
+
+    showMaterialModalBottomSheet(
+      context: context!,
+      builder: (BuildContext context) {
+        return Container(
+          color: MyColors.lightCard(context),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SizedBox(height: 19.h),
+                Center(
+                  child: Container(
+                    height: 4.h,
+                    width: 80.w,
+                    decoration: const BoxDecoration(
+                      color: MyColors.c_5C5C5C,
+                    ),
+                  ),
+                ),
+                SizedBox(height: 19.h),
+                _title(context, "From time"),
+                TimerWheelWidget(
+                  height: 150.h,
+                  width: 300.w,
+                  centerHighlightColor: MyColors.c_DDBD68.withOpacity(0.4),
+                  onTimeChanged: (String time) {
+                    requestDateList[index].startTime = time;
+                    requestDateList.refresh();
+                  },
+                ),
+                SizedBox(height: 30.h),
+                _title(context, "To time"),
+                SizedBox(height: 11.h),
+                TimerWheelWidget(
+                  height: 150.h,
+                  width: 300.w,
+                  centerHighlightColor: MyColors.c_DDBD68.withOpacity(0.4),
+                  onTimeChanged: (String time) {
+                    requestDateList[index].endTime = time;
+                    requestDateList.refresh();
+                  },
+                ),
+                SizedBox(height: 30.h),
+                CustomButtons.button(
+                  text: "Done",
+                  onTap: () {
+                    if (requestDateList[index].startTime == requestDateList[index].endTime) {
+                      CustomDialogue.information(
+                        context: context,
+                        title: "Invalid Time Range",
+                        description: "From-time and To-time should be same",
+                      );
+                    } else {
+                      Get.back(); // hide modal
+                    }
+                  },
+                  margin: const EdgeInsets.symmetric(horizontal: 18),
+                ),
+                SizedBox(height: 20.h),
+              ],
+            ),
+          ),
+        );
+      },
+    ).then((value) {
+      // call after close modal
+    });
+  }
+
+  static Widget _title(BuildContext context, String text) => Row(
+        children: [
+          _divider(context),
+          SizedBox(width: 10.w),
+          Text(
+            text,
+            style: MyColors.l7B7B7B_dtext(context).semiBold16,
+          ),
+          SizedBox(width: 10.w),
+          _divider(context),
+        ],
+      );
+  static Widget _divider(BuildContext context) => Expanded(
+        child: Container(
+          height: 1,
+          color: MyColors.lD9D9D9_dstock(context),
+        ),
+      );
+
+  bool get disabledBookButton {
+    return requestDateList.hasNullAttributes();
+  }
+
+  void onBookNowClick() async {
+    await shortlistController.onBookNowClick(employeeId: employeeId, requestDateList: requestDateList);
+    Get.toNamed(Routes.clientShortlisted);
   }
 }

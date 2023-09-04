@@ -15,7 +15,6 @@ class CalenderView extends GetView<CalenderController> {
   @override
   Widget build(BuildContext context) {
     controller.context = context;
-
     return Scaffold(
       appBar: CustomAppbar.appbar(title: "Select Date Range", context: context),
       bottomNavigationBar: const CalenderBottomNavBarWidget(),

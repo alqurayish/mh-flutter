@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:mh/app/modules/calender/models/calender_model.dart';
+
 import 'push_notification_details.dart';
 
 class Employees {
@@ -100,7 +102,9 @@ class Employee {
       this.lat,
       this.long,
       this.pushNotificationDetails,
-      this.isSuggested});
+      this.isSuggested,
+      this.available,
+      this.unAvailableDateList});
 
   final String? id;
   final String? firstName;
@@ -155,6 +159,8 @@ class Employee {
   final String? long;
   final PushNotificationDetails? pushNotificationDetails;
   final bool? isSuggested;
+  final List<CalenderDataModel>? unAvailableDateList;
+  final String? available;
 
   factory Employee.fromRawJson(String str) => Employee.fromJson(json.decode(str));
 
@@ -162,6 +168,10 @@ class Employee {
 
   factory Employee.fromJson(Map<String, dynamic> json) => Employee(
       id: json["_id"],
+      available: json["available"],
+      unAvailableDateList: json["unavailableDate"] == null
+          ? []
+          : List<CalenderDataModel>.from(json["unavailableDate"]!.map((x) => CalenderDataModel.fromJson(x))),
       firstName: json["firstName"],
       lastName: json["lastName"],
       positionId: json["positionId"],

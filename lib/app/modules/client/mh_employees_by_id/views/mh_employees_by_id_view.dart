@@ -21,7 +21,7 @@ class MhEmployeesByIdView extends GetView<MhEmployeesByIdController> {
           context: context,
           centerTitle: true,
           actions: [
-            Obx(
+            /*Obx(
               () => Visibility(
                 visible: controller.shortlistController.totalShortlisted.value > 0,
                 child: Center(
@@ -45,7 +45,7 @@ class MhEmployeesByIdView extends GetView<MhEmployeesByIdController> {
                 ),
               ),
             ),
-            SizedBox(width: 16.w),
+            SizedBox(width: 16.w),*/
           ]),
       body: Obx(
         () => (controller.employees.value.users ?? []).isEmpty
@@ -129,7 +129,7 @@ class MhEmployeesByIdView extends GetView<MhEmployeesByIdController> {
         onTap: () => controller.onEmployeeClick(user),
         child: Stack(
           children: [
-            Positioned(
+           /* Positioned(
               right: 5,
               top: 3,
               child: Obx(
@@ -139,7 +139,7 @@ class MhEmployeesByIdView extends GetView<MhEmployeesByIdController> {
                       employeeId: user.id!, isFetching: controller.shortlistController.isFetching.value, fromWhere: ''),
                 ),
               ),
-            ),
+            ),*/
             Row(
               children: [
                 _image((user.profilePicture ?? "").imageUrl),
@@ -179,31 +179,32 @@ class MhEmployeesByIdView extends GetView<MhEmployeesByIdController> {
                       Row(
                         children: [
                           _detailsItem(MyAssets.exp, MyStrings.exp.tr, "${user.employeeExperience ?? 0} years"),
-                          _detailsItem(
-                              MyAssets.totalHour, MyStrings.totalHour.tr, "${user.totalWorkingHour ?? 0} hours"),
+                          _detailsItem(MyAssets.totalHour, 'Total Hour:', "${user.totalWorkingHour ?? 0} hours"),
                         ],
                       ),
                       SizedBox(height: 8.h),
                       Row(children: [
-                        _detailsItem(MyAssets.rate, MyStrings.rate.tr,
+                        _detailsItem(MyAssets.rate, 'Rate:',
                             "${Utils.getCurrencySymbol(Get.find<AppController>().user.value.client?.countryName ?? '')}${(user.hourlyRate ?? 0.0).toStringAsFixed(2)}"),
                         _detailsItem(MyAssets.manager, MyStrings.age.tr, user.dateOfBirth?.calculateAge() ?? ''),
                       ]),
-                      SizedBox(height: 4.h),
+                      SizedBox(height: 8.h),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          _detailsItem(MyAssets.calender2, '', '35 Days (Aug & Sep)'),
+                          _detailsItem(MyAssets.calender2, 'Free:', user.available ?? ''),
                           CustomButtons.button(
                             padding: const EdgeInsets.symmetric(horizontal: 15.0),
                             height: 23,
-                            text: "Book Now",
+                            text: (user.available == null || int.parse(user.available!.split(' ').first) <= 0)
+                                ? "Booked"
+                                : "Book Now",
                             margin: EdgeInsets.zero,
                             fontSize: 12,
                             customButtonStyle: CustomButtonStyle.radiusTopBottomCorner,
-                            onTap: (user.isHired == false && user.isSuggested == false)
-                                ? () => controller.onBookNowClick(user)
-                                : null,
+                            onTap: (user.available == null || int.parse(user.available!.split(' ').first) <= 0)
+                                ? null
+                                : () => controller.onBookNowClick(user),
                           ),
                         ],
                       )
