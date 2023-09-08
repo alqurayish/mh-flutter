@@ -12,9 +12,7 @@ class CustomLoader {
       context: context,
       barrierDismissible: false,
       builder: (context) {
-        return const Center(
-          child: CircularProgressIndicator.adaptive(backgroundColor: MyColors.c_C6A34F),
-        );
+        return loading();
       },
     );
   }
@@ -35,7 +33,7 @@ class CustomLoader {
           width: 120,
         ),
         SizedBox(height: 20.h),
-        const SpinKitThreeBounce(
+        const SpinKitCircle(
           color: MyColors.c_C6A34F,
           size: 50,
         ),

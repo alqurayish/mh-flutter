@@ -1,4 +1,6 @@
 import 'package:flutter/cupertino.dart';
+import 'package:mh/app/common/widgets/shimmer_widget.dart';
+import 'package:mh/app/modules/employee/employee_home/widgets/employee_bottom_nav_bar_widget.dart';
 import 'package:mh/app/modules/employee/employee_home/widgets/employee_home_body_widget.dart';
 import 'package:mh/app/routes/app_pages.dart';
 import '../../../../common/utils/exports.dart';
@@ -34,7 +36,8 @@ class EmployeeHomeView extends GetView<EmployeeHomeController> {
               Obx(() => controller.notificationsController.unreadCount.value == 0
                   ? IconButton(
                       onPressed: () {
-                        Get.toNamed(Routes.notifications, arguments: controller.appController.user.value.employee?.id??'');
+                        Get.toNamed(Routes.notifications,
+                            arguments: controller.appController.user.value.employee?.id ?? '');
                       },
                       icon: const Icon(CupertinoIcons.bell))
                   : InkWell(
@@ -66,9 +69,8 @@ class EmployeeHomeView extends GetView<EmployeeHomeController> {
               )
             ],
           ),
-          body: Obx(() => controller.employeeHomeDataLoaded.value == false
-              ? Center(child: Container(color: Colors.red, height: 100, width: 100,))
-              : const EmployeeHomeBodyWidget())),
+          bottomNavigationBar: const EmployeeBottomNavBarWidget(),
+          body: const EmployeeHomeBodyWidget()),
     );
   }
 }

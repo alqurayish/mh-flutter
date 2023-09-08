@@ -1,12 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:mh/app/common/widgets/rating_review_widget.dart';
 import 'package:mh/app/modules/employee/employee_home/models/common_response_model.dart';
+import 'package:mh/app/modules/employee/employee_home/models/employee_check_in_request_model.dart';
+import 'package:mh/app/modules/employee/employee_home/models/employee_check_out_request_model.dart';
 import 'package:mh/app/modules/employee/employee_home/models/review_dialog_model.dart';
 import 'package:mh/app/modules/employee/employee_home/models/review_request_model.dart';
 import 'package:mh/app/modules/employee/employee_home/models/single_notification_model_for_employee.dart';
+import 'package:mh/app/modules/employee/employee_home/models/todays_work_schedule_model.dart';
 import 'package:mh/app/modules/employee/employee_home/widgets/slide_action_widget.dart';
 import 'package:mh/app/modules/notifications/controllers/notifications_controller.dart';
 import 'package:mh/app/modules/notifications/models/notification_response_model.dart';
@@ -22,7 +24,6 @@ import '../../../../common/widgets/custom_loader.dart';
 import '../../../../models/check_in_out_histories.dart';
 import '../../../../models/custom_error.dart';
 import '../../../../models/employee_daily_statistics.dart';
-import '../../../../models/user_info.dart';
 import '../../../../repository/api_helper.dart';
 import '../../../../routes/app_pages.dart';
 import '../models/today_check_in_out_details.dart';
@@ -41,28 +42,27 @@ class EmployeeHomeController extends GetxController {
   RxBool checkOut = false.obs;
 
   RxString locationFetchError = "".obs;
-
   Position? currentLocation;
+
   Rx<TodayCheckInOutDetails> todayCheckInOutDetails = TodayCheckInOutDetails().obs;
-  RxBool todayDetailsDataLoaded = false.obs;
+  RxBool todayCheckInCheckOutDetailsDataLoading = true.obs;
 
   // unread msg track
   RxInt unreadMsgFromClient = 0.obs;
   RxInt unreadMsgFromAdmin = 0.obs;
 
-  Rx<NotificationModel> singleNotification = NotificationModel().obs;
-  RxBool singleNotificationDataLoaded = false.obs;
+  RxList<NotificationModel> bookingHistoryList = <NotificationModel>[].obs;
+  RxBool bookingHistoryDataLoaded = false.obs;
 
   RxDouble rating = 0.0.obs;
   TextEditingController tecReview = TextEditingController();
 
-  RxBool employeeHomeDataLoaded = false.obs;
-
-  RxDouble distanceFromEmployeeToRestaurant = 0.0.obs;
+  Rx<TodayWorkScheduleModel> todayWorkSchedule = TodayWorkScheduleModel().obs;
+  RxBool todayWorkScheduleDataLoading = true.obs;
 
   @override
-  void onInit() {
-    homeMethods();
+  void onInit() async {
+    await homeMethods();
     super.onInit();
   }
 
@@ -72,12 +72,69 @@ class EmployeeHomeController extends GetxController {
     super.onReady();
   }
 
-  void homeMethods() {
+  Future<void> homeMethods() async {
     notificationsController.getNotificationList;
-    _getCurrentLocation();
-   // _getSingleNotification();
-    _getTodayCheckInOutDetails();
     _trackUnreadMsg();
+    await _getCurrentLocation();
+    await _getTodayWorkSchedule();
+    await _getTodayCheckInOutDetails();
+    await getBookingHistory();
+  }
+
+  Future<void> _getCurrentLocation() async {
+    Either<CustomError, Position> response = await LocationController.determinePosition();
+    response.fold((l) {
+      locationFetchError.value = l.msg;
+    }, (Position position) {
+      currentLocation = position;
+    });
+  }
+
+  Future<void> _getTodayWorkSchedule() async {
+    Either<CustomError, TodayWorkScheduleModel> responseData = await _apiHelper.getTodayWorkSchedule();
+    todayWorkScheduleDataLoading.value = false;
+    responseData.fold((CustomError customError) {
+      Utils.errorDialog(context!, customError..onRetry = _getTodayWorkSchedule);
+    }, (TodayWorkScheduleModel todayWorkScheduleInfo) {
+      if (todayWorkScheduleInfo.status == 'success' && todayWorkScheduleInfo.todayWorkScheduleDetailsModel != null) {
+        todayWorkSchedule.value = todayWorkScheduleInfo;
+        todayWorkSchedule.refresh();
+      }
+    });
+  }
+
+  Future<void> getBookingHistory() async {
+    Either<CustomError, SingleNotificationModelForEmployee> responseData =
+        await _apiHelper.singleNotificationForEmployee();
+
+    responseData.fold((CustomError customError) {
+      Utils.errorDialog(context!, customError..onRetry = getBookingHistory);
+    }, (SingleNotificationModelForEmployee response) {
+      if (response.status == "success" && response.statusCode == 200 && response.details != null) {
+        bookingHistoryList.value = response.details ?? [];
+        bookingHistoryList.refresh();
+      }
+      bookingHistoryDataLoaded.value = true;
+    });
+  }
+
+  Future<void> _getTodayCheckInOutDetails() async {
+    Either<CustomError, TodayCheckInOutDetails> response =
+        await _apiHelper.getTodayCheckInOutDetails(appController.user.value.employee?.id ?? '');
+    todayCheckInCheckOutDetailsDataLoading.value = false;
+    response.fold((CustomError customError) {
+      Utils.errorDialog(context!, customError..onRetry = _getTodayCheckInOutDetails);
+    }, (TodayCheckInOutDetails details) {
+      Logcat.msg(details.toJson().toString(), printWithLog: true);
+      if (details.status == 'success' && details.details != null) {
+        todayCheckInOutDetails.value = details;
+        checkOut.value = false;
+        checkIn.value = true;
+      } else if (details.status == 'success' && details.details == null) {
+        checkIn.value = false;
+        checkOut.value = false;
+      }
+    });
   }
 
   void onDashboardClick() {
@@ -132,66 +189,74 @@ class EmployeeHomeController extends GetxController {
         checkInCheckOutDetails: todayCheckInOutDetails.value.details?.checkInCheckOutDetails,
       ));
 
-  void onCheckInCheckOut() {
+  Future<void> onCheckInCheckOut() async {
     if (!checkIn.value && !checkOut.value) {
-      _onCheckIn();
+      await _onCheckIn();
     } else {
       _onCheckout();
     }
   }
 
   Future<void> onBreakTimePickDone(int hour, int min) async {
-    Map<String, dynamic> data = {
-      "checkOutTime": DateTime.now().toLocal().toString(),
-      "id": todayCheckInOutDetails.value.details!.id!,
-      "employeeId": appController.user.value.userId,
-      "checkOut": true,
-      if (currentLocation?.latitude != null) "lat": currentLocation!.latitude.toString(),
-      if (currentLocation?.longitude != null) "long": currentLocation?.longitude.toString(),
-      "breakTime": (hour * 60) + (min * 5),
-      "checkOutDistance": double.parse(distanceFromEmployeeToRestaurant.value.toStringAsFixed(2)),
-      "totalWorkingHour":
-          double.parse((double.parse(dailyStatistics.workingHour.split(' ').first) / 60).toStringAsFixed(2))
-    };
-
     CustomLoader.show(context!);
 
-    await _apiHelper.checkout(data).then((response) {
-      CustomLoader.hide(context!);
-      response.fold((CustomError customError) {
-        CustomDialogue.information(
-          context: context!,
-          title: "Failed to Checkout",
-          description: customError.msg,
-        );
-      }, (Response checkoutResponse) {
-        refreshPage();
-      });
+    EmployeeCheckOutRequestModel employeeCheckOutRequestModel = EmployeeCheckOutRequestModel(
+        id: todayCheckInOutDetails.value.details?.id ?? '',
+        checkOut: true,
+        lat: '${currentLocation?.latitude ?? 0.0}',
+        long: '${currentLocation?.longitude ?? 0.0}',
+        breakTime: (hour * 60) + (min * 5),
+        totalWorkingHour:
+            double.parse((double.parse(dailyStatistics.workingHour.split(' ').first) / 60).toStringAsFixed(2)),
+        checkOutDistance: restaurantDistanceFromEmployee(
+            targetLat:
+                double.parse('${todayWorkSchedule.value.todayWorkScheduleDetailsModel?.restaurantDetails?.lat ?? 0.0}'),
+            targetLng: double.parse(
+                '${todayWorkSchedule.value.todayWorkScheduleDetailsModel?.restaurantDetails?.long ?? 0.0}')),
+        checkOutTime: DateTime.now().toLocal().toString());
+
+    Either<CustomError, Response> response =
+        await _apiHelper.checkout(employeeCheckOutRequestModel: employeeCheckOutRequestModel);
+    CustomLoader.hide(context!);
+    response.fold((CustomError customError) {
+      CustomDialogue.information(
+        context: context!,
+        title: "Failed to Checkout",
+        description: customError.msg,
+      );
+    }, (Response checkoutResponse) {
+      refreshPage();
     });
   }
 
   Future<void> _onCheckIn() async {
     CustomLoader.show(context!);
-    Map<String, dynamic> data = {
-      "checkInTime": DateTime.now().toLocal().toString(),
-      "employeeId": appController.user.value.userId,
-      "checkIn": true,
-      if (currentLocation?.latitude != null) "lat": currentLocation!.latitude.toString(),
-      if (currentLocation?.longitude != null) "long": currentLocation?.longitude.toString(),
-      "checkInDistance": double.parse(distanceFromEmployeeToRestaurant.value.toStringAsFixed(2)),
-    };
 
-    await _apiHelper.checkIn(data).then((response) {
-      CustomLoader.hide(context!);
-      response.fold((CustomError customError) {
-        CustomDialogue.information(
-          context: context!,
-          title: "Failed to CheckIn",
-          description: customError.msg,
-        );
-      }, (TodayCheckInOutDetails clients) {
-        refreshPage();
-      });
+    EmployeeCheckInRequestModel employeeCheckInRequestModel = EmployeeCheckInRequestModel(
+        employeeId: appController.user.value.employee?.id ?? '',
+        hiredBy: todayWorkSchedule.value.todayWorkScheduleDetailsModel?.restaurantDetails?.hiredBy ?? "",
+        checkIn: true,
+        lat: '${currentLocation?.latitude ?? 0.0}',
+        long: '${currentLocation?.longitude ?? 0.0}',
+        checkInDistance: restaurantDistanceFromEmployee(
+            targetLat:
+                double.parse('${todayWorkSchedule.value.todayWorkScheduleDetailsModel?.restaurantDetails?.lat ?? 0.0}'),
+            targetLng: double.parse(
+                '${todayWorkSchedule.value.todayWorkScheduleDetailsModel?.restaurantDetails?.long ?? 0.0}')),
+        checkInTime: DateTime.now().toLocal().toString());
+
+    Either<CustomError, CommonResponseModel> response =
+        await _apiHelper.checkIn(employeeCheckInRequestModel: employeeCheckInRequestModel);
+    CustomLoader.hide(context!);
+
+    response.fold((CustomError customError) {
+      CustomDialogue.information(
+        context: context!,
+        title: "Failed to CheckIn",
+        description: customError.msg,
+      );
+    }, (CommonResponseModel clients) {
+      refreshPage();
     });
   }
 
@@ -203,92 +268,16 @@ class EmployeeHomeController extends GetxController {
     key.currentState?.reset();
   }
 
-  void refreshPage() {
+  void refreshPage() async {
+    locationFetchError.value = "";
+    todayWorkScheduleDataLoading.value = true;
+    todayCheckInCheckOutDetailsDataLoading.value = true;
     checkIn.value = false;
     checkOut.value = false;
-    locationFetchError.value = "";
-    employeeHomeDataLoaded.value = false;
-    todayDetailsDataLoaded.value = false;
-    singleNotificationDataLoaded.value = false;
-    homeMethods();
-    Get.rawSnackbar(
-        snackPosition: SnackPosition.BOTTOM,
-        margin: const EdgeInsets.all(10.0),
-        title: 'Success',
-        message: 'This page has been refreshed...',
-        backgroundColor: Colors.green.shade600,
-        borderRadius: 10.0);
-  }
+    bookingHistoryDataLoaded.value = false;
 
-  Future<void> _getTodayCheckInOutDetails() async {
-    await _apiHelper.clientDetails(appController.user.value.userId).then((response) {
-      response.fold((CustomError customError) {
-        Utils.errorDialog(context!, customError..onRetry = _getTodayCheckInOutDetails);
-      }, (UserInfo userInfo) {
-        appController.user.value.employee = appController.user.value.employee?.copyWith(userInfo);
-        appController.user.refresh();
-      });
-    });
-
-    if (!(appController.user.value.employee?.isHired ?? false)) {
-      todayDetailsDataLoaded.value = true;
-      return;
-    }
-    // if (loading.value) return;
-
-    // loading.value = true;
-
-    await _apiHelper.getTodayCheckInOutDetails(appController.user.value.userId).then((response) {
-      //loading.value = false;
-
-      response.fold((CustomError customError) {
-        Utils.errorDialog(context!, customError..onRetry = _getTodayCheckInOutDetails);
-      }, (TodayCheckInOutDetails details) {
-        todayCheckInOutDetails.value = details;
-        Logcat.msg(details.toJson().toString(), printWithLog: true);
-
-        // check in
-        if (details.details == null ||
-            (!details.details!.checkInCheckOutDetails!.checkIn! &&
-                !details.details!.checkInCheckOutDetails!.emmergencyCheckIn!)) {
-          checkIn.value = false;
-          checkOut.value = false;
-        }
-        // check out
-        else if (!details.details!.checkInCheckOutDetails!.checkOut! &&
-            !details.details!.checkInCheckOutDetails!.emmergencyCheckOut!) {
-          checkIn.value = true;
-        } else {
-          checkIn.value = true;
-          checkOut.value = true;
-        }
-        todayDetailsDataLoaded.value = true;
-      });
-    });
-  }
-
-  // normal or emergency
-  void _getCurrentLocation() {
-    LocationController.determinePosition().then((Either<CustomError, Position> value) {
-      value.fold((l) {
-        locationFetchError.value = l.msg;
-      }, (Position position) {
-        currentLocation = position;
-      });
-    });
-  }
-
-  void getDistance() {
-    if (currentLocation != null) {
-      distanceFromEmployeeToRestaurant.value = LocationController.calculateDistance(
-          targetLat: double.parse(singleNotification.value.hiredByLat ?? ''),
-          targetLong: double.parse(singleNotification.value.hiredByLong ?? ''),
-          currentLat: currentLocation!.latitude,
-          // 23.81195717731293,
-          currentLong: currentLocation!.longitude
-          // 90.35603307187557
-          );
-    }
+    await homeMethods();
+    Utils.showSnackBar(message: 'This page has been refreshed', isTrue: true);
   }
 
   void _trackUnreadMsg() {
@@ -317,73 +306,9 @@ class EmployeeHomeController extends GetxController {
         unreadMsgFromAdmin.value = data["${appController.user.value.userId}_unread"];
       }
     });
-
-    employeeHomeDataLoaded.value = true;
   }
 
-  void onHiredYouTap() {
-    Get.bottomSheet(Container(
-      color: MyColors.lightCard(context!),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          ListTile(
-            onTap: () {
-              _updateNotification(id: singleNotification.value.id ?? '', hiredStatus: 'ALLOW');
-            },
-            leading: const Icon(CupertinoIcons.check_mark, color: Colors.grey),
-            title: Text('Allow', style: MyColors.l111111_dtext(context!).regular16_5),
-          ),
-          const Divider(
-            height: 1,
-          ),
-          ListTile(
-            onTap: () {
-              _updateNotification(id: singleNotification.value.id ?? '', hiredStatus: 'DENY');
-            },
-            leading: const Icon(CupertinoIcons.clear, color: Colors.grey),
-            title: Text('Deny', style: MyColors.l111111_dtext(context!).regular16_5),
-          ),
-          const Divider(
-            height: 1,
-          ),
-          ListTile(
-            onTap: () {
-              Get.back();
-            },
-            leading: const Icon(
-              Icons.remove,
-              color: Colors.red,
-            ),
-            title: Text('Cancel', style: MyColors.l111111_dtext(context!).semiBold15.copyWith(color: Colors.red)),
-          ),
-          const Divider(
-            height: 1,
-          ),
-        ],
-      ),
-    ));
-  }
-
-  void _getSingleNotification() {
-    _apiHelper
-        .singleNotificationForEmployee()
-        .then((Either<CustomError, SingleNotificationModelForEmployee> responseData) {
-      responseData.fold((CustomError customError) {
-        Utils.errorDialog(context!, customError..onRetry = _getSingleNotification);
-      }, (SingleNotificationModelForEmployee response) {
-        if (response.status == "success" && response.statusCode == 200 && response.details != null) {
-          singleNotification.value = response.details!;
-          singleNotification.refresh();
-          getDistance();
-        }
-        singleNotificationDataLoaded.value = true;
-      });
-    });
-  }
-
-  void _updateNotification({required String id, required String hiredStatus}) {
-    Get.back();
+  void updateNotification({required String id, required String hiredStatus}) {
     CustomLoader.show(context!);
 
     NotificationUpdateRequestModel notificationUpdateRequestModel =
@@ -392,11 +317,13 @@ class EmployeeHomeController extends GetxController {
         .updateNotification(notificationUpdateRequestModel: notificationUpdateRequestModel)
         .then((Either<CustomError, NotificationUpdateResponseModel> response) {
       CustomLoader.hide(context!);
+      Get.back();
+      Get.back();
       response.fold((CustomError customError) {
         Utils.errorDialog(context!, customError);
       }, (NotificationUpdateResponseModel responseModel) {
         if (responseModel.status == 'success' && responseModel.statusCode == 200) {
-          _getSingleNotification();
+          getBookingHistory();
           _getTodayCheckInOutDetails();
         }
       });
@@ -417,14 +344,12 @@ class EmployeeHomeController extends GetxController {
             response.reviewDialogDetailsModel != null &&
             response.reviewDialogDetailsModel!.isNotEmpty) {
           Get.bottomSheet(RatingReviewWidget(
-                  reviewFor: 'client',
-                  onCancelClick: onCancelClick,
-                  onRatingUpdate: onRatingUpdate,
-                  onReviewSubmit: onReviewSubmitClick,
-                  reviewDialogDetailsModel: response.reviewDialogDetailsModel!.first,
-                  tecReview: tecReview)
-              //reviewDialogWidget(reviewDialogDetails: response.reviewDialogDetailsModel!.first)
-              );
+              reviewFor: 'client',
+              onCancelClick: onCancelClick,
+              onRatingUpdate: onRatingUpdate,
+              onReviewSubmit: onReviewSubmitClick,
+              reviewDialogDetailsModel: response.reviewDialogDetailsModel!.first,
+              tecReview: tecReview));
         }
       });
     });
@@ -485,48 +410,39 @@ class EmployeeHomeController extends GetxController {
     rating.value = rat;
   }
 
-  bool get showHiredWidget {
-    return singleNotification.value.hiredStatus != null &&
-        singleNotification.value.hiredStatus?.toUpperCase() == 'ALLOW' &&
-        appController.user.value.employee?.isHired == true &&
-        singleNotification.value.fromDate != null &&
-        singleNotification.value.fromTime != null &&
-        singleNotification.value.toDate != null &&
-        singleNotification.value.toTime != null;
+  void onCalenderClick() {
+    Get.toNamed(Routes.calender, arguments: [appController.user.value.employee?.id ?? 0, '']);
+  }
+
+  void onBookedHistoryClick() {
+    Get.toNamed(Routes.employeeBookedHistory);
+  }
+
+  void onHiredHistoryClick() {}
+
+  double restaurantDistanceFromEmployee({required double targetLat, required double targetLng}) {
+    if (currentLocation != null) {
+      return LocationController.calculateDistance(
+          targetLat: targetLat,
+          targetLong: targetLng,
+          currentLat: //currentLocation!.latitude,
+              23.76856796911088,
+          currentLong: //currentLocation!.longitude
+              90.35680051892997);
+    }
+    return 0.0;
   }
 
   bool get showCheckInCheckOutWidget {
-    return singleNotification.value.hiredStatus?.toUpperCase() == "ALLOW" &&
-        distanceFromEmployeeToRestaurant.value < 200 &&
-        appController.user.value.employee?.isHired == true &&
+    return todayWorkScheduleDataLoading.value == false &&
+        todayWorkSchedule.value.todayWorkScheduleDetailsModel != null &&
+        restaurantDistanceFromEmployee(
+                targetLat: double.parse(
+                    todayWorkSchedule.value.todayWorkScheduleDetailsModel?.restaurantDetails?.lat ?? '0.0'),
+                targetLng: double.parse(
+                    todayWorkSchedule.value.todayWorkScheduleDetailsModel?.restaurantDetails?.long ?? '0.0')) <
+            200 &&
+        todayCheckInCheckOutDetailsDataLoading.value == false &&
         (checkIn.value == false || checkOut.value == false);
-  }
-
-  bool get showDistanceWidget {
-    return (singleNotification.value.hiredStatus?.toUpperCase() == "REQUESTED" ||
-            singleNotification.value.hiredStatus?.toUpperCase() == "ALLOW") &&
-        distanceFromEmployeeToRestaurant.value > 200;
-  }
-
-  bool get showTodayDashBoard {
-    return checkIn.value == true &&
-        appController.user.value.employee?.isHired == true &&
-        singleNotification.value.hiredStatus?.toUpperCase() == "ALLOW";
-  }
-
-  bool get showRestaurantAddress {
-    return singleNotification.value.hiredStatus?.toUpperCase() == "ALLOW" &&
-        appController.user.value.employee?.isHired == true;
-  }
-
-  bool get showEmergencyCheckInCheckOut {
-    return appController.user.value.employee?.isHired == true &&
-        singleNotification.value.hiredStatus?.toUpperCase() == "ALLOW" &&
-        distanceFromEmployeeToRestaurant.value > 200 &&
-        checkIn.value == false;
-  }
-
-  void onCalenderClick() {
-    Get.toNamed(Routes.calender, arguments: appController.user.value.employee?.id??0);
   }
 }

@@ -15,20 +15,21 @@ class _SlideAbleWidgetState extends State<SlideAbleWidget> {
 
   @override
   Widget build(BuildContext context) {
+    print('_SlideAbleWidgetState.build: ${widget.checkIn}');
     if (widget.checkIn == true) {
       _position = MediaQuery.of(context).size.width - 105;
     }
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: Stack(
         children: [
           Container(
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(50.0),
+              borderRadius: BorderRadius.circular(30.0),
               color: MyColors.c_C6A34F,
             ),
             width: double.infinity,
-            height: 50,
+            height: 60,
             alignment: Alignment.center,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -79,7 +80,7 @@ class _SlideAbleWidgetState extends State<SlideAbleWidget> {
               child: Padding(
                 padding: const EdgeInsets.only(top: 5.0, left: 5.0),
                 child: CircleAvatar(
-                  radius: 20,
+                  radius: 25,
                   backgroundColor: Colors.white,
                   child: Icon(
                     _position == 0 && widget.checkIn == false ? Icons.arrow_forward : Icons.arrow_back,

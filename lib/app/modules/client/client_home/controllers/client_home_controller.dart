@@ -228,13 +228,7 @@ class ClientHomeController extends GetxController {
 
   void refreshPage() {
     homeMethods();
-    Get.rawSnackbar(
-        snackPosition: SnackPosition.BOTTOM,
-        margin: const EdgeInsets.all(10.0),
-        title: 'Success',
-        message: 'This page has been refreshed...',
-        backgroundColor: Colors.green.shade600,
-        borderRadius: 10.0);
+    Utils.showSnackBar(message: 'This page has been refreshed...', isTrue: true);
   }
 
   void showReviewBottomSheet() {

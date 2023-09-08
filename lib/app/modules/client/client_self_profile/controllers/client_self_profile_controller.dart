@@ -81,13 +81,7 @@ class ClientSelfProfileController extends GetxController {
       }, (ClientRegistrationResponse clientRegistrationResponse) async {
         if(clientRegistrationResponse.statusCode == 201) {
           await appController.updateToken(clientRegistrationResponse.token!);
-          Get.rawSnackbar(
-              snackPosition: SnackPosition.TOP,
-              margin: const EdgeInsets.all(10.0),
-              title: 'Success',
-              message: 'Profile has been updated successfully...',
-              backgroundColor: Colors.green.shade600,
-              borderRadius: 10.0);
+          Utils.showSnackBar(message: 'Profile has been updated successfully...', isTrue: true);
         } else if((clientRegistrationResponse.errors ?? []).isNotEmpty) {
           _errorDialog("Invalid Input", clientRegistrationResponse.errors?.first.msg ?? "Please check you input field and try again");
         } else {

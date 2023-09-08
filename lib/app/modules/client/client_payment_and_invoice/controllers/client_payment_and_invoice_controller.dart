@@ -5,7 +5,6 @@ import 'package:mh/app/modules/stripe_payment/models/stripe_request_model.dart';
 import 'package:mh/app/modules/stripe_payment/models/stripe_response_model.dart';
 import 'package:mh/app/routes/app_pages.dart';
 import '../../../../common/controller/app_controller.dart';
-import '../../../../common/controller/payment_controller.dart';
 import '../../../../common/utils/exports.dart';
 import '../../../../common/widgets/custom_loader.dart';
 import '../../../../models/custom_error.dart';
@@ -38,14 +37,6 @@ class ClientPaymentAndInvoiceController extends GetxController {
                     : 'usd'));
   }
 
-  Future<void> _cardPayment(double amount) async {
-    final PaymentController paymentController = Get.put(PaymentController());
-    paymentController.makePayment(
-      amount: amount,
-      currency: "EUR",
-      customerName: appController.user.value.userName,
-    );
-  }
 
   Future<void> onPaymentSuccess() async {
     CustomLoader.show(context!);

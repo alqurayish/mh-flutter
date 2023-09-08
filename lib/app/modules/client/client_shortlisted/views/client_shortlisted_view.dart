@@ -1,4 +1,6 @@
 import 'package:mh/app/common/controller/app_controller.dart';
+import 'package:mh/app/modules/client/client_shortlisted/models/add_to_shortlist_request_model.dart';
+import 'package:mh/app/routes/app_pages.dart';
 
 import '../../../../common/utils/exports.dart';
 import '../../../../common/widgets/custom_appbar.dart';
@@ -62,7 +64,6 @@ class ClientShortlistedView extends GetView<ClientShortlistedController> {
     return Column(
       children: [
         Container(
-          height: 110.h,
           margin: EdgeInsets.symmetric(horizontal: 24.w),
           decoration: BoxDecoration(
             color: MyColors.lightCard(controller.context!),
@@ -97,24 +98,11 @@ class ClientShortlistedView extends GetView<ClientShortlistedController> {
                                   const Spacer(),
                                   Obx(
                                     () => controller.shortlistController.getIcon(
-                                     employeeId: employee.employeeId!,
-                                     isFetching: controller.shortlistController.isFetching.value,
-                                      fromWhere: ''
-                                    ),
+                                        requestedDateList: <RequestDateModel>[],
+                                        employeeId: employee.employeeId!,
+                                        isFetching: controller.shortlistController.isFetching.value,
+                                        fromWhere: ''),
                                   ),
-                                  // Obx(
-                                  //   () => controller.loadingRemoveFromShortcut.value && employee.id == controller.removeShortlistId
-                                  //       ? const Center(
-                                  //           child: CircularProgressIndicator.adaptive(),
-                                  //         )
-                                  //       : GestureDetector(
-                                  //           onTap: () => controller.onBookmarkClick(employee),
-                                  //           child: const Icon(
-                                  //             Icons.bookmark,
-                                  //             color: MyColors.c_C6A34F,
-                                  //           ),
-                                  //         ),
-                                  // ),
                                   SizedBox(width: 9.w),
                                 ],
                               ),
@@ -123,7 +111,7 @@ class ClientShortlistedView extends GetView<ClientShortlistedController> {
                         ),
                       ],
                     ),
-                    SizedBox(height: 3.h),
+                    SizedBox(height: 10.h),
                     Divider(
                       thickness: .5,
                       height: 1,
@@ -132,95 +120,58 @@ class ClientShortlistedView extends GetView<ClientShortlistedController> {
                     ),
                     SizedBox(height: 10.h),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Expanded(
-                          child: Column(
-                            children: [
-                              GestureDetector(
-                                onTap: () => controller.onDateSelect(employee.sId!),
-                                child: Container(
-                                  height: 25.h,
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: 5.w,
-                                    vertical: 2.h,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: MyColors.c_F5F5F5,
-                                    borderRadius: BorderRadius.circular(5),
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      Image.asset(MyAssets.calender),
-                                      SizedBox(width: 10.w),
-                                      Text(
-                                        employee.fromDate != null && employee.toDate != null
-                                            ? "${employee.fromDate!.dMMMy} - ${employee.toDate!.dMMMy} (${employee.fromDate!.differenceInDays(employee.toDate!)})"
-                                            : "--/--/--   -   --/--/--",
-                                        style: MyColors.c_111111.medium12,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(height: 7),
-                              GestureDetector(
-                                onTap: () => controller.onTimeSelect(employee.sId!),
-                                child: Container(
-                                  height: 25.h,
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: 5.w,
-                                    vertical: 2.h,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: MyColors.c_F5F5F5,
-                                    borderRadius: BorderRadius.circular(5),
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      Image.asset(MyAssets.totalHour),
-                                      SizedBox(width: 10.w),
-                                      Text(
-                                        employee.fromTime != null && employee.toTime != null
-                                            ? "From ${employee.fromTime}   To ${employee.toTime}"
-                                            : "From --:--   To --:--",
-                                        style: MyColors.c_111111.medium12,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(width: 17.w),
-                        Obx(
-                          () => GestureDetector(
-                            onTap: () => controller.onSelectClick(employee),
-                            child: Container(
-                              width: 25.h,
-                              height: 25.h,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: controller.shortlistController.selectedForHire.contains(employee)
-                                    ? Colors.green.shade400
-                                    : MyColors.c_F5F5F5,
-                                border: Border.all(
-                                  color: controller.shortlistController.selectedForHire.contains(employee)
-                                      ? Colors.green
-                                      : Colors.grey.shade300,
-                                ),
-                              ),
-                              child: Icon(
-                                Icons.check,
-                                size: 14,
-                                color: controller.shortlistController.selectedForHire.contains(employee)
-                                    ? Colors.white
-                                    : Colors.grey.shade300,
-                              ),
+                        InkWell(
+                          onTap: ()=>controller.onDaysSelectedClick(requestDateList: employee.requestDateList??[]),
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 3.0),
+                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(5.0), color: MyColors.c_F5F5F5),
+                            child: Row(
+                              children: [
+                                Image.asset(MyAssets.calender2, height: 20, width: 20),
+                                Text(' ${employee.requestDateList?.calculateTotalDays()} days selected',
+                                    style: MyColors.l111111_dwhite(Get.context!).medium12)
+                              ],
                             ),
                           ),
                         ),
-                        SizedBox(width: 10.w),
+                        if (employee.requestDateList!.isNotEmpty)
+                          Obx(
+                            () => GestureDetector(
+                              onTap: () => controller.onSelectClick(employee),
+                              child: Container(
+                                width: 25.h,
+                                height: 25.h,
+                                margin: EdgeInsets.only(right: 10.0.w),
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: controller.shortlistController.selectedForHire.contains(employee)
+                                      ? Colors.green.shade400
+                                      : MyColors.c_F5F5F5,
+                                  border: Border.all(
+                                    color: controller.shortlistController.selectedForHire.contains(employee)
+                                        ? Colors.green
+                                        : Colors.grey.shade300,
+                                  ),
+                                ),
+                                child: Icon(
+                                  Icons.check,
+                                  size: 14,
+                                  color: controller.shortlistController.selectedForHire.contains(employee)
+                                      ? Colors.white
+                                      : Colors.grey.shade300,
+                                ),
+                              ),
+                            ),
+                          )
+                        else
+                          Padding(
+                            padding: const EdgeInsets.only(right: 10.0),
+                            child: InkWell(
+                                onTap: () => Get.toNamed(Routes.calender, arguments: [employee.employeeId ?? '', employee.sId??'']),
+                                child: Image.asset(MyAssets.calender2, height: 25, width: 25)),
+                          ),
                       ],
                     )
                   ],
@@ -240,15 +191,10 @@ class ClientShortlistedView extends GetView<ClientShortlistedController> {
                 color: MyColors.c_C6A34F),
             child: Center(
                 child: Text(
-              (employee.fromDate != null &&
-                      employee.toDate != null &&
-                      employee.fromTime != null &&
-                      employee.toTime != null &&
-                      employee.employeeDetails?.hourlyRate != null)
-                  ? 'Total Rate: ${Utils.getCurrencySymbol(Get.find<AppController>().user.value.client?.countryName ?? '')}${controller.calculateTotalRate(fromTime: employee.fromTime??'', toTime: employee.toTime??'', daysDifference: employee.fromDate!.differenceInDays(employee.toDate!), hourlyRate: employee.employeeDetails?.hourlyRate ?? 0.0).toStringAsFixed(2)}'
-                  : 'Hourly Rate: ${Utils.getCurrencySymbol(Get.find<AppController>().user.value.client?.countryName ?? '')}${employee.employeeDetails?.hourlyRate!.toStringAsFixed(2) ?? '0.00'}',
-              style: const TextStyle(color: MyColors.c_FFFFFF),
-            )))
+                    employee.requestDateList!.isNotEmpty
+                        ? 'Total Rate: ${Utils.getCurrencySymbol(Get.find<AppController>().user.value.client?.countryName ?? '')}${employee.requestDateList?.calculateTotalHourlyRate(hourlyRate: employee.employeeDetails?.hourlyRate ?? 0.0)}'
+                        : 'Hourly Rate: ${Utils.getCurrencySymbol(Get.find<AppController>().user.value.client?.countryName ?? '')}${employee.employeeDetails?.hourlyRate!.toStringAsFixed(2) ?? '0.00'}',
+                    style: MyColors.white.medium13)))
       ],
     );
   }

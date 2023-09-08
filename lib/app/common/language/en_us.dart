@@ -69,7 +69,7 @@ Map<String, String> en = {
   MyStrings.invoicePayment: "Invoice & Payment",
   MyStrings.helpSupport: "Help & Support",
   MyStrings.myDashboard: "My\nDashboard",
-  MyStrings.emergencyCheckInCheckOut: "Emergency\nCheck in/Check out",
+  MyStrings.emergencyCheckInCheckOut: "Emergency\nCheck in/out",
   MyStrings.areShowing: " are showing",
   MyStrings.exp: "Exp: ",
   MyStrings.countYears: "@year years",

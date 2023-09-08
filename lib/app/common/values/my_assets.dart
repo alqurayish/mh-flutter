@@ -20,6 +20,7 @@ class MyAssets {
   static const invoicePayment = "assets/images/invoice_payment.png";
   static const splash = "assets/images/splash.png";
   static const request = "assets/images/request.jpeg";
+  static const restaurant = "assets/images/restaurant.jpeg";
 
   static const emergencyCheckInCheckout = "assets/images/emergency_checin_checkout.png";
 
@@ -66,6 +67,8 @@ class MyAssets {
   static const pastryChef = "assets/icons/positions/pastry_chef.png";
   static const locationPin = "assets/icons/location_pin.png";
   static const msgSend = "assets/icons/msg_send.png";
+  static const bookedHistory = "assets/icons/booked_history.png";
+  static const hiredHistory = "assets/icons/hired_history.png";
 
   //Calender View
   static const String calender1 = 'assets/icons/calender1.png';
@@ -85,6 +88,7 @@ class _Lottie {
   String notFound = "assets/lottie/not_found.json";
   String noNotification = "assets/lottie/no_notification.json";
   String mapLoading = "assets/lottie/map_loading.json";
+  String calenderLoading = "assets/lottie/calender_loading.json";
 }
 
 class _PaymentMethod {

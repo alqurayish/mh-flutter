@@ -8,7 +8,7 @@ import 'package:mh/app/modules/calender/controllers/calender_controller.dart';
 import 'package:mh/app/modules/client/client_shortlisted/models/add_to_shortlist_request_model.dart';
 
 class ShortListTimeRangeWidget extends StatelessWidget {
-  final RequestDate requestDate;
+  final RequestDateModel requestDate;
   final int index;
   const ShortListTimeRangeWidget({Key? key, required this.requestDate, required this.index}) : super(key: key);
 
@@ -98,7 +98,7 @@ class ShortListTimeRangeWidget extends StatelessWidget {
     );
   }
 
-  Widget _timeRangeWidget({required RequestDate requestDate}) {
+  Widget _timeRangeWidget({required RequestDateModel requestDate}) {
     return Row(
       children: [
         _timeWidget(time: requestDate.startTime ?? ''),

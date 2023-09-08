@@ -1,4 +1,5 @@
 import 'package:mh/app/common/controller/app_controller.dart';
+import 'package:mh/app/modules/client/client_shortlisted/models/add_to_shortlist_request_model.dart';
 
 import '../../../../common/utils/exports.dart';
 import '../../../../common/widgets/custom_appbar.dart';
@@ -98,6 +99,7 @@ class ClientMyEmployeeView extends GetView<ClientMyEmployeeController> {
               top: 3,
               child: Obx(
                 () => controller.shortlistController.getIcon(
+                    requestedDateList: <RequestDateModel>[],
                     employeeId: hiredHistory.id!,
                     isFetching: controller.shortlistController.isFetching.value,
                     fromWhere: ''),

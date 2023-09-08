@@ -106,11 +106,13 @@ extension TextColor on Color {
   TextStyle get semiBold22 => _textStyle(FontWeight.w600, 22);
   TextStyle get semiBold23 => _textStyle(FontWeight.w600, 23);
   TextStyle get semiBold24 => _textStyle(FontWeight.w600, 24);
+  TextStyle get semiBold26 => _textStyle(FontWeight.w600, 26);
 
   TextStyle _textStyle(FontWeight fontWeight, double size) => TextStyle(
         fontFamily: MyAssets.fontMontserrat,
         fontWeight: fontWeight,
         fontSize: size.sp,
+        decoration: TextDecoration.none,
         color: this,
       );
 }
@@ -188,7 +190,7 @@ extension DateTimeWithMonthYearExtensions on DateTime {
   }
 }
 
-extension RequestDateListExtension on List<RequestDate?> {
+extension RequestDateListExtension on List<RequestDateModel?> {
   int calculateTotalDays() {
     int totalDays = 0;
     for (var requestDate in this) {
@@ -206,7 +208,7 @@ extension RequestDateListExtension on List<RequestDate?> {
   }
 }
 
-extension RequestDateListExtensions on List<RequestDate> {
+extension RequestDateListExtensions on List<RequestDateModel> {
   bool hasNullAttributes() {
     if (isEmpty) {
       return true;
@@ -221,5 +223,64 @@ extension RequestDateListExtensions on List<RequestDate> {
       }
     }
     return false;
+  }
+}
+
+extension RequestDateExtensions on List<RequestDateModel> {
+  double calculateTotalHourlyRate({required double hourlyRate}) {
+    double totalRate = 0.0;
+    for (var requestDate in this) {
+      final startParts = requestDate.startTime?.split(':');
+      final endParts = requestDate.endTime?.split(':');
+
+      final startHour = int.parse(startParts![0]);
+      final startMinute = int.parse(startParts[1].split(' ')[0]);
+      final startAMPM = startParts[1].split(' ')[1];
+
+      final endHour = int.parse(endParts![0]);
+      final endMinute = int.parse(endParts[1].split(' ')[0]);
+      final endAMPM = endParts[1].split(' ')[1];
+
+      final totalStartHour = (startAMPM == 'PM' && startHour != 12) ? startHour + 12 : startHour;
+      final totalEndHour = (endAMPM == 'PM' && endHour != 12) ? endHour + 12 : endHour;
+
+      final durationInHours = (totalEndHour - totalStartHour) + (endMinute - startMinute) / 60.0;
+
+      // Calculate the total days in the date range
+      final startDateParts = requestDate.startDate?.split('-');
+      final toDateParts = requestDate.endDate?.split('-');
+
+      final startDateTime = DateTime(
+        int.parse(startDateParts![0]),
+        int.parse(startDateParts[1]),
+        int.parse(startDateParts[2]),
+        totalStartHour,
+        startMinute,
+      );
+
+      final endDateTime = DateTime(
+        int.parse(toDateParts![0]),
+        int.parse(toDateParts[1]),
+        int.parse(toDateParts[2]),
+        totalEndHour,
+        endMinute,
+      );
+
+      final daysInDateRange = endDateTime.difference(startDateTime).inDays + 1;
+
+      totalRate += durationInHours * hourlyRate * daysInDateRange;
+    }
+
+    return totalRate;
+  }
+}
+
+extension TimeDifference on String {
+  int hoursDifference(String otherTime) {
+    final timeFormat = DateFormat('hh:mm a');
+    final thisTime = timeFormat.parse(this);
+    final other = timeFormat.parse(otherTime);
+    final difference = other.difference(thisTime);
+    return difference.inHours;
   }
 }

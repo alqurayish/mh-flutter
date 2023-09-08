@@ -1,10 +1,15 @@
 import 'package:mh/app/modules/calender/models/calender_model.dart';
 import 'package:mh/app/modules/calender/models/update_unavailable_date_request_model.dart';
+import 'package:mh/app/modules/client/client_shortlisted/models/add_to_shortlist_request_model.dart';
+import 'package:mh/app/modules/client/client_shortlisted/models/update_shortlist_request_model.dart';
 import 'package:mh/app/modules/client/client_suggested_employees/models/short_list_request_model.dart';
 import 'package:mh/app/modules/employee/employee_home/models/common_response_model.dart';
+import 'package:mh/app/modules/employee/employee_home/models/employee_check_in_request_model.dart';
+import 'package:mh/app/modules/employee/employee_home/models/employee_check_out_request_model.dart';
 import 'package:mh/app/modules/employee/employee_home/models/review_dialog_model.dart';
 import 'package:mh/app/modules/employee/employee_home/models/review_request_model.dart';
 import 'package:mh/app/modules/employee/employee_home/models/single_notification_model_for_employee.dart';
+import 'package:mh/app/modules/employee/employee_home/models/todays_work_schedule_model.dart';
 import 'package:mh/app/modules/employee/employee_payment_history/models/employee_payment_history_model.dart';
 import 'package:mh/app/modules/notifications/models/notification_response_model.dart';
 import 'package:mh/app/modules/notifications/models/notification_update_request_model.dart';
@@ -85,9 +90,9 @@ abstract class ApiHelper {
 
   EitherModel<Sources> fetchSources();
 
-  EitherModel<Response> addToShortlist(Map<String, dynamic> data);
+  EitherModel<Response> addToShortlist({required AddToShortListRequestModel addToShortListRequestModel});
 
-  EitherModel<Response> updateShortlistItem(Map<String, dynamic> data);
+  EitherModel<Response> updateShortlistItem({required UpdateShortListRequestModel updateShortListRequestModel});
 
   EitherModel<Response> deleteFromShortlist(String shortlistId);
 
@@ -101,9 +106,9 @@ abstract class ApiHelper {
 
   EitherModel<TodayCheckInOutDetails> dailyCheckInCheckoutDetails(String employeeId);
 
-  EitherModel<TodayCheckInOutDetails> checkIn(Map<String, dynamic> data);
+  EitherModel<CommonResponseModel> checkIn({required EmployeeCheckInRequestModel employeeCheckInRequestModel});
 
-  EitherModel<Response> checkout(Map<String, dynamic> data);
+  EitherModel<Response> checkout({required EmployeeCheckOutRequestModel employeeCheckOutRequestModel});
 
   EitherModel<Response> updateCheckInOutByClient(Map<String, dynamic> data);
 
@@ -163,6 +168,8 @@ abstract class ApiHelper {
   EitherModel<CommonResponseModel> addToShortlistNew({required ShortListRequestModel shortListRequestModel});
 
   EitherModel<CalenderModel> getCalenderData({required String employeeId});
+
+  EitherModel<TodayWorkScheduleModel> getTodayWorkSchedule();
 
   EitherModel<CommonResponseModel> updateUnavailableDate(
       {required UpdateUnavailableDateRequestModel updateUnavailableDateRequestModel});

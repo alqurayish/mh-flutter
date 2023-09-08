@@ -72,7 +72,7 @@ class EmployeeDetailsView extends GetView<EmployeeDetailsController> {
             ),
           ),
           const Spacer(),
-         /* Obx(
+          /* Obx(
             () => Visibility(c
               visible: !controller.showAsAdmin,
               child: Visibility(
@@ -246,8 +246,8 @@ class EmployeeDetailsView extends GetView<EmployeeDetailsController> {
             SizedBox(height: 18.h),
             Row(
               children: [
-                _detailsItem(
-                    MyAssets.totalHour, '${MyStrings.totalHour.tr}:', "${(controller.employee.totalWorkingHour ?? 0)} H"),
+                _detailsItem(MyAssets.totalHour, '${MyStrings.totalHour.tr}:',
+                    "${(controller.employee.totalWorkingHour ?? 0)} H"),
                 const Spacer(),
                 _detailsItem(MyAssets.review, MyStrings.review.tr, "1 time"),
               ],
@@ -321,10 +321,12 @@ class EmployeeDetailsView extends GetView<EmployeeDetailsController> {
                       int.parse(controller.employee.available!.split(' ').first) <= 0)
                   ? "Booked"
                   : "Book Now",
-              height: 52.h,
               customButtonStyle: CustomButtonStyle.radiusTopBottomCorner,
             ),
           )
-        : const Wrap();
+        : CustomBottomBar(
+            child: CustomButtons.button(
+              onTap: controller.onViewCalenderClick,
+                text: 'View Calender', customButtonStyle: CustomButtonStyle.radiusTopBottomCorner));
   }
 }

@@ -7,11 +7,16 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get/get_connect/http/src/request/request.dart';
 import 'package:mh/app/modules/calender/models/calender_model.dart';
 import 'package:mh/app/modules/calender/models/update_unavailable_date_request_model.dart';
+import 'package:mh/app/modules/client/client_shortlisted/models/add_to_shortlist_request_model.dart';
+import 'package:mh/app/modules/client/client_shortlisted/models/update_shortlist_request_model.dart';
 import 'package:mh/app/modules/client/client_suggested_employees/models/short_list_request_model.dart';
 import 'package:mh/app/modules/employee/employee_home/models/common_response_model.dart';
+import 'package:mh/app/modules/employee/employee_home/models/employee_check_in_request_model.dart';
+import 'package:mh/app/modules/employee/employee_home/models/employee_check_out_request_model.dart';
 import 'package:mh/app/modules/employee/employee_home/models/review_dialog_model.dart';
 import 'package:mh/app/modules/employee/employee_home/models/review_request_model.dart';
 import 'package:mh/app/modules/employee/employee_home/models/single_notification_model_for_employee.dart';
+import 'package:mh/app/modules/employee/employee_home/models/todays_work_schedule_model.dart';
 import 'package:mh/app/modules/employee/employee_payment_history/models/employee_payment_history_model.dart';
 import 'package:mh/app/modules/notifications/models/notification_response_model.dart';
 import 'package:mh/app/modules/notifications/models/notification_update_request_model.dart';
@@ -381,19 +386,23 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
   }
 
   @override
-  EitherModel<Response> addToShortlist(
-    Map<String, dynamic> data,
-  ) async {
-    var response = await post("short-list/create", jsonEncode(data));
-    if (response.statusCode == null) response = await post("short-list/create", jsonEncode(data));
-    if (response.statusCode == null) response = await post("short-list/create", jsonEncode(data));
-    if (response.statusCode == null) response = await post("short-list/create", jsonEncode(data));
+  EitherModel<Response> addToShortlist({required AddToShortListRequestModel addToShortListRequestModel}) async {
+    Response response = await post("short-list/create", jsonEncode(addToShortListRequestModel.toJson()));
+    if (response.statusCode == null) {
+      response = await post("short-list/create", jsonEncode(addToShortListRequestModel.toJson()));
+    }
+    if (response.statusCode == null) {
+      response = await post("short-list/create", jsonEncode(addToShortListRequestModel.toJson()));
+    }
+    if (response.statusCode == null) {
+      response = await post("short-list/create", jsonEncode(addToShortListRequestModel.toJson()));
+    }
     log('AddToShortList: ${response.bodyString}');
     return _convert<Response>(
       response,
       (Map<String, dynamic> data) {},
       onlyErrorCheck: true,
-    ).fold((l) => left(l), (r) => right(r));
+    ).fold((CustomError l) => left(l), (Response r) => right(r));
   }
 
   @override
@@ -410,11 +419,17 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
   }
 
   @override
-  EitherModel<Response> updateShortlistItem(Map<String, dynamic> data) async {
-    var response = await put("short-list/update", jsonEncode(data));
-    if (response.statusCode == null) response = await put("short-list/update", jsonEncode(data));
-    if (response.statusCode == null) response = await put("short-list/update", jsonEncode(data));
-    if (response.statusCode == null) response = await put("short-list/update", jsonEncode(data));
+  EitherModel<Response> updateShortlistItem({required UpdateShortListRequestModel updateShortListRequestModel}) async {
+    var response = await put("short-list/update", jsonEncode(updateShortListRequestModel.toJson()));
+    if (response.statusCode == null) {
+      response = await put("short-list/update", jsonEncode(updateShortListRequestModel.toJson()));
+    }
+    if (response.statusCode == null) {
+      response = await put("short-list/update", jsonEncode(updateShortListRequestModel.toJson()));
+    }
+    if (response.statusCode == null) {
+      response = await put("short-list/update", jsonEncode(updateShortListRequestModel.toJson()));
+    }
 
     return _convert<Response>(
       response,
@@ -502,24 +517,37 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
   }
 
   @override
-  EitherModel<TodayCheckInOutDetails> checkIn(Map<String, dynamic> data) async {
-    var response = await post("current-hired-employees/create", jsonEncode(data));
-    if (response.statusCode == null) response = await post("current-hired-employees/create", jsonEncode(data));
-    if (response.statusCode == null) response = await post("current-hired-employees/create", jsonEncode(data));
-    if (response.statusCode == null) response = await post("current-hired-employees/create", jsonEncode(data));
+  EitherModel<CommonResponseModel> checkIn({required EmployeeCheckInRequestModel employeeCheckInRequestModel}) async {
+    Response response = await post("current-hired-employees/create", jsonEncode(employeeCheckInRequestModel.toJson()));
 
-    return _convert<TodayCheckInOutDetails>(
+    if (response.statusCode == null) {
+      response = await post("current-hired-employees/create", jsonEncode(employeeCheckInRequestModel.toJson()));
+    }
+    if (response.statusCode == null) {
+      response = await post("current-hired-employees/create", jsonEncode(employeeCheckInRequestModel.toJson()));
+    }
+    if (response.statusCode == null) {
+      response = await post("current-hired-employees/create", jsonEncode(employeeCheckInRequestModel.toJson()));
+    }
+
+    return _convert<CommonResponseModel>(
       response,
-      TodayCheckInOutDetails.fromJson,
-    ).fold((l) => left(l), (r) => right(r));
+      CommonResponseModel.fromJson,
+    ).fold((CustomError l) => left(l), (CommonResponseModel r) => right(r));
   }
 
   @override
-  EitherModel<Response> checkout(Map<String, dynamic> data) async {
-    var response = await put("current-hired-employees/update", jsonEncode(data));
-    if (response.statusCode == null) response = await put("current-hired-employees/update", jsonEncode(data));
-    if (response.statusCode == null) response = await put("current-hired-employees/update", jsonEncode(data));
-    if (response.statusCode == null) response = await put("current-hired-employees/update", jsonEncode(data));
+  EitherModel<Response> checkout({required EmployeeCheckOutRequestModel employeeCheckOutRequestModel}) async {
+    var response = await put("current-hired-employees/update", jsonEncode(employeeCheckOutRequestModel.toJson()));
+    if (response.statusCode == null) {
+      response = await put("current-hired-employees/update", jsonEncode(employeeCheckOutRequestModel.toJson()));
+    }
+    if (response.statusCode == null) {
+      response = await put("current-hired-employees/update", jsonEncode(employeeCheckOutRequestModel.toJson()));
+    }
+    if (response.statusCode == null) {
+      response = await put("current-hired-employees/update", jsonEncode(employeeCheckOutRequestModel.toJson()));
+    }
 
     return _convert<Response>(
       response,
@@ -950,5 +978,17 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
     ).fold((CustomError l) => left(l), (CommonResponseModel r) => right(r));
   }
 
+  @override
+  EitherModel<TodayWorkScheduleModel> getTodayWorkSchedule() async {
+    String url = "check-in-check-out-histories/today-work-place";
 
+    Response response = await get(url);
+    if (response.statusCode == null) await get(url);
+    if (response.statusCode == null) await get(url);
+    if (response.statusCode == null) await get(url);
+    return _convert<TodayWorkScheduleModel>(
+      response,
+      TodayWorkScheduleModel.fromJson,
+    ).fold((CustomError l) => left(l), (TodayWorkScheduleModel r) => right(r));
+  }
 }

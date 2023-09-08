@@ -57,8 +57,6 @@ import '../modules/client/mh_employees/bindings/mh_employees_binding.dart';
 import '../modules/client/mh_employees/views/mh_employees_view.dart';
 import '../modules/client/mh_employees_by_id/bindings/mh_employees_by_id_binding.dart';
 import '../modules/client/mh_employees_by_id/views/mh_employees_by_id_view.dart';
-import '../modules/client/payment_for_hire/bindings/payment_for_binding.dart';
-import '../modules/client/payment_for_hire/views/payment_for_view.dart';
 import '../modules/contact_us/bindings/contact_us_binding.dart';
 import '../modules/contact_us/views/contact_us_view.dart';
 import '../modules/employee/employee_dashboard/bindings/employee_dashboard_binding.dart';
@@ -73,6 +71,12 @@ import '../modules/employee/employee_register_success/bindings/employee_register
 import '../modules/employee/employee_register_success/views/employee_register_success_view.dart';
 import '../modules/employee/employee_self_profile/bindings/employee_self_profile_binding.dart';
 import '../modules/employee/employee_self_profile/views/employee_self_profile_view.dart';
+import '../modules/employee_booked_history/bindings/employee_booked_history_binding.dart';
+import '../modules/employee_booked_history/views/employee_booked_history_view.dart';
+import '../modules/employee_booked_history_details/bindings/employee_booked_history_details_binding.dart';
+import '../modules/employee_booked_history_details/views/employee_booked_history_details_view.dart';
+import '../modules/employee_hired_history/bindings/employee_hired_history_binding.dart';
+import '../modules/employee_hired_history/views/employee_hired_history_view.dart';
 import '../modules/map/restaurant_location/bindings/restaurant_location_binding.dart';
 import '../modules/map/restaurant_location/views/restaurant_location_view.dart';
 import '../modules/notifications/bindings/notifications_binding.dart';
@@ -262,14 +266,6 @@ class AppPages {
       binding: ClientSuggestedEmployeesBinding(),
     ),
     GetPage(
-      name: _Paths.paymentForHire,
-      page: () => const PaymentForHireView(),
-      binding: PaymentForHireBinding(),
-      middlewares: [
-        AuthMiddleware(),
-      ],
-    ),
-    GetPage(
       name: _Paths.hireStatus,
       page: () => const HireStatusView(),
       binding: HireStatusBinding(),
@@ -362,6 +358,21 @@ class AppPages {
       name: _Paths.calender,
       page: () => const CalenderView(),
       binding: CalenderBinding(),
+    ),
+    GetPage(
+      name: _Paths.employeeBookedHistory,
+      page: () => const EmployeeBookedHistoryView(),
+      binding: EmployeeBookedHistoryBinding(),
+    ),
+    GetPage(
+      name: _Paths.employeeHiredHistory,
+      page: () => const EmployeeHiredHistoryView(),
+      binding: EmployeeHiredHistoryBinding(),
+    ),
+    GetPage(
+      name: _Paths.employeeBookedHistoryDetails,
+      page: () => const EmployeeBookedHistoryDetailsView(),
+      binding: EmployeeBookedHistoryDetailsBinding(),
     ),
   ];
 }

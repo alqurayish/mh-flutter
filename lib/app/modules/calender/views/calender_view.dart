@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
+import 'package:mh/app/common/utils/exports.dart';
 import 'package:mh/app/common/widgets/custom_appbar.dart';
 import 'package:mh/app/modules/calender/widgets/calender_bottom_nav_bar_widget.dart';
 import 'package:mh/app/modules/calender/widgets/calender_header_widget.dart';
@@ -20,7 +22,7 @@ class CalenderView extends GetView<CalenderController> {
       bottomNavigationBar: const CalenderBottomNavBarWidget(),
       body: Obx(() {
         if (controller.dateDataLoading.value == true) {
-          return const Center(child: CircularProgressIndicator.adaptive());
+          return Center(child: Lottie.asset(MyAssets.lottie.calenderLoading, fit: BoxFit.cover, height: 200, width: 200));
         } else {
           return Stack(
             children: [

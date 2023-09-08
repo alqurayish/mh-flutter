@@ -13,7 +13,7 @@ class SingleNotificationModelForEmployee {
   final String? status;
   final int? statusCode;
   final String? message;
-  final NotificationModel? details;
+  final List<NotificationModel>? details;
 
   SingleNotificationModelForEmployee({
     this.status,
@@ -26,6 +26,8 @@ class SingleNotificationModelForEmployee {
         status: json["status"],
         statusCode: json["statusCode"],
         message: json["message"],
-        details: json["details"] == null ? null : NotificationModel.fromJson(json["details"]),
+        details: json["details"] == null
+            ? []
+            : List<NotificationModel>.from(json["details"].map((x) => NotificationModel.fromJson(x))),
       );
 }

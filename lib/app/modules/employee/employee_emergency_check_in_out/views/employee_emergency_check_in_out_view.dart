@@ -25,20 +25,18 @@ class EmployeeEmergencyCheckInOutView extends GetView<EmployeeEmergencyCheckInOu
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(height: 20.h),
-
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 14),
               child: Text(
-                  controller.employeeHomeController.appController.user.value.employee?.hiredByRestaurantName ?? "--",
+                controller.employeeHomeController.appController.user.value.employee?.hiredByRestaurantName ?? "--",
                 style: MyColors.c_C6A34F.semiBold22,
               ),
             ),
-
             Padding(
               padding: const EdgeInsets.all(14.0),
               child: Text(
                 controller.employeeHomeController.appController.user.value.employee?.hiredByRestaurantAddress ?? "--",
-                  style: MyColors.l7B7B7B_dtext(context).regular16,
+                style: MyColors.l7B7B7B_dtext(context).regular16,
               ),
             ),
             Padding(
@@ -68,7 +66,8 @@ class EmployeeEmergencyCheckInOutView extends GetView<EmployeeEmergencyCheckInOu
 
   Widget _bottomBar(BuildContext context) => CustomBottomBar(
         child: CustomButtons.button(
-          onTap: controller.onCheckInCheckoutPress,
+          onTap: //controller.onCheckInCheckoutPress
+              null,
           text: controller.getButtonText,
           customButtonStyle: CustomButtonStyle.radiusTopBottomCorner,
         ),

@@ -183,7 +183,7 @@ class AdminAllEmployeesView extends GetView<AdminAllEmployeesController> {
                       Row(
                         children: [
                           _detailsItem(controller.getPositionLogo(user.positionId!), user.positionName ?? "", ""),
-                          _activeStatus(isHired: user.isHired ?? false, isSuggested: user.isSuggested ?? false),
+                          _activeStatus(available: user.available??''),
                           const SizedBox(width: 7),
                         ],
                       ),
@@ -275,14 +275,15 @@ class AdminAllEmployeesView extends GetView<AdminAllEmployeesController> {
         ),
       );
 
-  Widget _activeStatus({required bool isHired, required bool isSuggested}) => Container(
+  Widget _activeStatus({required String available}) => Container(
         padding: const EdgeInsets.symmetric(
           horizontal: 5,
           vertical: 2,
         ),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(50),
-          color: isHired ? MyColors.c_00C92C_10 : MyColors.c_FF5029_10,
+          color: ((available.isEmpty||
+              int.parse(available.split(' ').first) <= 0)) ? MyColors.c_FF5029_10 : MyColors.c_00C92C_10,
         ),
         child: Row(
           children: [
@@ -291,21 +292,15 @@ class AdminAllEmployeesView extends GetView<AdminAllEmployeesController> {
               width: 11,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: isHired == true && isSuggested == true
-                    ? MyColors.c_00C92C
-                    : isHired == true && isSuggested == false
-                        ? MyColors.c_FFA800
-                        : MyColors.c_FF5029,
+                color: ((available.isEmpty||
+                    int.parse(available.split(' ').first) <= 0)) ? MyColors.c_C92C1A : MyColors.c_00C92C,
               ),
             ),
             const SizedBox(width: 5),
             Text(
-                (isHired == true && isSuggested == false)
-                    ? "Booked"
-                    : (isHired == false && isSuggested == true)
-                        ? "Waiting"
-                        : "Available",
-                style: MyColors.l111111_dwhite(controller.context!).medium10)
+                ((available.isEmpty||
+                    int.parse(available.split(' ').first) <= 0)) ? 'Booked' : 'Available',
+                style: MyColors.l111111_dwhite(controller.context!).medium11)
           ],
         ),
       );

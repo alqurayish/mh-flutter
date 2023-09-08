@@ -367,6 +367,7 @@ class Utils {
 
   static void showSnackBar({required String message, required bool isTrue}) {
     Get.rawSnackbar(
+      snackStyle: SnackStyle.FLOATING,
         snackPosition: SnackPosition.TOP,
         margin: const EdgeInsets.all(10.0),
         title: isTrue == true ? 'Success' : 'Warning',

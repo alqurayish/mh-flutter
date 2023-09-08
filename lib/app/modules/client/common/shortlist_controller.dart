@@ -72,19 +72,23 @@ class ShortlistController extends GetxService {
     return shortList.where((employee) => employee.employeeDetails!.positionId == position).toList();
   }
 
-  Future<void> onBookNowClick({required String employeeId, required List<RequestDate> requestDateList}) async {
+  Future<void> onBookNowClick({required String employeeId, required List<RequestDateModel> requestDateList}) async {
     _selectedId = employeeId;
     if (_isEmployeeAddedInShortlist(employeeId)) return;
 
-    await _addEmployeeToShortlist(employeeId);
+    await _addEmployeeToShortlist(employeeId: employeeId, requestDateList: requestDateList);
   }
 
-  Future<void> _addEmployeeToShortlist(String employeeId) async {
+  Future<void> _addEmployeeToShortlist(
+      {required String employeeId, required List<RequestDateModel> requestDateList}) async {
     isFetching.value = true;
 
-    Map<String, dynamic> data = {"employeeId": employeeId};
+    AddToShortListRequestModel addToShortListRequestModel =
+        AddToShortListRequestModel(employeeId: employeeId, requestDateList: requestDateList);
 
-    await _apiHelper.addToShortlist(data).then((Either<CustomError, Response> response) {
+    await _apiHelper
+        .addToShortlist(addToShortListRequestModel: addToShortListRequestModel)
+        .then((Either<CustomError, Response> response) {
       response.fold((l) {
         Logcat.msg(l.msg);
         isFetching.value = false;
@@ -132,12 +136,17 @@ class ShortlistController extends GetxService {
     });
   }
 
-  Widget getIcon({required String employeeId, required bool isFetching, required String fromWhere, String? id}) {
+  Widget getIcon(
+      {required String employeeId,
+      required bool isFetching,
+      required String fromWhere,
+      String? id,
+      required List<RequestDateModel> requestedDateList}) {
     return GestureDetector(
       onTap: () {
         if (!_appController.hasPermission()) return;
 
-        _onBookmarkClick(employeeId: employeeId, fromWhere: fromWhere, id: id);
+        _onBookmarkClick(employeeId: employeeId, fromWhere: fromWhere, id: id, requestedDateList: requestedDateList);
       },
       child: (this.isFetching.value || deleteFromShortlist.value) && employeeId == _selectedId
           ? const SizedBox(
@@ -161,7 +170,11 @@ class ShortlistController extends GetxService {
     );
   }
 
-  void _onBookmarkClick({required String employeeId, String? id, required String fromWhere}) {
+  void _onBookmarkClick(
+      {required String employeeId,
+      String? id,
+      required String fromWhere,
+      required List<RequestDateModel> requestedDateList}) {
     _selectedId = employeeId;
 
     if (_isEmployeeAddedInShortlist(employeeId)) {
@@ -170,7 +183,7 @@ class ShortlistController extends GetxService {
       if (fromWhere == 'Requested Employees') {
         _addEmployeeToShortListNew(employeeId: employeeId, id: id ?? '');
       } else {
-        _addEmployeeToShortlist(employeeId);
+        _addEmployeeToShortlist(employeeId: employeeId, requestDateList: requestedDateList);
       }
     }
   }
@@ -189,10 +202,7 @@ class ShortlistController extends GetxService {
     // book all employee
     if (selectedForHire.isEmpty) {
       for (ShortList employee in shortList) {
-        if (employee.fromDate != null &&
-            employee.toDate != null &&
-            employee.fromTime != null &&
-            employee.toTime != null) {
+        if (employee.requestDateList != null && employee.requestDateList!.isNotEmpty) {
           selectedForHire.add(employee);
         }
       }
@@ -206,7 +216,7 @@ class ShortlistController extends GetxService {
     bool valid = true;
 
     for (ShortList element in selectedForHire) {
-      if (element.fromDate == null || element.toDate == null || element.fromTime == null || element.toTime == null) {
+      if (element.requestDateList == null || element.requestDateList!.isEmpty) {
         valid = false;
         break;
       }

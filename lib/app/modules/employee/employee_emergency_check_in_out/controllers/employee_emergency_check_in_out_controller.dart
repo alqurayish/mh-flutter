@@ -1,3 +1,5 @@
+import 'package:mh/app/modules/employee/employee_home/models/common_response_model.dart';
+
 import '../../../../common/utils/exports.dart';
 import '../../../../common/widgets/custom_break_time.dart';
 import '../../../../common/widgets/custom_dialog.dart';
@@ -5,7 +7,6 @@ import '../../../../common/widgets/custom_loader.dart';
 import '../../../../models/custom_error.dart';
 import '../../../../repository/api_helper.dart';
 import '../../employee_home/controllers/employee_home_controller.dart';
-import '../../employee_home/models/today_check_in_out_details.dart';
 
 class EmployeeEmergencyCheckInOutController extends GetxController {
   BuildContext? context;
@@ -27,7 +28,7 @@ class EmployeeEmergencyCheckInOutController extends GetxController {
     return "Check In";
   }
 
-  void onCheckInCheckoutPress() {
+ /* void onCheckInCheckoutPress() {
 
     Utils.unFocus();
 
@@ -42,8 +43,8 @@ class EmployeeEmergencyCheckInOutController extends GetxController {
     }
 
   }
-
-  Future<void> _checkIn() async {
+*/
+  /*Future<void> _checkIn() async {
     Map<String, dynamic> data = {
       "checkInTime": DateTime.now().toLocal().toString(),
       "employeeId": employeeHomeController.appController.user.value.userId,
@@ -51,7 +52,7 @@ class EmployeeEmergencyCheckInOutController extends GetxController {
       "emmergencyCheckInComment": emergencyReason.text.trim(),
       if(employeeHomeController.currentLocation?.latitude != null) "lat": employeeHomeController.currentLocation?.latitude.toString(),
       if(employeeHomeController.currentLocation?.longitude != null) "long": employeeHomeController.currentLocation?.longitude.toString(),
-      if(employeeHomeController.currentLocation?.latitude != null && employeeHomeController.currentLocation?.longitude != null) "checkInDistance": double.parse(employeeHomeController.distanceFromEmployeeToRestaurant.value.toStringAsFixed(2)),
+      //if(employeeHomeController.currentLocation?.latitude != null && employeeHomeController.currentLocation?.longitude != null) "checkInDistance": double.parse(employeeHomeController.distanceFromEmployeeToRestaurant.value.toStringAsFixed(2)),
     };
 
     CustomLoader.show(context!);
@@ -66,7 +67,7 @@ class EmployeeEmergencyCheckInOutController extends GetxController {
           title: "Failed to CheckIn",
           description: customError.msg,
         );
-      }, (TodayCheckInOutDetails clients) {
+      }, (CommonResponseModel clients) {
         employeeHomeController.refreshPage();
         Get.back();
       });
@@ -75,9 +76,9 @@ class EmployeeEmergencyCheckInOutController extends GetxController {
 
   void _checkOut() {
     CustomBreakTime.show(context!, onBreakTimePickDone);
-  }
+  }*/
 
-  Future<void> onBreakTimePickDone(int hour, int min) async {
+  /*Future<void> onBreakTimePickDone(int hour, int min) async {
     Map<String, dynamic> data = {
       "checkOutTime": DateTime.now().toLocal().toString(),
       "id": employeeHomeController.todayCheckInOutDetails.value.details!.id!,
@@ -87,7 +88,7 @@ class EmployeeEmergencyCheckInOutController extends GetxController {
       if(employeeHomeController.currentLocation?.latitude != null) "lat": employeeHomeController.currentLocation!.latitude.toString(),
       if(employeeHomeController.currentLocation?.longitude != null) "long": employeeHomeController.currentLocation?.longitude.toString(),
       "breakTime": (hour * 60) + (min * 5),
-      if(employeeHomeController.currentLocation?.latitude != null && employeeHomeController.currentLocation?.longitude != null) "checkOutDistance": double.parse(employeeHomeController.distanceFromEmployeeToRestaurant.value.toStringAsFixed(2)),
+      //if(employeeHomeController.currentLocation?.latitude != null && employeeHomeController.currentLocation?.longitude != null) "checkOutDistance": double.parse(employeeHomeController.distanceFromEmployeeToRestaurant.value.toStringAsFixed(2)),
     };
 
     CustomLoader.show(context!);
@@ -107,5 +108,5 @@ class EmployeeEmergencyCheckInOutController extends GetxController {
         Get.back();
       });
     });
-  }
+  }*/
 }

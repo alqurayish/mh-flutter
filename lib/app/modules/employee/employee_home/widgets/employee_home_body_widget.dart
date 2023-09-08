@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mh/app/modules/employee/employee_home/controllers/employee_home_controller.dart';
-import 'package:mh/app/modules/employee/employee_home/widgets/emloyee_home_promotion_widget.dart';
 import 'package:mh/app/modules/employee/employee_home/widgets/employee_home_card_widget.dart';
-import 'package:mh/app/modules/employee/employee_home/widgets/employee_location_distance_widget.dart';
 import 'package:mh/app/modules/employee/employee_home/widgets/employee_location_widget.dart';
 import 'package:mh/app/modules/employee/employee_home/widgets/employee_name_widget.dart';
-import 'package:mh/app/modules/employee/employee_home/widgets/employee_restaurant_address_widget.dart';
+import 'package:mh/app/modules/employee/employee_home/widgets/employee_today_work_schedule_widget.dart';
 import 'employee_todays_dashboard_widget.dart';
 
 class EmployeeHomeBodyWidget extends GetWidget<EmployeeHomeController> {
@@ -24,11 +22,9 @@ class EmployeeHomeBodyWidget extends GetWidget<EmployeeHomeController> {
          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             EmployeeNameWidget(),
-            EmployeeHomePromotionWidget(),
-            EmployeeLocationDistanceWidget(),
-            EmployeeRestaurantAddressWidget(),
-            EmployeeHomeCardWidget(),
+            EmployeeTodayWorkScheduleWidget(),
             EmployeeTodayDashboardWidget(),
+            EmployeeHomeCardWidget(),
             EmployeeLocationWidget(),
           ],
         ),

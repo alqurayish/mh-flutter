@@ -30,14 +30,14 @@ class CalenderMonthWidget extends StatelessWidget {
         bool canTapDate = false;
         if (currentDate.toString().substring(0, 10) == today.toString().substring(0, 10)) {
           borderColor = MyColors.c_C6A34F; // Today's date should be red
-        } else if (currentDate.isBefore(DateTime.now()) || controller.selectedDate.value == currentDate) {
-          textColor = Colors.grey;
         } else if (controller.dateListModel.value.bookedDates!.containsDate(currentDate)) {
           textColor = Colors.red; // Booked dates should be red
         } else if (controller.dateListModel.value.pendingDates!.containsDate(currentDate)) {
-          textColor = Colors.yellow; // Pending dates should be yellow
+          textColor = Colors.amber; // Pending dates should be yellow
         } else if (controller.dateListModel.value.unavailableDates!.containsDate(currentDate)) {
-          textColor = Colors.black; // Unavailable dates should be black
+          textColor = MyColors.l111111_dwhite(context); // Unavailable dates should be black
+        } else if (currentDate.isBefore(DateTime.now()) || controller.selectedDate.value == currentDate) {
+          textColor = Colors.grey;
         } else {
           textColor = Colors.green; // Available days should be green
           canTapDate = true;
@@ -49,12 +49,6 @@ class CalenderMonthWidget extends StatelessWidget {
             final bool isSelected = controller.selectedDates.contains(currentDate);
             final bool isDateInRange =
                 controller.requestDateList.any((dateRange) => controller.isDateInSelectedRange(currentDate, dateRange));
-            // Check if the current date is the start or end of a date range
-            final isRangeStart = controller.requestDateList.any((dateRange) =>
-                dateRange.startDate != null &&
-                (DateTime.parse(dateRange.startDate ?? '')).isAtSameMomentAs(currentDate));
-            final isRangeEnd = controller.requestDateList.any((dateRange) =>
-                dateRange.endDate != null && DateTime.parse(dateRange.endDate ?? '').isAtSameMomentAs(currentDate));
 
             if (isSelected == true) {
               containerColor = MyColors.c_C6A34F;
@@ -74,11 +68,10 @@ class CalenderMonthWidget extends StatelessWidget {
                 border: Border.all(color: borderColor),
                 color: isSelected ? MyColors.c_C6A34F : containerColor,
               ),
-              child:
-              Text(
+              child: Text(
                 day.toString(),
                 style:
-                    TextStyle(color: textColor, fontWeight: FontWeight.bold), // Text color based on textColor variable
+                    TextStyle(color: textColor, fontWeight: FontWeight.bold, fontSize: 15), // Text color based on textColor variable
               ),
             );
           }),

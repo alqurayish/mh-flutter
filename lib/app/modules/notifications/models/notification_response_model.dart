@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:mh/app/modules/client/client_shortlisted/models/add_to_shortlist_request_model.dart';
+
 NotificationResponseModel notificationResponseModelFromJson(String str) =>
     NotificationResponseModel.fromJson(json.decode(str));
 
@@ -47,16 +49,11 @@ class NotificationModel {
   final String? clientId;
   final String? restaurantName;
   final String? restaurantAddress;
-  final String? createdBy;
-  final DateTime? createdAt;
-  final DateTime? updatedAt;
-  final DateTime? fromDate;
-  final DateTime? toDate;
-  final String? fromTime;
-  final String? toTime;
   final String? hiredStatus;
   final String? hiredByLat;
   final String? hiredByLong;
+  final DateTime? createdAt;
+  final List<RequestDateModel>? requestDateList;
 
   NotificationModel(
       {this.id,
@@ -72,16 +69,11 @@ class NotificationModel {
       this.clientId,
       this.restaurantName,
       this.restaurantAddress,
-      this.fromDate,
-      this.toDate,
-      this.fromTime,
-      this.toTime,
-      this.createdBy,
-      this.createdAt,
-      this.updatedAt,
       this.hiredByLat,
       this.hiredByLong,
-      this.hiredStatus});
+      this.hiredStatus,
+      this.createdAt,
+      this.requestDateList});
 
   factory NotificationModel.fromJson(Map<String, dynamic> json) => NotificationModel(
       id: json["_id"],
@@ -97,14 +89,11 @@ class NotificationModel {
       clientId: json["clientId"],
       restaurantName: json["restaurantName"],
       restaurantAddress: json["restaurantAddress"],
-      createdBy: json["createdBy"],
-      createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
-      updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
-      fromDate: json["fromDate"] == null ? null : DateTime.parse(json["fromDate"]),
-      toDate: json["toDate"] == null ? null : DateTime.parse(json["toDate"]),
-      fromTime: json["fromTime"],
-      toTime: json["toTime"],
       hiredStatus: json["hiredStatus"],
       hiredByLat: json["hiredByLat"],
-      hiredByLong: json["hiredByLong"]);
+      hiredByLong: json["hiredByLong"],
+      createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
+      requestDateList: json["requestDate"] == null
+          ? []
+          : List<RequestDateModel>.from(json["requestDate"].map((x) => RequestDateModel.fromJson(x))));
 }

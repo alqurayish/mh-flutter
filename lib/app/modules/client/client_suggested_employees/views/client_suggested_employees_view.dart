@@ -1,5 +1,6 @@
 import 'package:mh/app/common/controller/app_controller.dart';
 import 'package:mh/app/models/requested_employees.dart';
+import 'package:mh/app/modules/client/client_shortlisted/models/add_to_shortlist_request_model.dart';
 
 import '../../../../common/utils/exports.dart';
 import '../../../../common/widgets/custom_appbar.dart';
@@ -102,6 +103,7 @@ class ClientSuggestedEmployeesView extends GetView<ClientSuggestedEmployeesContr
                                 _rating(employee.rating ?? 0),
                                 const Spacer(),
                                 Obx(() => controller.shortlistController.getIcon(
+                                  requestedDateList: <RequestDateModel>[],
                                     employeeId: employee.employeeId!,
                                     isFetching: controller.shortlistController.isFetching.value,
                                     fromWhere: 'Requested Employees',

@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:mh/app/common/controller/app_controller.dart';
 import 'package:mh/app/common/extensions/extensions.dart';
 import 'package:mh/app/common/utils/utils.dart';
@@ -15,6 +16,7 @@ import 'package:mh/app/modules/calender/models/calender_model.dart';
 import 'package:mh/app/modules/calender/models/update_unavailable_date_request_model.dart';
 import 'package:mh/app/modules/client/client_home/controllers/client_home_controller.dart';
 import 'package:mh/app/modules/client/client_shortlisted/models/add_to_shortlist_request_model.dart';
+import 'package:mh/app/modules/client/client_shortlisted/models/update_shortlist_request_model.dart';
 import 'package:mh/app/modules/client/common/shortlist_controller.dart';
 import 'package:mh/app/modules/employee/employee_home/controllers/employee_home_controller.dart';
 import 'package:mh/app/modules/employee/employee_home/models/common_response_model.dart';
@@ -25,6 +27,7 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 class CalenderController extends GetxController {
   BuildContext? context;
   String employeeId = '';
+  String shortListId = '';
 
   final AppController appController = Get.find();
   final ApiHelper _apiHelper = Get.find();
@@ -50,12 +53,13 @@ class CalenderController extends GetxController {
   RxBool sameAsStartDate = false.obs;
 
   //For client only
-  RxList<RequestDate> requestDateList = <RequestDate>[].obs;
+  RxList<RequestDateModel> requestDateList = <RequestDateModel>[].obs;
   final ShortlistController shortlistController = Get.find();
 
   @override
   void onInit() {
-    employeeId = Get.arguments;
+    employeeId = Get.arguments[0];
+    shortListId = Get.arguments[1] ?? '';
     _getCalenderData();
     pageController = PageController(initialPage: currentPageIndex.value);
     super.onInit();
@@ -73,7 +77,7 @@ class CalenderController extends GetxController {
     } else if (Get.isRegistered<EmployeeHomeController>() == true) {
       onDateClickForEmployee(currentDate: currentDate);
     } else {
-      Utils.showSnackBar(message: 'Something went wrong', isTrue: true);
+      Utils.showSnackBar(message: 'You cannot update any date', isTrue: false);
     }
   }
 
@@ -255,15 +259,15 @@ class CalenderController extends GetxController {
   void loadRequestedDateList({required DateTime currentDate}) {
     if (inValidRange(currentDate: currentDate) == false) {
       if (rangeStartDate.value != null && rangeEndDate.value == null) {
-        requestDateList.add(RequestDate(
+        requestDateList.add(RequestDateModel(
           startDate: rangeStartDate.value.toString().substring(0, 10),
         ));
       } else if (rangeEndDate.value != null && rangeStartDate.value != null) {
         requestDateList.removeWhere(
-            (RequestDate element) => element.startDate == rangeStartDate.value.toString().substring(0, 10));
-        requestDateList
-            .removeWhere((RequestDate element) => element.startDate == rangeEndDate.value.toString().substring(0, 10));
-        requestDateList.add(RequestDate(
+            (RequestDateModel element) => element.startDate == rangeStartDate.value.toString().substring(0, 10));
+        requestDateList.removeWhere(
+            (RequestDateModel element) => element.startDate == rangeEndDate.value.toString().substring(0, 10));
+        requestDateList.add(RequestDateModel(
           startDate: rangeStartDate.value.toString().substring(0, 10),
           endDate: rangeEndDate.value.toString().substring(0, 10),
         ));
@@ -308,7 +312,7 @@ class CalenderController extends GetxController {
     loadRequestedDateList(currentDate: rangeStartDate.value!);
   }
 
-  bool isDateInSelectedRange(DateTime currentDate, RequestDate dateRange) {
+  bool isDateInSelectedRange(DateTime currentDate, RequestDateModel dateRange) {
     if (dateRange.startDate != null && dateRange.endDate != null) {
       return currentDate.isAfter(DateTime.parse(dateRange.startDate!)) &&
           currentDate.isBefore((DateTime.parse(dateRange.endDate!)).add(const Duration(days: 1)));
@@ -373,6 +377,14 @@ class CalenderController extends GetxController {
                         title: "Invalid Time Range",
                         description: "From-time and To-time should be same",
                       );
+                    } else if (DateFormat("hh:mm a")
+                        .parse("${requestDateList[index].endTime}")
+                        .isBefore(DateFormat("hh:mm a").parse("${requestDateList[index].startTime}"))) {
+                      CustomDialogue.information(
+                        context: context,
+                        title: "Invalid Time Range",
+                        description: "To-time should be less than From-time",
+                      );
                     } else {
                       Get.back(); // hide modal
                     }
@@ -414,7 +426,21 @@ class CalenderController extends GetxController {
   }
 
   void onBookNowClick() async {
-    await shortlistController.onBookNowClick(employeeId: employeeId, requestDateList: requestDateList);
-    Get.toNamed(Routes.clientShortlisted);
+    if (shortListId.isNotEmpty) {
+      UpdateShortListRequestModel updateShortListRequestModel =
+          UpdateShortListRequestModel(shortListId: shortListId, requestDateList: requestDateList);
+      await _updateShortListDateOrTime(updateShortListRequestModel: updateShortListRequestModel);
+    } else {
+      await shortlistController.onBookNowClick(employeeId: employeeId, requestDateList: requestDateList);
+    }
+    Get.offNamed(Routes.clientShortlisted);
+  }
+
+  Future<void> _updateShortListDateOrTime({required UpdateShortListRequestModel updateShortListRequestModel}) async {
+    CustomLoader.show(context!);
+    await _apiHelper.updateShortlistItem(updateShortListRequestModel: updateShortListRequestModel).then((value) async {
+      await shortlistController.fetchShortListEmployees();
+      CustomLoader.hide(context!);
+    });
   }
 }

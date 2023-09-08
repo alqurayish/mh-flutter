@@ -25,7 +25,7 @@ class EmployeeDetailsController extends GetxController {
 
   Future<void> onBookNowClick() async {
     if (!_appController.hasPermission()) return;
-    Get.toNamed(Routes.calender, arguments: employee.id ?? '');
+    Get.toNamed(Routes.calender, arguments: [employee.id ?? '', '']);
   }
 
   // only admin chat with employee
@@ -36,5 +36,10 @@ class EmployeeDetailsController extends GetxController {
       MyStrings.arg.supportChatDocId: employee.id ?? "",
       MyStrings.arg.receiverName: employee.firstName ?? "-",
     });
+  }
+
+  void onViewCalenderClick() {
+    print('EmployeeDetailsController.onViewCalenderClick');
+    Get.toNamed(Routes.calender, arguments: [employee.id??'', '']);
   }
 }

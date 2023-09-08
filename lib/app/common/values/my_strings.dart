@@ -84,7 +84,9 @@ class MyStrings {
   static const String helpSupport = "helpSupport";
   static const String myDashboard = "My Dashboard";
   static const String paymentHistory = "Payment History";
-  static const String emergencyCheckInCheckOut = "emergencyCheckInCheckOut";
+  static const String emergencyCheckInCheckOut = "emergencyCheckInOut";
+  static const String bookedHistory = "Booked History";
+  static const String hiredHistory = "Hired History";
   static const String areShowing = "areShowing";
   static const String exp = "exp";
   static const String countYears = "countYears";

@@ -1,3 +1,4 @@
+import 'package:mh/app/modules/client/client_shortlisted/models/add_to_shortlist_request_model.dart';
 import '../../../../models/employee_details.dart';
 
 class ShortlistedEmployees {
@@ -54,45 +55,26 @@ class ShortList {
   String? employeeId;
   EmployeeDetails? employeeDetails;
   int? feeAmount;
-  String? createdBy;
-  DateTime? createdAt;
-  DateTime? updatedAt;
   int? iV;
-  DateTime? fromDate;
-  DateTime? toDate;
-  String? fromTime;
-  String? toTime;
+  List<RequestDateModel>? requestDateList;
 
-  ShortList({
-    this.sId,
-    this.employeeId,
-    this.employeeDetails,
-    this.feeAmount,
-    this.createdBy,
-    this.createdAt,
-    this.updatedAt,
-    this.iV,
-    this.fromDate,
-    this.toDate,
-    this.fromTime,
-    this.toTime,
-  });
+  ShortList(
+      {this.sId,
+      this.employeeId,
+      this.employeeDetails,
+      this.feeAmount,
+      this.iV,
+      this.requestDateList});
 
   ShortList.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     employeeId = json['employeeId'];
-    employeeDetails = json['employeeDetails'] != null
-        ? EmployeeDetails.fromJson(json['employeeDetails'])
-        : null;
+    employeeDetails = json['employeeDetails'] != null ? EmployeeDetails.fromJson(json['employeeDetails']) : null;
     feeAmount = json['feeAmount'];
-    createdBy = json['createdBy'];
-    createdAt = json['createdAt'] == null ? null : DateTime.parse(json["createdAt"]);
-    updatedAt = json['updatedAt'] == null ? null : DateTime.parse(json["updatedAt"]);
     iV = json['__v'];
-    fromDate = json['fromDate'] == null ? null : DateTime.parse(json["fromDate"]);
-    toDate = json['toDate'] == null ? null : DateTime.parse(json["toDate"]);
-    fromTime = json['fromTime'];
-    toTime = json['toTime'];
+    requestDateList = json['requestDate'] == null
+        ? []
+        : List<RequestDateModel>.from(json["requestDate"]!.map((x) => RequestDateModel.fromJson(x)));
   }
 
   Map<String, dynamic> toJson() {
@@ -103,14 +85,8 @@ class ShortList {
       data['employeeDetails'] = employeeDetails!.toJson();
     }
     data['feeAmount'] = feeAmount;
-    data['createdBy'] = createdBy;
-    data['createdAt'] = createdAt;
-    data['updatedAt'] = updatedAt;
     data['__v'] = iV;
-    data['fromDate'] = fromDate;
-    data['toDate'] = toDate;
-    data['fromTime'] = fromTime;
-    data['toTime'] = toTime;
+    data['requestDate'] == null ? [] : List<RequestDateModel>.from(requestDateList!.map((x) => x.toJson()));
     return data;
   }
 }

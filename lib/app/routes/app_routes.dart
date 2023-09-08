@@ -51,6 +51,10 @@ abstract class Routes {
   static const stripePayment = _Paths.stripePayment;
   static const employeePaymentHistory = _Paths.employeePaymentHistory;
   static const calender = _Paths.calender;
+  static const employeeBookedHistory = _Paths.employeeBookedHistory;
+  static const employeeHiredHistory = _Paths.employeeHiredHistory;
+  static const employeeBookedHistoryDetails =
+      _Paths.employeeBookedHistoryDetails;
 }
 
 abstract class _Paths {
@@ -106,4 +110,8 @@ abstract class _Paths {
   static const stripePayment = '/stripe-payment';
   static const employeePaymentHistory = '/employee-payment-history';
   static const calender = '/calender';
+  static const employeeBookedHistory = '/employee-booked-history';
+  static const employeeHiredHistory = '/employee-hired-history';
+  static const employeeBookedHistoryDetails =
+      '/employee-booked-history-details';
 }

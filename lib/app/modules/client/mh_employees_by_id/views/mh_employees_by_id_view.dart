@@ -1,5 +1,6 @@
-import 'package:badges/badges.dart' as badge;
+import 'package:badges/badges.dart';
 import 'package:mh/app/common/controller/app_controller.dart';
+import 'package:mh/app/modules/client/client_shortlisted/models/add_to_shortlist_request_model.dart';
 import '../../../../common/utils/exports.dart';
 import '../../../../common/widgets/custom_appbar.dart';
 import '../../../../common/widgets/custom_filter.dart';
@@ -7,6 +8,7 @@ import '../../../../common/widgets/custom_network_image.dart';
 import '../../../../common/widgets/no_item_found.dart';
 import '../../../../models/employees_by_id.dart';
 import '../controllers/mh_employees_by_id_controller.dart';
+import 'package:badges/badges.dart' as badge;
 
 class MhEmployeesByIdView extends GetView<MhEmployeesByIdController> {
   const MhEmployeesByIdView({Key? key}) : super(key: key);
@@ -21,7 +23,7 @@ class MhEmployeesByIdView extends GetView<MhEmployeesByIdController> {
           context: context,
           centerTitle: true,
           actions: [
-            /*Obx(
+            Obx(
               () => Visibility(
                 visible: controller.shortlistController.totalShortlisted.value > 0,
                 child: Center(
@@ -33,7 +35,7 @@ class MhEmployeesByIdView extends GetView<MhEmployeesByIdController> {
                       controller.shortlistController.totalShortlisted.value.toString(),
                       style: MyColors.white.semiBold12,
                     ),
-                    badgeStyle: const badge.BadgeStyle(
+                    badgeStyle: const BadgeStyle(
                       badgeColor: MyColors.c_C6A34F,
                       elevation: 0,
                     ),
@@ -45,7 +47,7 @@ class MhEmployeesByIdView extends GetView<MhEmployeesByIdController> {
                 ),
               ),
             ),
-            SizedBox(width: 16.w),*/
+            SizedBox(width: 16.w),
           ]),
       body: Obx(
         () => (controller.employees.value.users ?? []).isEmpty
@@ -129,17 +131,20 @@ class MhEmployeesByIdView extends GetView<MhEmployeesByIdController> {
         onTap: () => controller.onEmployeeClick(user),
         child: Stack(
           children: [
-           /* Positioned(
+            Positioned(
               right: 5,
               top: 3,
               child: Obx(
                 () => Visibility(
                   visible: (user.isSuggested == false && user.isHired == false),
                   child: controller.shortlistController.getIcon(
-                      employeeId: user.id!, isFetching: controller.shortlistController.isFetching.value, fromWhere: ''),
+                      requestedDateList: <RequestDateModel>[],
+                      employeeId: user.id!,
+                      isFetching: controller.shortlistController.isFetching.value,
+                      fromWhere: ''),
                 ),
               ),
-            ),*/
+            ),
             Row(
               children: [
                 _image((user.profilePicture ?? "").imageUrl),
