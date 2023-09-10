@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names, constant_identifier_names
 
 import 'package:flutter/material.dart';
+import 'package:mh/app/common/utils/exports.dart';
 
 class MyColors {
   MyColors._();
@@ -80,5 +81,5 @@ class MyColors {
   static Color c_FF5029_10 = const Color(0xffFF5029).withOpacity(.1);
   static const Color c_F6F6F6 = Color(0xffF6F6F6);
   static const Color c_909090 = Color(0xff909090);
-  static final Color shimmerColor = Colors.grey.shade400;
+  static final Color shimmerColor = Get.isDarkMode ? Colors.grey.shade700 : Colors.grey.shade400;
 }

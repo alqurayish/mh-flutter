@@ -29,7 +29,8 @@ class CalenderMonthWidget extends StatelessWidget {
 
         bool canTapDate = false;
         if (currentDate.toString().substring(0, 10) == today.toString().substring(0, 10)) {
-          borderColor = MyColors.c_C6A34F; // Today's date should be red
+          borderColor = MyColors.c_C6A34F;// Today's date should be red
+          textColor = Colors.grey;
         } else if (controller.dateListModel.value.bookedDates!.containsDate(currentDate)) {
           textColor = Colors.red; // Booked dates should be red
         } else if (controller.dateListModel.value.pendingDates!.containsDate(currentDate)) {

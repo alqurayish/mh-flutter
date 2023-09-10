@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:mh/app/common/controller/app_controller.dart';
 import 'package:mh/app/common/widgets/custom_dialog.dart';
+import 'package:mh/app/common/widgets/custom_loader.dart';
 import 'package:mh/app/models/custom_error.dart';
 import 'package:mh/app/modules/client/client_shortlisted/models/add_to_shortlist_request_model.dart';
 import 'package:mh/app/modules/client/client_suggested_employees/models/short_list_request_model.dart';
@@ -45,16 +46,14 @@ class ShortlistController extends GetxService {
   Future<void> fetchShortListEmployees() async {
     isFetching.value = true;
 
-    await _apiHelper.fetchShortlistEmployees().then((Either<CustomError, ShortlistedEmployees> response) {
-      isFetching.value = false;
-
-      response.fold((l) {
-        Logcat.msg(l.msg);
-      }, (r) {
-        shortList.value = r.shortList ?? [];
-        shortList.refresh();
-        totalShortlisted.value = shortList.length;
-      });
+    Either<CustomError, ShortlistedEmployees> response = await _apiHelper.fetchShortlistEmployees();
+    isFetching.value = false;
+    response.fold((l) {
+      Logcat.msg(l.msg);
+    }, (r) {
+      shortList.value = r.shortList ?? [];
+      shortList.refresh();
+      totalShortlisted.value = shortList.length;
     });
   }
 
@@ -82,28 +81,27 @@ class ShortlistController extends GetxService {
   Future<void> _addEmployeeToShortlist(
       {required String employeeId, required List<RequestDateModel> requestDateList}) async {
     isFetching.value = true;
-
+    CustomLoader.show(Get.context!);
     AddToShortListRequestModel addToShortListRequestModel =
         AddToShortListRequestModel(employeeId: employeeId, requestDateList: requestDateList);
 
-    await _apiHelper
-        .addToShortlist(addToShortListRequestModel: addToShortListRequestModel)
-        .then((Either<CustomError, Response> response) {
-      response.fold((l) {
-        Logcat.msg(l.msg);
+    Either<CustomError, Response> response =
+        await _apiHelper.addToShortlist(addToShortListRequestModel: addToShortListRequestModel);
+    CustomLoader.hide(Get.context!);
+    response.fold((l) {
+      Logcat.msg(l.msg);
+      isFetching.value = false;
+    }, (r) {
+      if ([200, 201].contains(r.statusCode)) {
+        fetchShortListEmployees();
+      } else {
         isFetching.value = false;
-      }, (r) {
-        if ([200, 201].contains(r.statusCode)) {
-          fetchShortListEmployees();
-        } else {
-          isFetching.value = false;
-          CustomDialogue.information(
-            context: Get.context!,
-            title: "Error",
-            description: "Employee already hired",
-          );
-        }
-      });
+        CustomDialogue.information(
+          context: Get.context!,
+          title: "Error",
+          description: "Employee already hired",
+        );
+      }
     });
   }
 

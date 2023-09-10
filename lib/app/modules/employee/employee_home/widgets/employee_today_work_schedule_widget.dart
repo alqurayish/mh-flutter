@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:mh/app/common/utils/exports.dart';
 import 'package:mh/app/common/widgets/shimmer_widget.dart';
 import 'package:mh/app/modules/employee/employee_home/controllers/employee_home_controller.dart';
-import 'package:mh/app/modules/employee/employee_home/models/todays_work_schedule_model.dart';
+import 'package:mh/app/modules/employee/employee_home/models/today_check_in_out_details.dart';
 
 class EmployeeTodayWorkScheduleWidget extends GetWidget<EmployeeHomeController> {
   const EmployeeTodayWorkScheduleWidget({Key? key}) : super(key: key);
@@ -22,7 +22,9 @@ class EmployeeTodayWorkScheduleWidget extends GetWidget<EmployeeHomeController> 
           width: double.infinity,
           margin: EdgeInsets.only(bottom: 15.h),
           padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0),
-          decoration: BoxDecoration(color: Colors.purple.shade300, borderRadius: BorderRadius.circular(10.0)),
+          decoration: BoxDecoration(
+              color: Get.isDarkMode ? Colors.teal.shade800 : Colors.teal.shade400,
+              borderRadius: BorderRadius.circular(10.0)),
           child: Column(
             children: [
               Row(
@@ -39,7 +41,7 @@ class EmployeeTodayWorkScheduleWidget extends GetWidget<EmployeeHomeController> 
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
-              const SizedBox(height: 30),
+              const SizedBox(height: 20),
               IntrinsicHeight(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -50,13 +52,14 @@ class EmployeeTodayWorkScheduleWidget extends GetWidget<EmployeeHomeController> 
                             maxLines: 4,
                             overflow: TextOverflow.ellipsis,
                             text: TextSpan(children: [
-                              // TextSpan(text: 'You are just ', style: MyColors.white.medium12),
                               TextSpan(
-                                text: (controller.restaurantDistanceFromEmployee(
-                                            targetLat: double.parse(restaurantDetails!.lat.toString()),
-                                            targetLng: double.parse(restaurantDetails.long.toString())) /
-                                        1609)
-                                    .toStringAsFixed(2),
+                                text: controller.locationFetchError.value.isEmpty
+                                    ? (controller.restaurantDistanceFromEmployee(
+                                                targetLat: double.parse(restaurantDetails!.lat.toString()),
+                                                targetLng: double.parse(restaurantDetails.long.toString())) /
+                                            1609)
+                                        .toStringAsFixed(2)
+                                    : 'xxx',
                                 style: MyColors.white.semiBold26,
                               ),
                               TextSpan(
@@ -72,7 +75,7 @@ class EmployeeTodayWorkScheduleWidget extends GetWidget<EmployeeHomeController> 
                             Column(
                               children: [
                                 const CircleAvatar(radius: 5, backgroundColor: MyColors.white),
-                                Container(width: 5, height: 30, color: MyColors.white),
+                                Container(width: 5, height: 40, color: MyColors.white),
                                 const CircleAvatar(radius: 5, backgroundColor: MyColors.white)
                               ],
                             ),

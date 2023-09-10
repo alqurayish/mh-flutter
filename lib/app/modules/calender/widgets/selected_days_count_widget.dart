@@ -22,9 +22,9 @@ class SelectedDaysCountWidget extends GetWidget<CalenderController> {
           Image.asset(MyAssets.calender1, height: 20, width: 20),
           Obx(() => Text(
               ' ${Get.isRegistered<EmployeeHomeController>() == true ? controller.totalSelectedDays : controller.requestDateList.calculateTotalDays()}',
-              style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 24))),
-          const Text(' Days have been selected',
-              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12)),
+              style: MyColors.white.semiBold24)),
+           Text(' Days have been selected',
+              style: MyColors.white.semiBold12),
         ],
       ),
     );

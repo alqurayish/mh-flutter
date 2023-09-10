@@ -39,7 +39,6 @@ class EmployeeDetailsController extends GetxController {
   }
 
   void onViewCalenderClick() {
-    print('EmployeeDetailsController.onViewCalenderClick');
     Get.toNamed(Routes.calender, arguments: [employee.id??'', '']);
   }
 }

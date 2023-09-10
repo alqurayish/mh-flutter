@@ -1,23 +1,13 @@
 import 'package:get/get.dart';
+import 'package:mh/app/modules/client/client_shortlisted/models/add_to_shortlist_request_model.dart';
+import 'package:mh/app/modules/employee/employee_home/controllers/employee_home_controller.dart';
+import 'package:mh/app/modules/employee_hired_history/widgets/employee_hired_history_details_widget.dart';
 
 class EmployeeHiredHistoryController extends GetxController {
-  //TODO: Implement EmployeeHiredHistoryController
+  final EmployeeHomeController employeeHomeController = Get.find<EmployeeHomeController>();
 
-  final count = 0.obs;
-  @override
-  void onInit() {
-    super.onInit();
+
+  void onDetailsClick({required List<RequestDateModel> bookedDateList}) {
+    Get.bottomSheet(EmployeeHiredHistoryDetailsWidget(requestDateList: bookedDateList));
   }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
-  void increment() => count.value++;
 }

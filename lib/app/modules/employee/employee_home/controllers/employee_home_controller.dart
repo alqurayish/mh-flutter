@@ -5,9 +5,10 @@ import 'package:mh/app/common/widgets/rating_review_widget.dart';
 import 'package:mh/app/modules/employee/employee_home/models/common_response_model.dart';
 import 'package:mh/app/modules/employee/employee_home/models/employee_check_in_request_model.dart';
 import 'package:mh/app/modules/employee/employee_home/models/employee_check_out_request_model.dart';
+import 'package:mh/app/modules/employee/employee_home/models/employee_hired_history_model.dart';
 import 'package:mh/app/modules/employee/employee_home/models/review_dialog_model.dart';
 import 'package:mh/app/modules/employee/employee_home/models/review_request_model.dart';
-import 'package:mh/app/modules/employee/employee_home/models/single_notification_model_for_employee.dart';
+import 'package:mh/app/modules/employee/employee_home/models/booking_history_model.dart';
 import 'package:mh/app/modules/employee/employee_home/models/todays_work_schedule_model.dart';
 import 'package:mh/app/modules/employee/employee_home/widgets/slide_action_widget.dart';
 import 'package:mh/app/modules/notifications/controllers/notifications_controller.dart';
@@ -51,7 +52,7 @@ class EmployeeHomeController extends GetxController {
   RxInt unreadMsgFromClient = 0.obs;
   RxInt unreadMsgFromAdmin = 0.obs;
 
-  RxList<NotificationModel> bookingHistoryList = <NotificationModel>[].obs;
+  RxList<BookingDetailsModel> bookingHistoryList = <BookingDetailsModel>[].obs;
   RxBool bookingHistoryDataLoaded = false.obs;
 
   RxDouble rating = 0.0.obs;
@@ -59,6 +60,9 @@ class EmployeeHomeController extends GetxController {
 
   Rx<TodayWorkScheduleModel> todayWorkSchedule = TodayWorkScheduleModel().obs;
   RxBool todayWorkScheduleDataLoading = true.obs;
+
+  RxList<HiredHistoryModel> hiredHistoryList = <HiredHistoryModel>[].obs;
+  RxBool hiredHistoryDataLoaded = false.obs;
 
   @override
   void onInit() async {
@@ -79,6 +83,7 @@ class EmployeeHomeController extends GetxController {
     await _getTodayWorkSchedule();
     await _getTodayCheckInOutDetails();
     await getBookingHistory();
+    await _getHiredHistory();
   }
 
   Future<void> _getCurrentLocation() async {
@@ -103,21 +108,6 @@ class EmployeeHomeController extends GetxController {
     });
   }
 
-  Future<void> getBookingHistory() async {
-    Either<CustomError, SingleNotificationModelForEmployee> responseData =
-        await _apiHelper.singleNotificationForEmployee();
-
-    responseData.fold((CustomError customError) {
-      Utils.errorDialog(context!, customError..onRetry = getBookingHistory);
-    }, (SingleNotificationModelForEmployee response) {
-      if (response.status == "success" && response.statusCode == 200 && response.details != null) {
-        bookingHistoryList.value = response.details ?? [];
-        bookingHistoryList.refresh();
-      }
-      bookingHistoryDataLoaded.value = true;
-    });
-  }
-
   Future<void> _getTodayCheckInOutDetails() async {
     Either<CustomError, TodayCheckInOutDetails> response =
         await _apiHelper.getTodayCheckInOutDetails(appController.user.value.employee?.id ?? '');
@@ -134,6 +124,34 @@ class EmployeeHomeController extends GetxController {
         checkIn.value = false;
         checkOut.value = false;
       }
+    });
+  }
+
+  Future<void> getBookingHistory() async {
+    Either<CustomError, BookingHistoryModel> responseData = await _apiHelper.getBookingHistory();
+
+    responseData.fold((CustomError customError) {
+      Utils.errorDialog(context!, customError..onRetry = getBookingHistory);
+    }, (BookingHistoryModel response) {
+      if (response.status == "success" && response.statusCode == 200) {
+        bookingHistoryList.value = response.bookingDetailsList ?? [];
+        bookingHistoryList.refresh();
+      }
+      bookingHistoryDataLoaded.value = true;
+    });
+  }
+
+  Future<void> _getHiredHistory() async {
+    Either<CustomError, EmployeeHiredHistoryModel> responseData = await _apiHelper.getHiredHistory();
+
+    responseData.fold((CustomError customError) {
+      Utils.errorDialog(context!, customError..onRetry = getBookingHistory);
+    }, (response) {
+      if (response.status == "success" && response.statusCode == 200) {
+        hiredHistoryList.value = response.hiredHistory ?? [];
+        bookingHistoryList.refresh();
+      }
+      hiredHistoryDataLoaded.value = true;
     });
   }
 
@@ -275,6 +293,7 @@ class EmployeeHomeController extends GetxController {
     checkIn.value = false;
     checkOut.value = false;
     bookingHistoryDataLoaded.value = false;
+    hiredHistoryDataLoaded.value = false;
 
     await homeMethods();
     Utils.showSnackBar(message: 'This page has been refreshed', isTrue: true);
@@ -309,25 +328,32 @@ class EmployeeHomeController extends GetxController {
   }
 
   void updateNotification({required String id, required String hiredStatus}) {
-    CustomLoader.show(context!);
-
-    NotificationUpdateRequestModel notificationUpdateRequestModel =
-        NotificationUpdateRequestModel(id: id, fromWhere: 'employee_home_view', hiredStatus: hiredStatus);
-    _apiHelper
-        .updateNotification(notificationUpdateRequestModel: notificationUpdateRequestModel)
-        .then((Either<CustomError, NotificationUpdateResponseModel> response) {
-      CustomLoader.hide(context!);
-      Get.back();
-      Get.back();
-      response.fold((CustomError customError) {
-        Utils.errorDialog(context!, customError);
-      }, (NotificationUpdateResponseModel responseModel) {
-        if (responseModel.status == 'success' && responseModel.statusCode == 200) {
-          getBookingHistory();
-          _getTodayCheckInOutDetails();
-        }
-      });
-    });
+    CustomDialogue.confirmation(
+      context: Get.context!,
+      title: "Confirm?",
+      msg: "Are you sure you want to $hiredStatus this booking request?",
+      confirmButtonText: hiredStatus,
+      onConfirm: () async {
+        Get.back();
+        CustomLoader.show(context!);
+        NotificationUpdateRequestModel notificationUpdateRequestModel =
+            NotificationUpdateRequestModel(id: id, fromWhere: 'employee_home_view', hiredStatus: hiredStatus);
+        _apiHelper
+            .updateNotification(notificationUpdateRequestModel: notificationUpdateRequestModel)
+            .then((Either<CustomError, NotificationUpdateResponseModel> response) {
+          CustomLoader.hide(context!);
+          Get.back();
+          Get.back();
+          response.fold((CustomError customError) {
+            Utils.errorDialog(context!, customError);
+          }, (NotificationUpdateResponseModel responseModel) {
+            if (responseModel.status == 'success') {
+              refreshPage();
+            }
+          });
+        });
+      },
+    );
   }
 
   void onPaymentHistoryClick() {
@@ -418,17 +444,20 @@ class EmployeeHomeController extends GetxController {
     Get.toNamed(Routes.employeeBookedHistory);
   }
 
-  void onHiredHistoryClick() {}
+  void onHiredHistoryClick() {
+    Get.toNamed(Routes.employeeHiredHistory);
+  }
 
   double restaurantDistanceFromEmployee({required double targetLat, required double targetLng}) {
     if (currentLocation != null) {
       return LocationController.calculateDistance(
           targetLat: targetLat,
           targetLong: targetLng,
-          currentLat: //currentLocation!.latitude,
-              23.76856796911088,
-          currentLong: //currentLocation!.longitude
-              90.35680051892997);
+          currentLat: currentLocation!.latitude,
+              //23.76856796911088,
+          currentLong: currentLocation!.longitude
+              //90.35680051892997
+      );
     }
     return 0.0;
   }
@@ -436,6 +465,7 @@ class EmployeeHomeController extends GetxController {
   bool get showCheckInCheckOutWidget {
     return todayWorkScheduleDataLoading.value == false &&
         todayWorkSchedule.value.todayWorkScheduleDetailsModel != null &&
+        locationFetchError.value.isEmpty &&
         restaurantDistanceFromEmployee(
                 targetLat: double.parse(
                     todayWorkSchedule.value.todayWorkScheduleDetailsModel?.restaurantDetails?.lat ?? '0.0'),
@@ -444,5 +474,16 @@ class EmployeeHomeController extends GetxController {
             200 &&
         todayCheckInCheckOutDetailsDataLoading.value == false &&
         (checkIn.value == false || checkOut.value == false);
+  }
+
+  bool get showEmergencyCheckInCheckOut {
+    return todayWorkSchedule.value.todayWorkScheduleDetailsModel != null &&
+        restaurantDistanceFromEmployee(
+                targetLat: double.parse(
+                    todayWorkSchedule.value.todayWorkScheduleDetailsModel?.restaurantDetails?.lat ?? '0.0'),
+                targetLng: double.parse(
+                    todayWorkSchedule.value.todayWorkScheduleDetailsModel?.restaurantDetails?.long ?? '0.0')) >
+            200 &&
+        checkIn.value == false;
   }
 }

@@ -1,5 +1,3 @@
-import 'package:mh/app/modules/employee/employee_home/models/common_response_model.dart';
-
 import '../../../../common/utils/exports.dart';
 import '../../../../common/widgets/custom_break_time.dart';
 import '../../../../common/widgets/custom_dialog.dart';
@@ -20,45 +18,53 @@ class EmployeeEmergencyCheckInOutController extends GetxController {
   final formKeyClient = GlobalKey<FormState>();
 
   String get getButtonText {
-    if((employeeHomeController.todayCheckInOutDetails.value.details?.checkInCheckOutDetails?.checkIn ?? false) ||
-        (employeeHomeController.todayCheckInOutDetails.value.details?.checkInCheckOutDetails?.emmergencyCheckIn ?? false)) {
+    if ((employeeHomeController.todayCheckInOutDetails.value.details?.checkInCheckOutDetails?.checkIn ?? false) ||
+        (employeeHomeController.todayCheckInOutDetails.value.details?.checkInCheckOutDetails?.emmergencyCheckIn ??
+            false)) {
       return "Check Out";
     }
 
     return "Check In";
   }
 
- /* void onCheckInCheckoutPress() {
-
+  void onCheckInCheckoutPress() {
     Utils.unFocus();
 
     if (formKeyClient.currentState!.validate()) {
       formKeyClient.currentState!.save();
 
-      if(getButtonText == "Check In") {
+      if (getButtonText == "Check In") {
         _checkIn();
-      } else if(getButtonText == "Check Out") {
+      } else if (getButtonText == "Check Out") {
         _checkOut();
       }
     }
-
   }
-*/
-  /*Future<void> _checkIn() async {
+
+  Future<void> _checkIn() async {
     Map<String, dynamic> data = {
       "checkInTime": DateTime.now().toLocal().toString(),
       "employeeId": employeeHomeController.appController.user.value.userId,
       "emmergencyCheckIn": true,
       "emmergencyCheckInComment": emergencyReason.text.trim(),
-      if(employeeHomeController.currentLocation?.latitude != null) "lat": employeeHomeController.currentLocation?.latitude.toString(),
-      if(employeeHomeController.currentLocation?.longitude != null) "long": employeeHomeController.currentLocation?.longitude.toString(),
-      //if(employeeHomeController.currentLocation?.latitude != null && employeeHomeController.currentLocation?.longitude != null) "checkInDistance": double.parse(employeeHomeController.distanceFromEmployeeToRestaurant.value.toStringAsFixed(2)),
+      if (employeeHomeController.currentLocation?.latitude != null)
+        "lat": employeeHomeController.currentLocation?.latitude.toString(),
+      if (employeeHomeController.currentLocation?.longitude != null)
+        "long": employeeHomeController.currentLocation?.longitude.toString(),
+      if (employeeHomeController.currentLocation?.latitude != null &&
+          employeeHomeController.currentLocation?.longitude != null)
+        "checkInDistance": employeeHomeController.restaurantDistanceFromEmployee(
+            targetLat: double.parse(
+                employeeHomeController.todayWorkSchedule.value.todayWorkScheduleDetailsModel?.restaurantDetails?.lat ??
+                    '0.0'),
+            targetLng: double.parse(
+                employeeHomeController.todayWorkSchedule.value.todayWorkScheduleDetailsModel?.restaurantDetails?.long ??
+                    '0.0')),
     };
 
     CustomLoader.show(context!);
 
-    await _apiHelper.checkIn(data).then((response) {
-
+    await _apiHelper.emergencyCheckIn(data).then((response) {
       CustomLoader.hide(context!);
 
       response.fold((CustomError customError) {
@@ -67,7 +73,7 @@ class EmployeeEmergencyCheckInOutController extends GetxController {
           title: "Failed to CheckIn",
           description: customError.msg,
         );
-      }, (CommonResponseModel clients) {
+      }, (clients) {
         employeeHomeController.refreshPage();
         Get.back();
       });
@@ -76,25 +82,34 @@ class EmployeeEmergencyCheckInOutController extends GetxController {
 
   void _checkOut() {
     CustomBreakTime.show(context!, onBreakTimePickDone);
-  }*/
+  }
 
-  /*Future<void> onBreakTimePickDone(int hour, int min) async {
+  Future<void> onBreakTimePickDone(int hour, int min) async {
     Map<String, dynamic> data = {
       "checkOutTime": DateTime.now().toLocal().toString(),
       "id": employeeHomeController.todayCheckInOutDetails.value.details!.id!,
       "employeeId": employeeHomeController.appController.user.value.userId,
       "emmergencyCheckOut": true,
       "emmergencyCheckOutComment": emergencyReason.text.trim(),
-      if(employeeHomeController.currentLocation?.latitude != null) "lat": employeeHomeController.currentLocation!.latitude.toString(),
-      if(employeeHomeController.currentLocation?.longitude != null) "long": employeeHomeController.currentLocation?.longitude.toString(),
+      if (employeeHomeController.currentLocation?.latitude != null)
+        "lat": employeeHomeController.currentLocation!.latitude.toString(),
+      if (employeeHomeController.currentLocation?.longitude != null)
+        "long": employeeHomeController.currentLocation?.longitude.toString(),
       "breakTime": (hour * 60) + (min * 5),
-      //if(employeeHomeController.currentLocation?.latitude != null && employeeHomeController.currentLocation?.longitude != null) "checkOutDistance": double.parse(employeeHomeController.distanceFromEmployeeToRestaurant.value.toStringAsFixed(2)),
+      if (employeeHomeController.currentLocation?.latitude != null &&
+          employeeHomeController.currentLocation?.longitude != null)
+        "checkOutDistance": employeeHomeController.restaurantDistanceFromEmployee(
+            targetLat: double.parse(
+                employeeHomeController.todayWorkSchedule.value.todayWorkScheduleDetailsModel?.restaurantDetails?.lat ??
+                    '0.0'),
+            targetLng: double.parse(
+                employeeHomeController.todayWorkSchedule.value.todayWorkScheduleDetailsModel?.restaurantDetails?.long ??
+                    '0.0')),
     };
 
     CustomLoader.show(context!);
 
-    await _apiHelper.checkout(data).then((response) {
-
+    await _apiHelper.emergencyCheckIn(data).then((response) {
       CustomLoader.hide(context!);
 
       response.fold((CustomError customError) {
@@ -103,10 +118,10 @@ class EmployeeEmergencyCheckInOutController extends GetxController {
           title: "Failed to Checkout",
           description: customError.msg,
         );
-      }, (Response checkoutResponse) {
+      }, (checkoutResponse) {
         employeeHomeController.refreshPage();
         Get.back();
       });
     });
-  }*/
+  }
 }

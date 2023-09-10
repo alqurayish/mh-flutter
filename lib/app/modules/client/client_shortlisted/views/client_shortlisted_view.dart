@@ -123,7 +123,7 @@ class ClientShortlistedView extends GetView<ClientShortlistedController> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         InkWell(
-                          onTap: ()=>controller.onDaysSelectedClick(requestDateList: employee.requestDateList??[]),
+                          onTap: ()=>controller.onDaysSelectedClick(requestDateList: employee.requestDateList??[], shortListId: employee.sId??''),
                           child: Container(
                             padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 3.0),
                             decoration: BoxDecoration(borderRadius: BorderRadius.circular(5.0), color: MyColors.c_F5F5F5),
@@ -131,7 +131,7 @@ class ClientShortlistedView extends GetView<ClientShortlistedController> {
                               children: [
                                 Image.asset(MyAssets.calender2, height: 20, width: 20),
                                 Text(' ${employee.requestDateList?.calculateTotalDays()} days selected',
-                                    style: MyColors.l111111_dwhite(Get.context!).medium12)
+                                    style: MyColors.black.medium12)
                               ],
                             ),
                           ),

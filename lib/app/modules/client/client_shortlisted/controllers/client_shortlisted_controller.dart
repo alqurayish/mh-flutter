@@ -1,4 +1,6 @@
+import 'package:mh/app/common/widgets/custom_loader.dart';
 import 'package:mh/app/modules/client/client_shortlisted/models/add_to_shortlist_request_model.dart';
+import 'package:mh/app/modules/client/client_shortlisted/models/update_shortlist_request_model.dart';
 import 'package:mh/app/modules/client/client_shortlisted/widgets/client_short_listed_request_date_widget.dart';
 
 import '../../../../common/utils/exports.dart';
@@ -37,7 +39,7 @@ class ClientShortlistedController extends GetxController {
     }
   }
 
-  void onDaysSelectedClick({required List<RequestDateModel> requestDateList}) {
+  void onDaysSelectedClick({required List<RequestDateModel> requestDateList, required String shortListId}) {
     if (requestDateList.isEmpty) {
       Utils.showSnackBar(
           message: 'You have not any selected dates currently.\nPlease select the dates first', isTrue: false);
@@ -46,8 +48,34 @@ class ClientShortlistedController extends GetxController {
         backgroundColor: MyColors.lightCard(Get.context!),
         insetPadding: const EdgeInsets.symmetric(horizontal: 20.0),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-        child: ClientShortListedRequestDateWidget(requestDateList: requestDateList),
+        child: ClientShortListedRequestDateWidget(requestDateList: requestDateList, shortListId: shortListId),
       ));
     }
+  }
+
+  void onDateRemoveClick(
+      {required int index, required String shortListId, required List<RequestDateModel> requestDateList}) {
+    CustomDialogue.confirmation(
+      context: Get.context!,
+      title: "Confirm?",
+      msg: "Are you sure you want to remove this range?",
+      confirmButtonText: "Remove",
+      onConfirm: () async {
+        Get.back();
+        requestDateList.removeAt(index);
+        UpdateShortListRequestModel updateShortListRequestModel =
+            UpdateShortListRequestModel(shortListId: shortListId, requestDateList: requestDateList);
+        await _updateShortListDateOrTime(updateShortListRequestModel: updateShortListRequestModel);
+      },
+    );
+  }
+
+  Future<void> _updateShortListDateOrTime({required UpdateShortListRequestModel updateShortListRequestModel}) async {
+    CustomLoader.show(context!);
+    await _apiHelper.updateShortlistItem(updateShortListRequestModel: updateShortListRequestModel).then((value) async {
+      await shortlistController.fetchShortListEmployees();
+      CustomLoader.hide(context!);
+      Get.back();
+    });
   }
 }

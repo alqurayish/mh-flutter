@@ -13,9 +13,11 @@ import 'package:mh/app/modules/client/client_suggested_employees/models/short_li
 import 'package:mh/app/modules/employee/employee_home/models/common_response_model.dart';
 import 'package:mh/app/modules/employee/employee_home/models/employee_check_in_request_model.dart';
 import 'package:mh/app/modules/employee/employee_home/models/employee_check_out_request_model.dart';
+import 'package:mh/app/modules/employee/employee_home/models/employee_hired_history_model.dart';
 import 'package:mh/app/modules/employee/employee_home/models/review_dialog_model.dart';
 import 'package:mh/app/modules/employee/employee_home/models/review_request_model.dart';
-import 'package:mh/app/modules/employee/employee_home/models/single_notification_model_for_employee.dart';
+import 'package:mh/app/modules/employee/employee_home/models/booking_history_model.dart';
+import 'package:mh/app/modules/employee/employee_home/models/single_booking_details_model.dart';
 import 'package:mh/app/modules/employee/employee_home/models/todays_work_schedule_model.dart';
 import 'package:mh/app/modules/employee/employee_payment_history/models/employee_payment_history_model.dart';
 import 'package:mh/app/modules/notifications/models/notification_response_model.dart';
@@ -420,7 +422,7 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
 
   @override
   EitherModel<Response> updateShortlistItem({required UpdateShortListRequestModel updateShortListRequestModel}) async {
-    var response = await put("short-list/update", jsonEncode(updateShortListRequestModel.toJson()));
+    Response response = await put("short-list/update", jsonEncode(updateShortListRequestModel.toJson()));
     if (response.statusCode == null) {
       response = await put("short-list/update", jsonEncode(updateShortListRequestModel.toJson()));
     }
@@ -825,7 +827,7 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
   }
 
   @override
-  EitherModel<SingleNotificationModelForEmployee> singleNotificationForEmployee() async {
+  EitherModel<BookingHistoryModel> getBookingHistory() async {
     String url = "notifications/details";
 
     Response response = await get(url);
@@ -838,14 +840,14 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
     if (response.statusCode == null) {
       response = await get(url);
     }
-    return _convert<SingleNotificationModelForEmployee>(
+    return _convert<BookingHistoryModel>(
       response,
-      SingleNotificationModelForEmployee.fromJson,
-    ).fold((CustomError l) => left(l), (SingleNotificationModelForEmployee r) => right(r));
+      BookingHistoryModel.fromJson,
+    ).fold((CustomError l) => left(l), (BookingHistoryModel r) => right(r));
   }
 
   @override
-  EitherModel<SingleNotificationModelForEmployee> cancelClientRequestFromAdmin({required String requestId}) async {
+  EitherModel<BookingHistoryModel> cancelClientRequestFromAdmin({required String requestId}) async {
     String url = "request-employees/remove/$requestId";
 
     var response = await delete(url);
@@ -853,14 +855,14 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
     if (response.statusCode == null) response = await delete(url);
     if (response.statusCode == null) response = await delete(url);
 
-    return _convert<SingleNotificationModelForEmployee>(
+    return _convert<BookingHistoryModel>(
       response,
-      SingleNotificationModelForEmployee.fromJson,
-    ).fold((CustomError l) => left(l), (SingleNotificationModelForEmployee r) => right(r));
+      BookingHistoryModel.fromJson,
+    ).fold((CustomError l) => left(l), (BookingHistoryModel r) => right(r));
   }
 
   @override
-  EitherModel<SingleNotificationModelForEmployee> cancelEmployeeSuggestionFromAdmin(
+  EitherModel<BookingHistoryModel> cancelEmployeeSuggestionFromAdmin(
       {required String employeeId, required String requestId}) async {
     String url = "request-employees/cancel-suggest/$requestId";
 
@@ -869,10 +871,10 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
     if (response.statusCode == null) response = await patch(url, jsonEncode({"employeeId": employeeId}));
     if (response.statusCode == null) response = await patch(url, jsonEncode({"employeeId": employeeId}));
 
-    return _convert<SingleNotificationModelForEmployee>(
+    return _convert<BookingHistoryModel>(
       response,
-      SingleNotificationModelForEmployee.fromJson,
-    ).fold((CustomError l) => left(l), (SingleNotificationModelForEmployee r) => right(r));
+      BookingHistoryModel.fromJson,
+    ).fold((CustomError l) => left(l), (BookingHistoryModel r) => right(r));
   }
 
   @override
@@ -990,5 +992,81 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
       response,
       TodayWorkScheduleModel.fromJson,
     ).fold((CustomError l) => left(l), (TodayWorkScheduleModel r) => right(r));
+  }
+
+  @override
+  EitherModel<EmployeeHiredHistoryModel> getHiredHistory() async {
+    String url = "users/hired-history";
+
+    Response response = await get(url);
+    if (response.statusCode == null) await get(url);
+    if (response.statusCode == null) await get(url);
+    if (response.statusCode == null) await get(url);
+    return _convert<EmployeeHiredHistoryModel>(
+      response,
+      EmployeeHiredHistoryModel.fromJson,
+    ).fold((CustomError l) => left(l), (EmployeeHiredHistoryModel r) => right(r));
+  }
+
+  @override
+  EitherModel<SingleBookingDetailsModel> getBookingDetails({required String notificationId}) async {
+    String url = "notifications/$notificationId";
+
+    Response response = await get(url);
+    if (response.statusCode == null) await get(url);
+    if (response.statusCode == null) await get(url);
+    if (response.statusCode == null) await get(url);
+    return _convert<SingleBookingDetailsModel>(
+      response,
+      SingleBookingDetailsModel.fromJson,
+    ).fold((CustomError l) => left(l), (SingleBookingDetailsModel r) => right(r));
+  }
+
+  @override
+  EitherModel<Response> updateRequestDate({required UpdateShortListRequestModel updateShortListRequestModel}) async {
+    Response response =
+        await put("notifications/update-request-date", jsonEncode(updateShortListRequestModel.toJson()));
+    if (response.statusCode == null) {
+      response = await put("notifications/update-request-date", jsonEncode(updateShortListRequestModel.toJson()));
+    }
+    if (response.statusCode == null) {
+      response = await put("notifications/update-request-date", jsonEncode(updateShortListRequestModel.toJson()));
+    }
+    if (response.statusCode == null) {
+      response = await put("notifications/update-request-date", jsonEncode(updateShortListRequestModel.toJson()));
+    }
+
+    return _convert<Response>(
+      response,
+      (Map<String, dynamic> data) {},
+      onlyErrorCheck: true,
+    ).fold((l) => left(l), (r) => right(r));
+  }
+
+  @override
+  EitherModel<TodayCheckInOutDetails> emergencyCheckIn(Map<String, dynamic> data) async {
+    Response response = await post("current-hired-employees/create", jsonEncode(data));
+    if (response.statusCode == null) response = await post("current-hired-employees/create", jsonEncode(data));
+    if (response.statusCode == null) response = await post("current-hired-employees/create", jsonEncode(data));
+    if (response.statusCode == null) response = await post("current-hired-employees/create", jsonEncode(data));
+
+    return _convert<TodayCheckInOutDetails>(
+      response,
+      TodayCheckInOutDetails.fromJson,
+    ).fold((l) => left(l), (r) => right(r));
+  }
+
+  @override
+  EitherModel<Response> emergencyCheckOut(Map<String, dynamic> data) async {
+    Response response = await put("current-hired-employees/update", jsonEncode(data));
+    if (response.statusCode == null) response = await put("current-hired-employees/update", jsonEncode(data));
+    if (response.statusCode == null) response = await put("current-hired-employees/update", jsonEncode(data));
+    if (response.statusCode == null) response = await put("current-hired-employees/update", jsonEncode(data));
+
+    return _convert<Response>(
+      response,
+      (Map<String, dynamic> data) {},
+      onlyErrorCheck: true,
+    ).fold((l) => left(l), (r) => right(r));
   }
 }

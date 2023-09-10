@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:mh/app/modules/employee/employee_home/controllers/employee_home_controller.dart';
+import 'package:mh/app/modules/employee/employee_home/models/today_check_in_out_details.dart';
 import 'check_in_check_out_details.dart';
 import 'employee_details.dart';
 
@@ -130,45 +131,5 @@ class CheckInCheckOutHistoryElement {
         "createdAt": createdAt?.toIso8601String(),
         "updatedAt": updatedAt?.toIso8601String(),
         "__v": v,
-      };
-}
-
-class RestaurantDetails {
-  RestaurantDetails({
-    this.hiredBy,
-    this.restaurantName,
-    this.restaurantAddress,
-    this.lat,
-    this.long,
-    this.id,
-  });
-
-  final String? hiredBy;
-  final String? restaurantName;
-  final String? restaurantAddress;
-  final String? lat;
-  final String? long;
-  final String? id;
-
-  factory RestaurantDetails.fromRawJson(String str) => RestaurantDetails.fromJson(json.decode(str));
-
-  String toRawJson() => json.encode(toJson());
-
-  factory RestaurantDetails.fromJson(Map<String, dynamic> json) => RestaurantDetails(
-        hiredBy: json["hiredBy"],
-        restaurantName: json["restaurantName"],
-        restaurantAddress: json["restaurantAddress"],
-        lat: json["lat"],
-        long: json["long"],
-        id: json["_id"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "hiredBy": hiredBy,
-        "restaurantName": restaurantName,
-        "restaurantAddress": restaurantAddress,
-        "lat": lat,
-        "long": long,
-        "_id": id,
       };
 }

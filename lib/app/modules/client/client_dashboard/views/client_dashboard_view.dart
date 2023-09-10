@@ -1,6 +1,7 @@
 import 'package:horizontal_data_table/horizontal_data_table.dart';
 import 'package:mh/app/common/controller/app_controller.dart';
 import 'package:mh/app/common/widgets/custom_dropdown.dart';
+import 'package:mh/app/common/widgets/custom_loader.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 import '../../../../common/style/my_decoration.dart';
@@ -29,7 +30,7 @@ class ClientDashboardView extends GetView<ClientDashboardController> {
       ),
       body: Obx(
         () => controller.loading.value
-            ? const Center(child: CircularProgressIndicator.adaptive(backgroundColor: MyColors.c_C6A34F))
+            ?  Center(child: CustomLoader.loading())
             : (controller.hiredEmployeesByDate.value.hiredHistories ?? []).isEmpty
                 ? Column(
                   children: [

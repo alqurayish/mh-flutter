@@ -3,7 +3,7 @@ import 'package:mh/app/common/widgets/custom_dialog.dart';
 import 'package:mh/app/common/widgets/custom_loader.dart';
 import 'package:mh/app/models/custom_error.dart';
 import 'package:mh/app/models/employee_full_details.dart';
-import 'package:mh/app/modules/employee/employee_home/models/single_notification_model_for_employee.dart';
+import 'package:mh/app/modules/employee/employee_home/models/booking_history_model.dart';
 import 'package:mh/app/repository/api_helper.dart';
 import 'package:mh/app/routes/app_pages.dart';
 
@@ -91,7 +91,7 @@ class ClientSuggestedEmployeesController extends GetxController {
 
           response.fold((CustomError customError) {
             Utils.errorDialog(context!, customError);
-          }, (SingleNotificationModelForEmployee response) async {
+          }, (BookingHistoryModel response) async {
             if ((response.statusCode == 200 || response.statusCode == 201) && response.status == 'success') {
               clientHomeController.homeMethods();
             }

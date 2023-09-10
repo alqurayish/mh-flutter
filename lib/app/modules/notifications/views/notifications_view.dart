@@ -22,7 +22,7 @@ class NotificationsView extends GetView<NotificationsController> {
               padding: EdgeInsets.zero,
               itemCount: controller.notificationList.length,
               itemBuilder: (BuildContext context, int index) {
-                NotificationModel notification = controller.notificationList[index];
+                BookingDetailsModel notification = controller.notificationList[index];
                 return NotificationWidget(
                   notification: notification,
                 );

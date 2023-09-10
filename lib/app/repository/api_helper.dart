@@ -6,9 +6,11 @@ import 'package:mh/app/modules/client/client_suggested_employees/models/short_li
 import 'package:mh/app/modules/employee/employee_home/models/common_response_model.dart';
 import 'package:mh/app/modules/employee/employee_home/models/employee_check_in_request_model.dart';
 import 'package:mh/app/modules/employee/employee_home/models/employee_check_out_request_model.dart';
+import 'package:mh/app/modules/employee/employee_home/models/employee_hired_history_model.dart';
 import 'package:mh/app/modules/employee/employee_home/models/review_dialog_model.dart';
 import 'package:mh/app/modules/employee/employee_home/models/review_request_model.dart';
-import 'package:mh/app/modules/employee/employee_home/models/single_notification_model_for_employee.dart';
+import 'package:mh/app/modules/employee/employee_home/models/booking_history_model.dart';
+import 'package:mh/app/modules/employee/employee_home/models/single_booking_details_model.dart';
 import 'package:mh/app/modules/employee/employee_home/models/todays_work_schedule_model.dart';
 import 'package:mh/app/modules/employee/employee_payment_history/models/employee_payment_history_model.dart';
 import 'package:mh/app/modules/notifications/models/notification_response_model.dart';
@@ -108,6 +110,10 @@ abstract class ApiHelper {
 
   EitherModel<CommonResponseModel> checkIn({required EmployeeCheckInRequestModel employeeCheckInRequestModel});
 
+  EitherModel<TodayCheckInOutDetails> emergencyCheckIn(Map<String, dynamic> data);
+
+  EitherModel<Response> emergencyCheckOut(Map<String, dynamic> data);
+
   EitherModel<Response> checkout({required EmployeeCheckOutRequestModel employeeCheckOutRequestModel});
 
   EitherModel<Response> updateCheckInOutByClient(Map<String, dynamic> data);
@@ -150,11 +156,11 @@ abstract class ApiHelper {
   EitherModel<NotificationUpdateResponseModel> updateNotification(
       {required NotificationUpdateRequestModel notificationUpdateRequestModel});
 
-  EitherModel<SingleNotificationModelForEmployee> singleNotificationForEmployee();
+  EitherModel<BookingHistoryModel> getBookingHistory();
 
-  EitherModel<SingleNotificationModelForEmployee> cancelClientRequestFromAdmin({required String requestId});
+  EitherModel<BookingHistoryModel> cancelClientRequestFromAdmin({required String requestId});
 
-  EitherModel<SingleNotificationModelForEmployee> cancelEmployeeSuggestionFromAdmin(
+  EitherModel<BookingHistoryModel> cancelEmployeeSuggestionFromAdmin(
       {required String employeeId, required String requestId});
 
   EitherModel<StripeResponseModel> stripePayment({required StripeRequestModel stripeRequestModel});
@@ -170,6 +176,12 @@ abstract class ApiHelper {
   EitherModel<CalenderModel> getCalenderData({required String employeeId});
 
   EitherModel<TodayWorkScheduleModel> getTodayWorkSchedule();
+
+  EitherModel<EmployeeHiredHistoryModel> getHiredHistory();
+
+  EitherModel<SingleBookingDetailsModel> getBookingDetails({required String notificationId});
+
+  EitherModel<Response> updateRequestDate({required UpdateShortListRequestModel updateShortListRequestModel});
 
   EitherModel<CommonResponseModel> updateUnavailableDate(
       {required UpdateUnavailableDateRequestModel updateUnavailableDateRequestModel});

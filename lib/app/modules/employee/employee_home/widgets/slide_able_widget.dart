@@ -15,7 +15,6 @@ class _SlideAbleWidgetState extends State<SlideAbleWidget> {
 
   @override
   Widget build(BuildContext context) {
-    print('_SlideAbleWidgetState.build: ${widget.checkIn}');
     if (widget.checkIn == true) {
       _position = MediaQuery.of(context).size.width - 105;
     }

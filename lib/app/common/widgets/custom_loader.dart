@@ -29,13 +29,13 @@ class CustomLoader {
       children: [
         Image.asset(
           MyAssets.logo,
-          height: 120,
-          width: 120,
+          height: 140,
+          width: 140,
         ),
         SizedBox(height: 20.h),
         const SpinKitCircle(
           color: MyColors.c_C6A34F,
-          size: 50,
+          size: 55,
         ),
       ],
     );

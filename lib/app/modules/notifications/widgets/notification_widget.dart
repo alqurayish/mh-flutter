@@ -5,7 +5,7 @@ import 'package:mh/app/modules/notifications/controllers/notifications_controlle
 import 'package:mh/app/modules/notifications/models/notification_response_model.dart';
 
 class NotificationWidget extends StatelessWidget {
-  final NotificationModel notification;
+  final BookingDetailsModel notification;
   const NotificationWidget({Key? key, required this.notification}) : super(key: key);
 
   @override

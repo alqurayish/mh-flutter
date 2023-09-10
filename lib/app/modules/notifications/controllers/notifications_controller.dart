@@ -12,7 +12,7 @@ import 'package:mh/app/repository/api_helper.dart';
 class NotificationsController extends GetxController {
   final ApiHelper _apiHelper = Get.find();
   RxBool notificationDataLoaded = false.obs;
-  RxList<NotificationModel> notificationList = <NotificationModel>[].obs;
+  RxList<BookingDetailsModel> notificationList = <BookingDetailsModel>[].obs;
   BuildContext? context;
 
   RxInt unreadCount = 0.obs;

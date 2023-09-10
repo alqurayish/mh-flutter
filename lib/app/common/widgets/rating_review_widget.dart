@@ -51,8 +51,7 @@ class RatingReviewWidget extends StatelessWidget {
                 ClipOval(
                   child: CachedNetworkImage(
                     imageUrl: reviewFor == 'client'
-                        ? reviewDialogDetailsModel.restaurantDetails?.profileImage ??
-                            'https://logowik.com/content/uploads/images/restaurant9491.logowik.com.webp'
+                        ? 'https://logowik.com/content/uploads/images/restaurant9491.logowik.com.webp'
                         : (reviewDialogDetailsModel.employeeDetails?.profilePicture ?? '').imageUrl,
                     imageBuilder: (context, imageProvider) => Container(
                       width: 35 * 2,

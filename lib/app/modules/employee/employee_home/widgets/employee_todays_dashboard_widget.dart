@@ -20,7 +20,7 @@ class EmployeeTodayDashboardWidget extends GetWidget<EmployeeHomeController> {
               margin: EdgeInsets.only(bottom: 15.h),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10.0),
-                color: Colors.teal.shade400,
+                color:  Get.isDarkMode?Colors.purple.shade700 :Colors.purple.shade300
               ),
               child: Column(
                 children: [

@@ -161,6 +161,7 @@ class CalenderController extends GetxController {
           _getCalenderData();
           unavailableDateList.clear();
           selectedDates.clear();
+          Get.back();
           Utils.showSnackBar(message: 'Dates have been updated successfully', isTrue: true);
         } else {
           Utils.showSnackBar(message: 'Date update failed', isTrue: false);

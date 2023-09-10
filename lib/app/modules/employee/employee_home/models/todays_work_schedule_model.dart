@@ -1,3 +1,5 @@
+import 'package:mh/app/modules/employee/employee_home/models/today_check_in_out_details.dart';
+
 class TodayWorkScheduleModel {
   String? status;
   int? statusCode;
@@ -30,33 +32,6 @@ class TodayWorkScheduleDetailsModel {
         : null;
     startTime = json['startTime'];
     endTime = json['endTime'];
-  }
-
-}
-
-class RestaurantDetails {
-  String? hiredBy;
-  String? restaurantName;
-  String? restaurantAddress;
-  String? lat;
-  String? long;
-  String? sId;
-
-  RestaurantDetails(
-      {this.hiredBy,
-        this.restaurantName,
-        this.restaurantAddress,
-        this.lat,
-        this.long,
-        this.sId});
-
-  RestaurantDetails.fromJson(Map<String, dynamic> json) {
-    hiredBy = json['hiredBy'];
-    restaurantName = json['restaurantName'];
-    restaurantAddress = json['restaurantAddress'];
-    lat = json['lat'];
-    long = json['long'];
-    sId = json['_id'];
   }
 
 }

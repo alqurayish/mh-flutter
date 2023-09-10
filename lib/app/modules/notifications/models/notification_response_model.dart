@@ -14,7 +14,7 @@ class NotificationResponseModel {
   final int? statusCode;
   final int? total;
   final int? count;
-  final List<NotificationModel>? notifications;
+  final List<BookingDetailsModel>? notifications;
 
   NotificationResponseModel({
     this.status,
@@ -31,11 +31,11 @@ class NotificationResponseModel {
         count: json["count"],
         notifications: json["notifications"] == null
             ? []
-            : List<NotificationModel>.from(json["notifications"]!.map((x) => NotificationModel.fromJson(x))),
+            : List<BookingDetailsModel>.from(json["notifications"]!.map((x) => BookingDetailsModel.fromJson(x))),
       );
 }
 
-class NotificationModel {
+class BookingDetailsModel {
   final String? id;
   final String? notificationType;
   final String? text;
@@ -55,7 +55,7 @@ class NotificationModel {
   final DateTime? createdAt;
   final List<RequestDateModel>? requestDateList;
 
-  NotificationModel(
+  BookingDetailsModel(
       {this.id,
       this.notificationType,
       this.text,
@@ -75,7 +75,7 @@ class NotificationModel {
       this.createdAt,
       this.requestDateList});
 
-  factory NotificationModel.fromJson(Map<String, dynamic> json) => NotificationModel(
+  factory BookingDetailsModel.fromJson(Map<String, dynamic> json) => BookingDetailsModel(
       id: json["_id"],
       notificationType: json["notificationType"],
       text: json["text"],

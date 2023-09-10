@@ -10,7 +10,7 @@ class EmployeeDateRangeWidget extends GetWidget<CalenderController> {
     return Obx(() => controller.rangeStartDate.value != null && controller.selectedDates.isNotEmpty
         ? Container(
             height: 100,
-            decoration: BoxDecoration(color: Colors.grey.shade200, borderRadius: BorderRadius.circular(10.0)),
+            decoration: BoxDecoration(color: Get.isDarkMode?Colors.grey.shade800:Colors.grey.shade200, borderRadius: BorderRadius.circular(10.0)),
             margin: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.11, left: 15.0, right: 15.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -24,12 +24,12 @@ class EmployeeDateRangeWidget extends GetWidget<CalenderController> {
                             children: [
                               Image.asset(MyAssets.calender2, height: 20, width: 20),
                               Text(' ${DateFormat('E, dd MMM, yyyy').format(controller.rangeStartDate.value!)}  -  ',
-                                  style: MyColors.black.medium12),
+                                  style: MyColors.l111111_dwhite(context).medium12),
                               if (controller.rangeEndDate.value == null)
                                 Text('Select End Date', style: MyColors.c_7B7B7B.medium12)
                               else
                                 Text(DateFormat('E, dd MMM, yyyy').format(controller.rangeEndDate.value!),
-                                    style: MyColors.black.medium12),
+                                    style: MyColors.l111111_dwhite(context).medium12),
                             ],
                           )),
                       InkWell(onTap: controller.onRemoveClick, child: const Icon(Icons.remove, color: Colors.red))
@@ -53,7 +53,7 @@ class EmployeeDateRangeWidget extends GetWidget<CalenderController> {
                               ),
                               value: controller.sameAsStartDate.value,
                               onChanged: controller.onSameAsStartDatePressedForEmployee),
-                          Text('Same as Start Date', style: MyColors.black.medium15),
+                          Text('Same as Start Date', style: MyColors.primaryDark.medium15),
                         ],
                       ),
                     )))

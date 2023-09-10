@@ -3,6 +3,7 @@ import 'package:mh/app/common/controller/app_controller.dart';
 import 'package:mh/app/common/style/my_decoration.dart';
 import 'package:mh/app/common/utils/validators.dart';
 import 'package:mh/app/common/widgets/custom_dropdown.dart';
+import 'package:mh/app/common/widgets/custom_loader.dart';
 import 'package:mh/app/modules/client/client_dashboard/views/client_dashboard_view.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
@@ -25,10 +26,7 @@ class AdminDashboardView extends GetView<AdminDashboardController> {
       ),
       body: Obx(
         () => controller.historyLoading.value
-            ? const Center(
-                child: CircularProgressIndicator.adaptive(
-                backgroundColor: MyColors.c_C6A34F,
-              ))
+            ? Center(child: CustomLoader.loading())
             : Column(
                 children: [
                   Padding(

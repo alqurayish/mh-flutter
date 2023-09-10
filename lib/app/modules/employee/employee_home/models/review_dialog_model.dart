@@ -1,3 +1,5 @@
+import 'package:mh/app/modules/employee/employee_home/models/today_check_in_out_details.dart';
+
 class ReviewDialogModel {
   String? status;
   int? statusCode;
@@ -43,18 +45,5 @@ class EmployeeDetails {
     employeeId = json['employeeId'];
     name = json['name'];
     profilePicture = json['profilePicture'];
-  }
-}
-
-class RestaurantDetails {
-  String? hiredBy;
-  String? restaurantName;
-  String? profileImage;
-
-  RestaurantDetails({this.hiredBy, this.restaurantName, this.profileImage});
-
-  RestaurantDetails.fromJson(Map<String, dynamic> json) {
-    hiredBy = json['hiredBy'];
-    restaurantName = json['restaurantName'];
   }
 }

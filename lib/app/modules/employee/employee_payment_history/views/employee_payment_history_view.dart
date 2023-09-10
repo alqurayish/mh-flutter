@@ -9,6 +9,7 @@ import 'package:mh/app/common/utils/utils.dart';
 import 'package:mh/app/common/values/my_color.dart';
 import 'package:mh/app/common/values/my_strings.dart';
 import 'package:mh/app/common/widgets/custom_appbar.dart';
+import 'package:mh/app/common/widgets/custom_loader.dart';
 import 'package:mh/app/common/widgets/no_item_found.dart';
 
 import '../controllers/employee_payment_history_controller.dart';
@@ -26,25 +27,28 @@ class EmployeePaymentHistoryView extends GetView<EmployeePaymentHistoryControlle
       ),
       body: Obx(() {
         if (controller.employeePaymentHistoryDataLoaded.value == false) {
-          return const Center(child: CupertinoActivityIndicator());
+          return  Center(child: CustomLoader.loading());
         } else if (controller.employeePaymentHistoryDataLoaded.value == true &&
             controller.employeePaymentHistoryList.isEmpty) {
           return const NoItemFound();
         } else {
-          return HorizontalDataTable(
-            leftHandSideColumnWidth: 150.w,
-            rightHandSideColumnWidth: 800.w,
-            isFixedHeader: true,
-            headerWidgets: _getTitleWidget(),
-            leftSideItemBuilder: _generateFirstColumnRow,
-            rightSideItemBuilder: _generateRightHandSideColumnRow,
-            itemCount: controller.employeePaymentHistoryList.length,
-            rowSeparatorWidget: Container(
-              height: 6.h,
-              color: MyColors.lFAFAFA_dframeBg(context),
+          return Padding(
+            padding: const EdgeInsets.symmetric(vertical: 15.0),
+            child: HorizontalDataTable(
+              leftHandSideColumnWidth: 150.w,
+              rightHandSideColumnWidth: 800.w,
+              isFixedHeader: true,
+              headerWidgets: _getTitleWidget(),
+              leftSideItemBuilder: _generateFirstColumnRow,
+              rightSideItemBuilder: _generateRightHandSideColumnRow,
+              itemCount: controller.employeePaymentHistoryList.length,
+              rowSeparatorWidget: Container(
+                height: 6.h,
+                color: MyColors.lFAFAFA_dframeBg(context),
+              ),
+              leftHandSideColBackgroundColor: MyColors.lffffff_dbox(context),
+              rightHandSideColBackgroundColor: MyColors.lffffff_dbox(context),
             ),
-            leftHandSideColBackgroundColor: MyColors.lffffff_dbox(context),
-            rightHandSideColBackgroundColor: MyColors.lffffff_dbox(context),
           );
         }
       }),

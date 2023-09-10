@@ -1,4 +1,4 @@
-import 'package:mh/app/modules/employee/employee_home/models/single_notification_model_for_employee.dart';
+import 'package:mh/app/modules/employee/employee_home/models/booking_history_model.dart';
 
 import '../../../../common/controller/app_controller.dart';
 import '../../../../common/utils/exports.dart';
@@ -178,7 +178,7 @@ class AdminClientRequestPositionEmployeesController extends GetxController {
 
           response.fold((CustomError customError) {
             Utils.errorDialog(context!, customError);
-          }, (SingleNotificationModelForEmployee response) async {
+          }, (BookingHistoryModel response) async {
             if ((response.statusCode == 200 || response.statusCode == 201) && response.status == 'success') {
               _getEmployees();
               await adminHomeController.reloadPage();

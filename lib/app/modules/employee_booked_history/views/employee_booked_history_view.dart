@@ -3,8 +3,6 @@ import 'package:mh/app/common/utils/exports.dart';
 import 'package:mh/app/common/widgets/custom_appbar.dart';
 import 'package:mh/app/common/widgets/no_item_found.dart';
 import 'package:mh/app/modules/notifications/models/notification_response_model.dart';
-import 'package:mh/app/routes/app_pages.dart';
-
 import '../controllers/employee_booked_history_controller.dart';
 
 class EmployeeBookedHistoryView extends GetView<EmployeeBookedHistoryController> {
@@ -27,7 +25,7 @@ class EmployeeBookedHistoryView extends GetView<EmployeeBookedHistoryController>
                 shrinkWrap: true,
                 itemCount: controller.employeeHomeController.bookingHistoryList.length,
                 itemBuilder: (BuildContext context, int index) {
-                  NotificationModel bookingHistory = controller.employeeHomeController.bookingHistoryList[index];
+                  BookingDetailsModel bookingDetails = controller.employeeHomeController.bookingHistoryList[index];
                   return Stack(
                     children: [
                       Container(
@@ -42,14 +40,14 @@ class EmployeeBookedHistoryView extends GetView<EmployeeBookedHistoryController>
                                 colorFilter: ColorFilter.mode(MyColors.black.withOpacity(0.7), BlendMode.darken),
                                 image: const AssetImage(MyAssets.restaurant))),
                         child: Center(
-                            child: Text(bookingHistory.text ?? '',
+                            child: Text(bookingDetails.text ?? '',
                                 style: MyColors.white.semiBold15, overflow: TextOverflow.ellipsis, maxLines: 3)),
                       ),
                       Positioned.fill(
                           child: Align(
                         alignment: Alignment.bottomRight,
                         child: CustomButtons.button(
-                            onTap: () => Get.toNamed(Routes.employeeBookedHistoryDetails, arguments: bookingHistory),
+                            onTap: ()=>controller.onDetailsClick(notificationId: bookingDetails.id??""),
                             height: 35,
                             margin: const EdgeInsets.only(left: 250),
                             text: 'Details',

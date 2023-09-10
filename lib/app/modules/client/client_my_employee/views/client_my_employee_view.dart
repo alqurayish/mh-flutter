@@ -1,4 +1,5 @@
 import 'package:mh/app/common/controller/app_controller.dart';
+import 'package:mh/app/common/widgets/shimmer_widget.dart';
 import 'package:mh/app/modules/client/client_shortlisted/models/add_to_shortlist_request_model.dart';
 
 import '../../../../common/utils/exports.dart';
@@ -42,11 +43,10 @@ class ClientMyEmployeeView extends GetView<ClientMyEmployeeController> {
         ],
       );
 
-  Widget get _loading => const Center(
-        child: CircularProgressIndicator.adaptive(
-          backgroundColor: MyColors.c_C6A34F,
-        ),
-      );
+  Widget get _loading => Padding(
+    padding: const EdgeInsets.all(15.0),
+    child: Center(child: ShimmerWidget.clientMyEmployeesShimmerWidget()),
+  );
 
   Widget get _showEmployeeList => ListView.builder(
         padding: EdgeInsets.symmetric(vertical: 20.h),
@@ -61,7 +61,7 @@ class ClientMyEmployeeView extends GetView<ClientMyEmployeeController> {
   Widget _employeeItem(HiredHistory hiredHistory) {
     return Container(
       height: 120.h,
-      margin: EdgeInsets.symmetric(horizontal: 24.w).copyWith(
+      margin: EdgeInsets.symmetric(horizontal: 15.w).copyWith(
         bottom: 20.h,
       ),
       decoration: BoxDecoration(
@@ -145,13 +145,11 @@ class ClientMyEmployeeView extends GetView<ClientMyEmployeeController> {
                         children: [
                           _detailsItem(
                               MyAssets.exp, "", Utils.getPositionName(hiredHistory.employeeDetails?.positionId ?? "")),
-                        ],
-                      ),
-                      SizedBox(height: 8.h),
-                      Row(
-                        children: [
-                          _detailsItem(MyAssets.calender, "",
-                              "${hiredHistory.fromDate.toString().split(" ").first} - ${hiredHistory.toDate.toString().split(" ").first}  ( ${hiredHistory.fromDate!.differenceInDays(hiredHistory.toDate!)})"),
+                          InkWell(
+                              onTap: () =>
+                                  controller.onCalenderClick(requestDateList: hiredHistory.requestDateList ?? []),
+                              child: Image.asset(MyAssets.calender2, height: 20, width: 20)),
+                          SizedBox(width: 8.w)
                         ],
                       ),
                       SizedBox(height: 8.h),

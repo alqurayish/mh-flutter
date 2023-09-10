@@ -7,14 +7,14 @@ import 'package:mh/app/common/widgets/custom_badge.dart';
 import 'package:mh/app/common/widgets/custom_feature_box.dart';
 import 'package:mh/app/common/widgets/shimmer_widget.dart';
 import 'package:mh/app/modules/employee/employee_home/controllers/employee_home_controller.dart';
-import 'home_card_widget.dart';
 
 class EmployeeHomeCardWidget extends GetWidget<EmployeeHomeController> {
   const EmployeeHomeCardWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() => controller.bookingHistoryDataLoaded.value == false
+    return Obx(() => controller.bookingHistoryDataLoaded.value == false ||
+            controller.hiredHistoryDataLoaded.value == false
         ? ShimmerWidget.employeeHomeShimmerWidget()
         : Column(
             children: [
@@ -32,16 +32,9 @@ class EmployeeHomeCardWidget extends GetWidget<EmployeeHomeController> {
                             top: 0,
                             right: 5,
                             child: Visibility(
-                              visible: controller.bookingHistoryList
-                                  .where((e) => e.hiredStatus?.toUpperCase() == 'REQUESTED')
-                                  .toList()
-                                  .isNotEmpty,
+                              visible: controller.bookingHistoryList.isNotEmpty,
                               child: CustomBadge(
-                                controller.bookingHistoryList
-                                    .where((e) => e.hiredStatus?.toUpperCase() == 'REQUESTED')
-                                    .toList()
-                                    .length
-                                    .toString(),
+                                controller.bookingHistoryList.length.toString(),
                               ),
                             ),
                           ),
@@ -62,16 +55,9 @@ class EmployeeHomeCardWidget extends GetWidget<EmployeeHomeController> {
                             top: 0,
                             right: 5,
                             child: Visibility(
-                              visible: controller.bookingHistoryList
-                                  .where((e) => e.hiredStatus?.toUpperCase() == 'ALLOW')
-                                  .toList()
-                                  .isNotEmpty,
+                              visible: controller.hiredHistoryList.isNotEmpty,
                               child: CustomBadge(
-                                controller.bookingHistoryList
-                                    .where((e) => e.hiredStatus?.toUpperCase() == 'ALLOW')
-                                    .toList()
-                                    .length
-                                    .toString(),
+                                controller.hiredHistoryList.length.toString(),
                               ),
                             ),
                           ),
@@ -96,23 +82,23 @@ class EmployeeHomeCardWidget extends GetWidget<EmployeeHomeController> {
                             title: MyStrings.emergencyCheckInCheckOut.tr,
                             icon: MyAssets.emergencyCheckInCheckout,
                             onTap: controller.onEmergencyCheckInCheckout),
-                        /* Positioned(
-                    left: 0,
-                    right: 0,
-                    top: 0,
-                    bottom: 0,
-                    child: Obx(
-                      () => Visibility(
-                        visible: true, //controller.showEmergencyCheckInCheckOut == true,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10.0),
-                            color: Colors.grey.withOpacity(.7),
+                        Positioned(
+                          left: 0,
+                          right: 0,
+                          top: 0,
+                          bottom: 0,
+                          child: Obx(
+                            () => Visibility(
+                              visible: controller.showEmergencyCheckInCheckOut == false,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  color: Colors.grey.withOpacity(.7),
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                    ),
-                  )*/
+                        )
                       ],
                     ),
                   ),
@@ -152,6 +138,7 @@ class EmployeeHomeCardWidget extends GetWidget<EmployeeHomeController> {
                   ),
                 ],
               ),
+              SizedBox(height: 15.h),
             ],
           ));
   }

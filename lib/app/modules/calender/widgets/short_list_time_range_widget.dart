@@ -16,7 +16,7 @@ class ShortListTimeRangeWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 100,
-      decoration: BoxDecoration(color: Colors.grey.shade200, borderRadius: BorderRadius.circular(10.0)),
+      decoration: BoxDecoration(color: Get.isDarkMode ?Colors.grey.shade800 :Colors.grey.shade200, borderRadius: BorderRadius.circular(10.0)),
       margin: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.11, left: 15.0, right: 15.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -30,12 +30,12 @@ class ShortListTimeRangeWidget extends StatelessWidget {
                   children: [
                     Image.asset(MyAssets.calender2, height: 20, width: 20),
                     Text(' ${DateTime.parse(requestDate.startDate ?? "").formatDateWithWeekday()}  -  ',
-                        style: MyColors.black.medium12),
+                        style: MyColors.l111111_dwhite(context).semiBold13),
                     if (requestDate.endDate == null)
                       Text('Select End Date', style: MyColors.c_7B7B7B.medium12)
                     else
                       Text(DateTime.parse(requestDate.endDate ?? "").formatDateWithWeekday(),
-                          style: MyColors.black.medium12),
+                          style: MyColors.l111111_dwhite(context).semiBold13),
                   ],
                 ),
                 const SizedBox(width: 20),
@@ -62,7 +62,7 @@ class ShortListTimeRangeWidget extends StatelessWidget {
                         ),
                         value: Get.find<CalenderController>().sameAsStartDate.value,
                         onChanged: Get.find<CalenderController>().onSameAsStartDatePressedForShortList),
-                    Text('Same as Start Date', style: MyColors.black.medium15),
+                    Text('Same as Start Date', style: MyColors.primaryDark.medium15),
                   ],
                 ),
               ))),
@@ -91,7 +91,7 @@ class ShortListTimeRangeWidget extends StatelessWidget {
           children: [
             Image.asset(MyAssets.clock, height: 20, width: 20),
             const SizedBox(width: 10),
-            const Text('Select Time Range')
+            Text('Select Time Range', style: MyColors.l111111_dwhite(Get.context!).semiBold13)
           ],
         ),
       ),
@@ -102,7 +102,7 @@ class ShortListTimeRangeWidget extends StatelessWidget {
     return Row(
       children: [
         _timeWidget(time: requestDate.startTime ?? ''),
-        const Text('  -  '),
+         Text('  -  ', style: MyColors.l111111_dwhite(Get.context!).semiBold13),
         _timeWidget(time: requestDate.endTime ?? ''),
       ],
     );
@@ -117,7 +117,7 @@ class ShortListTimeRangeWidget extends StatelessWidget {
           border: Border.all(color: Colors.grey.shade400),
           borderRadius: BorderRadius.circular(5.0)),
       child: Row(
-        children: [Image.asset(MyAssets.clock, height: 20, width: 20), const SizedBox(width: 10), Text(time)],
+        children: [Image.asset(MyAssets.clock, height: 20, width: 20), const SizedBox(width: 10), Text(time, style: MyColors.l111111_dwhite(Get.context!).semiBold13)],
       ),
     );
   }
