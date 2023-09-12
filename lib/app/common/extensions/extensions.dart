@@ -229,49 +229,54 @@ extension RequestDateListExtensions on List<RequestDateModel> {
 extension RequestDateExtensions on List<RequestDateModel> {
   double calculateTotalHourlyRate({required double hourlyRate}) {
     double totalRate = 0.0;
-    for (var requestDate in this) {
-      final startParts = requestDate.startTime?.split(':');
-      final endParts = requestDate.endTime?.split(':');
+    try {
+      for (var requestDate in this) {
+        final startParts = requestDate.startTime?.split(':');
+        final endParts = requestDate.endTime?.split(':');
 
-      final startHour = int.parse(startParts![0]);
-      final startMinute = int.parse(startParts[1].split(' ')[0]);
-      final startAMPM = startParts[1].split(' ')[1];
+        final startHour = int.parse(startParts![0]);
+        final startMinute = int.parse(startParts[1].split(' ')[0]);
+        final startAMPM = startParts[1].split(' ')[1];
 
-      final endHour = int.parse(endParts![0]);
-      final endMinute = int.parse(endParts[1].split(' ')[0]);
-      final endAMPM = endParts[1].split(' ')[1];
+        final endHour = int.parse(endParts![0]);
+        final endMinute = int.parse(endParts[1].split(' ')[0]);
+        final endAMPM = endParts[1].split(' ')[1];
 
-      final totalStartHour = (startAMPM == 'PM' && startHour != 12) ? startHour + 12 : startHour;
-      final totalEndHour = (endAMPM == 'PM' && endHour != 12) ? endHour + 12 : endHour;
+        final totalStartHour = (startAMPM == 'PM' && startHour != 12) ? startHour + 12 : startHour;
+        final totalEndHour = (endAMPM == 'PM' && endHour != 12) ? endHour + 12 : endHour;
 
-      final durationInHours = (totalEndHour - totalStartHour) + (endMinute - startMinute) / 60.0;
+        final durationInHours = (totalEndHour - totalStartHour) + (endMinute - startMinute) / 60.0;
 
-      // Calculate the total days in the date range
-      final startDateParts = requestDate.startDate?.split('-');
-      final toDateParts = requestDate.endDate?.split('-');
+        // Calculate the total days in the date range
+        final startDateParts = requestDate.startDate?.split('-');
+        final toDateParts = requestDate.endDate?.split('-');
 
-      final startDateTime = DateTime(
-        int.parse(startDateParts![0]),
-        int.parse(startDateParts[1]),
-        int.parse(startDateParts[2]),
-        totalStartHour,
-        startMinute,
-      );
+        final startDateTime = DateTime(
+          int.parse(startDateParts![0]),
+          int.parse(startDateParts[1]),
+          int.parse(startDateParts[2]),
+          totalStartHour,
+          startMinute,
+        );
 
-      final endDateTime = DateTime(
-        int.parse(toDateParts![0]),
-        int.parse(toDateParts[1]),
-        int.parse(toDateParts[2]),
-        totalEndHour,
-        endMinute,
-      );
+        final endDateTime = DateTime(
+          int.parse(toDateParts![0]),
+          int.parse(toDateParts[1]),
+          int.parse(toDateParts[2]),
+          totalEndHour,
+          endMinute,
+        );
 
-      final daysInDateRange = endDateTime.difference(startDateTime).inDays + 1;
+        final daysInDateRange = endDateTime.difference(startDateTime).inDays + 1;
 
-      totalRate += durationInHours * hourlyRate * daysInDateRange;
+        totalRate += durationInHours * hourlyRate * daysInDateRange;
+      }
+
+      return totalRate;
+    } catch (e) {
+      print('calculateTotalHourlyRate: $e');
+      return totalRate;
     }
-
-    return totalRate;
   }
 }
 

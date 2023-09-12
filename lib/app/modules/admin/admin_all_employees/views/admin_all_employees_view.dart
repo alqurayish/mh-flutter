@@ -1,4 +1,5 @@
 import 'package:mh/app/common/controller/app_controller.dart';
+import 'package:mh/app/common/widgets/shimmer_widget.dart';
 
 import '../../../../common/utils/exports.dart';
 import '../../../../common/widgets/custom_appbar.dart';
@@ -24,7 +25,10 @@ class AdminAllEmployeesView extends GetView<AdminAllEmployeesController> {
       body: Obx(
         () => (controller.employees.value.users ?? []).isEmpty
             ? controller.isLoading.value
-                ? const SizedBox()
+                ? Padding(
+                  padding: EdgeInsets.only(left: 15.w, right: 15.w, top: 70.h),
+                  child: Center(child: ShimmerWidget.clientMyEmployeesShimmerWidget()),
+                )
                 : Column(
                     children: [
                       _resultCountWithFilter(),
@@ -55,7 +59,7 @@ class AdminAllEmployeesView extends GetView<AdminAllEmployeesController> {
 
   Widget _resultCountWithFilter() {
     return Padding(
-      padding: EdgeInsets.fromLTRB(23.w, 10.h, 23.w, 0),
+      padding: EdgeInsets.fromLTRB(15.w, 10.h, 15.w, 0),
       child: Row(
         children: [
           Text(
@@ -95,7 +99,7 @@ class AdminAllEmployeesView extends GetView<AdminAllEmployeesController> {
   Widget _employeeItem(Employee user) {
     return Container(
       height: 105.h,
-      margin: EdgeInsets.symmetric(horizontal: 24.w).copyWith(
+      margin: EdgeInsets.symmetric(horizontal: 15.w).copyWith(
         bottom: 20.h,
       ),
       decoration: BoxDecoration(
@@ -129,8 +133,8 @@ class AdminAllEmployeesView extends GetView<AdminAllEmployeesController> {
               ),
             ),
             Positioned(
-              right: 7,
-              top: 4,
+              right: 7.w,
+              top: 4.h,
               child: Obx(
                 () => GestureDetector(
                   onTap: () => controller.onChatClick(user),
@@ -141,6 +145,18 @@ class AdminAllEmployeesView extends GetView<AdminAllEmployeesController> {
                         ? MyColors.c_C6A34F
                         : MyColors.stock,
                   ),
+                ),
+              ),
+            ),
+            Positioned(
+              right: 40.w,
+              top: 4.h,
+              child: GestureDetector(
+                onTap: () => controller.onCalenderClick(employeeId: user.id ?? ''),
+                child: Image.asset(
+                  MyAssets.calender2,
+                  height: 20,
+                  width: 20,
                 ),
               ),
             ),
@@ -183,7 +199,7 @@ class AdminAllEmployeesView extends GetView<AdminAllEmployeesController> {
                       Row(
                         children: [
                           _detailsItem(controller.getPositionLogo(user.positionId!), user.positionName ?? "", ""),
-                          _activeStatus(available: user.available??''),
+                          _activeStatus(available: user.available ?? ''),
                           const SizedBox(width: 7),
                         ],
                       ),
@@ -282,8 +298,9 @@ class AdminAllEmployeesView extends GetView<AdminAllEmployeesController> {
         ),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(50),
-          color: ((available.isEmpty||
-              int.parse(available.split(' ').first) <= 0)) ? MyColors.c_FF5029_10 : MyColors.c_00C92C_10,
+          color: ((available.isEmpty || int.parse(available.split(' ').first) <= 0))
+              ? MyColors.c_FF5029_10
+              : MyColors.c_00C92C_10,
         ),
         child: Row(
           children: [
@@ -292,14 +309,13 @@ class AdminAllEmployeesView extends GetView<AdminAllEmployeesController> {
               width: 11,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: ((available.isEmpty||
-                    int.parse(available.split(' ').first) <= 0)) ? MyColors.c_C92C1A : MyColors.c_00C92C,
+                color: ((available.isEmpty || int.parse(available.split(' ').first) <= 0))
+                    ? MyColors.c_C92C1A
+                    : MyColors.c_00C92C,
               ),
             ),
             const SizedBox(width: 5),
-            Text(
-                ((available.isEmpty||
-                    int.parse(available.split(' ').first) <= 0)) ? 'Booked' : 'Available',
+            Text(((available.isEmpty || int.parse(available.split(' ').first) <= 0)) ? 'Booked' : 'Available',
                 style: MyColors.l111111_dwhite(controller.context!).medium11)
           ],
         ),

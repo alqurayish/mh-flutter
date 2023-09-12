@@ -10,6 +10,7 @@ import 'package:mh/app/modules/employee/employee_home/models/review_dialog_model
 import 'package:mh/app/modules/employee/employee_home/models/review_request_model.dart';
 import 'package:mh/app/modules/employee/employee_home/models/booking_history_model.dart';
 import 'package:mh/app/modules/employee/employee_home/models/todays_work_schedule_model.dart';
+import 'package:mh/app/modules/employee/employee_home/widgets/check_out_success_widget.dart';
 import 'package:mh/app/modules/employee/employee_home/widgets/slide_action_widget.dart';
 import 'package:mh/app/modules/notifications/controllers/notifications_controller.dart';
 import 'package:mh/app/modules/notifications/models/notification_response_model.dart';
@@ -243,7 +244,7 @@ class EmployeeHomeController extends GetxController {
         description: customError.msg,
       );
     }, (Response checkoutResponse) {
-      refreshPage();
+      _afterCheckInCheckout();
     });
   }
 
@@ -273,8 +274,8 @@ class EmployeeHomeController extends GetxController {
         title: "Failed to CheckIn",
         description: customError.msg,
       );
-    }, (CommonResponseModel clients) {
-      refreshPage();
+    }, (CommonResponseModel clients) async {
+      await _afterCheckInCheckout();
     });
   }
 
@@ -296,6 +297,7 @@ class EmployeeHomeController extends GetxController {
     hiredHistoryDataLoaded.value = false;
 
     await homeMethods();
+
     Utils.showSnackBar(message: 'This page has been refreshed', isTrue: true);
   }
 
@@ -453,11 +455,10 @@ class EmployeeHomeController extends GetxController {
       return LocationController.calculateDistance(
           targetLat: targetLat,
           targetLong: targetLng,
-          currentLat: currentLocation!.latitude,
-              //23.76856796911088,
-          currentLong: currentLocation!.longitude
-              //90.35680051892997
-      );
+          currentLat: //currentLocation!.latitude,
+              23.8120296,
+          currentLong: //currentLocation!.longitude
+              90.3555054);
     }
     return 0.0;
   }
@@ -485,5 +486,23 @@ class EmployeeHomeController extends GetxController {
                     todayWorkSchedule.value.todayWorkScheduleDetailsModel?.restaurantDetails?.long ?? '0.0')) >
             200 &&
         checkIn.value == false;
+  }
+
+  Future<void> _afterCheckInCheckout() async {
+    todayWorkScheduleDataLoading.value = true;
+    todayCheckInCheckOutDetailsDataLoading.value = true;
+
+    await _getTodayWorkSchedule();
+    await _getTodayCheckInOutDetails();
+
+    if (checkIn.value == true && checkOut.value == false) {
+      Utils.showSnackBar(message: 'You have successfully checkedIn', isTrue: true);
+    } else if (checkOut.value == false && checkIn.value == false) {
+      Get.dialog(Dialog(
+          backgroundColor: MyColors.lightCard(Get.context!),
+          insetPadding: EdgeInsets.symmetric(horizontal: 20.0.w),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+          child: const CheckOutSuccessWidget()));
+    }
   }
 }

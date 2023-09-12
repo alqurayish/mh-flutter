@@ -1,6 +1,7 @@
 import 'package:mh/app/common/controller/app_controller.dart';
 import 'package:mh/app/common/widgets/shimmer_widget.dart';
 import 'package:mh/app/modules/client/client_shortlisted/models/add_to_shortlist_request_model.dart';
+import 'package:mh/app/routes/app_pages.dart';
 
 import '../../../../common/utils/exports.dart';
 import '../../../../common/widgets/custom_appbar.dart';
@@ -44,9 +45,9 @@ class ClientMyEmployeeView extends GetView<ClientMyEmployeeController> {
       );
 
   Widget get _loading => Padding(
-    padding: const EdgeInsets.all(15.0),
-    child: Center(child: ShimmerWidget.clientMyEmployeesShimmerWidget()),
-  );
+        padding: const EdgeInsets.all(15.0),
+        child: Center(child: ShimmerWidget.clientMyEmployeesShimmerWidget()),
+      );
 
   Widget get _showEmployeeList => ListView.builder(
         padding: EdgeInsets.symmetric(vertical: 20.h),
@@ -60,7 +61,6 @@ class ClientMyEmployeeView extends GetView<ClientMyEmployeeController> {
 
   Widget _employeeItem(HiredHistory hiredHistory) {
     return Container(
-      height: 120.h,
       margin: EdgeInsets.symmetric(horizontal: 15.w).copyWith(
         bottom: 20.h,
       ),
@@ -78,22 +78,6 @@ class ClientMyEmployeeView extends GetView<ClientMyEmployeeController> {
         // onTap: () => controller.onEmployeeClick(user),
         child: Stack(
           children: [
-            Positioned(
-              right: 0,
-              bottom: 0,
-              child: SizedBox(
-                width: 122.w,
-                child: CustomButtons.button(
-                  height: 28.w,
-                  text:
-                      "${Utils.getCurrencySymbol(Get.find<AppController>().user.value.client?.countryName ?? '')}${hiredHistory.employeeDetails?.hourlyRate ?? 0} /h",
-                  margin: EdgeInsets.zero,
-                  fontSize: 12,
-                  customButtonStyle: CustomButtonStyle.radiusTopBottomCorner,
-                  onTap: null,
-                ),
-              ),
-            ),
             Positioned(
               right: 5,
               top: 3,
@@ -155,10 +139,29 @@ class ClientMyEmployeeView extends GetView<ClientMyEmployeeController> {
                       SizedBox(height: 8.h),
                       Row(
                         children: [
-                          _detailsItem(MyAssets.totalHour, MyStrings.totalHour.tr,
+                          _detailsItem(MyAssets.totalHour, 'Total Hour:',
                               (hiredHistory.employeeDetails?.totalWorkingHour ?? 0).toString()),
+                          _detailsItem(MyAssets.rate, 'Rate:',
+                              "${Utils.getCurrencySymbol(Get.find<AppController>().user.value.client?.countryName ?? '')}${(hiredHistory.employeeDetails?.hourlyRate ?? 0.0).toStringAsFixed(2)}"),
                         ],
                       ),
+                      SizedBox(height: 8.h),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                        SizedBox(
+                          width: 122.w,
+                          child: CustomButtons.button(
+                            height: 28.w,
+                            text:
+                            "Book Again",
+                            margin: EdgeInsets.zero,
+                            fontSize: 12,
+                            customButtonStyle: CustomButtonStyle.radiusTopBottomCorner,
+                            onTap: ()=>Get.toNamed(Routes.calender, arguments: [hiredHistory.employeeDetails?.employeeId??'', '']),
+                          ),
+                        ),
+                      ],)
                     ],
                   ),
                 ),

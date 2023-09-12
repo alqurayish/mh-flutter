@@ -21,9 +21,17 @@ class EmployeeTodayWorkScheduleWidget extends GetWidget<EmployeeHomeController> 
         return Container(
           width: double.infinity,
           margin: EdgeInsets.only(bottom: 15.h),
-          padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0),
+          padding: EdgeInsets.symmetric(vertical: 10.0.h, horizontal: 15.0.w),
           decoration: BoxDecoration(
-              color: Get.isDarkMode ? Colors.teal.shade800 : Colors.teal.shade400,
+              boxShadow: [
+                BoxShadow(
+                  color: Get.theme.dividerColor.withOpacity(0.05),
+                  spreadRadius: 5,
+                  blurRadius: 7,
+                  offset: const Offset(0, 3), // changes position of shadow
+                ),
+              ],
+              color: Colors.blue.withOpacity(0.6),
               borderRadius: BorderRadius.circular(10.0)),
           child: Column(
             children: [
@@ -41,7 +49,7 @@ class EmployeeTodayWorkScheduleWidget extends GetWidget<EmployeeHomeController> 
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
-              const SizedBox(height: 20),
+              SizedBox(height: 20.h),
               IntrinsicHeight(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,

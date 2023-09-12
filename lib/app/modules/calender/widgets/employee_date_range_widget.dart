@@ -53,7 +53,7 @@ class EmployeeDateRangeWidget extends GetWidget<CalenderController> {
                               ),
                               value: controller.sameAsStartDate.value,
                               onChanged: controller.onSameAsStartDatePressedForEmployee),
-                          Text('Same as Start Date', style: MyColors.primaryDark.medium15),
+                          Text('Same as Start Date', style: MyColors.primaryDark.semiBold15),
                         ],
                       ),
                     )))

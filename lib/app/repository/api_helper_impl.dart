@@ -609,7 +609,6 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
     if (response.statusCode == null) response = await get("current-hired-employees/details/$employeeId");
     if (response.statusCode == null) response = await get("current-hired-employees/details/$employeeId");
     if (response.statusCode == null) response = await get("current-hired-employees/details/$employeeId");
-    log('Todays: ${response.bodyString}');
     return _convert<TodayCheckInOutDetails>(
       response,
       TodayCheckInOutDetails.fromJson,
@@ -630,14 +629,15 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
     if ((clientId ?? "").isNotEmpty) url += "&clientId=$clientId";
     if ((employeeId ?? "").isNotEmpty) url += "&employeeId=$employeeId";
 
-    var response = await get(url);
+    Response response = await get(url);
     if (response.statusCode == null) response = await get(url);
     if (response.statusCode == null) response = await get(url);
     if (response.statusCode == null) response = await get(url);
+    print('ApiHelperImpl.getCheckInOutHistory: ${response.bodyString}');
     return _convert<CheckInCheckOutHistory>(
       response,
       CheckInCheckOutHistory.fromJson,
-    ).fold((l) => left(l), (r) => right(r));
+    ).fold((CustomError l) => left(l), (r) => right(r));
   }
 
   @override
@@ -974,6 +974,9 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
     if (response.statusCode == null) await put(url, jsonEncode(updateUnavailableDateRequestModel.toJson()));
     if (response.statusCode == null) await put(url, jsonEncode(updateUnavailableDateRequestModel.toJson()));
     if (response.statusCode == null) await put(url, jsonEncode(updateUnavailableDateRequestModel.toJson()));
+
+    print('ApiHelperImpl.updateUnavailableDate: ${jsonEncode(updateUnavailableDateRequestModel.toJson())}');
+
     return _convert<CommonResponseModel>(
       response,
       CommonResponseModel.fromJson,

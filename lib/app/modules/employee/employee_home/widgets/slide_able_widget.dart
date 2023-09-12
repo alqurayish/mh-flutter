@@ -41,8 +41,8 @@ class _SlideAbleWidgetState extends State<SlideAbleWidget> {
                 if (_position != 0 && widget.checkIn == true) const SizedBox(width: 10),
                 Text(
                     _position == 0 && widget.checkIn == false
-                        ? ' Swipe right to checkin'.toUpperCase()
-                        : 'Swipe left to checkout '.toUpperCase(),
+                        ? '     Swipe right to checkin'.toUpperCase()
+                        : 'Swipe left to checkout     '.toUpperCase(),
                     style: MyColors.white.semiBold14),
                 if (_position == 0 && widget.checkIn == false) const SizedBox(width: 10),
                 if (_position == 0 && widget.checkIn == false)
@@ -77,7 +77,7 @@ class _SlideAbleWidgetState extends State<SlideAbleWidget> {
                 });
               },
               child: Padding(
-                padding: const EdgeInsets.only(top: 5.0, left: 5.0),
+                padding:  EdgeInsets.only(top: 5.0.h, left: 5.0.w),
                 child: CircleAvatar(
                   radius: 25,
                   backgroundColor: Colors.white,

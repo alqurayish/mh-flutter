@@ -18,10 +18,14 @@ class EmployeeTodayDashboardWidget extends GetWidget<EmployeeHomeController> {
             child: Container(
               padding: const EdgeInsets.symmetric(vertical: 12),
               margin: EdgeInsets.only(bottom: 15.h),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10.0),
-                color:  Get.isDarkMode?Colors.purple.shade700 :Colors.purple.shade300
-              ),
+              decoration: BoxDecoration(boxShadow: [
+                BoxShadow(
+                  color: Get.theme.dividerColor.withOpacity(0.05),
+                  spreadRadius: 5,
+                  blurRadius: 7,
+                  offset: const Offset(0, 3), // changes position of shadow
+                ),
+              ], borderRadius: BorderRadius.circular(10.0), color: Colors.teal.withOpacity(0.6)),
               child: Column(
                 children: [
                   Row(

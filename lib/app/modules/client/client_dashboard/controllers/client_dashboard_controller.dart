@@ -216,15 +216,15 @@ class ClientDashboardController extends GetxController {
     await _apiHelper.getCheckInOutHistory(
       filterDate: dashboardDate.value.toString().split(" ").first,
       clientId: appController.user.value.userId,
-    ).then((response) {
+    ).then((Either<CustomError, CheckInCheckOutHistory> response) {
 
       loading.value = false;
 
       response.fold((CustomError customError) {
         Utils.errorDialog(context!, customError..onRetry = _fetchCheckInOutHistory);
       }, (CheckInCheckOutHistory checkInCheckOutHistory) async {
-
         this.checkInCheckOutHistory.value = checkInCheckOutHistory;
+        print('ClientDashboardController._fetchCheckInOutHistory: ${this.checkInCheckOutHistory.value.checkInCheckOutHistory?.length}');
         // history..clear()..addAll(checkInCheckOutHistory.checkInCheckOutHistory ?? []);
 
       });

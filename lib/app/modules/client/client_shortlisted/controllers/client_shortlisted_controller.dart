@@ -1,4 +1,6 @@
+import 'package:dartz/dartz.dart';
 import 'package:mh/app/common/widgets/custom_loader.dart';
+import 'package:mh/app/models/custom_error.dart';
 import 'package:mh/app/modules/client/client_shortlisted/models/add_to_shortlist_request_model.dart';
 import 'package:mh/app/modules/client/client_shortlisted/models/update_shortlist_request_model.dart';
 import 'package:mh/app/modules/client/client_shortlisted/widgets/client_short_listed_request_date_widget.dart';
@@ -46,7 +48,7 @@ class ClientShortlistedController extends GetxController {
     } else {
       Get.dialog(Dialog(
         backgroundColor: MyColors.lightCard(Get.context!),
-        insetPadding: const EdgeInsets.symmetric(horizontal: 20.0),
+        insetPadding: EdgeInsets.symmetric(horizontal: 20.0.w),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
         child: ClientShortListedRequestDateWidget(requestDateList: requestDateList, shortListId: shortListId),
       ));
@@ -65,17 +67,29 @@ class ClientShortlistedController extends GetxController {
         requestDateList.removeAt(index);
         UpdateShortListRequestModel updateShortListRequestModel =
             UpdateShortListRequestModel(shortListId: shortListId, requestDateList: requestDateList);
-        await _updateShortListDateOrTime(updateShortListRequestModel: updateShortListRequestModel);
+        await updateShortListDateOrTime(updateShortListRequestModel: updateShortListRequestModel);
       },
     );
   }
 
-  Future<void> _updateShortListDateOrTime({required UpdateShortListRequestModel updateShortListRequestModel}) async {
+  Future<void> updateShortListDateOrTime({required UpdateShortListRequestModel updateShortListRequestModel}) async {
     CustomLoader.show(context!);
-    await _apiHelper.updateShortlistItem(updateShortListRequestModel: updateShortListRequestModel).then((value) async {
-      await shortlistController.fetchShortListEmployees();
-      CustomLoader.hide(context!);
-      Get.back();
+    Either<CustomError, Response> response =
+        await _apiHelper.updateShortlistItem(updateShortListRequestModel: updateShortListRequestModel);
+    CustomLoader.hide(context!);
+    Get.back();
+    response.fold((l) {
+      Logcat.msg(l.msg);
+    }, (r) async {
+      if ([200, 201].contains(r.statusCode)) {
+        await shortlistController.fetchShortListEmployees();
+      } else {
+        CustomDialogue.information(
+          context: Get.context!,
+          title: "Error",
+          description: "Something went wrong",
+        );
+      }
     });
   }
 }

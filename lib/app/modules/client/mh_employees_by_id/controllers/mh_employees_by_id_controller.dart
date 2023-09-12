@@ -58,8 +58,6 @@ class MhEmployeesByIdController extends GetxController {
 
     isLoading.value = true;
 
-    CustomLoader.show(context!);
-
     await _apiHelper
         .getEmployees(
       positionId: position.id,
@@ -70,7 +68,6 @@ class MhEmployeesByIdController extends GetxController {
     )
         .then((Either<CustomError, Employees> response) {
       isLoading.value = false;
-      CustomLoader.hide(context!);
 
       response.fold((CustomError customError) {
         Utils.errorDialog(context!, customError..onRetry = _getEmployees);

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:mh/app/modules/employee/employee_home/controllers/employee_home_controller.dart';
 import 'package:mh/app/modules/employee/employee_home/widgets/employee_home_card_widget.dart';
@@ -12,12 +13,12 @@ class EmployeeHomeBodyWidget extends GetWidget<EmployeeHomeController> {
 
   @override
   Widget build(BuildContext context) {
-    return const SingleChildScrollView(
-      physics: BouncingScrollPhysics(),
+    return  SingleChildScrollView(
+      physics: const BouncingScrollPhysics(),
       primary: true,
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20.0),
-        child: Column(
+        padding: EdgeInsets.symmetric(horizontal: 15.w),
+        child: const Column(
          mainAxisAlignment: MainAxisAlignment.center,
          crossAxisAlignment: CrossAxisAlignment.start,
           children: [

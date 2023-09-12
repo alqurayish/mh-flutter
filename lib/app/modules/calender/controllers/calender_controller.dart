@@ -2,9 +2,9 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:mh/app/common/controller/app_controller.dart';
 import 'package:mh/app/common/extensions/extensions.dart';
+import 'package:mh/app/common/utils/logcat.dart';
 import 'package:mh/app/common/utils/utils.dart';
 import 'package:mh/app/common/values/my_color.dart';
 import 'package:mh/app/common/widgets/custom_buttons.dart';
@@ -45,8 +45,6 @@ class CalenderController extends GetxController {
   final RxSet<DateTime> selectedDates = <DateTime>{}.obs;
   Rx<DateTime?> rangeStartDate = Rx<DateTime?>(null);
   Rx<DateTime?> rangeEndDate = Rx<DateTime?>(null);
-
-  //For client only
 
   //For employee only
   RxList<Dates> unavailableDateList = <Dates>[].obs;
@@ -148,6 +146,7 @@ class CalenderController extends GetxController {
   //For employees only
   void updateUnavailableDates() {
     CustomLoader.show(context!);
+
     UpdateUnavailableDateRequestModel updateUnavailableDateRequestModel =
         UpdateUnavailableDateRequestModel(unavailableDateList: unavailableDateList.toSet().toList());
     _apiHelper
@@ -193,12 +192,15 @@ class CalenderController extends GetxController {
     } else {
       rangeEndDate.value = null;
     }
+    loadUnavailableDates();
   }
 
   //For employee only
   void onRemoveClick() {
     selectedDates.clear();
     rangeStartDate.value = null;
+    rangeEndDate.value = null;
+    sameAsStartDate.value = false;
   }
 
   //For employee only
@@ -227,6 +229,29 @@ class CalenderController extends GetxController {
     } else {
       return rangeStartDate.value!.daysUntil(rangeEndDate.value!);
     }
+  }
+
+  void onEmployeeUnavailableDateUpdate({required DateTime currentDate}) {
+    if (!Get.isRegistered<EmployeeHomeController>()) return;
+    CustomDialogue.confirmation(
+      context: context!,
+      title: "Warning!",
+      msg: "Are you sure you want to make this date range available?",
+      confirmButtonText: "YES",
+      onConfirm: () async {
+        unavailableDateList.clear();
+        Get.back();
+        final String dateToRemove = currentDate.toString().substring(0, 10);
+        dateListModel.value.unavailableDates?.removeWhere(
+            (item) => item.startDate!.compareTo(dateToRemove) <= 0 && item.endDate!.compareTo(dateToRemove) >= 0);
+        for (CalenderDataModel date in dateListModel.value.unavailableDates!) {
+          if (!unavailableDateList.contains(Dates(startDate: date.startDate ?? '', endDate: date.endDate ?? ''))) {
+            unavailableDateList.add(Dates(startDate: date.startDate ?? '', endDate: date.endDate ?? ''));
+          }
+        }
+        updateUnavailableDates();
+      },
+    );
   }
 
   ///-------------------------------------------------------------------
@@ -260,18 +285,22 @@ class CalenderController extends GetxController {
   void loadRequestedDateList({required DateTime currentDate}) {
     if (inValidRange(currentDate: currentDate) == false) {
       if (rangeStartDate.value != null && rangeEndDate.value == null) {
-        requestDateList.add(RequestDateModel(
-          startDate: rangeStartDate.value.toString().substring(0, 10),
-        ));
+        requestDateList.insert(
+            0,
+            RequestDateModel(
+              startDate: rangeStartDate.value.toString().substring(0, 10),
+            ));
       } else if (rangeEndDate.value != null && rangeStartDate.value != null) {
         requestDateList.removeWhere(
             (RequestDateModel element) => element.startDate == rangeStartDate.value.toString().substring(0, 10));
         requestDateList.removeWhere(
             (RequestDateModel element) => element.startDate == rangeEndDate.value.toString().substring(0, 10));
-        requestDateList.add(RequestDateModel(
-          startDate: rangeStartDate.value.toString().substring(0, 10),
-          endDate: rangeEndDate.value.toString().substring(0, 10),
-        ));
+        requestDateList.insert(
+            0,
+            RequestDateModel(
+              startDate: rangeStartDate.value.toString().substring(0, 10),
+              endDate: rangeEndDate.value.toString().substring(0, 10),
+            ));
 
         rangeStartDate.value = null;
         rangeEndDate.value = null;
@@ -378,7 +407,7 @@ class CalenderController extends GetxController {
                         title: "Invalid Time Range",
                         description: "From-time and To-time should be same",
                       );
-                    } else if (DateFormat("hh:mm a")
+                    } /*else if (DateFormat("hh:mm a")
                         .parse("${requestDateList[index].endTime}")
                         .isBefore(DateFormat("hh:mm a").parse("${requestDateList[index].startTime}"))) {
                       CustomDialogue.information(
@@ -386,7 +415,8 @@ class CalenderController extends GetxController {
                         title: "Invalid Time Range",
                         description: "To-time should be less than From-time",
                       );
-                    } else {
+                    }*/
+                    else {
                       Get.back(); // hide modal
                     }
                   },
@@ -439,9 +469,21 @@ class CalenderController extends GetxController {
 
   Future<void> _updateShortListDateOrTime({required UpdateShortListRequestModel updateShortListRequestModel}) async {
     CustomLoader.show(context!);
-    await _apiHelper.updateShortlistItem(updateShortListRequestModel: updateShortListRequestModel).then((value) async {
-      await shortlistController.fetchShortListEmployees();
-      CustomLoader.hide(context!);
+    Either<CustomError, Response> response =
+        await _apiHelper.updateShortlistItem(updateShortListRequestModel: updateShortListRequestModel);
+    CustomLoader.hide(context!);
+    response.fold((l) {
+      Logcat.msg(l.msg);
+    }, (r) async {
+      if ([200, 201].contains(r.statusCode)) {
+        await shortlistController.fetchShortListEmployees();
+      } else {
+        CustomDialogue.information(
+          context: Get.context!,
+          title: "Error",
+          description: "Something went wrong",
+        );
+      }
     });
   }
 }

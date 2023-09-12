@@ -1,5 +1,6 @@
 import 'package:badges/badges.dart';
 import 'package:mh/app/common/controller/app_controller.dart';
+import 'package:mh/app/common/widgets/shimmer_widget.dart';
 import 'package:mh/app/modules/client/client_shortlisted/models/add_to_shortlist_request_model.dart';
 import '../../../../common/utils/exports.dart';
 import '../../../../common/widgets/custom_appbar.dart';
@@ -52,7 +53,12 @@ class MhEmployeesByIdView extends GetView<MhEmployeesByIdController> {
       body: Obx(
         () => (controller.employees.value.users ?? []).isEmpty
             ? controller.isLoading.value
-                ? const SizedBox()
+                ? Center(
+                    child: Padding(
+                      padding: EdgeInsets.only(left: 15.w, right: 15.w, top: 70.h),
+                      child: ShimmerWidget.clientMyEmployeesShimmerWidget(),
+                    ),
+                  )
                 : const NoItemFound()
             : Column(
                 children: [
@@ -76,7 +82,7 @@ class MhEmployeesByIdView extends GetView<MhEmployeesByIdController> {
 
   Widget _resultCountWithFilter() {
     return Padding(
-      padding: EdgeInsets.fromLTRB(23.w, 10.h, 23.w, 0),
+      padding: EdgeInsets.fromLTRB(15, 10.h, 15, 0),
       child: Row(
         children: [
           Text(
@@ -114,7 +120,7 @@ class MhEmployeesByIdView extends GetView<MhEmployeesByIdController> {
 
   Widget _employeeItem(Employee user) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 24.w).copyWith(
+      margin: EdgeInsets.symmetric(horizontal: 15.w).copyWith(
         bottom: 20.h,
       ),
       decoration: BoxDecoration(
@@ -197,7 +203,13 @@ class MhEmployeesByIdView extends GetView<MhEmployeesByIdController> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          _detailsItem(MyAssets.calender2, 'Free:', user.available ?? ''),
+                          _detailsItem(MyAssets.calender2, 'Available:', user.available ?? ''),
+                        ],
+                      ),
+                      SizedBox(height: 8.h),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
                           CustomButtons.button(
                             padding: const EdgeInsets.symmetric(horizontal: 15.0),
                             height: 23,
@@ -210,7 +222,7 @@ class MhEmployeesByIdView extends GetView<MhEmployeesByIdController> {
                             onTap: (user.available == null || int.parse(user.available!.split(' ').first) <= 0)
                                 ? null
                                 : () => controller.onBookNowClick(user),
-                          ),
+                          )
                         ],
                       )
                     ],

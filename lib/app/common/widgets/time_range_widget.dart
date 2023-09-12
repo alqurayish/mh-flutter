@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:mh/app/common/extensions/extensions.dart';
@@ -29,8 +30,9 @@ class TimeRangeWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               Image.asset(MyAssets.calender2, height: 20, width: 20),
-              Text('${DateFormat('E, dd MMM, yyyy').format(DateTime.parse(requestDate.startDate ?? ''))}  -  ',
+              Text(DateFormat('E, dd MMM, yyyy').format(DateTime.parse(requestDate.startDate ?? '')),
                   style: MyColors.l111111_dwhite(context).medium13),
+              Container(width: 12.w, color: Colors.grey, height: 2),
               Text(DateFormat('E, dd MMM, yyyy').format(DateTime.parse(requestDate.endDate ?? '')),
                   style: MyColors.l111111_dwhite(context).medium13),
               if (hasDeleteOption == true)
@@ -43,7 +45,7 @@ class TimeRangeWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               _timeWidget(time: requestDate.startTime ?? ''),
-              Container(width: 15, color: Colors.grey, height: 2),
+              Container(width: 12.w, color: Colors.grey, height: 2),
               _timeWidget(time: requestDate.endTime ?? ''),
             ],
           )
@@ -54,15 +56,15 @@ class TimeRangeWidget extends StatelessWidget {
 
   Widget _timeWidget({required String time}) {
     return Container(
-      width: 130,
-      padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 2.0),
+      width: 120.w,
+      padding:  EdgeInsets.symmetric(horizontal: 10.0.w, vertical: 3.0.h),
       decoration: BoxDecoration(
           color: MyColors.lightCard(Get.context!),
           border: Border.all(color: Colors.grey.shade400),
           borderRadius: BorderRadius.circular(5.0)),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [Image.asset(MyAssets.clock, height: 20, width: 20), Text(time, style: MyColors.l111111_dwhite(Get.context!).medium13)],
+        children: [Image.asset(MyAssets.clock, height: 18.h, width: 18.w), Text(time, style: MyColors.l111111_dwhite(Get.context!).medium13)],
       ),
     );
   }

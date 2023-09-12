@@ -1,5 +1,6 @@
 import 'package:mh/app/common/utils/exports.dart';
 import 'package:mh/app/modules/calender/controllers/calender_controller.dart';
+import 'package:mh/app/modules/employee/employee_home/controllers/employee_home_controller.dart';
 
 class CalenderMonthWidget extends StatelessWidget {
   final DateTime month;
@@ -28,15 +29,20 @@ class CalenderMonthWidget extends StatelessWidget {
         Color containerColor = Colors.transparent;
 
         bool canTapDate = false;
+        bool canUpdateUnavailableDate = false;
+
         if (currentDate.toString().substring(0, 10) == today.toString().substring(0, 10)) {
-          borderColor = MyColors.c_C6A34F;// Today's date should be red
+          borderColor = MyColors.c_C6A34F; // Today's date should be red
           textColor = Colors.grey;
         } else if (controller.dateListModel.value.bookedDates!.containsDate(currentDate)) {
-          textColor = Colors.red; // Booked dates should be red
+          textColor = Colors.red;
         } else if (controller.dateListModel.value.pendingDates!.containsDate(currentDate)) {
-          textColor = Colors.amber; // Pending dates should be yellow
+          textColor = Colors.amber;
         } else if (controller.dateListModel.value.unavailableDates!.containsDate(currentDate)) {
-          textColor = MyColors.l111111_dwhite(context); // Unavailable dates should be black
+          textColor = MyColors.l111111_dwhite(context);
+          if (Get.isRegistered<EmployeeHomeController>()) {
+            canUpdateUnavailableDate = true;
+          }
         } else if (currentDate.isBefore(DateTime.now()) || controller.selectedDate.value == currentDate) {
           textColor = Colors.grey;
         } else {
@@ -45,7 +51,11 @@ class CalenderMonthWidget extends StatelessWidget {
         }
 
         return GestureDetector(
-          onTap: canTapDate ? () => controller.onDateClick(currentDate: currentDate) : null,
+          onTap: canTapDate
+              ? () => controller.onDateClick(currentDate: currentDate)
+              : canUpdateUnavailableDate
+                  ? () => controller.onEmployeeUnavailableDateUpdate(currentDate: currentDate)
+                  : null,
           child: Obx(() {
             final bool isSelected = controller.selectedDates.contains(currentDate);
             final bool isDateInRange =
@@ -71,8 +81,10 @@ class CalenderMonthWidget extends StatelessWidget {
               ),
               child: Text(
                 day.toString(),
-                style:
-                    TextStyle(color: textColor, fontWeight: FontWeight.bold, fontSize: 15), // Text color based on textColor variable
+                style: TextStyle(
+                    color: textColor,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15), // Text color based on textColor variable
               ),
             );
           }),

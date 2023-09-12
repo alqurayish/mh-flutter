@@ -10,7 +10,6 @@ class ShimmerWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 15.h),
             Row(
               children: [
                 Expanded(child: _customFeatureBoxShimmerWidget()),
@@ -51,7 +50,7 @@ class ShimmerWidget {
     return Shimmer.fromColors(
         baseColor: MyColors.shimmerColor,
         highlightColor: Get.context!.theme.scaffoldBackgroundColor,
-        child: _customContainerShimmerWidget(height: 160, width: Get.width, borderRadius: 10.0));
+        child: _customContainerShimmerWidget(height: 160, width: Get.width, borderRadius: 10.0, margin: 15.0));
   }
 
   static Widget bookingDetailsShimmerWidget() {

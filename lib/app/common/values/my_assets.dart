@@ -89,6 +89,8 @@ class _Lottie {
   String noNotification = "assets/lottie/no_notification.json";
   String mapLoading = "assets/lottie/map_loading.json";
   String calenderLoading = "assets/lottie/calender_loading.json";
+  String hiLottie = "assets/lottie/hi.json";
+  String successLottie = "assets/lottie/success.json";
 }
 
 class _PaymentMethod {

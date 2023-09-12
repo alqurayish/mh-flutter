@@ -15,7 +15,7 @@ class ShortListTimeRangeWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 100,
+      height: 100.h,
       decoration: BoxDecoration(color: Get.isDarkMode ?Colors.grey.shade800 :Colors.grey.shade200, borderRadius: BorderRadius.circular(10.0)),
       margin: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.11, left: 15.0, right: 15.0),
       child: Column(
@@ -62,7 +62,7 @@ class ShortListTimeRangeWidget extends StatelessWidget {
                         ),
                         value: Get.find<CalenderController>().sameAsStartDate.value,
                         onChanged: Get.find<CalenderController>().onSameAsStartDatePressedForShortList),
-                    Text('Same as Start Date', style: MyColors.primaryDark.medium15),
+                    Text('Same as Start Date', style: MyColors.primaryDark.semiBold15),
                   ],
                 ),
               ))),

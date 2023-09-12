@@ -47,7 +47,7 @@ class ClientShortlistedView extends GetView<ClientShortlistedController> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: EdgeInsets.fromLTRB(24.w, 0, 24.w, 12.h),
+          padding: EdgeInsets.fromLTRB(15.w, 0, 15.w, 12.h),
           child: Text(
             "${Utils.getPositionName(positionId)} (${employees.length})",
             style: MyColors.l111111_dwhite(controller.context!).semiBold16,
@@ -64,7 +64,7 @@ class ClientShortlistedView extends GetView<ClientShortlistedController> {
     return Column(
       children: [
         Container(
-          margin: EdgeInsets.symmetric(horizontal: 24.w),
+          margin: EdgeInsets.symmetric(horizontal: 15.w),
           decoration: BoxDecoration(
             color: MyColors.lightCard(controller.context!),
             borderRadius: BorderRadius.circular(10.0).copyWith(

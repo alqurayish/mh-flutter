@@ -80,8 +80,6 @@ class AdminAllEmployeesController extends GetxController {
 
     isLoading.value = true;
 
-    CustomLoader.show(context!);
-
     await _apiHelper
         .getAllUsersFromAdmin(
       positionId: positionId,
@@ -93,7 +91,6 @@ class AdminAllEmployeesController extends GetxController {
     )
         .then((response) {
       isLoading.value = false;
-      CustomLoader.hide(context!);
 
       response.fold((CustomError customError) {
         Utils.errorDialog(context!, customError..onRetry = _getEmployees);
@@ -111,5 +108,9 @@ class AdminAllEmployeesController extends GetxController {
         this.employees.refresh();
       });
     });
+  }
+
+  void onCalenderClick({required String employeeId}) {
+    Get.toNamed(Routes.calender, arguments: [employeeId, '']);
   }
 }

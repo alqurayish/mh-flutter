@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:mh/app/common/extensions/extensions.dart';
 import 'package:mh/app/common/values/my_color.dart';
@@ -17,7 +18,7 @@ class ClientShortListedRequestDateWidget extends StatelessWidget {
     return SingleChildScrollView(
       padding: EdgeInsets.zero,
       child: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding:  EdgeInsets.symmetric(horizontal: 15.w, vertical: 20.h),
         child: Column(
           children: [
             Row(

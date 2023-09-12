@@ -1,6 +1,7 @@
 import 'package:lottie/lottie.dart';
 import 'package:mh/app/common/utils/exports.dart';
 import 'package:mh/app/common/widgets/custom_appbar.dart';
+import 'package:mh/app/modules/admin/admin_home/controllers/admin_home_controller.dart';
 import 'package:mh/app/modules/calender/widgets/calender_bottom_nav_bar_widget.dart';
 import 'package:mh/app/modules/calender/widgets/calender_header_widget.dart';
 import 'package:mh/app/modules/calender/widgets/calender_widget_latest.dart';
@@ -20,25 +21,26 @@ class CalenderView extends GetView<CalenderController> {
       bottomNavigationBar: const CalenderBottomNavBarWidget(),
       body: Obx(() {
         if (controller.dateDataLoading.value == true) {
-          return Center(child: Lottie.asset(MyAssets.lottie.calenderLoading, fit: BoxFit.cover, height: 200, width: 200));
+          return Center(
+              child: Lottie.asset(MyAssets.lottie.calenderLoading, fit: BoxFit.cover, height: 200.w, width: 200.w));
         } else {
           return Stack(
             children: [
               SizedBox(
                 height: MediaQuery.of(context).size.height,
-                child: const SingleChildScrollView(
+                child: SingleChildScrollView(
                   child: Padding(
-                    padding: EdgeInsets.all(15.0),
-                    child: Column(
+                    padding: EdgeInsets.symmetric(horizontal: 15.0.w, vertical: 15.0.h),
+                    child: const Column(
                       children: [CalenderHeaderWidget(), CalenderWidgetLatest()],
                     ),
                   ),
                 ),
               ),
-              const Positioned.fill(
+              Positioned.fill(
                   child: Align(
                 alignment: Alignment.bottomCenter,
-                child: SelectedDaysCountWidget(),
+                child: Get.isRegistered<AdminHomeController>() ? const Wrap() : const SelectedDaysCountWidget(),
               )),
               Positioned.fill(
                   child: Align(

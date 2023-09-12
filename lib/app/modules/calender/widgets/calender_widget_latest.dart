@@ -8,21 +8,20 @@ class CalenderWidgetLatest extends GetWidget<CalenderController> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.47,
+      height: MediaQuery.of(context).size.height * 0.48,
       child: Column(
         children: [
-          const SizedBox(height: 20),
+           SizedBox(height: 15.h),
           Obx(() => Text(
                 controller.selectedDate.value.formatMonthYear(),
                 style: MyColors.l111111_dwhite(context).semiBold18,
               )),
-          const SizedBox(height: 20),
+           SizedBox(height: 15.h),
           Container(
-            padding: const EdgeInsets.symmetric(vertical: 10.0),
+            padding:  EdgeInsets.symmetric(vertical: 10.0.h),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5.0),
-                color: Colors.grey.withOpacity(0.3),
-                border: Border.all(color: Colors.grey.shade300)),
+                color: Get.isDarkMode?Colors.grey.shade800:Colors.grey.shade400),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: controller.dayNames
@@ -33,7 +32,7 @@ class CalenderWidgetLatest extends GetWidget<CalenderController> {
                   .toList(),
             ),
           ),
-          const SizedBox(height: 20),
+          SizedBox(height: 15.h),
           Expanded(
             child: PageView.builder(
               controller: controller.pageController,
@@ -54,12 +53,12 @@ class CalenderWidgetLatest extends GetWidget<CalenderController> {
                               ? MyColors.c_C6A34F
                               : Colors.grey.shade400,
                           borderRadius: BorderRadius.circular(5.0)),
-                      width: 30,
-                      height: 5),
+                      width: 30.w,
+                      height: 5.h),
                   const SizedBox(width: 10),
                   Container(
-                      width: 30,
-                      height: 5,
+                      width: 30.w,
+                      height: 5.h,
                       decoration: BoxDecoration(
                           color: controller.selectedDate.value.month != DateTime.now().month
                               ? MyColors.c_C6A34F

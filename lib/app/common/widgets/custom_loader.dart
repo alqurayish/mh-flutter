@@ -29,8 +29,8 @@ class CustomLoader {
       children: [
         Image.asset(
           MyAssets.logo,
-          height: 140,
-          width: 140,
+          height: 140.w,
+          width: 140.w,
         ),
         SizedBox(height: 20.h),
         const SpinKitCircle(
