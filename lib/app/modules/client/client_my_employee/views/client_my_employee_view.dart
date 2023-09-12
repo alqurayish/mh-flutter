@@ -84,7 +84,7 @@ class ClientMyEmployeeView extends GetView<ClientMyEmployeeController> {
               child: Obx(
                 () => controller.shortlistController.getIcon(
                     requestedDateList: <RequestDateModel>[],
-                    employeeId: hiredHistory.id!,
+                    employeeId: hiredHistory.employeeId ?? '',
                     isFetching: controller.shortlistController.isFetching.value,
                     fromWhere: ''),
               ),
@@ -149,19 +149,20 @@ class ClientMyEmployeeView extends GetView<ClientMyEmployeeController> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                        SizedBox(
-                          width: 122.w,
-                          child: CustomButtons.button(
-                            height: 28.w,
-                            text:
-                            "Book Again",
-                            margin: EdgeInsets.zero,
-                            fontSize: 12,
-                            customButtonStyle: CustomButtonStyle.radiusTopBottomCorner,
-                            onTap: ()=>Get.toNamed(Routes.calender, arguments: [hiredHistory.employeeDetails?.employeeId??'', '']),
+                          SizedBox(
+                            width: 122.w,
+                            child: CustomButtons.button(
+                              height: 28.w,
+                              text: "Book Again",
+                              margin: EdgeInsets.zero,
+                              fontSize: 12,
+                              customButtonStyle: CustomButtonStyle.radiusTopBottomCorner,
+                              onTap: () => Get.toNamed(Routes.calender,
+                                  arguments: [hiredHistory.employeeDetails?.employeeId ?? '', '']),
+                            ),
                           ),
-                        ),
-                      ],)
+                        ],
+                      )
                     ],
                   ),
                 ),

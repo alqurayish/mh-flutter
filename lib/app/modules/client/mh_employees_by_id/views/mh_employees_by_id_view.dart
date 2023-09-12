@@ -141,14 +141,11 @@ class MhEmployeesByIdView extends GetView<MhEmployeesByIdController> {
               right: 5,
               top: 3,
               child: Obx(
-                () => Visibility(
-                  visible: (user.isSuggested == false && user.isHired == false),
-                  child: controller.shortlistController.getIcon(
-                      requestedDateList: <RequestDateModel>[],
-                      employeeId: user.id!,
-                      isFetching: controller.shortlistController.isFetching.value,
-                      fromWhere: ''),
-                ),
+                () => controller.shortlistController.getIcon(
+                    requestedDateList: <RequestDateModel>[],
+                    employeeId: user.id!,
+                    isFetching: controller.shortlistController.isFetching.value,
+                    fromWhere: ''),
               ),
             ),
             Row(
