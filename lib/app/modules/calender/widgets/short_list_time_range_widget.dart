@@ -72,7 +72,7 @@ class ShortListTimeRangeWidget extends StatelessWidget {
               requestDate.endTime == null)
             _selectTimeRangeWidget(index: index)
           else if (requestDate.startTime != null && requestDate.endTime != null)
-            _timeRangeWidget(requestDate: requestDate)
+            _timeRangeWidget(requestDate: requestDate, index: index)
         ],
       ),
     );
@@ -98,26 +98,29 @@ class ShortListTimeRangeWidget extends StatelessWidget {
     );
   }
 
-  Widget _timeRangeWidget({required RequestDateModel requestDate}) {
+  Widget _timeRangeWidget({required RequestDateModel requestDate, required int index}) {
     return Row(
       children: [
-        _timeWidget(time: requestDate.startTime ?? ''),
+        _timeWidget(time: requestDate.startTime ?? '', index: index),
          Text('  -  ', style: MyColors.l111111_dwhite(Get.context!).semiBold13),
-        _timeWidget(time: requestDate.endTime ?? ''),
+        _timeWidget(time: requestDate.endTime ?? '', index: index),
       ],
     );
   }
 
-  Widget _timeWidget({required String time}) {
-    return Container(
-      width: 130,
-      padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 2.0),
-      decoration: BoxDecoration(
-          color: MyColors.lightCard(Get.context!),
-          border: Border.all(color: Colors.grey.shade400),
-          borderRadius: BorderRadius.circular(5.0)),
-      child: Row(
-        children: [Image.asset(MyAssets.clock, height: 20, width: 20), const SizedBox(width: 10), Text(time, style: MyColors.l111111_dwhite(Get.context!).semiBold13)],
+  Widget _timeWidget({required String time, required int index}) {
+    return InkWell(
+      onTap: ()=>Get.find<CalenderController>().showTimePickerBottomSheet(index: index),
+      child: Container(
+        width: 130,
+        padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 2.0),
+        decoration: BoxDecoration(
+            color: MyColors.lightCard(Get.context!),
+            border: Border.all(color: Colors.grey.shade400),
+            borderRadius: BorderRadius.circular(5.0)),
+        child: Row(
+          children: [Image.asset(MyAssets.clock, height: 20, width: 20), const SizedBox(width: 10), Text(time, style: MyColors.l111111_dwhite(Get.context!).semiBold13)],
+        ),
       ),
     );
   }

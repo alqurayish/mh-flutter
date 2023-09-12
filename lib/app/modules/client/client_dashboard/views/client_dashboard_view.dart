@@ -2,6 +2,8 @@ import 'package:horizontal_data_table/horizontal_data_table.dart';
 import 'package:mh/app/common/controller/app_controller.dart';
 import 'package:mh/app/common/widgets/custom_dropdown.dart';
 import 'package:mh/app/common/widgets/custom_loader.dart';
+import 'package:mh/app/models/check_in_out_histories.dart';
+import 'package:mh/app/models/employee_details.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 import '../../../../common/style/my_decoration.dart';
@@ -14,7 +16,6 @@ import '../../../../common/widgets/custom_network_image.dart';
 import '../../../../common/widgets/no_item_found.dart';
 import '../../../../models/employee_daily_statistics.dart';
 import '../controllers/client_dashboard_controller.dart';
-import '../models/current_hired_employees.dart';
 
 class ClientDashboardView extends GetView<ClientDashboardController> {
   const ClientDashboardView({Key? key}) : super(key: key);
@@ -30,38 +31,34 @@ class ClientDashboardView extends GetView<ClientDashboardController> {
       ),
       body: Obx(
         () => controller.loading.value
-            ?  Center(child: CustomLoader.loading())
-            : (controller.hiredEmployeesByDate.value.hiredHistories ?? []).isEmpty
+            ? Center(child: CustomLoader.loading())
+            : (controller.checkInCheckOutHistory.value.checkInCheckOutHistory ?? []).isEmpty
                 ? Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Obx(
-                            () => Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            GestureDetector(
-                              onTap: () => _selectDate(context),
-                              child: Text(
-                                controller.selectedDate.value,
-                                style: MyColors.l111111_dwhite(context).medium16,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+                        child: Obx(
+                          () => Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              GestureDetector(
+                                onTap: () => _selectDate(context),
+                                child: Text(
+                                  controller.selectedDate.value,
+                                  style: MyColors.l111111_dwhite(context).medium16,
+                                ),
                               ),
-                            ),
-                            Text(
-                              (controller.hiredEmployeesByDate.value.hiredHistories ?? []).isEmpty
-                                  ? controller.loading.value
-                                  ? ''
-                                  : "No Employee found"
-                                  : "${(controller.hiredEmployeesByDate.value.hiredHistories ?? []).length} Employee Active",
-                              style: MyColors.c_C6A34F.semiBold16,
-                            ),
-                          ],
+                              Text(
+                                "No Employee found",
+                                style: MyColors.c_C6A34F.semiBold16,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                    const Expanded(child: NoItemFound()),
-                  ],
-                )
+                      const Expanded(child: NoItemFound()),
+                    ],
+                  )
                 : Column(
                     children: [
                       Padding(
@@ -78,11 +75,9 @@ class ClientDashboardView extends GetView<ClientDashboardController> {
                                 ),
                               ),
                               Text(
-                                (controller.hiredEmployeesByDate.value.hiredHistories ?? []).isEmpty
-                                    ? controller.loading.value
-                                        ? ''
-                                        : "No Employee found"
-                                    : "${(controller.hiredEmployeesByDate.value.hiredHistories ?? []).length} Employee Active",
+                                controller.totalActiveEmployee.length > 1
+                                    ? "${controller.totalActiveEmployee.length} Employees Active"
+                                    : "${controller.totalActiveEmployee.length} Employee Active",
                                 style: MyColors.c_C6A34F.semiBold16,
                               ),
                             ],
@@ -97,7 +92,7 @@ class ClientDashboardView extends GetView<ClientDashboardController> {
                           headerWidgets: _getTitleWidget(),
                           leftSideItemBuilder: _generateFirstColumnRow,
                           rightSideItemBuilder: _generateRightHandSideColumnRow,
-                          itemCount: (controller.hiredEmployeesByDate.value.hiredHistories ?? []).length,
+                          itemCount: (controller.checkInCheckOutHistory.value.checkInCheckOutHistory ?? []).length,
                           rowSeparatorWidget: Container(
                             height: 6.h,
                             color: MyColors.lFAFAFA_dframeBg(context),
@@ -122,18 +117,19 @@ class ClientDashboardView extends GetView<ClientDashboardController> {
         return Theme(
           data: Theme.of(context).brightness == Brightness.light
               ? ThemeData.light().copyWith(
-            colorScheme: ColorScheme.light(
-              primary: MyColors.c_C6A34F,
-              onPrimary: Colors.white,
-              onSurface: MyColors.l111111_dwhite(context),
-            ),
-          ) : ThemeData.dark().copyWith(
-            colorScheme: ColorScheme.dark(
-              primary: MyColors.c_C6A34F,
-              onPrimary: Colors.white,
-              onSurface: MyColors.l111111_dwhite(context),
-            ),
-          ),
+                  colorScheme: ColorScheme.light(
+                    primary: MyColors.c_C6A34F,
+                    onPrimary: Colors.white,
+                    onSurface: MyColors.l111111_dwhite(context),
+                  ),
+                )
+              : ThemeData.dark().copyWith(
+                  colorScheme: ColorScheme.dark(
+                    primary: MyColors.c_C6A34F,
+                    onPrimary: Colors.white,
+                    onSurface: MyColors.l111111_dwhite(context),
+                  ),
+                ),
           child: child!,
         );
       },
@@ -171,7 +167,7 @@ class ClientDashboardView extends GetView<ClientDashboardController> {
   }
 
   Widget _generateFirstColumnRow(BuildContext context, int index) {
-    HiredHistory hiredHistory = controller.hiredEmployeesByDate.value.hiredHistories![index];
+    CheckInCheckOutHistoryElement hiredHistory = controller.checkInCheckOutHistory.value.checkInCheckOutHistory![index];
 
     return SizedBox(
       width: 143.w,
@@ -182,7 +178,7 @@ class ClientDashboardView extends GetView<ClientDashboardController> {
         child: _employeeDetails(
           hiredHistory.employeeDetails?.employeeId ?? "",
           hiredHistory.employeeDetails?.name ?? "-",
-          Utils.getPositionName(hiredHistory.employeeDetails?.positionId??''),
+          Utils.getPositionName(hiredHistory.employeeDetails?.positionId ?? ''),
           hiredHistory.employeeDetails?.profilePicture ?? "",
         ),
       ),
@@ -198,51 +194,60 @@ class ClientDashboardView extends GetView<ClientDashboardController> {
       SizedBox(
         width: width,
         height: 71.h,
-        child: child ?? Center(
-          child: Text.rich(
-            TextSpan(
-                text: value,
-                children: [
+        child: child ??
+            Center(
+              child: Text.rich(
+                TextSpan(text: value, children: [
                   TextSpan(
-                      text: (clientUpdatedValue == null) || (clientUpdatedValue == value) ? "" : '\n$clientUpdatedValue',
+                      text:
+                          (clientUpdatedValue == null) || (clientUpdatedValue == value) ? "" : '\n$clientUpdatedValue',
                       style: const TextStyle(
                         decoration: TextDecoration.lineThrough,
-                      )
-                  ),
-                ]
+                      )),
+                ]),
+                textAlign: TextAlign.center,
+                style: MyColors.l7B7B7B_dtext(controller.context!).semiBold13,
+              ),
             ),
-            textAlign: TextAlign.center,
-            style: MyColors.l7B7B7B_dtext(controller.context!).semiBold13,
-          ),
-        ),
       );
 
   Widget _generateRightHandSideColumnRow(BuildContext context, int index) {
+    CheckInCheckOutHistoryElement hiredHistory = controller.checkInCheckOutHistory.value.checkInCheckOutHistory![index];
 
-    HiredHistory hiredHistory = controller.hiredEmployeesByDate.value.hiredHistories![index];
-
-    if(controller.getCheckInOutDate(index) == null) {
+    if (hiredHistory.checkInCheckOutDetails == null) {
       return Row(
         children: <Widget>[
           _cell(width: 100.w, value: "-"),
           _cell(width: 100.w, value: "-"),
           _cell(width: 100.w, value: "-"),
           _cell(width: 100.w, value: "-"),
-          _cell(width: 100.w, value: "", child: _chat(hiredHistory)),
-          _cell(width: 100.w, value: "-",),
+          _cell(width: 100.w, value: "", child: _chat(employeeDetails: hiredHistory.employeeDetails!)),
+          _cell(
+            width: 100.w,
+            value: "-",
+          ),
         ],
       );
     }
 
-    UserDailyStatistics dailyStatistics = Utils.checkInOutToStatistics(controller.getCheckInOutDate(index)!);
+    UserDailyStatistics dailyStatistics = Utils.checkInOutToStatistics(controller.checkInCheckOutHistory.value.checkInCheckOutHistory![index]);
 
     return Row(
       children: <Widget>[
-        _cell(width: 100.w, value: dailyStatistics.displayCheckInTime, clientUpdatedValue: dailyStatistics.employeeCheckInTime),
-        _cell(width: 100.w, value: dailyStatistics.displayCheckOutTime, clientUpdatedValue: dailyStatistics.employeeCheckOutTime),
-        _cell(width: 100.w, value: dailyStatistics.displayBreakTime, clientUpdatedValue: dailyStatistics.employeeBreakTime),
+        _cell(
+            width: 100.w,
+            value: dailyStatistics.displayCheckInTime,
+            clientUpdatedValue: dailyStatistics.employeeCheckInTime),
+        _cell(
+            width: 100.w,
+            value: dailyStatistics.displayCheckOutTime,
+            clientUpdatedValue: dailyStatistics.employeeCheckOutTime),
+        _cell(
+            width: 100.w,
+            value: dailyStatistics.displayBreakTime,
+            clientUpdatedValue: dailyStatistics.employeeBreakTime),
         _cell(width: 100.w, value: dailyStatistics.workingHour),
-        _cell(width: 100.w, value: "", child: _chat(hiredHistory)),
+        _cell(width: 100.w, value: "", child: _chat(employeeDetails: hiredHistory.employeeDetails!)),
         _cell(width: 100.w, value: "--", child: _action(index)),
       ],
     );
@@ -251,19 +256,18 @@ class ClientDashboardView extends GetView<ClientDashboardController> {
   Widget _action(int index) => controller.getComment(index).isEmpty
       ? GestureDetector(
           onTap: () {
-            if(controller.clientCommentEnable(index)) {
+            if (controller.clientCommentEnable(index)) {
               controller.setUpdatedDate(index);
 
               showMaterialModalBottomSheet(
                 context: controller.context!,
-                builder: (context) =>
-                    Container(
-                      // padding: EdgeInsets.only(
-                      //   bottom: MediaQuery.of(context).viewInsets.bottom,
-                      // ),
-                      color: MyColors.lightCard(context),
-                      child: BottomA(_updateOption(index)),
-                    ),
+                builder: (context) => Container(
+                  // padding: EdgeInsets.only(
+                  //   bottom: MediaQuery.of(context).viewInsets.bottom,
+                  // ),
+                  color: MyColors.lightCard(context),
+                  child: BottomA(_updateOption(index)),
+                ),
               );
             } else {
               CustomDialogue.information(
@@ -281,7 +285,7 @@ class ClientDashboardView extends GetView<ClientDashboardController> {
         )
       : GestureDetector(
           onTap: () {
-            if(controller.clientCommentEnable(index)) {
+            if (controller.clientCommentEnable(index)) {
               controller.setUpdatedDate(index);
 
               showMaterialModalBottomSheet(
@@ -294,7 +298,6 @@ class ClientDashboardView extends GetView<ClientDashboardController> {
                   child: BottomA(_updateOption(index)),
                 ),
               );
-
             } else {
               CustomDialogue.information(
                 context: controller.context!,
@@ -310,7 +313,12 @@ class ClientDashboardView extends GetView<ClientDashboardController> {
           ),
         );
 
-  Widget _employeeDetails(String id, String name, String positionName, String image, ) {
+  Widget _employeeDetails(
+    String id,
+    String name,
+    String positionName,
+    String image,
+  ) {
     return Container(
       width: 143.w,
       padding: const EdgeInsets.all(7.0),
@@ -336,22 +344,27 @@ class ClientDashboardView extends GetView<ClientDashboardController> {
                       borderRadius: BorderRadius.circular(8.0),
                       color: Colors.grey.withOpacity(.3),
                     ),
-                    child: CustomNetworkImage(url: image.imageUrl,radius: 8.0,),
+                    child: CustomNetworkImage(
+                      url: image.imageUrl,
+                      radius: 8.0,
+                    ),
                   ),
-
                   Positioned(
                     top: -15,
                     right: -3,
                     child: Obx(
                       () => Visibility(
-                        visible: controller.clientHomeController.employeeChatDetails.where((data) => data["employeeId"] == id && data["${controller.appController.user.value.userId}_unread"] > 0).isNotEmpty,
+                        visible: controller.clientHomeController.employeeChatDetails
+                            .where((data) =>
+                                data["employeeId"] == id &&
+                                data["${controller.appController.user.value.userId}_unread"] > 0)
+                            .isNotEmpty,
                         child: const CustomBadge(""),
                       ),
                     ),
                   ),
                 ],
               ),
-
               SizedBox(width: 10.w),
               Flexible(
                 child: Text(
@@ -363,9 +376,7 @@ class ClientDashboardView extends GetView<ClientDashboardController> {
               ),
             ],
           ),
-
           SizedBox(height: 6.h),
-
           Text(
             positionName,
             maxLines: 1,
@@ -377,8 +388,8 @@ class ClientDashboardView extends GetView<ClientDashboardController> {
     );
   }
 
-  Widget _chat (HiredHistory hiredHistory) => GestureDetector(
-        onTap: () => controller.chatWithEmployee(hiredHistory),
+  Widget _chat({required EmployeeDetails employeeDetails}) => GestureDetector(
+        onTap: () => controller.chatWithEmployee(employeeDetails: employeeDetails),
         child: Center(
           child: Stack(
             clipBehavior: Clip.none,
@@ -387,17 +398,18 @@ class ClientDashboardView extends GetView<ClientDashboardController> {
                 Icons.message,
                 color: MyColors.c_C6A34F,
               ),
-
               Positioned(
                 top: -15,
                 right: -10,
                 child: Obx(
-                      () {
-                        var result = controller.clientHomeController.employeeChatDetails.where((data) => data["employeeId"] == hiredHistory.employeeDetails!.employeeId! && data["${controller.appController.user.value.userId}_unread"] > 0);
+                  () {
+                    var result = controller.clientHomeController.employeeChatDetails.where((data) =>
+                        data["employeeId"] == employeeDetails.employeeId &&
+                        data["${controller.appController.user.value.userId}_unread"] > 0);
 
-                        if(result.isEmpty) return Container();
-                        return CustomBadge(result.first["${controller.appController.user.value.userId}_unread"].toString());
-                      },
+                    if (result.isEmpty) return Container();
+                    return CustomBadge(result.first["${controller.appController.user.value.userId}_unread"].toString());
+                  },
                 ),
               ),
             ],
@@ -406,25 +418,22 @@ class ClientDashboardView extends GetView<ClientDashboardController> {
       );
 
   Widget _updateOption(int index) => Form(
-    key: controller.formKey,
-    child: Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        SizedBox(height: 19.h),
-
-        Center(
-          child: Container(
-            height: 4.h,
-            width: 80.w,
-            decoration: const BoxDecoration(
-              color: MyColors.c_5C5C5C,
+        key: controller.formKey,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SizedBox(height: 19.h),
+            Center(
+              child: Container(
+                height: 4.h,
+                width: 80.w,
+                decoration: const BoxDecoration(
+                  color: MyColors.c_5C5C5C,
+                ),
+              ),
             ),
-          ),
-        ),
-
-        SizedBox(height: 30.h),
-
-        Row(
+            SizedBox(height: 30.h),
+            Row(
               children: [
                 Expanded(
                   flex: 8,
@@ -438,7 +447,6 @@ class ClientDashboardView extends GetView<ClientDashboardController> {
                     },
                   ),
                 ),
-
                 Expanded(
                   flex: 2,
                   child: SizedBox(
@@ -466,45 +474,39 @@ class ClientDashboardView extends GetView<ClientDashboardController> {
                 const SizedBox(width: 14),
               ],
             ),
-
-        SizedBox(height: 30.h),
-
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 14),
-          child: TextFormField(
-            controller: controller.tecComment,
-            keyboardType: TextInputType.multiline,
-            minLines: 5,
-            maxLines: null,
-            cursorColor: MyColors.c_C6A34F,
-            style: MyColors.l111111_dwhite(controller.context!).regular14,
-            decoration: MyDecoration.inputFieldDecoration(
-              context: controller.context!,
-              label: "Comment",
+            SizedBox(height: 30.h),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 14),
+              child: TextFormField(
+                controller: controller.tecComment,
+                keyboardType: TextInputType.multiline,
+                minLines: 5,
+                maxLines: null,
+                cursorColor: MyColors.c_C6A34F,
+                style: MyColors.l111111_dwhite(controller.context!).regular14,
+                decoration: MyDecoration.inputFieldDecoration(
+                  context: controller.context!,
+                  label: "Comment",
+                ),
+                validator: (String? value) => Validators.emptyValidator(
+                  value?.trim(),
+                  MyStrings.required.tr,
+                ),
+              ),
             ),
-            validator: (String? value) => Validators.emptyValidator(
-              value?.trim(),
-              MyStrings.required.tr,
+            SizedBox(height: 30.h),
+            CustomButtons.button(
+              height: 52.h,
+              onTap: () => controller.onUpdatePressed(index),
+              text: "Update",
+              margin: const EdgeInsets.symmetric(horizontal: 14),
+              customButtonStyle: CustomButtonStyle.radiusTopBottomCorner,
             ),
-          ),
+            SizedBox(height: 30.h),
+          ],
         ),
-
-        SizedBox(height: 30.h),
-
-        CustomButtons.button(
-          height: 52.h,
-          onTap: () => controller.onUpdatePressed(index),
-          text: "Update",
-          margin: const EdgeInsets.symmetric(horizontal: 14),
-          customButtonStyle: CustomButtonStyle.radiusTopBottomCorner,
-        ),
-
-        SizedBox(height: 30.h),
-      ],
-    ),
-  );
+      );
 }
-
 
 class BottomA extends StatelessWidget {
   final Widget updateOption;
@@ -521,4 +523,3 @@ class BottomA extends StatelessWidget {
     );
   }
 }
-
