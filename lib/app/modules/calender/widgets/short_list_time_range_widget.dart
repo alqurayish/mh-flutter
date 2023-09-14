@@ -19,17 +19,18 @@ class ShortListTimeRangeWidget extends StatelessWidget {
       decoration: BoxDecoration(color: Get.isDarkMode ?Colors.grey.shade800 :Colors.grey.shade200, borderRadius: BorderRadius.circular(10.0)),
       margin: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.11, left: 15.0.w, right: 15.0.w),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           Padding(
             padding:  EdgeInsets.symmetric(horizontal: 15.0.w),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     Image.asset(MyAssets.calender2, height: 20.w, width: 20.w),
-                    Text(' ${DateTime.parse(requestDate.startDate ?? "").formatDateWithWeekday()}  ',
+                    Text('  ${DateTime.parse(requestDate.startDate ?? "").formatDateWithWeekday()}  ',
                         style: MyColors.l111111_dwhite(context).semiBold13),
                     Container(width: 12.w, color: Colors.grey, height: 2.h),
                     if (requestDate.endDate == null)
@@ -101,9 +102,12 @@ class ShortListTimeRangeWidget extends StatelessWidget {
 
   Widget _timeRangeWidget({required RequestDateModel requestDate, required int index}) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         _timeWidget(time: requestDate.startTime ?? '', index: index),
-         Text('  -  ', style: MyColors.l111111_dwhite(Get.context!).semiBold13),
+        SizedBox(width: 10.w),
+        Container(width: 12.w, color: Colors.grey, height: 2.h),
+        SizedBox(width: 10.w),
         _timeWidget(time: requestDate.endTime ?? '', index: index),
       ],
     );
@@ -113,14 +117,14 @@ class ShortListTimeRangeWidget extends StatelessWidget {
     return InkWell(
       onTap: ()=>Get.find<CalenderController>().showTimePickerBottomSheet(index: index),
       child: Container(
-        width: 130,
-        padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 2.0),
+        width: 120.w,
+        padding:  EdgeInsets.symmetric(horizontal: 10.0.w, vertical: 3.0.h),
         decoration: BoxDecoration(
             color: MyColors.lightCard(Get.context!),
             border: Border.all(color: Colors.grey.shade400),
             borderRadius: BorderRadius.circular(5.0)),
         child: Row(
-          children: [Image.asset(MyAssets.clock, height: 20, width: 20), const SizedBox(width: 10), Text(time, style: MyColors.l111111_dwhite(Get.context!).semiBold13)],
+          children: [Image.asset(MyAssets.clock, height: 18.w, width: 18.w), const SizedBox(width: 10), Text(time, style: MyColors.l111111_dwhite(Get.context!).semiBold13)],
         ),
       ),
     );

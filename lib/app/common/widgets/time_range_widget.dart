@@ -17,8 +17,8 @@ class TimeRangeWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 100,
-      padding:  EdgeInsets.symmetric(horizontal: 10.0.w, vertical: 10.w),
+      height: 100.h,
+      padding: EdgeInsets.symmetric(horizontal: 10.0.w, vertical: 10.w),
       margin:  EdgeInsets.only(top: 15.0.h),
       decoration: BoxDecoration(
           color: Get.isDarkMode ? Colors.grey.shade800 : Colors.grey.shade200,

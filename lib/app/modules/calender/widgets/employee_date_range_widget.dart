@@ -22,15 +22,15 @@ class EmployeeDateRangeWidget extends GetWidget<CalenderController> {
                     children: [
                       Obx(() => Row(
                             children: [
-                              Image.asset(MyAssets.calender2, height: 20, width: 20),
-                              Text(' ${DateFormat('E, dd MMM, yyyy').format(controller.rangeStartDate.value!)}',
-                                  style: MyColors.l111111_dwhite(context).medium13),
+                              Image.asset(MyAssets.calender2, height: 20.w, width: 20.w),
+                              Text('  ${DateFormat('E, dd MMM, yyyy').format(controller.rangeStartDate.value!)}  ',
+                                  style: MyColors.l111111_dwhite(context).semiBold13),
                               Container(width: 12.w, color: Colors.grey, height: 2.h),
                               if (controller.rangeEndDate.value == null)
-                                Text('Select End Date', style: MyColors.c_7B7B7B.medium13)
+                                Text('  Select End Date', style: MyColors.c_7B7B7B.semiBold13)
                               else
-                                Text(DateFormat('E, dd MMM, yyyy').format(controller.rangeEndDate.value!),
-                                    style: MyColors.l111111_dwhite(context).medium13),
+                                Text('  ${DateFormat('E, dd MMM, yyyy').format(controller.rangeEndDate.value!)}',
+                                    style: MyColors.l111111_dwhite(context).semiBold13),
                             ],
                           )),
                       InkWell(onTap: controller.onRemoveClick, child: const Icon(Icons.remove, color: Colors.red))
