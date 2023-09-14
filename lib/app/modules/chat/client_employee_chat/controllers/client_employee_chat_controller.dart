@@ -139,7 +139,7 @@ class ClientEmployeeChatController extends GetxController {
 
   void _trackBothUserAreOnline() {
 
-    onChatScreenCollection.doc(toId).get().then((value) {
+    onChatScreenCollection.doc(toId).get().then((DocumentSnapshot<Object?> value) {
       if(value.exists) {
         onChatScreenCollection.doc(toId).snapshots().listen((DocumentSnapshot doc) {
           Map<String, dynamic> data = doc.data() as Map<String, dynamic>;

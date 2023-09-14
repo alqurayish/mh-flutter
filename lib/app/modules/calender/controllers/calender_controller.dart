@@ -58,6 +58,7 @@ class CalenderController extends GetxController {
   void onInit() {
     employeeId = Get.arguments[0];
     shortListId = Get.arguments[1] ?? '';
+    print('CalenderController.onInit: $shortListId');
     _getCalenderData();
     pageController = PageController(initialPage: currentPageIndex.value);
     super.onInit();
@@ -223,12 +224,20 @@ class CalenderController extends GetxController {
   }
 
   //For employee only
-  int get totalSelectedDays {
+  int get totalSelectedDaysForEmployee {
     if (rangeStartDate.value == null || rangeEndDate.value == null) {
       return 0;
     } else {
       return rangeStartDate.value!.daysUntil(rangeEndDate.value!);
     }
+  }
+
+  bool isDateInSelectedRangeForEmployee(DateTime currentDate) {
+    if (rangeStartDate.value != null && rangeEndDate.value != null) {
+      return currentDate.isAfter(rangeStartDate.value!) &&
+          currentDate.isBefore(rangeEndDate.value!.add(const Duration(days: 1)));
+    }
+    return false;
   }
 
   void onEmployeeUnavailableDateUpdate({required DateTime currentDate}) {
@@ -262,7 +271,7 @@ class CalenderController extends GetxController {
     if (currentDate.isBefore(DateTime.now()) ||
         selectedDate.value == currentDate ||
         selectedDates.contains(currentDate) == true ||
-        requestDateList.any((dateRange) => isDateInSelectedRange(currentDate, dateRange)) == true) {
+        requestDateList.any((dateRange) => isDateInSelectedRangeForShortList(currentDate, dateRange)) == true) {
       return; // Skip processing for previous dates and current date
     }
 
@@ -342,7 +351,7 @@ class CalenderController extends GetxController {
     loadRequestedDateList(currentDate: rangeStartDate.value!);
   }
 
-  bool isDateInSelectedRange(DateTime currentDate, RequestDateModel dateRange) {
+  bool isDateInSelectedRangeForShortList(DateTime currentDate, RequestDateModel dateRange) {
     if (dateRange.startDate != null && dateRange.endDate != null) {
       return currentDate.isAfter(DateTime.parse(dateRange.startDate!)) &&
           currentDate.isBefore((DateTime.parse(dateRange.endDate!)).add(const Duration(days: 1)));

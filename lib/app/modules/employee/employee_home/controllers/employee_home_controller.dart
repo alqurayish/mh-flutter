@@ -194,13 +194,20 @@ class EmployeeHomeController extends GetxController {
   void chatWithClient() {
     Get.back(); // hide dialogue
 
-    Get.toNamed(Routes.clientEmployeeChat, arguments: {
-      MyStrings.arg.receiverName: appController.user.value.employee?.hiredByRestaurantName ?? "-",
-      MyStrings.arg.fromId: appController.user.value.userId,
-      MyStrings.arg.toId: appController.user.value.employee?.hiredBy ?? "",
-      MyStrings.arg.clientId: appController.user.value.employee?.hiredBy ?? "",
-      MyStrings.arg.employeeId: appController.user.value.userId,
-    });
+    if (todayWorkSchedule.value.todayWorkScheduleDetailsModel != null &&
+        todayWorkSchedule.value.todayWorkScheduleDetailsModel?.restaurantDetails != null) {
+      Get.toNamed(Routes.clientEmployeeChat, arguments: {
+        MyStrings.arg.receiverName:
+            todayWorkSchedule.value.todayWorkScheduleDetailsModel?.restaurantDetails?.restaurantName ?? "-",
+        MyStrings.arg.fromId: appController.user.value.employee?.id ?? "",
+        MyStrings.arg.toId: todayWorkSchedule.value.todayWorkScheduleDetailsModel?.restaurantDetails?.hiredBy ?? "",
+        MyStrings.arg.clientId: todayWorkSchedule.value.todayWorkScheduleDetailsModel?.restaurantDetails?.hiredBy ?? "",
+        MyStrings.arg.employeeId: appController.user.value.employee?.id ?? "",
+      });
+    } else {
+      Utils.showSnackBar(
+          message: 'You cannot chat with any restaurant because you have not been hired yet', isTrue: false);
+    }
   }
 
   UserDailyStatistics get dailyStatistics => Utils.checkInOutToStatistics(CheckInCheckOutHistoryElement(
@@ -455,11 +462,11 @@ class EmployeeHomeController extends GetxController {
       return LocationController.calculateDistance(
           targetLat: targetLat,
           targetLong: targetLng,
-          currentLat: //currentLocation!.latitude,
-              23.8120296,
-          currentLong: //currentLocation!.longitude
-              90.3555054
-      );
+          currentLat: currentLocation!.latitude,
+          // 23.8120296,
+          currentLong: currentLocation!.longitude
+          //90.3555054
+          );
     }
     return 0.0;
   }

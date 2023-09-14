@@ -1,3 +1,4 @@
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:mh/app/common/controller/app_controller.dart';
 import 'package:mh/app/common/widgets/shimmer_widget.dart';
 
@@ -24,7 +25,7 @@ class AdminAllEmployeesView extends GetView<AdminAllEmployeesController> {
       ),
       body: Obx(
         () => (controller.employees.value.users ?? []).isEmpty
-            ? controller.isLoading.value
+            ? controller.employeeDataLoading.value
                 ? Padding(
                   padding: EdgeInsets.only(left: 15.w, right: 15.w, top: 70.h),
                   child: Center(child: ShimmerWidget.clientMyEmployeesShimmerWidget()),
@@ -42,9 +43,16 @@ class AdminAllEmployeesView extends GetView<AdminAllEmployeesController> {
                   _resultCountWithFilter(),
                   Expanded(
                     child: ListView.builder(
+                      controller: controller.scrollController,
                       padding: EdgeInsets.symmetric(vertical: 20.h),
                       itemCount: controller.employees.value.users?.length ?? 0,
                       itemBuilder: (context, index) {
+                        if(index == controller.employees.value.users!.length -1 && controller.moreDataAvailable.value == true){
+                          return const SpinKitThreeBounce(
+                            color: MyColors.c_C6A34F,
+                            size: 40,
+                          );
+                        }
                         return _employeeItem(
                           controller.employees.value.users![index],
                         );

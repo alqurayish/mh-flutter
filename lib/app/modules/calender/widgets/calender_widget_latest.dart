@@ -21,7 +21,7 @@ class CalenderWidgetLatest extends GetWidget<CalenderController> {
             padding:  EdgeInsets.symmetric(vertical: 10.0.h),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5.0),
-                color: Get.isDarkMode?Colors.grey.shade800:Colors.grey.shade400),
+                color: MyColors.primaryLight.withOpacity(0.4)),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: controller.dayNames

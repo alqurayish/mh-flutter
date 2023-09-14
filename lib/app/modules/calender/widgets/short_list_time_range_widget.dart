@@ -17,28 +17,29 @@ class ShortListTimeRangeWidget extends StatelessWidget {
     return Container(
       height: 100.h,
       decoration: BoxDecoration(color: Get.isDarkMode ?Colors.grey.shade800 :Colors.grey.shade200, borderRadius: BorderRadius.circular(10.0)),
-      margin: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.11, left: 15.0, right: 15.0),
+      margin: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.11, left: 15.0.w, right: 15.0.w),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15.0),
+            padding:  EdgeInsets.symmetric(horizontal: 15.0.w),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Row(
                   children: [
-                    Image.asset(MyAssets.calender2, height: 20, width: 20),
-                    Text(' ${DateTime.parse(requestDate.startDate ?? "").formatDateWithWeekday()}  -  ',
+                    Image.asset(MyAssets.calender2, height: 20.w, width: 20.w),
+                    Text(' ${DateTime.parse(requestDate.startDate ?? "").formatDateWithWeekday()}  ',
                         style: MyColors.l111111_dwhite(context).semiBold13),
+                    Container(width: 12.w, color: Colors.grey, height: 2.h),
                     if (requestDate.endDate == null)
-                      Text('Select End Date', style: MyColors.c_7B7B7B.medium12)
+                      Text('  Select End Date', style: MyColors.c_7B7B7B.semiBold13)
                     else
-                      Text(DateTime.parse(requestDate.endDate ?? "").formatDateWithWeekday(),
+                      Text('  ${DateTime.parse(requestDate.endDate ?? "").formatDateWithWeekday()}',
                           style: MyColors.l111111_dwhite(context).semiBold13),
                   ],
                 ),
-                const SizedBox(width: 20),
+                 SizedBox(width: 20.w),
                 InkWell(
                     onTap: () => Get.find<CalenderController>().onRemoveClickForShortList(index: index),
                     child: const Icon(Icons.remove, color: Colors.red))

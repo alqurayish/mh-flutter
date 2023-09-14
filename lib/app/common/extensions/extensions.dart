@@ -133,6 +133,7 @@ extension DateRangeExtension on List<CalenderDataModel> {
 }
 
 extension DateExtension on DateTime {
+
   int daysUntil(DateTime other) {
     // Calculate the difference in days
     Duration difference = other.difference(this);
@@ -273,8 +274,7 @@ extension RequestDateExtensions on List<RequestDateModel> {
       }
 
       return totalRate;
-    } catch (e) {
-      print('calculateTotalHourlyRate: $e');
+    } catch (_) {
       return totalRate;
     }
   }

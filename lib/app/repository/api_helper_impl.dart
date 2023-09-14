@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
 import 'package:dartz/dartz.dart';
 import 'package:device_info_plus/device_info_plus.dart';
@@ -316,17 +315,17 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
   }
 
   @override
-  EitherModel<Employees> getAllUsersFromAdmin({
-    String? positionId,
-    String? rating,
-    String? employeeExperience,
-    String? minTotalHour,
-    String? maxTotalHour,
-    bool? isReferred,
-    String? requestType,
-    bool? active,
-  }) async {
-    String url = "users?skipLimit=YES&requestType=$requestType";
+  EitherModel<Employees> getAllUsersFromAdmin(
+      {String? positionId,
+      String? rating,
+      String? employeeExperience,
+      String? minTotalHour,
+      String? maxTotalHour,
+      bool? isReferred,
+      String? requestType,
+      bool? active,
+      required int currentPage}) async {
+    String url = "users?page=$currentPage&limit=10&requestType=$requestType";
 
     if ((positionId ?? "").isNotEmpty) url += "&positionId=$positionId";
     if ((rating ?? "").isNotEmpty) url += "&rating=$rating";
@@ -399,8 +398,6 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
     if (response.statusCode == null) {
       response = await post("short-list/create", jsonEncode(addToShortListRequestModel.toJson()));
     }
-    log('AddToShortList: ${response.bodyString}');
-    print('Body: ${addToShortListRequestModel.toJson()}');
     return _convert<Response>(
       response,
       (Map<String, dynamic> data) {},
@@ -634,7 +631,6 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
     if (response.statusCode == null) response = await get(url);
     if (response.statusCode == null) response = await get(url);
     if (response.statusCode == null) response = await get(url);
-    print('ApiHelperImpl.getCheckInOutHistory: ${response.bodyString}');
     return _convert<CheckInCheckOutHistory>(
       response,
       CheckInCheckOutHistory.fromJson,
@@ -975,8 +971,6 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
     if (response.statusCode == null) await put(url, jsonEncode(updateUnavailableDateRequestModel.toJson()));
     if (response.statusCode == null) await put(url, jsonEncode(updateUnavailableDateRequestModel.toJson()));
     if (response.statusCode == null) await put(url, jsonEncode(updateUnavailableDateRequestModel.toJson()));
-
-    print('ApiHelperImpl.updateUnavailableDate: ${jsonEncode(updateUnavailableDateRequestModel.toJson())}');
 
     return _convert<CommonResponseModel>(
       response,

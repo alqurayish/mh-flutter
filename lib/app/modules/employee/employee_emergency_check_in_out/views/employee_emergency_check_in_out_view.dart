@@ -66,8 +66,7 @@ class EmployeeEmergencyCheckInOutView extends GetView<EmployeeEmergencyCheckInOu
 
   Widget _bottomBar(BuildContext context) => CustomBottomBar(
         child: CustomButtons.button(
-          onTap: //controller.onCheckInCheckoutPress
-              null,
+          onTap: controller.onCheckInCheckoutPress,
           text: controller.getButtonText,
           customButtonStyle: CustomButtonStyle.radiusTopBottomCorner,
         ),

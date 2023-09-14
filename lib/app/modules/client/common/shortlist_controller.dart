@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:mh/app/common/controller/app_controller.dart';
 import 'package:mh/app/common/widgets/custom_dialog.dart';
 import 'package:mh/app/common/widgets/custom_loader.dart';
@@ -151,8 +152,7 @@ class ShortlistController extends GetxService {
               width: 20,
               height: 20,
               child: Center(
-                child: CircularProgressIndicator.adaptive(
-                  backgroundColor: MyColors.c_C6A34F,
+                child: CupertinoActivityIndicator(
                 ),
               ),
             )

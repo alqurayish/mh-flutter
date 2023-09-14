@@ -47,7 +47,7 @@ class CalenderView extends GetView<CalenderController> {
                 alignment: Alignment.bottomCenter,
                 child: Get.isRegistered<EmployeeHomeController>()
                     ? const EmployeeDateRangeWidget()
-                    : const ShortListDateRangeWidget(),
+                    : const ShortListDateRangeWidget()
               )),
             ],
           );

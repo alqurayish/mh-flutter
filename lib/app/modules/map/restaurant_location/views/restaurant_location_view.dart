@@ -52,8 +52,8 @@ class RestaurantLocationView extends GetView<RestaurantLocationController> {
                         child: Align(
                             alignment: Alignment.bottomCenter,
                             child: Container(
-                              height: 160,
-                              padding: const EdgeInsets.all(20.0),
+                              height: MediaQuery.of(context).size.height*0.18,
+                              padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
                               decoration: BoxDecoration(
                                   color: Colors.grey.shade900,
                                   borderRadius: const BorderRadius.only(
@@ -71,7 +71,7 @@ class RestaurantLocationView extends GetView<RestaurantLocationController> {
                                           child: Icon(CupertinoIcons.location_solid, color: Colors.white, size: 15),
                                         ),
                                       ),
-                                      const SizedBox(width: 10),
+                                      SizedBox(width: 10.w),
                                       Flexible(
                                           flex: 10,
                                           child: Obx(() => Text(controller.locationText.value,
@@ -81,12 +81,13 @@ class RestaurantLocationView extends GetView<RestaurantLocationController> {
                                     ],
                                   ),
                                   Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                                     children: [
                                       Obx(() => CustomButtons.button(
-                                            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                                            padding:  EdgeInsets.symmetric(horizontal: 10.0.w),
                                             margin: EdgeInsets.zero,
                                             fontSize: 13,
+                                            height: 40.h,
                                             customButtonStyle: CustomButtonStyle.radiusTopBottomCorner,
                                             onTap: controller.onSearchLocationClick,
                                             backgroundColor: Colors.teal,
@@ -96,8 +97,9 @@ class RestaurantLocationView extends GetView<RestaurantLocationController> {
                                           )),
                                       Obx(() => CustomButtons.button(
                                             margin: EdgeInsets.zero,
-                                            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                                            padding:  EdgeInsets.symmetric(horizontal: 10.0.w),
                                             fontSize: 13,
+                                            height: 40.h,
                                             customButtonStyle: CustomButtonStyle.radiusTopBottomCorner,
                                             onTap: controller.confirmButtonDisable.value == true
                                                 ? null

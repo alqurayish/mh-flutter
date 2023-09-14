@@ -26,12 +26,6 @@ class ClientHomeView extends GetView<ClientHomeController> {
           centerTitle: false,
           visibleBack: false,
           actions: [
-            // IconButton(
-            //   onPressed: controller.onNotificationClick,
-            //   icon: const Icon(
-            //     Icons.notifications_outlined,
-            //   ),
-            // ),
             Obx(() => controller.notificationsController.unreadCount.value == 0
                 ? IconButton(
                     onPressed: () {
@@ -70,7 +64,7 @@ class ClientHomeView extends GetView<ClientHomeController> {
         body: SizedBox(
           height: double.infinity,
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 24.w),
+            padding: EdgeInsets.symmetric(horizontal: 20.w),
             child: Column(
               children: [
                 Expanded(

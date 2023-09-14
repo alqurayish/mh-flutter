@@ -18,8 +18,8 @@ class TimeRangeWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 100,
-      padding: const EdgeInsets.all(10.0),
-      margin: const EdgeInsets.only(top: 15.0),
+      padding:  EdgeInsets.symmetric(horizontal: 10.0.w, vertical: 10.w),
+      margin:  EdgeInsets.only(top: 15.0.h),
       decoration: BoxDecoration(
           color: Get.isDarkMode ? Colors.grey.shade800 : Colors.grey.shade200,
           borderRadius: BorderRadius.circular(10.0)),
@@ -29,10 +29,10 @@ class TimeRangeWidget extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              Image.asset(MyAssets.calender2, height: 20, width: 20),
+              Image.asset(MyAssets.calender2, height: 20.w, width: 20.w),
               Text(DateFormat('E, dd MMM, yyyy').format(DateTime.parse(requestDate.startDate ?? '')),
                   style: MyColors.l111111_dwhite(context).medium13),
-              Container(width: 12.w, color: Colors.grey, height: 2),
+              Container(width: 12.w, color: Colors.grey, height: 2.h),
               Text(DateFormat('E, dd MMM, yyyy').format(DateTime.parse(requestDate.endDate ?? '')),
                   style: MyColors.l111111_dwhite(context).medium13),
               if (hasDeleteOption == true)
@@ -45,7 +45,7 @@ class TimeRangeWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               _timeWidget(time: requestDate.startTime ?? ''),
-              Container(width: 12.w, color: Colors.grey, height: 2),
+              Container(width: 12.w, color: Colors.grey, height: 2.h),
               _timeWidget(time: requestDate.endTime ?? ''),
             ],
           )

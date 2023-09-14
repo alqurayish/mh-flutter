@@ -32,6 +32,7 @@ class ClientEmployeeChatView extends GetView<ClientEmployeeChatController> {
             ),
             elevation: 0,
             leading: const Align(child: CustomAppbarBackButton()),
+            centerTitle: true,
             title: Obx(
               () => Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -51,7 +52,7 @@ class ClientEmployeeChatView extends GetView<ClientEmployeeChatController> {
                           color: Colors.green,
                           shape: BoxShape.circle,
                         ),
-                      )),
+                      ))
                 ],
               ),
             ),

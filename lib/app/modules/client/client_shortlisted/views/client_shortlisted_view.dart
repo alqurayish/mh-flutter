@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:mh/app/common/controller/app_controller.dart';
+import 'package:mh/app/common/widgets/shimmer_widget.dart';
 import 'package:mh/app/modules/client/client_shortlisted/models/add_to_shortlist_request_model.dart';
 import 'package:mh/app/routes/app_pages.dart';
 
@@ -24,7 +26,10 @@ class ClientShortlistedView extends GetView<ClientShortlistedController> {
       bottomNavigationBar: _bottomBar(context),
       body: Obx(
         () => controller.shortlistController.isFetching.value
-            ? const Center(child: CircularProgressIndicator.adaptive(backgroundColor: MyColors.c_C6A34F))
+            ? Center(child: Padding(
+              padding:  EdgeInsets.only(left: 15.w, right: 15.w, top: 70.h),
+              child: ShimmerWidget.clientMyEmployeesShimmerWidget(),
+            ))
             : controller.shortlistController.shortList.isEmpty
                 ? const NoItemFound()
                 : Column(

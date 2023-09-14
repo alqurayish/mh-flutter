@@ -1,5 +1,6 @@
 import 'package:mh/app/common/utils/exports.dart';
 import 'package:mh/app/modules/calender/controllers/calender_controller.dart';
+import 'package:mh/app/modules/client/client_shortlisted/models/add_to_shortlist_request_model.dart';
 import 'package:mh/app/modules/employee/employee_home/controllers/employee_home_controller.dart';
 
 class CalenderMonthWidget extends StatelessWidget {
@@ -58,8 +59,10 @@ class CalenderMonthWidget extends StatelessWidget {
                   : null,
           child: Obx(() {
             final bool isSelected = controller.selectedDates.contains(currentDate);
-            final bool isDateInRange =
-                controller.requestDateList.any((dateRange) => controller.isDateInSelectedRange(currentDate, dateRange));
+            final bool isDateInRange = Get.isRegistered<EmployeeHomeController>()
+                ? controller.isDateInSelectedRangeForEmployee(currentDate)
+                : controller.requestDateList.any((RequestDateModel dateRange) =>
+                    controller.isDateInSelectedRangeForShortList(currentDate, dateRange));
 
             if (isSelected == true) {
               containerColor = MyColors.c_C6A34F;

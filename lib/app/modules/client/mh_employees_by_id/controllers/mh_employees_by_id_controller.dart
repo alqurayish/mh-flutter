@@ -2,7 +2,6 @@ import 'package:dartz/dartz.dart';
 
 import '../../../../common/controller/app_controller.dart';
 import '../../../../common/utils/exports.dart';
-import '../../../../common/widgets/custom_loader.dart';
 import '../../../../models/custom_error.dart';
 import '../../../../models/employees_by_id.dart';
 import '../../../../models/position.dart';
@@ -37,7 +36,7 @@ class MhEmployeesByIdController extends GetxController {
 
   Future<void> onBookNowClick(Employee employee) async {
     if (!_appController.hasPermission()) return;
-    Get.toNamed(Routes.calender, arguments: [employee.id ?? '', '']);
+    Get.toNamed(Routes.calender, arguments: [employee.id ?? '', shortListId(employeeId: employee.id ?? '')]);
   }
 
   void onEmployeeClick(Employee employee) {
@@ -100,5 +99,14 @@ class MhEmployeesByIdController extends GetxController {
 
   void goToShortListedPage() {
     Get.toNamed(Routes.clientShortlisted);
+  }
+
+  String shortListId({required String employeeId}) {
+    for (var i in shortlistController.shortList) {
+      if (i.employeeId == employeeId) {
+        return i.sId ?? '';
+      }
+    }
+    return '';
   }
 }

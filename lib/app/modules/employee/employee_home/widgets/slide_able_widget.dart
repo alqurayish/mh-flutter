@@ -19,7 +19,7 @@ class _SlideAbleWidgetState extends State<SlideAbleWidget> {
       _position = MediaQuery.of(context).size.width - 105;
     }
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      padding:  EdgeInsets.symmetric(horizontal: 20.0.w),
       child: Stack(
         children: [
           Container(
@@ -28,7 +28,7 @@ class _SlideAbleWidgetState extends State<SlideAbleWidget> {
               color: MyColors.c_C6A34F,
             ),
             width: double.infinity,
-            height: 60,
+            height: 60.h,
             alignment: Alignment.center,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -38,13 +38,13 @@ class _SlideAbleWidgetState extends State<SlideAbleWidget> {
                     color: MyColors.white,
                     size: 20,
                   ),
-                if (_position != 0 && widget.checkIn == true) const SizedBox(width: 10),
+                if (_position != 0 && widget.checkIn == true)  SizedBox(width: 10.w),
                 Text(
                     _position == 0 && widget.checkIn == false
                         ? '     Swipe right to checkin'.toUpperCase()
                         : 'Swipe left to checkout     '.toUpperCase(),
                     style: MyColors.white.semiBold14),
-                if (_position == 0 && widget.checkIn == false) const SizedBox(width: 10),
+                if (_position == 0 && widget.checkIn == false)  SizedBox(width: 10.w),
                 if (_position == 0 && widget.checkIn == false)
                   const SpinKitThreeBounce(
                     color: MyColors.white,

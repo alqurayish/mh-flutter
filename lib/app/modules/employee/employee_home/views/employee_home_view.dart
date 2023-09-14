@@ -24,12 +24,10 @@ class EmployeeHomeView extends GetView<EmployeeHomeController> {
             visibleBack: false,
             actions: [
               Padding(
-                padding: const EdgeInsets.only(right: 15.0),
+                padding: EdgeInsets.only(right: 15.0.w),
                 child: IconButton(
                   onPressed: controller.onCalenderClick,
-                  icon: const Icon(
-                    CupertinoIcons.calendar,
-                  ),
+                  icon: Image.asset(MyAssets.calender2, height: 28.w, width: 28.w),
                 ),
               ),
               Obx(() => controller.notificationsController.unreadCount.value == 0

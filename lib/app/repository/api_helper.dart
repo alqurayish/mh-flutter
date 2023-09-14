@@ -73,16 +73,16 @@ abstract class ApiHelper {
     bool? isReferred,
   });
 
-  EitherModel<Employees> getAllUsersFromAdmin({
-    String? positionId,
-    String? rating,
-    String? employeeExperience,
-    String? minTotalHour,
-    String? maxTotalHour,
-    bool? isReferred,
-    String? requestType,
-    bool? active,
-  });
+  EitherModel<Employees> getAllUsersFromAdmin(
+      {String? positionId,
+      String? rating,
+      String? employeeExperience,
+      String? minTotalHour,
+      String? maxTotalHour,
+      bool? isReferred,
+      String? requestType,
+      bool? active,
+      required int currentPage});
 
   EitherModel<AllAdmins> getAllAdmins();
 

@@ -1,4 +1,6 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:mh/app/common/widgets/shimmer_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../common/utils/exports.dart';
@@ -22,17 +24,27 @@ class AdminAllClientsView extends GetView<AdminAllClientsController> {
       ),
       body: Obx(
         () => (controller.clients.value.users ?? []).isEmpty
-            ? controller.isLoading.value
-                ? const SizedBox()
+            ? controller.clientsDataLoading.value
+                ? Padding(
+                  padding:  EdgeInsets.only(top: 50.h, left: 15.w, right: 15.w),
+                  child: ShimmerWidget.clientMyEmployeesShimmerWidget(),
+                )
                 : const NoItemFound()
             : Column(
                 children: [
                   _resultCountWithFilter(),
                   Expanded(
                     child: ListView.builder(
+                      controller: controller.scrollController,
                       padding: EdgeInsets.symmetric(vertical: 20.h),
                       itemCount: controller.clients.value.users?.length ?? 0,
                       itemBuilder: (context, index) {
+                        if(index == controller.clients.value.users!.length -1 && controller.moreDataAvailable.value == true){
+                          return const SpinKitThreeBounce(
+                            color: MyColors.c_C6A34F,
+                            size: 40,
+                          );
+                        }
                         return _employeeItem(
                           index,
                           controller.clients.value.users![index],
@@ -48,7 +60,7 @@ class AdminAllClientsView extends GetView<AdminAllClientsController> {
 
   Widget _resultCountWithFilter() {
     return Padding(
-      padding: EdgeInsets.fromLTRB(23.w, 10.h, 23.w, 0),
+      padding: EdgeInsets.fromLTRB(15.w, 10.h, 15.w, 0),
       child: Row(
         children: [
           Text(
@@ -66,7 +78,7 @@ class AdminAllClientsView extends GetView<AdminAllClientsController> {
 
   Widget _employeeItem(int index, Employee user) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 24.w).copyWith(
+      margin: EdgeInsets.symmetric(horizontal: 15.w).copyWith(
         bottom: 20.h,
       ),
       decoration: BoxDecoration(
