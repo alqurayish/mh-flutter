@@ -180,9 +180,11 @@ class ClientHomeController extends GetxController {
       unreadMsgFromEmployee.value = 0;
       employeeChatDetails.clear();
 
-      for (var element in event.docs) {
+      for (QueryDocumentSnapshot<Map<String, dynamic>> element in event.docs) {
         Map<String, dynamic> data = element.data();
-        unreadMsgFromEmployee.value += data["${appController.user.value.userId}_unread"] as int;
+        unreadMsgFromEmployee.value += data["${appController.user.value.userId}_unread"] == null
+            ? 0
+            : int.parse(data["${appController.user.value.userId}_unread"].toString());
         employeeChatDetails.add(data);
       }
 

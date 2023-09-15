@@ -76,31 +76,8 @@ class EmployeeHomeCardWidget extends GetWidget<EmployeeHomeController> {
                   ),
                   SizedBox(width: 24.w),
                   Expanded(
-                    child: Stack(
-                      children: [
-                        CustomFeatureBox(
-                            title: MyStrings.emergencyCheckInCheckOut.tr,
-                            icon: MyAssets.emergencyCheckInCheckout,
-                            onTap: controller.onEmergencyCheckInCheckout),
-                        Positioned(
-                          left: 0,
-                          right: 0,
-                          top: 0,
-                          bottom: 0,
-                          child: Obx(
-                            () => Visibility(
-                              visible: controller.showEmergencyCheckInCheckOut == false,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  color: Colors.grey.withOpacity(.7),
-                                ),
-                              ),
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
+                    child: CustomFeatureBox(
+                        title: MyStrings.calender, icon: MyAssets.calender2, onTap: controller.onCalenderClick),
                   ),
                 ],
               ),

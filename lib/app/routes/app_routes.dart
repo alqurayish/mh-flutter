@@ -20,7 +20,6 @@ abstract class Routes {
 
   static const employeeHome = _Paths.employeeHome;
   static const employeeDashboard = _Paths.employeeDashboard;
-  static const employeeEmergencyCheckInOut = _Paths.employeeEmergencyCheckInOut;
 
   static const clientHome = _Paths.clientHome;
   static const clientMyEmployee = _Paths.clientMyEmployee;
@@ -75,7 +74,6 @@ abstract class _Paths {
   static const employeeRegisterSuccess = '/employee-register-success';
   static const employeeHome = '/employee-home';
   static const employeeDashboard = '/employee-dashboard';
-  static const employeeEmergencyCheckInOut = '/employee-emergency-check-in-out';
   static const employeeSelfProfile = '/employee-self-profile';
 
   static const clientHome = '/client-home';

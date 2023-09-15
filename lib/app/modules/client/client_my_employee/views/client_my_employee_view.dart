@@ -1,4 +1,5 @@
 import 'package:mh/app/common/controller/app_controller.dart';
+import 'package:mh/app/common/widgets/custom_badge.dart';
 import 'package:mh/app/common/widgets/shimmer_widget.dart';
 import 'package:mh/app/modules/client/client_shortlisted/models/add_to_shortlist_request_model.dart';
 import 'package:mh/app/routes/app_pages.dart';
@@ -79,8 +80,8 @@ class ClientMyEmployeeView extends GetView<ClientMyEmployeeController> {
         child: Stack(
           children: [
             Positioned(
-              right: 5,
-              top: 3,
+              right: 5.w,
+              top: 3.h,
               child: Obx(
                 () => controller.shortlistController.getIcon(
                     requestedDateList: <RequestDateModel>[],
@@ -88,6 +89,13 @@ class ClientMyEmployeeView extends GetView<ClientMyEmployeeController> {
                     isFetching: controller.shortlistController.isFetching.value,
                     fromWhere: ''),
               ),
+            ),
+            Positioned(
+              right: 40.w,
+              top: 4.h,
+              child: _chat(
+                  employeeName: hiredHistory.employeeDetails?.name ?? '',
+                  employeeId: hiredHistory.employeeDetails?.employeeId ?? ''),
             ),
             Row(
               children: [
@@ -242,6 +250,35 @@ class ClientMyEmployeeView extends GetView<ClientMyEmployeeController> {
               style: MyColors.l111111_dwhite(controller.context!).medium11,
             ),
           ],
+        ),
+      );
+
+  Widget _chat({required String employeeName, required String employeeId}) => GestureDetector(
+        onTap: () => controller.chatWithEmployee(employeeId: employeeId, employeeName: employeeName),
+        child: Center(
+          child: Stack(
+            clipBehavior: Clip.none,
+            children: [
+              const Icon(
+                Icons.message,
+                color: MyColors.c_C6A34F,
+              ),
+              Positioned(
+                top: -15,
+                right: -10,
+                child: Obx(
+                  () {
+                    var result = controller.clientHomeController.employeeChatDetails.where((data) =>
+                        data["employeeId"] == employeeId &&
+                        data["${controller.appController.user.value.userId}_unread"] > 0);
+
+                    if (result.isEmpty) return Container();
+                    return CustomBadge(result.first["${controller.appController.user.value.userId}_unread"].toString());
+                  },
+                ),
+              ),
+            ],
+          ),
         ),
       );
 }

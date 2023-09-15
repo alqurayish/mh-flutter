@@ -58,7 +58,6 @@ class CalenderController extends GetxController {
   void onInit() {
     employeeId = Get.arguments[0];
     shortListId = Get.arguments[1] ?? '';
-    print('CalenderController.onInit: $shortListId');
     _getCalenderData();
     pageController = PageController(initialPage: currentPageIndex.value);
     super.onInit();

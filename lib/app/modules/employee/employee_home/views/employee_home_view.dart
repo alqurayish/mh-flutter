@@ -23,13 +23,6 @@ class EmployeeHomeView extends GetView<EmployeeHomeController> {
             centerTitle: false,
             visibleBack: false,
             actions: [
-              Padding(
-                padding: EdgeInsets.only(right: 15.0.w),
-                child: IconButton(
-                  onPressed: controller.onCalenderClick,
-                  icon: Image.asset(MyAssets.calender2, height: 28.w, width: 28.w),
-                ),
-              ),
               Obx(() => controller.notificationsController.unreadCount.value == 0
                   ? IconButton(
                       onPressed: () {

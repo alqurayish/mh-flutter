@@ -306,7 +306,7 @@ class Utils {
                     style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 16)),
                 pw.SizedBox(height: 10),
                 pw.Text(
-                    'Total: ${getCurrencySymbol(Get.find<AppController>().user.value.client?.countryName ?? '')}${invoice.amount}',
+                    'Total: ${getCurrencySymbol(Get.find<AppController>().user.value.client?.countryName ?? '')}${invoice.amount?.toStringAsFixed(2)}',
                     style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 16)),
                 pw.SizedBox(height: 70),
                 pw.Row(children: [

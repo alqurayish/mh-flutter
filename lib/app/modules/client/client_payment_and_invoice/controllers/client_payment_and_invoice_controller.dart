@@ -25,10 +25,9 @@ class ClientPaymentAndInvoiceController extends GetxController {
 
   void onPayClick(int index) {
     _selectedInvoiceId = clientHomeController.clientInvoice.value.invoices![index].sId ?? "";
-    // _cardPayment(clientHomeController.clientInvoice.value.invoices![index].amount ?? 0);
     makeStripePayment(
         stripeRequestModel: StripeRequestModel(
-            amount: clientHomeController.clientInvoice.value.invoices![index].amount ?? 0,
+            amount: double.parse(clientHomeController.clientInvoice.value.invoices![index].amount?.toStringAsFixed(2)??'0.0'),
             invoiceId: _selectedInvoiceId,
             currency: appController.user.value.client?.countryName?.toLowerCase() == 'united kingdom'
                 ? 'gbp'

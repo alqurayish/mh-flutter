@@ -1,5 +1,4 @@
 import 'package:dartz/dartz.dart';
-import 'package:get_storage/get_storage.dart';
 import '../../../../common/controller/app_controller.dart';
 import '../../../../common/utils/exports.dart';
 import '../../../../models/custom_error.dart';

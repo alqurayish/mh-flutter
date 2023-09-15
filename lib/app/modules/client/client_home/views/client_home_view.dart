@@ -151,10 +151,31 @@ class ClientHomeView extends GetView<ClientHomeController> {
                         Row(
                           children: [
                             Expanded(
-                              child: CustomFeatureBox(
-                                title: MyStrings.myEmployees.tr,
-                                icon: MyAssets.myEmployees,
-                                onTap: controller.onMyEmployeeClick,
+                              child: Stack(
+                                children: [
+                                  CustomFeatureBox(
+                                    title: MyStrings.myEmployees.tr,
+                                    icon: MyAssets.myEmployees,
+                                    onTap: controller.onMyEmployeeClick,
+                                  ),
+                                  Obx(() => Stack(
+                                        children: [
+                                          CustomFeatureBox(
+                                            title: MyStrings.myEmployees.tr,
+                                            icon: MyAssets.myEmployees,
+                                            onTap: controller.onMyEmployeeClick,
+                                          ),
+                                          Positioned(
+                                            top: 4,
+                                            right: 5,
+                                            child: Visibility(
+                                              visible: controller.unreadMsgFromEmployee > 0,
+                                              child: CustomBadge(controller.unreadMsgFromEmployee.value.toString()),
+                                            ),
+                                          ),
+                                        ],
+                                      ))
+                                ],
                               ),
                             ),
                             SizedBox(width: 24.w),

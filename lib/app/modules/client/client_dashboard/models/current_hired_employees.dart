@@ -71,7 +71,7 @@ class HiredHistory {
       hiredBy: json["hiredBy"],
       hiredDate: json["hiredDate"] == null ? null : DateTime.parse(json["hiredDate"]),
       v: json["__v"],
-      requestDateList: json["requestDate"] == null
+      requestDateList: json["bookedDate"] == null
           ? []
-          : List<RequestDateModel>.from(json["requestDate"].map((x) => RequestDateModel.fromJson(x))));
+          : List<RequestDateModel>.from(json["bookedDate"].map((x) => RequestDateModel.fromJson(x))));
 }

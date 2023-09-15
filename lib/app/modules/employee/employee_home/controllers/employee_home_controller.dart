@@ -79,12 +79,12 @@ class EmployeeHomeController extends GetxController {
 
   Future<void> homeMethods() async {
     notificationsController.getNotificationList;
-    _trackUnreadMsg();
     await _getCurrentLocation();
     await _getTodayWorkSchedule();
     await _getTodayCheckInOutDetails();
     await getBookingHistory();
     await _getHiredHistory();
+    _trackUnreadMsg();
   }
 
   Future<void> _getCurrentLocation() async {
@@ -158,10 +158,6 @@ class EmployeeHomeController extends GetxController {
 
   void onDashboardClick() {
     Get.toNamed(Routes.employeeDashboard);
-  }
-
-  void onEmergencyCheckInCheckout() {
-    Get.toNamed(Routes.employeeEmergencyCheckInOut);
   }
 
   void onHelpAndSupportClick() {
@@ -309,17 +305,16 @@ class EmployeeHomeController extends GetxController {
   }
 
   void _trackUnreadMsg() {
-    if (appController.user.value.employee?.isHired ?? false) {
+    if (todayWorkSchedule.value.todayWorkScheduleDetailsModel != null && todayWorkSchedule.value.todayWorkScheduleDetailsModel?.restaurantDetails != null) {
       FirebaseFirestore.instance
           .collection('employee_client_chat')
-          .where("employeeId", isEqualTo: appController.user.value.userId)
-          .where("clientId", isEqualTo: appController.user.value.employee!.hiredBy!)
+          .where("employeeId", isEqualTo: appController.user.value.employee?.id??'')
+          .where("clientId", isEqualTo: todayWorkSchedule.value.todayWorkScheduleDetailsModel?.restaurantDetails?.hiredBy??'')
           .snapshots()
           .listen((QuerySnapshot<Map<String, dynamic>> event) {
         if (event.docs.isNotEmpty) {
           Map<String, dynamic> data = event.docs.first.data();
-
-          unreadMsgFromClient.value = data["${appController.user.value.userId}_unread"];
+          unreadMsgFromClient.value = data["${appController.user.value.employee?.id??''}_unread"];
         }
       });
     }
@@ -508,7 +503,6 @@ class EmployeeHomeController extends GetxController {
     } else if (checkOut.value == false && checkIn.value == false) {
       Get.dialog(Dialog(
           backgroundColor: MyColors.lightCard(Get.context!),
-          insetPadding: EdgeInsets.symmetric(horizontal: 20.0.w),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
           child: const CheckOutSuccessWidget()));
     }
