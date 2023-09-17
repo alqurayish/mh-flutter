@@ -85,7 +85,7 @@ class MyStrings {
   static const String myDashboard = "My Dashboard";
   static const String paymentHistory = "Payment History";
   static const String bookedHistory = "Booked History";
-  static const String calender = "Calender";
+  static const String calendar = "Calendar";
   static const String hiredHistory = "Hired History";
   static const String areShowing = "areShowing";
   static const String exp = "exp";

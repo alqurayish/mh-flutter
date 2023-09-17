@@ -82,7 +82,7 @@ class AdminClientRequestView extends GetView<AdminClientRequestController> {
                     child: const Icon(
                       Icons.cancel,
                       color: Colors.red,
-                      size: 30,
+                      size: 25,
                     ),
                   ),
                 ],

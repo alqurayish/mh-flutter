@@ -14,7 +14,7 @@ class AdminClientRequestPositionsView extends GetView<AdminClientRequestPosition
     return Scaffold(
       appBar: CustomAppbar.appbar(
         context: context,
-        title: 'Requested positions',
+        title: 'Requested Positions',
       ),
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
@@ -34,7 +34,7 @@ class AdminClientRequestPositionsView extends GetView<AdminClientRequestPosition
                 ),
                 runSpacing: 20,
                 children: [
-                  ...controller.positions.map((e) {
+                  ...controller.positions.map((Position e) {
                     return _item(e);
                   }),
                 ],

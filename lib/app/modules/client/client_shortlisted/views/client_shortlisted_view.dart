@@ -196,7 +196,7 @@ class ClientShortlistedView extends GetView<ClientShortlistedController> {
             child: Center(
                 child: Text(
                     employee.requestDateList!.isNotEmpty
-                        ? 'Total Rate: ${Utils.getCurrencySymbol(Get.find<AppController>().user.value.client?.countryName ?? '')}${employee.requestDateList?.calculateTotalHourlyRate(hourlyRate: employee.employeeDetails?.hourlyRate ?? 0.0)}'
+                        ? 'Total Rate: ${Utils.getCurrencySymbol(Get.find<AppController>().user.value.client?.countryName ?? '')}${employee.requestDateList?.calculateTotalHourlyRate(hourlyRate: employee.employeeDetails?.hourlyRate ?? 0.0).toStringAsFixed(2)}'
                         : 'Hourly Rate: ${Utils.getCurrencySymbol(Get.find<AppController>().user.value.client?.countryName ?? '')}${employee.employeeDetails?.hourlyRate!.toStringAsFixed(2) ?? '0.00'}',
                     style: MyColors.white.medium13)))
       ],

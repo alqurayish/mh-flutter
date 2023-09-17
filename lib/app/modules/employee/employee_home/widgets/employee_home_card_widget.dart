@@ -77,7 +77,7 @@ class EmployeeHomeCardWidget extends GetWidget<EmployeeHomeController> {
                   SizedBox(width: 24.w),
                   Expanded(
                     child: CustomFeatureBox(
-                        title: MyStrings.calender, icon: MyAssets.calender2, onTap: controller.onCalenderClick),
+                        title: MyStrings.calendar, icon: MyAssets.calender2, onTap: controller.onCalenderClick),
                   ),
                 ],
               ),

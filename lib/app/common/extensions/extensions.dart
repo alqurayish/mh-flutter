@@ -273,7 +273,7 @@ extension RequestDateExtensions on List<RequestDateModel> {
         totalRate += durationInHours * hourlyRate * daysInDateRange;
       }
 
-      return totalRate;
+      return totalRate.abs();
     } catch (_) {
       return totalRate;
     }

@@ -1,4 +1,5 @@
 import 'package:mh/app/common/controller/app_controller.dart';
+import 'package:mh/app/common/widgets/shimmer_widget.dart';
 
 import '../../../../common/utils/exports.dart';
 import '../../../../common/widgets/custom_appbar.dart';
@@ -23,7 +24,10 @@ class AdminClientRequestPositionEmployeesView extends GetView<AdminClientRequest
       body: Obx(
         () => (controller.employees.value.users ?? []).isEmpty
             ? controller.isLoading.value
-                ? const SizedBox()
+                ? Padding(
+                  padding:  EdgeInsets.only(top: 70.h, left: 15.w, right: 15.w),
+                  child: ShimmerWidget.clientMyEmployeesShimmerWidget(),
+                )
                 : Column(
                     children: [
                       _resultCountWithFilter(),
@@ -52,7 +56,7 @@ class AdminClientRequestPositionEmployeesView extends GetView<AdminClientRequest
 
   Widget _resultCountWithFilter() {
     return Padding(
-      padding: EdgeInsets.fromLTRB(23.w, 10.h, 23.w, 0),
+      padding: EdgeInsets.fromLTRB(15.w, 10.h, 15.w, 0),
       child: Row(
         children: [
           Text(
@@ -90,8 +94,7 @@ class AdminClientRequestPositionEmployeesView extends GetView<AdminClientRequest
 
   Widget _employeeItem(Employee user) {
     return Container(
-      height: 105.h,
-      margin: EdgeInsets.symmetric(horizontal: 24.w).copyWith(
+      margin: EdgeInsets.symmetric(horizontal: 15.w).copyWith(
         bottom: 20.h,
       ),
       decoration: BoxDecoration(
@@ -116,28 +119,15 @@ class AdminClientRequestPositionEmployeesView extends GetView<AdminClientRequest
                   if (user.isSuggested != null && user.isSuggested == true)
                     InkWell(
                         onTap: () => controller.onCancelClick(employeeId: user.id ?? ''),
-                        child: const Icon(Icons.cancel, color: Colors.red)),
+                        child: const Icon(Icons.cancel, color: Colors.red, size: 20)),
                   SizedBox(width: 10.w),
                   SizedBox(
-                      width: 122.w,
+                      width: 100.w,
                       child: CustomButtons.button(
-                        height: 28.w,
+                        height: 23.w,
                         text: (user.isHired ?? false)
                             ? controller.hireStatus.value
                             : user.isSuggested != null && user.isSuggested == true
-                                /*(controller
-                                            .adminHomeController
-                                            .requestedEmployees
-                                            .value
-                                            .requestEmployees?[
-                                                controller.adminClientRequestPositionsController.selectedIndex]
-                                            .suggestedEmployeeDetails ??
-                                        [])
-                                    .where((SuggestedEmployeeDetail element) =>
-                                        element.positionId == controller.clientRequestDetail.positionId)
-                                    .toList()
-                                    .where((SuggestedEmployeeDetail element) => element.employeeId == user.id!)
-                                    .isNotEmpty*/
                                 ? "Suggested"
                                 : "Suggest",
                         margin: EdgeInsets.zero,
@@ -166,8 +156,15 @@ class AdminClientRequestPositionEmployeesView extends GetView<AdminClientRequest
                                 SizedBox(height: 16.h),
                                 Row(
                                   children: [
-                                    Expanded(child: _name("${user.firstName ?? "-"} ${user.lastName ?? ""}")),
-                                    _rating(user.rating ?? 0.0),
+                                    Flexible(
+                                        flex: user.rating! > 0.0 ? 3 : 4,
+                                        child: _name("${user.firstName ?? "-"} ${user.lastName ?? ""}")),
+                                    Expanded(
+                                      flex: 2,
+                                        child: _rating(user.rating ?? 0.0)),
+                                    const Expanded(
+                                      flex: 2,
+                                        child: Wrap())
                                   ],
                                 ),
                               ],

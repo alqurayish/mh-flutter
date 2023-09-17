@@ -1,3 +1,4 @@
+import 'package:dartz/dartz.dart';
 import 'package:mh/app/modules/employee/employee_home/models/booking_history_model.dart';
 
 import '../../../../common/controller/app_controller.dart';
@@ -47,6 +48,7 @@ class AdminClientRequestPositionEmployeesController extends GetxController {
     Get.toNamed(Routes.employeeDetails, arguments: {
       MyStrings.arg.data: employee,
       MyStrings.arg.showAsAdmin: true,
+      MyStrings.arg.fromWhere: ''
     });
   }
 
@@ -113,11 +115,7 @@ class AdminClientRequestPositionEmployeesController extends GetxController {
     String? minTotalHour,
     String? maxTotalHour,
   }) async {
-    if (isLoading.value) return;
-
     isLoading.value = true;
-
-    CustomLoader.show(context!);
 
     await _apiHelper
         .getEmployees(
@@ -127,9 +125,8 @@ class AdminClientRequestPositionEmployeesController extends GetxController {
       minTotalHour: minTotalHour,
       maxTotalHour: maxTotalHour,
     )
-        .then((response) {
+        .then((Either<CustomError, Employees> response) {
       isLoading.value = false;
-      CustomLoader.hide(context!);
 
       response.fold((CustomError customError) {
         Utils.errorDialog(context!, customError..onRetry = _getEmployees);

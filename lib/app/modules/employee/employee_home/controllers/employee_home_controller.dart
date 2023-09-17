@@ -305,30 +305,34 @@ class EmployeeHomeController extends GetxController {
   }
 
   void _trackUnreadMsg() {
-    if (todayWorkSchedule.value.todayWorkScheduleDetailsModel != null && todayWorkSchedule.value.todayWorkScheduleDetailsModel?.restaurantDetails != null) {
+    try {
+      if (todayWorkSchedule.value.todayWorkScheduleDetailsModel != null &&
+          todayWorkSchedule.value.todayWorkScheduleDetailsModel?.restaurantDetails != null) {
+        FirebaseFirestore.instance
+            .collection('employee_client_chat')
+            .where("employeeId", isEqualTo: appController.user.value.employee?.id ?? '')
+            .where("clientId",
+                isEqualTo: todayWorkSchedule.value.todayWorkScheduleDetailsModel?.restaurantDetails?.hiredBy ?? '')
+            .snapshots()
+            .listen((QuerySnapshot<Map<String, dynamic>> event) {
+          if (event.docs.isNotEmpty) {
+            Map<String, dynamic> data = event.docs.first.data();
+            unreadMsgFromClient.value = data["${appController.user.value.employee?.id ?? ''}_unread"];
+          }
+        });
+      }
+
       FirebaseFirestore.instance
-          .collection('employee_client_chat')
-          .where("employeeId", isEqualTo: appController.user.value.employee?.id??'')
-          .where("clientId", isEqualTo: todayWorkSchedule.value.todayWorkScheduleDetailsModel?.restaurantDetails?.hiredBy??'')
+          .collection('support_chat')
+          .doc(appController.user.value.userId)
           .snapshots()
-          .listen((QuerySnapshot<Map<String, dynamic>> event) {
-        if (event.docs.isNotEmpty) {
-          Map<String, dynamic> data = event.docs.first.data();
-          unreadMsgFromClient.value = data["${appController.user.value.employee?.id??''}_unread"];
+          .listen((event) {
+        if (event.exists) {
+          Map<String, dynamic> data = event.data()!;
+          unreadMsgFromAdmin.value = data["${appController.user.value.userId}_unread"];
         }
       });
-    }
-
-    FirebaseFirestore.instance
-        .collection('support_chat')
-        .doc(appController.user.value.userId)
-        .snapshots()
-        .listen((event) {
-      if (event.exists) {
-        Map<String, dynamic> data = event.data()!;
-        unreadMsgFromAdmin.value = data["${appController.user.value.userId}_unread"];
-      }
-    });
+    } catch (_) {}
   }
 
   void updateNotification({required String id, required String hiredStatus}) {

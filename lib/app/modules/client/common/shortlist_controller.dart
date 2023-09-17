@@ -4,6 +4,7 @@ import 'package:mh/app/common/controller/app_controller.dart';
 import 'package:mh/app/common/widgets/custom_dialog.dart';
 import 'package:mh/app/common/widgets/custom_loader.dart';
 import 'package:mh/app/models/custom_error.dart';
+import 'package:mh/app/modules/client/client_home/controllers/client_home_controller.dart';
 import 'package:mh/app/modules/client/client_shortlisted/models/add_to_shortlist_request_model.dart';
 import 'package:mh/app/modules/client/client_suggested_employees/models/short_list_request_model.dart';
 import 'package:mh/app/modules/employee/employee_home/models/common_response_model.dart';
@@ -152,8 +153,7 @@ class ShortlistController extends GetxService {
               width: 20,
               height: 20,
               child: Center(
-                child: CupertinoActivityIndicator(
-                ),
+                child: CupertinoActivityIndicator(),
               ),
             )
           : _isEmployeeAddedInShortlist(employeeId)
@@ -260,6 +260,7 @@ class ShortlistController extends GetxService {
       }, (r) {
         if ([200, 201].contains(r.statusCode)) {
           fetchShortListEmployees();
+          Get.find<ClientHomeController>().homeMethods();
         } else {
           isFetching.value = false;
           CustomDialogue.information(

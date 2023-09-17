@@ -88,7 +88,6 @@ class ClientSuggestedEmployeesController extends GetxController {
             .cancelEmployeeSuggestionFromAdmin(employeeId: employeeId, requestId: requestId)
             .then((response) {
           CustomLoader.hide(context!);
-
           response.fold((CustomError customError) {
             Utils.errorDialog(context!, customError);
           }, (BookingHistoryModel response) async {
