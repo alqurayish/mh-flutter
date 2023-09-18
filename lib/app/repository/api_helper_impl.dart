@@ -19,6 +19,7 @@ import 'package:mh/app/modules/employee/employee_home/models/booking_history_mod
 import 'package:mh/app/modules/employee/employee_home/models/single_booking_details_model.dart';
 import 'package:mh/app/modules/employee/employee_home/models/todays_work_schedule_model.dart';
 import 'package:mh/app/modules/employee/employee_payment_history/models/employee_payment_history_model.dart';
+import 'package:mh/app/modules/employee_booked_history_details/models/rejected_date_request_model.dart';
 import 'package:mh/app/modules/notifications/models/notification_response_model.dart';
 import 'package:mh/app/modules/notifications/models/notification_update_request_model.dart';
 import 'package:mh/app/modules/notifications/models/notification_update_response_model.dart';
@@ -181,7 +182,7 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
   EitherModel<LoginResponse> login(
     Login login,
   ) async {
-    var response = await post("users/login", jsonEncode(login.toJson));
+    Response response = await post("users/login", jsonEncode(login.toJson));
 
     if (response.statusCode == null) response = await post("users/login", jsonEncode(login.toJson));
     if (response.statusCode == null) response = await post("users/login", jsonEncode(login.toJson));
@@ -980,7 +981,8 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
 
   @override
   EitherModel<TodayWorkScheduleModel> getTodayWorkSchedule() async {
-    String url = "check-in-check-out-histories/today-work-place";
+    String url =
+        "check-in-check-out-histories/today-work-place?currentDate=${DateTime.now().toString().substring(0, 10)}";
 
     Response response = await get(url);
     if (response.statusCode == null) await get(url);
@@ -1021,17 +1023,16 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
   }
 
   @override
-  EitherModel<Response> updateRequestDate({required UpdateShortListRequestModel updateShortListRequestModel}) async {
-    Response response =
-        await put("notifications/update-request-date", jsonEncode(updateShortListRequestModel.toJson()));
+  EitherModel<Response> updateRequestDate({required RejectedDateRequestModel rejectedDateRequestModel}) async {
+    Response response = await put("notifications/update-request-date", jsonEncode(rejectedDateRequestModel.toJson()));
     if (response.statusCode == null) {
-      response = await put("notifications/update-request-date", jsonEncode(updateShortListRequestModel.toJson()));
+      response = await put("notifications/update-request-date", jsonEncode(rejectedDateRequestModel.toJson()));
     }
     if (response.statusCode == null) {
-      response = await put("notifications/update-request-date", jsonEncode(updateShortListRequestModel.toJson()));
+      response = await put("notifications/update-request-date", jsonEncode(rejectedDateRequestModel.toJson()));
     }
     if (response.statusCode == null) {
-      response = await put("notifications/update-request-date", jsonEncode(updateShortListRequestModel.toJson()));
+      response = await put("notifications/update-request-date", jsonEncode(rejectedDateRequestModel.toJson()));
     }
 
     return _convert<Response>(

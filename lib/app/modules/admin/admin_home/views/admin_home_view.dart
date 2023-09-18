@@ -25,12 +25,6 @@ class AdminHomeView extends GetView<AdminHomeController> {
           centerTitle: false,
           visibleBack: false,
           actions: [
-            // IconButton(
-            //   onPressed: controller.onNotificationClick,
-            //   icon: const Icon(
-            //     Icons.notifications_outlined,
-            //   ),
-            // ),
             Obx(() => controller.notificationsController.unreadCount.value == 0
                 ? IconButton(
                     onPressed: () {

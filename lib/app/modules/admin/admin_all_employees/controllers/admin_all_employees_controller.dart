@@ -107,15 +107,6 @@ class AdminAllEmployeesController extends GetxController {
       Utils.errorDialog(context!, customError..onRetry = _getEmployees);
     }, (Employees employees) {
       this.employees.value = employees;
-
-      for (int i = 0; i < (this.employees.value.users ?? []).length; i++) {
-        var item = this.employees.value.users![i];
-        if (adminHomeController.chatUserIds.contains(item.id)) {
-          this.employees.value.users?.removeAt(i);
-          this.employees.value.users?.insert(0, item);
-        }
-      }
-
       this.employees.refresh();
     });
   }
@@ -164,14 +155,6 @@ class AdminAllEmployeesController extends GetxController {
         Utils.showSnackBar(message: 'No more employees are here...', isTrue: false);
       }
       this.employees.value.users?.addAll(employees.users ?? []);
-
-      for (int i = 0; i < (this.employees.value.users ?? []).length; i++) {
-        var item = this.employees.value.users![i];
-        if (adminHomeController.chatUserIds.contains(item.id)) {
-          this.employees.value.users?.removeAt(i);
-          this.employees.value.users?.insert(0, item);
-        }
-      }
       this.employees.refresh();
     });
   }

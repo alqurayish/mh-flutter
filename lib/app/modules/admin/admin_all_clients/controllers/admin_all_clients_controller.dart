@@ -45,15 +45,6 @@ class AdminAllClientsController extends GetxController {
       Utils.errorDialog(context!, customError..onRetry = _getClients);
     }, (Employees clients) {
       this.clients.value = clients;
-
-      for (int i = 0; i < (this.clients.value.users ?? []).length; i++) {
-        var item = this.clients.value.users![i];
-        if (adminHomeController.chatUserIds.contains(item.id)) {
-          this.clients.value.users?.removeAt(i);
-          this.clients.value.users?.insert(0, item);
-        }
-      }
-
       this.clients.refresh();
     });
   }
@@ -94,17 +85,7 @@ class AdminAllClientsController extends GetxController {
         moreDataAvailable.value = false;
         Utils.showSnackBar(message: 'No more client are here...', isTrue: false);
       }
-
       this.clients.value.users?.addAll(clients.users ?? []);
-
-      for (int i = 0; i < (this.clients.value.users ?? []).length; i++) {
-        var item = this.clients.value.users![i];
-        if (adminHomeController.chatUserIds.contains(item.id)) {
-          this.clients.value.users?.removeAt(i);
-          this.clients.value.users?.insert(0, item);
-        }
-      }
-
       this.clients.refresh();
     });
   }

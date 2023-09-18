@@ -23,11 +23,12 @@ class AdminHomeController extends GetxController {
   RxInt unreadMsgFromEmployee = 0.obs;
   RxInt unreadMsgFromClient = 0.obs;
 
-  RxList<String> chatUserIds = <String>[].obs;
-
   int numberOfRequestFromClient = 0;
 
   String requestId = '';
+
+  RxList<Map<String, dynamic>> employeeChatDetails = <Map<String, dynamic>>[].obs;
+  RxList<Map<String, dynamic>> clientChatDetails = <Map<String, dynamic>>[].obs;
 
   @override
   void onInit() {
@@ -98,20 +99,21 @@ class AdminHomeController extends GetxController {
         .listen((QuerySnapshot<Map<String, dynamic>> event) {
       unreadMsgFromEmployee.value = 0;
       unreadMsgFromClient.value = 0;
-      chatUserIds.clear();
+      employeeChatDetails.clear();
+      clientChatDetails.clear();
 
       for (QueryDocumentSnapshot<Map<String, dynamic>> element in event.docs) {
         Map<String, dynamic> data = element.data();
         if (data["role"] == "CLIENT") {
           unreadMsgFromClient.value += data["allAdmin_unread"] as int;
+          clientChatDetails.add(data);
         } else if (data["role"] == "EMPLOYEE") {
           unreadMsgFromEmployee.value += data["allAdmin_unread"] as int;
+          employeeChatDetails.add(data);
         }
-
-        chatUserIds.add(element.id);
       }
-
-      chatUserIds.refresh();
+      clientChatDetails.refresh();
+      employeeChatDetails.refresh();
     });
   }
 
@@ -121,15 +123,9 @@ class AdminHomeController extends GetxController {
     notificationsController.getNotificationList();
   }
 
-  void refreshPage(){
+  void refreshPage() {
     homeMethods();
-    Get.rawSnackbar(
-        snackPosition: SnackPosition.BOTTOM,
-        margin: const EdgeInsets.all(10.0),
-        title: 'Success',
-        message: 'This page has been refreshed...',
-        backgroundColor: Colors.green.shade600,
-        borderRadius: 10.0);
+    Utils.showSnackBar(message: 'This page has been refreshed...', isTrue: true);
   }
 
   void calculateNumberOfRequestFromClient() {
@@ -140,5 +136,4 @@ class AdminHomeController extends GetxController {
       }
     }
   }
-
 }

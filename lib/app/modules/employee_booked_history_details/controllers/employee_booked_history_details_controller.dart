@@ -6,8 +6,9 @@ import 'package:mh/app/common/utils/utils.dart';
 import 'package:mh/app/common/widgets/custom_dialog.dart';
 import 'package:mh/app/common/widgets/custom_loader.dart';
 import 'package:mh/app/models/custom_error.dart';
-import 'package:mh/app/modules/client/client_shortlisted/models/update_shortlist_request_model.dart';
+import 'package:mh/app/modules/client/client_shortlisted/models/add_to_shortlist_request_model.dart';
 import 'package:mh/app/modules/employee/employee_home/models/single_booking_details_model.dart';
+import 'package:mh/app/modules/employee_booked_history_details/models/rejected_date_request_model.dart';
 import 'package:mh/app/modules/notifications/models/notification_response_model.dart';
 import 'package:mh/app/repository/api_helper.dart';
 
@@ -41,7 +42,7 @@ class EmployeeBookedHistoryDetailsController extends GetxController {
     });
   }
 
-  Future<void> updateRequestDate({required String startDate}) async {
+  Future<void> updateRequestDate({required RequestDateModel rejectedDate}) async {
     if (bookingDetails.value.requestDateList!.length > 1) {
       CustomDialogue.confirmation(
         context: Get.context!,
@@ -51,12 +52,16 @@ class EmployeeBookedHistoryDetailsController extends GetxController {
         onConfirm: () async {
           Get.back();
           CustomLoader.show(context!);
-          bookingDetails.value.requestDateList?.removeWhere((element) => element.startDate == startDate);
-          UpdateShortListRequestModel updateShortListRequestModel = UpdateShortListRequestModel(
-              shortListId: notificationId, requestDateList: bookingDetails.value.requestDateList ?? []);
+          List<RequestDateModel> rejectedDateList = <RequestDateModel>[];
+          rejectedDateList.add(rejectedDate);
+          bookingDetails.value.requestDateList?.removeWhere((element) => element == rejectedDate);
+          RejectedDateRequestModel rejectedDateRequestModel = RejectedDateRequestModel(
+              rejectedDateList: rejectedDateList,
+              shortListId: notificationId,
+              requestDateList: bookingDetails.value.requestDateList ?? []);
 
           Either<CustomError, Response> response =
-              await _apiHelper.updateRequestDate(updateShortListRequestModel: updateShortListRequestModel);
+              await _apiHelper.updateRequestDate(rejectedDateRequestModel: rejectedDateRequestModel);
           CustomLoader.hide(context!);
           response.fold((l) {
             Logcat.msg(l.msg);

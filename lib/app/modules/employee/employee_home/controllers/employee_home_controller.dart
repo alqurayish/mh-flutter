@@ -406,13 +406,7 @@ class EmployeeHomeController extends GetxController {
       }, (CommonResponseModel response) {
         if (response.status == "success" && response.statusCode == 201) {
           tecReview.clear();
-          Get.rawSnackbar(
-              snackPosition: SnackPosition.BOTTOM,
-              margin: const EdgeInsets.all(10.0),
-              title: 'Success',
-              message: 'Thanks for your review...',
-              backgroundColor: Colors.green.shade600,
-              borderRadius: 10.0);
+          Utils.showSnackBar(message: 'Thanks for your review...', isTrue: true);
         }
       });
     });

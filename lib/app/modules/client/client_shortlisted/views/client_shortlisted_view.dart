@@ -25,10 +25,11 @@ class ClientShortlistedView extends GetView<ClientShortlistedController> {
       bottomNavigationBar: _bottomBar(context),
       body: Obx(
         () => controller.shortlistController.isFetching.value
-            ? Center(child: Padding(
-              padding:  EdgeInsets.only(left: 15.w, right: 15.w, top: 70.h),
-              child: ShimmerWidget.clientMyEmployeesShimmerWidget(),
-            ))
+            ? Center(
+                child: Padding(
+                padding: EdgeInsets.only(left: 15.w, right: 15.w, top: 70.h),
+                child: ShimmerWidget.clientMyEmployeesShimmerWidget(),
+              ))
             : controller.shortlistController.shortList.isEmpty
                 ? const NoItemFound()
                 : Column(
@@ -127,10 +128,12 @@ class ClientShortlistedView extends GetView<ClientShortlistedController> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         InkWell(
-                          onTap: ()=>controller.onDaysSelectedClick(requestDateList: employee.requestDateList??[], shortListId: employee.sId??''),
+                          onTap: () => controller.onDaysSelectedClick(
+                              requestDateList: employee.requestDateList ?? [], shortListId: employee.sId ?? ''),
                           child: Container(
                             padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 3.0),
-                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(5.0), color: MyColors.c_F5F5F5),
+                            decoration:
+                                BoxDecoration(borderRadius: BorderRadius.circular(5.0), color: MyColors.c_F5F5F5),
                             child: Row(
                               children: [
                                 Image.asset(MyAssets.calender2, height: 20, width: 20),
@@ -173,7 +176,8 @@ class ClientShortlistedView extends GetView<ClientShortlistedController> {
                           Padding(
                             padding: const EdgeInsets.only(right: 10.0),
                             child: InkWell(
-                                onTap: () => Get.toNamed(Routes.calender, arguments: [employee.employeeId ?? '', employee.sId??'']),
+                                onTap: () => Get.toNamed(Routes.calender,
+                                    arguments: [employee.employeeId ?? '', employee.sId ?? '']),
                                 child: Image.asset(MyAssets.calender2, height: 25, width: 25)),
                           ),
                       ],
@@ -251,18 +255,19 @@ class ClientShortlistedView extends GetView<ClientShortlistedController> {
       );
 
   Widget _bottomBar(BuildContext context) {
-    return Obx(
-      () => CustomBottomBar(
-        child: CustomButtons.button(
-          onTap: controller.onBookAllClick,
-          text: controller.shortlistController.selectedForHire.isEmpty ||
-                  controller.shortlistController.selectedForHire.length ==
-                      controller.shortlistController.totalShortlisted.value
-              ? "Book All"
-              : "Book (${controller.shortlistController.selectedForHire.length}) Employee",
-          customButtonStyle: CustomButtonStyle.radiusTopBottomCorner,
-        ),
-      ),
-    );
+    return Obx(() => Visibility(
+          visible: controller.shortlistController.shortList.isNotEmpty,
+          child: CustomBottomBar(
+            child: CustomButtons.button(
+              onTap: controller.onBookAllClick,
+              text: controller.shortlistController.selectedForHire.isEmpty ||
+                      controller.shortlistController.selectedForHire.length ==
+                          controller.shortlistController.totalShortlisted.value
+                  ? "Book All"
+                  : "Book (${controller.shortlistController.selectedForHire.length}) Employee",
+              customButtonStyle: CustomButtonStyle.radiusTopBottomCorner,
+            ),
+          ),
+        ));
   }
 }

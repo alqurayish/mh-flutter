@@ -1,5 +1,6 @@
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:mh/app/common/controller/app_controller.dart';
+import 'package:mh/app/common/widgets/custom_badge.dart';
 import 'package:mh/app/common/widgets/shimmer_widget.dart';
 
 import '../../../../common/utils/exports.dart';
@@ -27,9 +28,9 @@ class AdminAllEmployeesView extends GetView<AdminAllEmployeesController> {
         () => (controller.employees.value.users ?? []).isEmpty
             ? controller.employeeDataLoading.value
                 ? Padding(
-                  padding: EdgeInsets.only(left: 15.w, right: 15.w, top: 70.h),
-                  child: Center(child: ShimmerWidget.clientMyEmployeesShimmerWidget()),
-                )
+                    padding: EdgeInsets.only(left: 15.w, right: 15.w, top: 70.h),
+                    child: Center(child: ShimmerWidget.clientMyEmployeesShimmerWidget()),
+                  )
                 : Column(
                     children: [
                       _resultCountWithFilter(),
@@ -47,7 +48,8 @@ class AdminAllEmployeesView extends GetView<AdminAllEmployeesController> {
                       padding: EdgeInsets.symmetric(vertical: 20.h),
                       itemCount: controller.employees.value.users?.length ?? 0,
                       itemBuilder: (context, index) {
-                        if(index == controller.employees.value.users!.length -1 && controller.moreDataAvailable.value == true){
+                        if (index == controller.employees.value.users!.length - 1 &&
+                            controller.moreDataAvailable.value == true) {
                           return const SpinKitThreeBounce(
                             color: MyColors.c_C6A34F,
                             size: 40,
@@ -141,24 +143,13 @@ class AdminAllEmployeesView extends GetView<AdminAllEmployeesController> {
               ),
             ),
             Positioned(
-              right: 7.w,
-              top: 4.h,
-              child: Obx(
-                () => GestureDetector(
-                  onTap: () => controller.onChatClick(user),
-                  child: Icon(
-                    Icons.chat,
-                    size: 20,
-                    color: controller.adminHomeController.chatUserIds.contains(user.id)
-                        ? MyColors.c_C6A34F
-                        : MyColors.stock,
-                  ),
-                ),
-              ),
+              right: 10.w,
+              top: 5.h,
+              child: _chat(user: user),
             ),
             Positioned(
               right: 40.w,
-              top: 4.h,
+              top: 5.h,
               child: GestureDetector(
                 onTap: () => controller.onCalenderClick(employeeId: user.id ?? ''),
                 child: Image.asset(
@@ -326,6 +317,39 @@ class AdminAllEmployeesView extends GetView<AdminAllEmployeesController> {
             Text(((available.isEmpty || int.parse(available.split(' ').first) <= 0)) ? 'Booked' : 'Available',
                 style: MyColors.l111111_dwhite(controller.context!).medium11)
           ],
+        ),
+      );
+
+  Widget _chat({required Employee user}) => GestureDetector(
+        onTap: () => controller.onChatClick(user),
+        child: Center(
+          child: Stack(
+            clipBehavior: Clip.none,
+            children: [
+              const Icon(
+                Icons.message,
+                color: MyColors.c_C6A34F,
+              ),
+              Positioned(
+                top: -15,
+                right: -10.w,
+                child: Obx(
+                  () {
+                    Iterable<Map<String, dynamic>> result = controller.adminHomeController.employeeChatDetails.where(
+                        (Map<String, dynamic> data) =>
+                            data["role"] == "EMPLOYEE" &&
+                            data['${user.id}_unread'] == 0 &&
+                            data["allAdmin_unread"] > 0);
+                    if (result.isEmpty) return Container();
+                    return Padding(
+                      padding:  EdgeInsets.only(top: 5.0.h, right: 3.0.w),
+                      child: CustomBadge(result.first["allAdmin_unread"].toString()),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
         ),
       );
 }

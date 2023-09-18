@@ -264,8 +264,8 @@ class ClientMyEmployeeView extends GetView<ClientMyEmployeeController> {
                 color: MyColors.c_C6A34F,
               ),
               Positioned(
-                top: -15,
-                right: -10,
+                top: -10.h,
+                right: -5.w,
                 child: Obx(
                   () {
                     var result = controller.clientHomeController.employeeChatDetails.where((data) =>

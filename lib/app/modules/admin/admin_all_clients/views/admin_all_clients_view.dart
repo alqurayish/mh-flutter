@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:mh/app/common/widgets/custom_badge.dart';
 import 'package:mh/app/common/widgets/shimmer_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -26,9 +27,9 @@ class AdminAllClientsView extends GetView<AdminAllClientsController> {
         () => (controller.clients.value.users ?? []).isEmpty
             ? controller.clientsDataLoading.value
                 ? Padding(
-                  padding:  EdgeInsets.only(top: 50.h, left: 15.w, right: 15.w),
-                  child: ShimmerWidget.clientMyEmployeesShimmerWidget(),
-                )
+                    padding: EdgeInsets.only(top: 50.h, left: 15.w, right: 15.w),
+                    child: ShimmerWidget.clientMyEmployeesShimmerWidget(),
+                  )
                 : const NoItemFound()
             : Column(
                 children: [
@@ -39,7 +40,8 @@ class AdminAllClientsView extends GetView<AdminAllClientsController> {
                       padding: EdgeInsets.symmetric(vertical: 20.h),
                       itemCount: controller.clients.value.users?.length ?? 0,
                       itemBuilder: (context, index) {
-                        if(index == controller.clients.value.users!.length -1 && controller.moreDataAvailable.value == true){
+                        if (index == controller.clients.value.users!.length - 1 &&
+                            controller.moreDataAvailable.value == true) {
                           return const SpinKitThreeBounce(
                             color: MyColors.c_C6A34F,
                             size: 40,
@@ -95,39 +97,11 @@ class AdminAllClientsView extends GetView<AdminAllClientsController> {
         onTap: () {},
         child: Stack(
           children: [
-            // Positioned(
-            //   right: 0,
-            //   bottom: 0,
-            //   child: SizedBox(
-            //     width: 122.w,
-            //     child: CustomButtons.button(
-            //       height: 28.w,
-            //       text: "£${user.hourlyRate ?? 0} / hour",
-            //       margin: EdgeInsets.zero,
-            //       fontSize: 12,
-            //       customButtonStyle: CustomButtonStyle.radiusTopBottomCorner,
-            //       onTap: () {},
-            //     ),
-            //   ),
-            // ),
-
             Positioned(
-              right: 10,
-              top: 7,
-              child: Obx(
-                () => GestureDetector(
-                  onTap: () => controller.onChatClick(user),
-                  child: Icon(
-                    Icons.chat,
-                    size: 20,
-                    color: controller.adminHomeController.chatUserIds.contains(user.id)
-                        ? MyColors.c_C6A34F
-                        : MyColors.stock,
-                  ),
-                ),
-              ),
+              right: 10.w,
+              top: 7.h,
+              child: _chat(user: user),
             ),
-
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -258,6 +232,34 @@ class AdminAllClientsView extends GetView<AdminAllClientsController> {
               style: MyColors.l111111_dwhite(controller.context!).medium14,
             ),
           ],
+        ),
+      );
+
+  Widget _chat({required Employee user}) => GestureDetector(
+        onTap: () => controller.onChatClick(user),
+        child: Center(
+          child: Stack(
+            clipBehavior: Clip.none,
+            children: [
+              const Icon(
+                Icons.message,
+                color: MyColors.c_C6A34F,
+              ),
+              Positioned(
+                top: -10.h,
+                right: -5.w,
+                child: Obx(
+                  () {
+                    Iterable<Map<String, dynamic>> result = controller.adminHomeController.clientChatDetails.where(
+                        (Map<String, dynamic> data) =>
+                            data["role"] == "CLIENT" && data['${user.id}_unread'] == 0 && data["allAdmin_unread"] > 0);
+                    if (result.isEmpty) return Container();
+                    return CustomBadge(result.first["allAdmin_unread"].toString());
+                  },
+                ),
+              ),
+            ],
+          ),
         ),
       );
 }

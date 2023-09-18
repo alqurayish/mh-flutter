@@ -42,8 +42,8 @@ class Admin {
   final bool? admin;
   final bool? hr;
   final String? employeeExperience;
-  final int? rating;
-  final int? totalWorkingHour;
+  final double? rating;
+  final double? totalWorkingHour;
   final bool? isReferPerson;
   final bool? isHired;
   final MenuPermission? menuPermission;
@@ -72,8 +72,8 @@ class Admin {
         admin: json["admin"],
         hr: json["hr"],
         employeeExperience: json["employeeExperience"],
-        rating: json["rating"],
-        totalWorkingHour: json["totalWorkingHour"],
+        rating: json["rating"] == null ? 0.0 : double.parse(json["rating"].toString()),
+        totalWorkingHour: json["totalWorkingHour"] == null ? 0.0 : double.parse(json["totalWorkingHour"].toString()),
         isReferPerson: json["isReferPerson"],
         isHired: json["isHired"],
         menuPermission: json["menuPermission"] == null ? null : MenuPermission.fromJson(json["menuPermission"]),

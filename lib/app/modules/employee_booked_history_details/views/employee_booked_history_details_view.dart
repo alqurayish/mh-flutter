@@ -18,6 +18,7 @@ class EmployeeBookedHistoryDetailsView extends GetView<EmployeeBookedHistoryDeta
         child: Stack(
           children: [
             CustomScrollView(
+              physics: const BouncingScrollPhysics(),
               slivers: [
                 SliverAppBar(
                     stretch: true,
@@ -44,7 +45,7 @@ class EmployeeBookedHistoryDetailsView extends GetView<EmployeeBookedHistoryDeta
                     )),
                 SliverToBoxAdapter(
                     child: Obx(() => controller.bookingDetailsDataLoading.value == true
-                        ?  Center(child: ShimmerWidget.bookingDetailsShimmerWidget())
+                        ? Center(child: ShimmerWidget.bookingDetailsShimmerWidget())
                         : Column(
                             children: [
                               const SizedBox(height: 20),
@@ -74,7 +75,7 @@ class EmployeeBookedHistoryDetailsView extends GetView<EmployeeBookedHistoryDeta
                                     child: TimeRangeWidget(
                                         requestDate: url,
                                         hasDeleteOption: true,
-                                        onTap: () => controller.updateRequestDate(startDate: url.startDate ?? '')),
+                                        onTap: () => controller.updateRequestDate(rejectedDate: url)),
                                   );
                                 }).toList(),
                               ),
@@ -93,7 +94,8 @@ class EmployeeBookedHistoryDetailsView extends GetView<EmployeeBookedHistoryDeta
                                       style: MyColors.l111111_dwhite(context).semiBold15),
                                   subtitle: Padding(
                                     padding: const EdgeInsets.only(top: 5),
-                                    child: Text(controller.bookingDetails.value.restaurantAddress ?? '', style: MyColors.c_A6A6A6.semiBold13),
+                                    child: Text(controller.bookingDetails.value.restaurantAddress ?? '',
+                                        style: MyColors.c_A6A6A6.semiBold13),
                                   ),
                                 ),
                               ),

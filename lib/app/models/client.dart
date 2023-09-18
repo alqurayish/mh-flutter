@@ -35,7 +35,7 @@ class Client {
   final String? restaurantName;
   final String? restaurantAddress;
   final String? countryName;
-  final int? rating;
+  final double? rating;
   final bool? isReferPerson;
   final int? iat;
   final int? exp;
@@ -60,7 +60,7 @@ class Client {
     restaurantName: json["restaurantName"],
     restaurantAddress: json["restaurantAddress"],
     countryName: json["countryName"],
-    rating: json["rating"],
+    rating: json["rating"] == null ? 0.0 : double.parse(json["rating"].toString()),
     isReferPerson: json["isReferPerson"],
     iat: json["iat"],
     exp: json["exp"],

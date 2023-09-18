@@ -17,9 +17,9 @@ class TimeRangeWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 100.h,
+      height: 110.h,
       padding: EdgeInsets.symmetric(horizontal: 10.0.w, vertical: 10.w),
-      margin:  EdgeInsets.only(top: 15.0.h),
+      margin: EdgeInsets.only(top: 15.0.h),
       decoration: BoxDecoration(
           color: Get.isDarkMode ? Colors.grey.shade800 : Colors.grey.shade200,
           borderRadius: BorderRadius.circular(10.0)),
@@ -27,7 +27,7 @@ class TimeRangeWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Image.asset(MyAssets.calender2, height: 20.w, width: 20.w),
               Text(DateFormat('E, dd MMM, yyyy').format(DateTime.parse(requestDate.startDate ?? '')),
@@ -41,8 +41,11 @@ class TimeRangeWidget extends StatelessWidget {
                     child: InkWell(onTap: onTap, child: const Icon(Icons.remove, color: Colors.red)))
             ],
           ),
+          Text(
+              '${DateTime.parse(requestDate.startDate ?? '').daysUntil(DateTime.parse(requestDate.endDate ?? ''))} ${DateTime.parse(requestDate.startDate ?? '').daysUntil(DateTime.parse(requestDate.endDate ?? '')) == 1 ? 'day' : 'days'}',
+              style: MyColors.c_C6A34F.semiBold15),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               _timeWidget(time: requestDate.startTime ?? ''),
               Container(width: 12.w, color: Colors.grey, height: 2.h),
@@ -56,15 +59,18 @@ class TimeRangeWidget extends StatelessWidget {
 
   Widget _timeWidget({required String time}) {
     return Container(
-      width: 120.w,
-      padding:  EdgeInsets.symmetric(horizontal: 10.0.w, vertical: 3.0.h),
+      padding: EdgeInsets.symmetric(horizontal: 15.0.w, vertical: 4.0.h),
       decoration: BoxDecoration(
           color: MyColors.lightCard(Get.context!),
           border: Border.all(color: Colors.grey.shade400),
           borderRadius: BorderRadius.circular(5.0)),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [Image.asset(MyAssets.clock, height: 18.h, width: 18.w), Text(time, style: MyColors.l111111_dwhite(Get.context!).medium13)],
+        children: [
+          Image.asset(MyAssets.clock, height: 16.h, width: 16.w),
+          SizedBox(width: 10.w),
+          Text(time, style: MyColors.l111111_dwhite(Get.context!).medium13)
+        ],
       ),
     );
   }
