@@ -324,9 +324,8 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
       String? maxTotalHour,
       bool? isReferred,
       String? requestType,
-      bool? active,
-      required int currentPage}) async {
-    String url = "users?page=$currentPage&limit=10&requestType=$requestType";
+      bool? active}) async {
+    String url = "users?skipLimit=YES&requestType=$requestType";
 
     if ((positionId ?? "").isNotEmpty) url += "&positionId=$positionId";
     if ((rating ?? "").isNotEmpty) url += "&rating=$rating";

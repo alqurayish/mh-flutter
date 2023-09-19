@@ -18,20 +18,20 @@ class AdminAllEmployeesController extends GetxController {
   Rx<Employees> employees = Employees().obs;
   RxBool employeeDataLoading = true.obs;
 
-  RxInt currentPage = 1.obs;
+ /* RxInt currentPage = 1.obs;
   final ScrollController scrollController = ScrollController();
-  RxBool moreDataAvailable = true.obs;
+  RxBool moreDataAvailable = true.obs;*/
 
   @override
   void onInit() async {
     await _getEmployees();
-    paginateTask();
+    //paginateTask();
     super.onInit();
   }
 
   @override
   void onClose() {
-    scrollController.dispose();
+    //scrollController.dispose();
     super.onClose();
   }
 
@@ -67,7 +67,7 @@ class AdminAllEmployeesController extends GetxController {
     String maxTotalHour,
     String positionId,
   ) async {
-    currentPage.value = 1;
+    //currentPage.value = 1;
     employees.value.users?.clear();
     await _getEmployees(
         rating: selectedRating,
@@ -79,7 +79,7 @@ class AdminAllEmployeesController extends GetxController {
 
   void onResetClick() {
     Get.back();
-    currentPage.value = 1;
+    //currentPage.value = 1;
     employees.value.users?.clear();
     _getEmployees();
   }
@@ -99,36 +99,43 @@ class AdminAllEmployeesController extends GetxController {
         employeeExperience: experience,
         minTotalHour: minTotalHour,
         maxTotalHour: maxTotalHour,
-        requestType: "EMPLOYEE",
-        currentPage: currentPage.value);
+        requestType: "EMPLOYEE");
     employeeDataLoading.value = false;
 
     response.fold((CustomError customError) {
       Utils.errorDialog(context!, customError..onRetry = _getEmployees);
     }, (Employees employees) {
       this.employees.value = employees;
+
+      for (int i = 0; i < (this.employees.value.users ?? []).length; i++) {
+        var item = this.employees.value.users![i];
+        if (adminHomeController.chatUserIds.contains(item.id)) {
+          this.employees.value.users?.removeAt(i);
+          this.employees.value.users?.insert(0, item);
+        }
+      }
       this.employees.refresh();
     });
   }
 
-  void paginateTask() {
+/*  void paginateTask() {
     scrollController.addListener(() {
       if (scrollController.position.pixels == scrollController.position.maxScrollExtent) {
         loadNextPage();
       }
     });
-  }
+  }*/
 
   void onCalenderClick({required String employeeId}) {
     Get.toNamed(Routes.calender, arguments: [employeeId, '']);
   }
 
-  void loadNextPage() async {
+  /*void loadNextPage() async {
     currentPage.value++;
     await _getMoreEmployees();
-  }
+  }*/
 
-  Future<void> _getMoreEmployees({
+ /* Future<void> _getMoreEmployees({
     String? rating,
     String? experience,
     String? minTotalHour,
@@ -142,7 +149,7 @@ class AdminAllEmployeesController extends GetxController {
         minTotalHour: minTotalHour,
         maxTotalHour: maxTotalHour,
         requestType: "EMPLOYEE",
-        currentPage: currentPage.value);
+    );
 
     response.fold((CustomError customError) {
       moreDataAvailable.value = false;
@@ -157,5 +164,5 @@ class AdminAllEmployeesController extends GetxController {
       this.employees.value.users?.addAll(employees.users ?? []);
       this.employees.refresh();
     });
-  }
+  }*/
 }

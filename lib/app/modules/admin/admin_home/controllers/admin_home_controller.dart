@@ -29,6 +29,7 @@ class AdminHomeController extends GetxController {
 
   RxList<Map<String, dynamic>> employeeChatDetails = <Map<String, dynamic>>[].obs;
   RxList<Map<String, dynamic>> clientChatDetails = <Map<String, dynamic>>[].obs;
+  RxList<String> chatUserIds = <String>[].obs;
 
   @override
   void onInit() {
@@ -101,6 +102,7 @@ class AdminHomeController extends GetxController {
       unreadMsgFromClient.value = 0;
       employeeChatDetails.clear();
       clientChatDetails.clear();
+      chatUserIds.clear();
 
       for (QueryDocumentSnapshot<Map<String, dynamic>> element in event.docs) {
         Map<String, dynamic> data = element.data();
@@ -111,9 +113,11 @@ class AdminHomeController extends GetxController {
           unreadMsgFromEmployee.value += data["allAdmin_unread"] as int;
           employeeChatDetails.add(data);
         }
+        chatUserIds.add(element.id);
       }
       clientChatDetails.refresh();
       employeeChatDetails.refresh();
+      chatUserIds.refresh();
     });
   }
 

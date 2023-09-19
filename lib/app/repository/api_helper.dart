@@ -82,8 +82,7 @@ abstract class ApiHelper {
       String? maxTotalHour,
       bool? isReferred,
       String? requestType,
-      bool? active,
-      required int currentPage});
+      bool? active});
 
   EitherModel<AllAdmins> getAllAdmins();
 

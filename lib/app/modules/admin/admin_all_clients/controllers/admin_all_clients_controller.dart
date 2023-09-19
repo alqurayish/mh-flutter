@@ -17,34 +17,42 @@ class AdminAllClientsController extends GetxController {
   Rx<Employees> clients = Employees().obs;
   RxBool clientsDataLoading = true.obs;
 
-  RxInt currentPage = 1.obs;
+/*  RxInt currentPage = 1.obs;
   final ScrollController scrollController = ScrollController();
-  RxBool moreDataAvailable = true.obs;
+  RxBool moreDataAvailable = true.obs;*/
 
   @override
   void onInit() {
     _getClients();
-    paginateTask();
+    // paginateTask();
     super.onInit();
   }
 
   @override
   void onClose() {
-    scrollController.dispose();
+    // scrollController.dispose();
     super.onInit();
   }
 
   Future<void> _getClients() async {
     clientsDataLoading.value = true;
 
-    Either<CustomError, Employees> response =
-        await _apiHelper.getAllUsersFromAdmin(requestType: "CLIENT", currentPage: currentPage.value);
+    Either<CustomError, Employees> response = await _apiHelper.getAllUsersFromAdmin(requestType: "CLIENT");
     clientsDataLoading.value = false;
 
     response.fold((CustomError customError) {
       Utils.errorDialog(context!, customError..onRetry = _getClients);
     }, (Employees clients) {
       this.clients.value = clients;
+
+      for (int i = 0; i < (this.clients.value.users ?? []).length; i++) {
+        var item = this.clients.value.users![i];
+        if (adminHomeController.chatUserIds.contains(item.id)) {
+          this.clients.value.users?.removeAt(i);
+          this.clients.value.users?.insert(0, item);
+        }
+      }
+
       this.clients.refresh();
     });
   }
@@ -58,7 +66,7 @@ class AdminAllClientsController extends GetxController {
     });
   }
 
-  void paginateTask() {
+  /* void paginateTask() {
     scrollController.addListener(() {
       if (scrollController.position.pixels == scrollController.position.maxScrollExtent) {
         loadNextPage();
@@ -73,7 +81,7 @@ class AdminAllClientsController extends GetxController {
 
   Future<void> _getMoreClients() async {
     Either<CustomError, Employees> response =
-        await _apiHelper.getAllUsersFromAdmin(requestType: "CLIENT", currentPage: currentPage.value);
+        await _apiHelper.getAllUsersFromAdmin(requestType: "CLIENT");
 
     response.fold((CustomError customError) {
       moreDataAvailable.value = false;
@@ -88,5 +96,5 @@ class AdminAllClientsController extends GetxController {
       this.clients.value.users?.addAll(clients.users ?? []);
       this.clients.refresh();
     });
-  }
+  }*/
 }

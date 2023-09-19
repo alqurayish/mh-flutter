@@ -105,9 +105,7 @@ class AdminDashboardController extends GetxController {
 
     await _apiHelper
         .getAllUsersFromAdmin(
-      requestType: "CLIENT",
-      currentPage: 1
-    )
+      requestType: "CLIENT")
         .then((response) {
       clientLoading.value = false;
 
