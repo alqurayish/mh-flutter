@@ -25,7 +25,7 @@ class ServerUrls {
   }
 
   static String get _getTestServerUrl {
-    const String testUrl = "http://44.216.38.248:8000/";
+    const String testUrl = "http://52.86.43.146:8000/";
 
     return _url(testUrl);
   }

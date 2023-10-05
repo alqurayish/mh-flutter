@@ -10,7 +10,7 @@ class InvoicePdfView extends GetView<InvoicePdfController> {
     controller.context = context;
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: controller.downloadInvoicePDF,
+        onPressed: controller.onDownloadPressed,
         backgroundColor: MyColors.c_C6A34F,
         child: const Icon(Icons.download, color: MyColors.c_FFFFFF),
       ),

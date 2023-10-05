@@ -6,18 +6,18 @@ class CalenderHeaderWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  Row(
+    return  const Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            CalenderStatusWidget(backgroundColor: MyColors.l111111_dwhite(context), title: 'Unavailable'),
-            const SizedBox(height: 10),
-            const CalenderStatusWidget(backgroundColor: Colors.red, title: 'Booked')
+            CalenderStatusWidget(backgroundColor: Colors.blue, title: 'Unavailable'),
+            SizedBox(height: 10),
+            CalenderStatusWidget(backgroundColor: Colors.red, title: 'Booked')
           ],
         ),
-        const Column(
+        Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             CalenderStatusWidget(
@@ -31,7 +31,7 @@ class CalenderHeaderWidget extends StatelessWidget {
             )
           ],
         ),
-        const Column(
+        Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             CalenderStatusWidget(backgroundColor: MyColors.c_C6A34F, title: 'Selected'),

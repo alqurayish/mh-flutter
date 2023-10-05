@@ -456,7 +456,7 @@ class EmployeeHomeController extends GetxController {
           targetLat: targetLat,
           targetLong: targetLng,
           currentLat: currentLocation!.latitude,
-          // 23.8120296,
+          //23.8120296,
           currentLong: currentLocation!.longitude
           //90.3555054
           );

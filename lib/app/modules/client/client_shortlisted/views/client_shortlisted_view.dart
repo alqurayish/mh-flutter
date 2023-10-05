@@ -192,7 +192,7 @@ class ClientShortlistedView extends GetView<ClientShortlistedController> {
             margin: const EdgeInsets.only(bottom: 20.0),
             padding: const EdgeInsets.symmetric(horizontal: 10.0),
             height: 30.h,
-            width: 200.w,
+            width: 250.w,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(0.0)
                     .copyWith(bottomLeft: const Radius.circular(10.0), bottomRight: const Radius.circular(10.0)),
@@ -200,7 +200,7 @@ class ClientShortlistedView extends GetView<ClientShortlistedController> {
             child: Center(
                 child: Text(
                     employee.requestDateList!.isNotEmpty
-                        ? 'Total Rate: ${Utils.getCurrencySymbol(Get.find<AppController>().user.value.client?.countryName ?? '')}${employee.requestDateList?.calculateTotalHourlyRate(hourlyRate: employee.employeeDetails?.hourlyRate ?? 0.0).toStringAsFixed(2)}'
+                        ? 'Total Estimated Amount: ${Utils.getCurrencySymbol(Get.find<AppController>().user.value.client?.countryName ?? '')}${employee.requestDateList?.calculateTotalHourlyRate(hourlyRate: employee.employeeDetails?.hourlyRate ?? 0.0).toStringAsFixed(2)}'
                         : 'Hourly Rate: ${Utils.getCurrencySymbol(Get.find<AppController>().user.value.client?.countryName ?? '')}${employee.employeeDetails?.hourlyRate!.toStringAsFixed(2) ?? '0.00'}',
                     style: MyColors.white.medium13)))
       ],

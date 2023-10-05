@@ -116,7 +116,7 @@ class  CustomBreakTime {
                 CustomButtons.button(
                   text: "Done",
                   onTap: (){
-                    Get.back(); // hide modal
+                    Navigator.pop(context); // hide modal
                     onBreakTimePickDone(hour, min);
                   },
                   margin: const EdgeInsets.symmetric(horizontal: 18),

@@ -27,6 +27,7 @@ class Utils {
   static unFocus() => FocusManager.instance.primaryFocus?.unfocus();
 
   static get exitApp => SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+
   static Future<bool> appExitConfirmation(BuildContext context) async => CustomDialogue.appExit(context) ?? false;
 
   static void setStatusBarColorColor(Brightness brightness) {

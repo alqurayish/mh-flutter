@@ -5,15 +5,16 @@ class EmployeeRegistration {
   String phoneNumber;
   String countryName;
   String positionId;
+  String? documents;
 
-  EmployeeRegistration({
-    required this.firstName,
-    required this.lastName,
-    required this.email,
-    required this.phoneNumber,
-    required this.countryName,
-    required this.positionId,
-  });
+  EmployeeRegistration(
+      {required this.firstName,
+      required this.lastName,
+      required this.email,
+      required this.phoneNumber,
+      required this.countryName,
+      required this.positionId,
+      required this.documents});
 
   Map<String, String> get toJson => {
         "firstName": firstName,
@@ -22,5 +23,6 @@ class EmployeeRegistration {
         "phoneNumber": phoneNumber,
         "countryName": countryName,
         "positionId": positionId,
+        "documents": documents??''
       };
 }

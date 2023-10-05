@@ -77,7 +77,7 @@ class _SlideAbleWidgetState extends State<SlideAbleWidget> {
                 });
               },
               child: Padding(
-                padding:  EdgeInsets.only(top: 5.0.h, left: 5.0.w),
+                padding:   EdgeInsets.only(top: MediaQuery.of(context).size.height*0.004, left: 5.0),
                 child: CircleAvatar(
                   radius: 25,
                   backgroundColor: Colors.white,

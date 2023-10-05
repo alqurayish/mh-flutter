@@ -12,7 +12,6 @@ class EmployeeBookedHistoryDetailsView extends GetView<EmployeeBookedHistoryDeta
   @override
   Widget build(BuildContext context) {
     controller.context = context;
-
     return Container(
         color: context.theme.scaffoldBackgroundColor,
         child: Stack(
@@ -28,7 +27,7 @@ class EmployeeBookedHistoryDetailsView extends GetView<EmployeeBookedHistoryDeta
                     pinned: true,
                     floating: false,
                     leading: const Padding(
-                      padding: EdgeInsets.all(10.0),
+                      padding: EdgeInsets.all(13.0),
                       child: CustomAppbarBackButton(),
                     ),
                     backgroundColor: Colors.transparent,

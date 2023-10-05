@@ -45,7 +45,7 @@ class CalenderMonthWidget extends StatelessWidget {
             canUpdateUnavailableDate = true;
           }
         } else if (currentDate.isBefore(DateTime.now()) || controller.selectedDate.value == currentDate) {
-          textColor = Colors.grey;
+          textColor = Colors.blue;
         } else {
           textColor = Colors.green; // Available days should be green
           canTapDate = true;

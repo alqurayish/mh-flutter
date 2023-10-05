@@ -37,22 +37,6 @@ class ClientPaymentAndInvoiceController extends GetxController {
   }
 
 
-  Future<void> onPaymentSuccess() async {
-    CustomLoader.show(context!);
-
-    Map<String, dynamic> data = {"id": _selectedInvoiceId, "status": "PAID"};
-
-    await _apiHelper.updatePaymentStatus(data).then((response) {
-      CustomLoader.hide(context!);
-
-      response.fold((CustomError customError) {
-        Utils.errorDialog(context!, customError..onRetry = clientHomeController.getClientInvoice);
-      }, (Response response) {
-        clientHomeController.getClientInvoice();
-      });
-    });
-  }
-
   void onViewInvoicePress({required InvoiceModel invoice}) async {
     invoiceFile = await Utils.generatePdfWithImageAndText(invoice: invoice);
     Get.toNamed(Routes.invoicePdf, arguments: [invoiceFile]);

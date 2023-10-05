@@ -133,7 +133,6 @@ extension DateRangeExtension on List<CalenderDataModel> {
 }
 
 extension DateExtension on DateTime {
-
   int daysUntil(DateTime other) {
     // Calculate the difference in days
     Duration difference = other.difference(this);
@@ -246,7 +245,12 @@ extension RequestDateExtensions on List<RequestDateModel> {
         final totalStartHour = (startAMPM == 'PM' && startHour != 12) ? startHour + 12 : startHour;
         final totalEndHour = (endAMPM == 'PM' && endHour != 12) ? endHour + 12 : endHour;
 
-        final durationInHours = (totalEndHour - totalStartHour) + (endMinute - startMinute) / 60.0;
+        double durationInHours = (totalEndHour - totalStartHour) + (endMinute - startMinute) / 60.0;
+
+        // Extra
+        if (durationInHours.isNegative) {
+          durationInHours = 24 + durationInHours;
+        }
 
         // Calculate the total days in the date range
         final startDateParts = requestDate.startDate?.split('-');
@@ -268,7 +272,7 @@ extension RequestDateExtensions on List<RequestDateModel> {
           endMinute,
         );
 
-        final daysInDateRange = endDateTime.difference(startDateTime).inDays + 1;
+        final int daysInDateRange = endDateTime.difference(startDateTime).inDays + 1;
 
         totalRate += durationInHours * hourlyRate * daysInDateRange;
       }
@@ -282,10 +286,16 @@ extension RequestDateExtensions on List<RequestDateModel> {
 
 extension TimeDifference on String {
   int hoursDifference(String otherTime) {
+    int diff = 0;
     final timeFormat = DateFormat('hh:mm a');
     final thisTime = timeFormat.parse(this);
     final other = timeFormat.parse(otherTime);
     final difference = other.difference(thisTime);
-    return difference.inHours;
+    if (difference.inHours.isNegative) {
+      diff = 24 + difference.inHours;
+    } else {
+      diff = difference.inHours;
+    }
+    return diff;
   }
 }

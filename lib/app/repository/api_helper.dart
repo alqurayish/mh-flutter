@@ -1,3 +1,4 @@
+import 'package:mh/app/modules/auth/register/models/employee_extra_field_model.dart';
 import 'package:mh/app/modules/calender/models/calender_model.dart';
 import 'package:mh/app/modules/calender/models/update_unavailable_date_request_model.dart';
 import 'package:mh/app/modules/client/client_shortlisted/models/add_to_shortlist_request_model.dart';
@@ -185,4 +186,6 @@ abstract class ApiHelper {
 
   EitherModel<CommonResponseModel> updateUnavailableDate(
       {required UpdateUnavailableDateRequestModel updateUnavailableDateRequestModel});
+
+  EitherModel<ExtraFieldModel> getEmployeeExtraField({required String countryName});
 }

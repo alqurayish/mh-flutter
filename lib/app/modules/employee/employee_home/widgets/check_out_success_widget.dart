@@ -26,12 +26,12 @@ class CheckOutSuccessWidget extends StatelessWidget {
                 CustomButtons.button(
                     padding: EdgeInsets.symmetric(horizontal: 40.0.w),
                     margin: EdgeInsets.zero,
-                    height: 38.h,
+                    height: 38,
                     fontSize: 15,
                     backgroundColor: Colors.grey.shade400,
                     text: 'Close', onTap: () => Get.back(), customButtonStyle: CustomButtonStyle.radiusTopBottomCorner),
                 CustomButtons.button(
-                  height: 38.h,
+                  height: 38,
                   padding: EdgeInsets.symmetric(horizontal: 20.0.w),
                   margin: EdgeInsets.zero,
                     text: 'Dashboard',

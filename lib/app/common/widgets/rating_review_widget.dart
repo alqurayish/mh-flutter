@@ -105,7 +105,7 @@ class RatingReviewWidget extends StatelessWidget {
                   ),
                    SizedBox(height: 20.h),
                   CustomButtons.button(
-                    height: 48.h,
+                    height: 48,
                     margin: EdgeInsets.zero,
                     onTap: () {
                       onReviewSubmit(

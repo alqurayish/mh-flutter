@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -38,7 +39,7 @@ class TimeRangeWidget extends StatelessWidget {
               if (hasDeleteOption == true)
                 Material(
                     color: Colors.transparent,
-                    child: InkWell(onTap: onTap, child: const Icon(Icons.remove, color: Colors.red)))
+                    child: InkWell(onTap: onTap, child: const Icon(CupertinoIcons.delete_solid, size: 18, color: Colors.red)))
             ],
           ),
           Text(

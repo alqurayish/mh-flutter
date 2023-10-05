@@ -6,7 +6,6 @@ import 'package:mh/app/modules/employee/employee_home/widgets/employee_check_in_
 
 class EmployeeBottomNavBarWidget extends GetView<EmployeeHomeController> {
   const EmployeeBottomNavBarWidget({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return Obx(() => Visibility(

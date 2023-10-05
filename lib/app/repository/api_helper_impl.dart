@@ -4,6 +4,7 @@ import 'package:dartz/dartz.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get/get_connect/http/src/request/request.dart';
+import 'package:mh/app/modules/auth/register/models/employee_extra_field_model.dart';
 import 'package:mh/app/modules/calender/models/calender_model.dart';
 import 'package:mh/app/modules/calender/models/update_unavailable_date_request_model.dart';
 import 'package:mh/app/modules/client/client_shortlisted/models/add_to_shortlist_request_model.dart';
@@ -60,7 +61,7 @@ import 'api_helper.dart';
 class ApiHelperImpl extends GetConnect implements ApiHelper {
   @override
   void onInit() {
-    httpClient.baseUrl = ServerUrls.serverLiveUrlUser;
+    httpClient.baseUrl = ServerUrls.serverTestUrlUser;
     httpClient.timeout = const Duration(seconds: 120);
 
     httpClient.addRequestModifier<dynamic>((Request request) {
@@ -191,7 +192,7 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
     return _convert<LoginResponse>(
       response,
       LoginResponse.fromJson,
-    ).fold((l) => left(l), (r) => right(r));
+    ).fold((CustomError l) => left(l), (LoginResponse r) => right(r));
   }
 
   @override
@@ -1066,5 +1067,20 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
       (Map<String, dynamic> data) {},
       onlyErrorCheck: true,
     ).fold((l) => left(l), (r) => right(r));
+  }
+
+  @override
+  EitherModel<ExtraFieldModel> getEmployeeExtraField({required String countryName}) async {
+    Response response = await post("document/get-fields", jsonEncode({"country": countryName}));
+    if (response.statusCode == null) response = await post("document/get-fields", jsonEncode({"country": countryName}));
+    if (response.statusCode == null) response = await post("document/get-fields", jsonEncode({"country": countryName}));
+    if (response.statusCode == null) response = await post("document/get-fields", jsonEncode({"country": countryName}));
+
+    print('ApiHelperImpl.getEmployeeExtraField: ${response.bodyString}');
+
+    return _convert<ExtraFieldModel>(
+      response,
+      ExtraFieldModel.fromJson,
+    ).fold((CustomError l) => left(l), (ExtraFieldModel r) => right(r));
   }
 }

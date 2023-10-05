@@ -3,6 +3,7 @@ import 'package:expandable_page_view/expandable_page_view.dart';
 import 'package:flutter/gestures.dart';
 import 'package:intl_phone_field/country_picker_dialog.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:mh/app/modules/auth/register/widgets/employee_extra_field_widget.dart';
 
 import '../../../../common/data/data.dart';
 import '../../../../common/style/my_decoration.dart';
@@ -55,19 +56,14 @@ class RegisterView extends GetView<RegisterController> {
         child: Column(
           children: [
             SizedBox(height: 40.h),
-
             Image.asset(
               MyAssets.logo,
               width: 73.w,
               height: 65.h,
             ),
-
             SizedBox(height: 30.h),
-
             _userType,
-
             SizedBox(height: 23.h),
-
             ExpandablePageView(
               controller: controller.pageController,
               onPageChanged: controller.onPageChange,
@@ -76,13 +72,9 @@ class RegisterView extends GetView<RegisterController> {
                 _employeeInputFields,
               ],
             ),
-
             SizedBox(height: 37.h),
-
             _agreeTermsAndCondition,
-
             SizedBox(height: 37.h),
-
             CustomButtons.button(
               height: 48,
               customButtonStyle: CustomButtonStyle.radiusTopBottomCorner,
@@ -90,11 +82,8 @@ class RegisterView extends GetView<RegisterController> {
               onTap: controller.onContinuePressed,
               margin: const EdgeInsets.symmetric(horizontal: 18),
             ),
-
             SizedBox(height: 52.h),
-
             _alreadyHaveAnAccount,
-
             SizedBox(height: 52.h),
           ],
         ),
@@ -135,9 +124,7 @@ class RegisterView extends GetView<RegisterController> {
             height: 40.h,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(5),
-              color: active
-                  ? MyColors.c_C6A34F
-                  : MyColors.lightCard(controller.context!),
+              color: active ? MyColors.c_C6A34F : MyColors.lightCard(controller.context!),
             ),
             child: Center(
               child: Text(
@@ -155,9 +142,7 @@ class RegisterView extends GetView<RegisterController> {
         key: controller.formKeyClient,
         child: Column(
           children: [
-
             SizedBox(height: 10.h),
-
             CustomTextInputField(
               controller: controller.tecClientName,
               label: MyStrings.restaurantName.tr,
@@ -167,9 +152,7 @@ class RegisterView extends GetView<RegisterController> {
                 MyStrings.required.tr,
               ),
             ),
-
             SizedBox(height: 26.h),
-
             Obx(
               () => CustomTextInputField(
                 controller: controller.tecClientAddress,
@@ -177,8 +160,12 @@ class RegisterView extends GetView<RegisterController> {
                 prefixIcon: Icons.location_on_rounded,
                 isMapField: true,
                 onSuffixPressed: controller.onClientAddressPressed,
-                readOnly: controller.restaurantAddressFromMap.value.isEmpty || controller.restaurantLat == 0 || controller.restaurantLong == 0,
-                onTap: (controller.restaurantAddressFromMap.value.isEmpty || controller.restaurantLat == 0 || controller.restaurantLong == 0)
+                readOnly: controller.restaurantAddressFromMap.value.isEmpty ||
+                    controller.restaurantLat == 0 ||
+                    controller.restaurantLong == 0,
+                onTap: (controller.restaurantAddressFromMap.value.isEmpty ||
+                        controller.restaurantLat == 0 ||
+                        controller.restaurantLong == 0)
                     ? controller.onClientAddressPressed
                     : null,
                 validator: (String? value) => Validators.emptyValidator(
@@ -187,12 +174,12 @@ class RegisterView extends GetView<RegisterController> {
                 ),
               ),
             ),
-
             SizedBox(height: 5.h),
-
             Obx(
               () => Visibility(
-                visible: !(controller.restaurantAddressFromMap.value.isEmpty || controller.restaurantLat == 0 || controller.restaurantLong == 0),
+                visible: !(controller.restaurantAddressFromMap.value.isEmpty ||
+                    controller.restaurantLat == 0 ||
+                    controller.restaurantLong == 0),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Text(
@@ -203,9 +190,7 @@ class RegisterView extends GetView<RegisterController> {
                 ),
               ),
             ),
-
             SizedBox(height: 26.h),
-
             CustomTextInputField(
               controller: controller.tecClientEmailAddress,
               textInputType: TextInputType.emailAddress,
@@ -213,7 +198,6 @@ class RegisterView extends GetView<RegisterController> {
               prefixIcon: Icons.email_rounded,
               validator: (String? value) => Validators.emailValidator(value),
             ),
-
             SizedBox(height: 26.h),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 18.0.w),
@@ -254,7 +238,6 @@ class RegisterView extends GetView<RegisterController> {
                 autovalidateMode: AutovalidateMode.onUserInteraction,
               ),
             ),
-
             SizedBox(height: 26.h),
             CustomDropdown(
               prefixIcon: Icons.flag,
@@ -263,9 +246,7 @@ class RegisterView extends GetView<RegisterController> {
               items: Data.getAllCountry.map((e) => e.name).toList(),
               onChange: controller.onClientCountryChange,
             ),
-
             SizedBox(height: 26.h),
-
             CustomTextInputField(
               controller: controller.tecClientPassword,
               label: MyStrings.password.tr,
@@ -273,9 +254,7 @@ class RegisterView extends GetView<RegisterController> {
               isPasswordField: true,
               validator: (String? value) => Validators.passwordValidator(value),
             ),
-
             SizedBox(height: 26.h),
-
             CustomTextInputField(
               controller: controller.tecClientConfirmPassword,
               label: MyStrings.confirmPassword.tr,
@@ -286,13 +265,9 @@ class RegisterView extends GetView<RegisterController> {
                 value ?? "",
               ),
             ),
-
             SizedBox(height: 26.h),
-
             _extraInfoHeading(MyStrings.howYouKnowAboutUs.tr),
-
             SizedBox(height: 18.h),
-
             CustomDropdown(
               prefixIcon: Icons.bookmark,
               hints: null,
@@ -304,26 +279,23 @@ class RegisterView extends GetView<RegisterController> {
                 MyStrings.required.tr,
               ),
             ),
-
             SizedBox(height: 20.h),
-
             _extraInfoHeading(MyStrings.refer.tr),
-
             SizedBox(height: 18.h),
-
             CustomDropdown(
               prefixIcon: Icons.label,
               hints: null,
               value: controller.selectedRefer,
-              items: (controller.employees?.users ?? []).map((e) => "${e.firstName} ${e.lastName} - ${e.userIdNumber}").toList()..add("Other"),
+              items: (controller.employees?.users ?? [])
+                  .map((e) => "${e.firstName} ${e.lastName} - ${e.userIdNumber}")
+                  .toList()
+                ..add("Other"),
               onChange: controller.onReferChange,
               validator: (String? value) => Validators.emptyValidator(
                 value,
                 MyStrings.required.tr,
               ),
             ),
-
-
             SizedBox(height: 10.h),
           ],
         ),
@@ -438,7 +410,6 @@ class RegisterView extends GetView<RegisterController> {
         child: Column(
           children: [
             SizedBox(height: 10.h),
-
             CustomTextInputField(
               controller: controller.tecEmployeeFirstName,
               label: MyStrings.firstName.tr,
@@ -448,9 +419,7 @@ class RegisterView extends GetView<RegisterController> {
                 MyStrings.required.tr,
               ),
             ),
-
             SizedBox(height: 26.h),
-
             CustomTextInputField(
               controller: controller.tecEmployeeLastName,
               label: MyStrings.lastName.tr,
@@ -460,9 +429,7 @@ class RegisterView extends GetView<RegisterController> {
                 MyStrings.required.tr,
               ),
             ),
-
             SizedBox(height: 26.h),
-
             CustomTextInputField(
               controller: controller.tecEmployeeEmail,
               textInputType: TextInputType.emailAddress,
@@ -470,9 +437,7 @@ class RegisterView extends GetView<RegisterController> {
               prefixIcon: Icons.email_rounded,
               validator: (String? value) => Validators.emailValidator(value),
             ),
-
             SizedBox(height: 26.h),
-
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 18.0.w),
               child: IntlPhoneField(
@@ -512,9 +477,7 @@ class RegisterView extends GetView<RegisterController> {
                 autovalidateMode: AutovalidateMode.onUserInteraction,
               ),
             ),
-
             SizedBox(height: 26.h),
-
             CustomDropdown(
               prefixIcon: Icons.flag,
               hints: MyStrings.country.tr,
@@ -522,9 +485,7 @@ class RegisterView extends GetView<RegisterController> {
               items: Data.getAllCountry.map((e) => e.name).toList(),
               onChange: controller.onEmployeeCountryChange,
             ),
-
             SizedBox(height: 26.h),
-
             CustomDropdown(
               prefixIcon: Icons.business_center,
               hints: MyStrings.position.tr,
@@ -532,23 +493,16 @@ class RegisterView extends GetView<RegisterController> {
               items: controller.appController.allActivePositions.map((e) => e.name!).toList(),
               onChange: controller.onPositionChange,
             ),
-
             SizedBox(height: 26.h),
-
             _cv,
-
-            SizedBox(height: 26.h),
-
+            const EmployeeExtraFieldWidget(),
             _profileImage,
-
             SizedBox(height: 5.h),
-
             _profilePhotoHints,
-
             SizedBox(height: 10.h),
           ],
         ),
-  );
+      );
 
   Widget get _agreeTermsAndCondition => SizedBox(
         width: double.infinity,
@@ -631,13 +585,14 @@ class RegisterView extends GetView<RegisterController> {
             child: Obx(
               () => Row(
                 children: [
-                  const Icon(Icons.picture_as_pdf, color: MyColors.c_7B7B7B,),
+                  const Icon(
+                    Icons.picture_as_pdf,
+                    color: MyColors.c_7B7B7B,
+                  ),
                   SizedBox(width: 7.w),
                   Expanded(
                     child: Text(
-                      controller.cv.isEmpty
-                          ? "Upload your cv"
-                          : controller.cv.first.path.split("/").last,
+                      controller.cv.isEmpty ? "Upload your cv" : controller.cv.first.path.split("/").last,
                       style: MyColors.l111111_dwhite(controller.context!).regular16_5,
                     ),
                   ),
@@ -654,8 +609,7 @@ class RegisterView extends GetView<RegisterController> {
           ),
           Obx(
             () => Visibility(
-              visible: controller.cv.isNotEmpty &&
-                  controller.cv.first.path.split(".").last.toLowerCase() != "pdf",
+              visible: controller.cv.isNotEmpty && controller.cv.first.path.split(".").last.toLowerCase() != "pdf",
               child: Text(
                 'CV must be pdf format',
                 style: Colors.redAccent.medium12,
