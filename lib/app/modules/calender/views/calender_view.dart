@@ -39,15 +39,14 @@ class CalenderView extends GetView<CalenderController> {
               ),
               Positioned.fill(
                   child: Align(
-                alignment: Alignment.bottomCenter,
-                child: Get.isRegistered<AdminHomeController>() ? const Wrap() : const SelectedDaysCountWidget(),
-              )),
+                      alignment: Alignment.bottomCenter,
+                      child: Get.isRegistered<EmployeeHomeController>()
+                          ? const EmployeeDateRangeWidget()
+                          : const ShortListDateRangeWidget())),
               Positioned.fill(
                   child: Align(
                 alignment: Alignment.bottomCenter,
-                child: Get.isRegistered<EmployeeHomeController>()
-                    ? const EmployeeDateRangeWidget()
-                    : const ShortListDateRangeWidget()
+                child: Get.isRegistered<AdminHomeController>() ? const Wrap() : const SelectedDaysCountWidget(),
               )),
             ],
           );

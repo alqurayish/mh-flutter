@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:mh/app/common/utils/exports.dart';
 import 'package:mh/app/modules/calender/controllers/calender_controller.dart';
@@ -11,7 +12,7 @@ class EmployeeDateRangeWidget extends GetWidget<CalenderController> {
         ? Container(
             height: 100,
             decoration: BoxDecoration(color: Get.isDarkMode?Colors.grey.shade800:Colors.grey.shade200, borderRadius: BorderRadius.circular(10.0)),
-            margin: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.11, left: 15.0, right: 15.0),
+            margin: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.08, left: 15.0, right: 15.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -33,7 +34,7 @@ class EmployeeDateRangeWidget extends GetWidget<CalenderController> {
                                     style: MyColors.l111111_dwhite(context).semiBold13),
                             ],
                           )),
-                      InkWell(onTap: controller.onRemoveClick, child: const Icon(Icons.remove, color: Colors.red))
+                      InkWell(onTap: controller.onRemoveClick, child: const Icon(CupertinoIcons.delete_solid, color: Colors.red, size: 18))
                     ],
                   ),
                 ),

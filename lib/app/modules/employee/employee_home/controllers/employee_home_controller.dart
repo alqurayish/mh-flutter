@@ -455,10 +455,10 @@ class EmployeeHomeController extends GetxController {
       return LocationController.calculateDistance(
           targetLat: targetLat,
           targetLong: targetLng,
-          currentLat: currentLocation!.latitude,
-          //23.8120296,
-          currentLong: currentLocation!.longitude
-          //90.3555054
+          currentLat: //currentLocation!.latitude,
+          23.8120296,
+          currentLong: //currentLocation!.longitude
+          90.3555054
           );
     }
     return 0.0;

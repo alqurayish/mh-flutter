@@ -82,7 +82,7 @@ class ShortListTimeRangeWidget extends StatelessWidget {
             top: 2.h,
             child:  InkWell(
             onTap: () => Get.find<CalenderController>().onRemoveClickForShortList(index: index),
-            child: const Icon(CupertinoIcons.clear_thick_circled, color: Colors.red, size: 18)))
+            child: const Icon(CupertinoIcons.delete_solid, color: Colors.red, size: 18)))
       ],
     );
   }

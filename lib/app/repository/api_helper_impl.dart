@@ -61,7 +61,7 @@ import 'api_helper.dart';
 class ApiHelperImpl extends GetConnect implements ApiHelper {
   @override
   void onInit() {
-    httpClient.baseUrl = ServerUrls.serverTestUrlUser;
+    httpClient.baseUrl = ServerUrls.serverLiveUrlUser;
     httpClient.timeout = const Duration(seconds: 120);
 
     httpClient.addRequestModifier<dynamic>((Request request) {
@@ -1075,8 +1075,6 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
     if (response.statusCode == null) response = await post("document/get-fields", jsonEncode({"country": countryName}));
     if (response.statusCode == null) response = await post("document/get-fields", jsonEncode({"country": countryName}));
     if (response.statusCode == null) response = await post("document/get-fields", jsonEncode({"country": countryName}));
-
-    print('ApiHelperImpl.getEmployeeExtraField: ${response.bodyString}');
 
     return _convert<ExtraFieldModel>(
       response,

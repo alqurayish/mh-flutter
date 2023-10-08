@@ -1,5 +1,3 @@
-import 'package:mh/app/common/utils/exports.dart';
-
 class ExtraFieldModel {
   String? status;
   int? statusCode;

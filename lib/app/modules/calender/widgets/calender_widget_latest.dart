@@ -8,7 +8,7 @@ class CalenderWidgetLatest extends GetWidget<CalenderController> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.48,
+      height: MediaQuery.of(context).size.height * 0.49,
       child: Column(
         children: [
            SizedBox(height: 15.h),

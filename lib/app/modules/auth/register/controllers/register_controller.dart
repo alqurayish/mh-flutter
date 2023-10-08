@@ -97,6 +97,7 @@ class RegisterController extends GetxController implements RegisterInterface {
 
   RxBool employeeExtraFieldDataLoading = false.obs;
   RxList<Fields> extraFieldList = <Fields>[].obs;
+  String? documentString;
 
   @override
   void onInit() {
@@ -116,7 +117,6 @@ class RegisterController extends GetxController implements RegisterInterface {
     if (isClientRegistration) {
       _clientRegisterPressed();
     } else if (isEmployeeRegistration) {
-      print('RegisterController.onContinuePressed');
       _employeeRegisterPressed();
     }
   }
@@ -226,6 +226,7 @@ class RegisterController extends GetxController implements RegisterInterface {
   void onEmployeeCountryChange(String? country) {
     selectedEmployeeCountry.value = country!;
     extraFieldList.clear();
+    documentString = null;
     _getEmployeeExtraField();
   }
 
@@ -244,13 +245,10 @@ class RegisterController extends GetxController implements RegisterInterface {
       formKeyEmployee.currentState!.save();
 
       if (cv.isNotEmpty && cv.last.path.split(".").last.toLowerCase() != "pdf") {
-        print('RegisterController._employeeRegisterPressed 1');
         _errorDialog("Invalid Input", "CV must be PDF format");
       } else if (!termsAndConditionCheck.value) {
-        print('RegisterController._employeeRegisterPressed 2');
         _errorDialog("Invalid Input", "you must accept our terms and condition");
       } else if (hasEmptyRequiredLabel() == false) {
-        print('RegisterController._employeeRegisterPressed 3');
         _employeeRegister();
       }
     }
@@ -286,6 +284,10 @@ class RegisterController extends GetxController implements RegisterInterface {
   }
 
   Future<void> _employeeRegister() async {
+    if (extraFieldList.isNotEmpty) {
+      List<Map<String, dynamic>> fieldListJson = extraFieldList.map((field) => field.toJson()).toList();
+      documentString = jsonEncode(jsonEncode(fieldListJson));
+    }
     EmployeeRegistration employeeRegistration = EmployeeRegistration(
         firstName: tecEmployeeFirstName.text.trim(),
         lastName: tecEmployeeLastName.text.trim(),
@@ -293,7 +295,7 @@ class RegisterController extends GetxController implements RegisterInterface {
         phoneNumber: tecEmployeePhone.text.trim(),
         countryName: selectedEmployeeCountry.value,
         positionId: Utils.getPositionId(selectedPosition.value.trim()),
-        documents: extraFieldList.isNotEmpty ? jsonEncode(extraFieldList) : null);
+        documents: documentString);
 
     // update dialogue text
 
@@ -472,14 +474,18 @@ class RegisterController extends GetxController implements RegisterInterface {
     if (extraFieldList.isEmpty) {
       return false;
     } else {
-      for (final field in extraFieldList) {
-        if (field.required == true && field.label!.isEmpty) {
-          print('RegisterController.hasEmptyRequiredLabel');
-          Utils.showSnackBar(message: '${field.label} is required', isTrue: false);
-          return true; // Found a required field with an empty label
+      for (final Fields field in extraFieldList) {
+        final bool required = field.required ?? false;
+        final String value = field.value ?? '';
+
+        if (required == true && value.isEmpty) {
+          Utils.showSnackBar(message: '${field.placeholder} is required', isTrue: false);
+          return true;
+        } else {
+          continue;
         }
       }
-      return false;
     }
+    return false; // No required field with an invalid label found
   }
 }

@@ -12,11 +12,10 @@ import 'package:http/http.dart' as http;
 
 class ApiHelperImplementWithFileUpload {
   static void employeeRegister(Map<String, dynamic> data) async {
-    print('ApiHelperImplementWithFileUpload.employeeRegister: $data');
     SendPort responseSendPort = data["responseReceivePort"];
 
     Response? result = await _uploadData(
-      "${ServerUrls.serverTestUrlUser}users/employee-register",
+      "${ServerUrls.serverLiveUrlUser}users/employee-register",
       data,
       postMethod: true,
     );
@@ -110,7 +109,7 @@ class ApiHelperImplementWithFileUpload {
 
   static Future<String> uploadExtraFile({required File file, required String fileName}) async {
     try {
-      final String url = '${ServerUrls.serverTestUrlUser}document/upload-document';
+      final String url = '${ServerUrls.serverLiveUrlUser}document/upload-document';
       http.MultipartRequest request = http.MultipartRequest('POST', Uri.parse(url));
       request.headers['Content-Type'] = 'multipart/form-data';
       request.files.add(await http.MultipartFile.fromPath('document', file.absolute.path,
