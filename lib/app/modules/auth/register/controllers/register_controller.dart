@@ -450,7 +450,7 @@ class RegisterController extends GetxController implements RegisterInterface {
         await _apiHelper.getEmployeeExtraField(countryName: selectedEmployeeCountry.value.trim());
     employeeExtraFieldDataLoading.value = false;
     responseData.fold((CustomError customError) {
-      Utils.errorDialog(context!, customError..onRetry = _getEmployeeExtraField);
+      Utils.errorDialog(context!, customError);
     }, (ExtraFieldModel response) {
       if (response.status == "success" && (response.statusCode == 201 || response.statusCode == 200)) {
         extraFieldList.value = response.extraFieldDetails?.fields ?? [];

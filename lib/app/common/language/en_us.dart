@@ -28,7 +28,7 @@ Map<String, String> en = {
   MyStrings.emailAddress: "Email Address",
   MyStrings.phoneNumber: "Phone Number",
   MyStrings.restaurantIpAddress: "Restaurant IP Address",
-  MyStrings.iAgreeToTheOf: "I agree to the of ",
+  MyStrings.iAgreeToTheOf: "I agree with ",
   MyStrings.termsConditions: "Terms & Conditions ",
   MyStrings.mhApp: "of MH APP",
   MyStrings.alreadyHaveAnAccount: "Already have an account?",
