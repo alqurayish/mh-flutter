@@ -66,6 +66,7 @@ class AdminAllEmployeesController extends GetxController {
     String minTotalHour,
     String maxTotalHour,
     String positionId,
+    String dressSize,
   ) async {
     //currentPage.value = 1;
     employees.value.users?.clear();

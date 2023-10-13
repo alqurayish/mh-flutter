@@ -94,6 +94,7 @@ class EmployeeDetailsView extends GetView<EmployeeDetailsController> {
           String? age,
           double? rating,
           int? totalRating,
+            String? nationality,
           String? phone}) =>
       Container(
         padding: EdgeInsets.fromLTRB(35.w, 13.h, 35.w, 13.h),
@@ -129,17 +130,47 @@ class EmployeeDetailsView extends GetView<EmployeeDetailsController> {
                 ),
               ),
             if (phone != null && phone.isNotEmpty && controller.fromWhere == "admin_home_view") SizedBox(height: 10.h),
-            if (position != null && position.isNotEmpty)
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 3.0),
-                decoration: const BoxDecoration(
-                    color: MyColors.c_C6A34F,
-                    borderRadius: BorderRadius.only(topLeft: Radius.circular(5.0), bottomRight: Radius.circular(5.0))),
-                child: Text(
-                  position,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(color: MyColors.white, fontWeight: FontWeight.bold),
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  if (position != null && position.isNotEmpty)
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 3.0),
+                    decoration: const BoxDecoration(
+                        color: Colors.blue,
+                        borderRadius: BorderRadius.only(topLeft: Radius.circular(5.0), bottomRight: Radius.circular(5.0))),
+                    child: Row(
+                      children: [
+                        const Icon(Icons.work_outline, size: 15, color: MyColors.white),
+                        SizedBox(width: 5.w),
+                        Text(
+                          position,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(color: MyColors.white, fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(width: 10.w),
+                  if (nationality != null && nationality.isNotEmpty)
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 3.0),
+                    decoration: const BoxDecoration(
+                        color: Colors.teal,
+                        borderRadius: BorderRadius.only(topLeft: Radius.circular(5.0), bottomRight: Radius.circular(5.0))),
+                    child: Row(
+                      children: [
+                        const Icon(CupertinoIcons.flag, size: 15, color: MyColors.white),
+                        SizedBox(width: 5.w),
+                        Text(
+                          nationality,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(color: MyColors.white, fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             if (position != null && position.isNotEmpty) SizedBox(height: 10.h),
             Visibility(
@@ -232,6 +263,7 @@ class EmployeeDetailsView extends GetView<EmployeeDetailsController> {
         age: 'Age: ${controller.employee.dateOfBirth?.calculateAge() ?? 0.0}',
         rating: controller.employee.rating ?? 0.0,
         totalRating: controller.employee.totalRating ?? 0,
+        nationality: controller.employee.nationality??'',
         child: Column(
           children: [
             SizedBox(height: 5.h),
@@ -258,6 +290,24 @@ class EmployeeDetailsView extends GetView<EmployeeDetailsController> {
                 _detailsItem(MyAssets.license, MyStrings.licenseNo.tr, controller.employee.licensesNo ?? "-"),
                 const Spacer(),
                 _detailsItem(MyAssets.calender2, 'Free: ', controller.employee.available ?? "-"),
+              ],
+            ),
+            SizedBox(height: 18.h),
+            Row(
+              children: [
+                _detailsItem(MyAssets.organization, 'Current Organization:', controller.employee.currentOrganisation ?? "-"),
+                const Spacer(),
+                _detailsItem(MyAssets.weight, 'Weight: ', controller.employee.weight ?? "-"),
+
+              ],
+            ),
+            SizedBox(height: 18.h),
+
+            Row(
+              children: [
+                _detailsItem(MyAssets.height, 'Height:', controller.employee.height ?? "-"),
+                const Spacer(),
+                _detailsItem(MyAssets.dressSize, 'Dress Size: ', controller.employee.dressSize ?? "-"),
               ],
             ),
             SizedBox(height: 5.h),

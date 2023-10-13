@@ -30,6 +30,11 @@ class MyAssets {
   static const totalHour = "assets/images/total_hour.png";
   static const review = "assets/images/review.png";
   static const license = "assets/images/license.png";
+  static const height = "assets/icons/height.png";
+  static const weight = "assets/icons/weight.png";
+  static const nationality = "assets/icons/nationality.png";
+  static const organization = "assets/icons/organization.png";
+  static const dressSize = "assets/icons/dress_size.png";
   static const location = "assets/images/location.png";
   static const education = "assets/images/education.png";
   static const certificate = "assets/images/certificate.png";

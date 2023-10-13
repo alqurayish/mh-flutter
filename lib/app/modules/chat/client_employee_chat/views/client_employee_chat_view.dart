@@ -70,7 +70,7 @@ class ClientEmployeeChatView extends GetView<ClientEmployeeChatController> {
                       ),
                     )
                   : StreamBuilder<QuerySnapshot>(
-                      stream: controller.massageCollection.orderBy('time').snapshots(),
+                      stream: controller.messageCollection.orderBy('time').snapshots(),
                       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
                         if (snapshot.hasError) {
                           return const Center(child: Text('Something went wrong'));

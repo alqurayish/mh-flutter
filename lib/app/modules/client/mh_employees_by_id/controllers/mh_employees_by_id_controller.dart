@@ -52,6 +52,7 @@ class MhEmployeesByIdController extends GetxController {
     String? experience,
     String? minTotalHour,
     String? maxTotalHour,
+    String? dressSize
   }) async {
     if (isLoading.value) return;
 
@@ -64,6 +65,7 @@ class MhEmployeesByIdController extends GetxController {
       employeeExperience: experience,
       minTotalHour: minTotalHour,
       maxTotalHour: maxTotalHour,
+      dressSize: dressSize
     )
         .then((Either<CustomError, Employees> response) {
       isLoading.value = false;
@@ -77,18 +79,15 @@ class MhEmployeesByIdController extends GetxController {
     });
   }
 
-  void onApplyClick(
-    String selectedRating,
-    String selectedExp,
-    String minTotalHour,
-    String maxTotalHour,
-    String positionId,
-  ) {
+  void onApplyClick(String selectedRating, String selectedExp, String minTotalHour, String maxTotalHour,
+      String positionId, String dressSize) {
+    print('MhEmployeesByIdController.onApplyClick: $dressSize');
     _getEmployees(
       rating: selectedRating,
       experience: selectedExp,
       minTotalHour: minTotalHour,
       maxTotalHour: maxTotalHour,
+      dressSize: dressSize
     );
   }
 

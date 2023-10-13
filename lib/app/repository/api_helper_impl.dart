@@ -296,6 +296,7 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
     String? minTotalHour,
     String? maxTotalHour,
     bool? isReferred,
+    String? dressSize
   }) async {
     String url = "users/list?";
 
@@ -305,6 +306,7 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
     if ((minTotalHour ?? "").isNotEmpty) url += "&minTotalHour=$minTotalHour";
     if ((maxTotalHour ?? "").isNotEmpty) url += "&maxTotalHour=$maxTotalHour";
     if (isReferred ?? false) url += "&isReferPerson=${isReferred!.toApiFormat}";
+    if ((dressSize ?? "").isNotEmpty) url += "&dressSize=$dressSize";
     var response = await get(url);
     if (response.statusCode == null) response = await get(url);
     if (response.statusCode == null) response = await get(url);

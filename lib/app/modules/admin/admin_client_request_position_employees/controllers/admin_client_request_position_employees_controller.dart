@@ -143,6 +143,7 @@ class AdminClientRequestPositionEmployeesController extends GetxController {
     String minTotalHour,
     String maxTotalHour,
     String positionId,
+    String dressSize,
   ) {
     _getEmployees(
       rating: selectedRating,

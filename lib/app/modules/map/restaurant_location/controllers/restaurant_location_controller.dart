@@ -48,7 +48,7 @@ class RestaurantLocationController extends GetxController {
 
   @override
   void onInit() {
-    LocationController.getBytesFromAsset(MyAssets.locationPin, Platform.isAndroid ? 80 : 100).then((Uint8List val) {
+    LocationController.getBytesFromAsset(MyAssets.locationPin, Platform.isAndroid ? 80 : 85).then((Uint8List val) {
       locationIcon.value = val;
       _getCurrentLocation();
     });

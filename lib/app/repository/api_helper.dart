@@ -73,6 +73,7 @@ abstract class ApiHelper {
     String? minTotalHour,
     String? maxTotalHour,
     bool? isReferred,
+    String? dressSize
   });
 
   EitherModel<Employees> getAllUsersFromAdmin(

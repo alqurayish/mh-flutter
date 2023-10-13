@@ -104,7 +104,12 @@ class Employee {
       this.pushNotificationDetails,
       this.isSuggested,
       this.available,
-      this.unAvailableDateList});
+      this.unAvailableDateList,
+      this.currentOrganisation,
+      this.nationality,
+      this.height,
+      this.weight,
+      this.dressSize});
 
   final String? id;
   final String? firstName;
@@ -161,6 +166,11 @@ class Employee {
   final bool? isSuggested;
   final List<CalenderDataModel>? unAvailableDateList;
   final String? available;
+  final String? currentOrganisation;
+  final String? dressSize;
+  final String? height;
+  final String? weight;
+  final String? nationality;
 
   factory Employee.fromRawJson(String str) => Employee.fromJson(json.decode(str));
 
@@ -223,6 +233,11 @@ class Employee {
       clientDiscount: json["clientDiscount"],
       lat: json["lat"],
       long: json["long"],
+      currentOrganisation: json["currentOrganisation"],
+      nationality: json["nationality"],
+      height: json["height"],
+      weight: json["weight"],
+      dressSize: json["dressSize"],
       pushNotificationDetails: json["pushNotificationDetails"] == null
           ? null
           : PushNotificationDetails.fromJson(json["pushNotificationDetails"]),
@@ -281,7 +296,12 @@ class Employee {
         "lat": lat,
         "long": long,
         "pushNotificationDetails": pushNotificationDetails?.toJson(),
-        "isSuggested": isSuggested
+        "isSuggested": isSuggested,
+        "currentOrganisation": currentOrganisation,
+        "nationality": nationality,
+        "height": height,
+        "weight": weight,
+        "dressSize": dressSize
       };
 }
 
