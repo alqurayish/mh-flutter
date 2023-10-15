@@ -4,6 +4,7 @@ import 'package:dartz/dartz.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get/get_connect/http/src/request/request.dart';
+import 'package:mh/app/models/hourly_rate_model.dart';
 import 'package:mh/app/models/nationality_model.dart';
 import 'package:mh/app/modules/auth/register/models/employee_extra_field_model.dart';
 import 'package:mh/app/modules/calender/models/calender_model.dart';
@@ -299,7 +300,8 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
       bool? isReferred,
       String? dressSize,
       String? nationality,
-      String? height,
+      String? minHeight,
+      String? maxHeight,
       String? hourlyRate}) async {
     String url = "users/list?";
 
@@ -310,7 +312,8 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
     if ((maxTotalHour ?? "").isNotEmpty) url += "&maxTotalHour=$maxTotalHour";
     if (isReferred ?? false) url += "&isReferPerson=${isReferred!.toApiFormat}";
     if ((dressSize ?? "").isNotEmpty) url += "&dressSize=$dressSize";
-    if ((height ?? "").isNotEmpty) url += "&height=$height";
+    if ((minHeight ?? "").isNotEmpty) url += "&minHeight=$minHeight";
+    if ((maxHeight ?? "").isNotEmpty) url += "&maxHeight=$maxHeight";
     if ((hourlyRate ?? "").isNotEmpty) url += "&hourlyRate=$hourlyRate";
     if ((nationality ?? "").isNotEmpty) url += "&nationality=$nationality";
     Response response = await get(url);
@@ -1102,5 +1105,19 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
       response,
       NationalityModel.fromJson,
     ).fold((CustomError l) => left(l), (NationalityModel r) => right(r));
+  }
+
+  @override
+  EitherModel<HourlyRateModel> getHourlyRate() async {
+    String url = "users/hourly-rate-info";
+
+    Response response = await get(url);
+    if (response.statusCode == null) await get(url);
+    if (response.statusCode == null) await get(url);
+    if (response.statusCode == null) await get(url);
+    return _convert<HourlyRateModel>(
+      response,
+      HourlyRateModel.fromJson,
+    ).fold((CustomError l) => left(l), (HourlyRateModel r) => right(r));
   }
 }

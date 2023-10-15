@@ -235,8 +235,8 @@ class Employee {
       long: json["long"],
       currentOrganisation: json["currentOrganisation"],
       nationality: json["nationality"],
-      height: json["height"],
-      weight: json["weight"],
+      height: json["height"].toString(),
+      weight: json["weight"].toString(),
       dressSize: json["dressSize"],
       pushNotificationDetails: json["pushNotificationDetails"] == null
           ? null

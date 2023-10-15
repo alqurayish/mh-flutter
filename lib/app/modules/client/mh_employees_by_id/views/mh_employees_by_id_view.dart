@@ -96,9 +96,10 @@ class MhEmployeesByIdView extends GetView<MhEmployeesByIdController> {
           const Spacer(),
           GestureDetector(
             onTap: () => CustomFilter.customFilter(
-              controller.context!,
-              controller.onApplyClick,
-              controller.onResetClick,
+              context: controller.context!,
+              nationalityList: controller.nationalityList,
+              onApplyClick: controller.onApplyClick,
+              onResetClick: controller.onResetClick,
             ),
             child: Container(
               width: 36.w,

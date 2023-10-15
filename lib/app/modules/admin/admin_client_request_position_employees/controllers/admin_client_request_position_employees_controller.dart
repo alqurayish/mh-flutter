@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:mh/app/models/nationality_model.dart';
 import 'package:mh/app/modules/employee/employee_home/models/booking_history_model.dart';
 
 import '../../../../common/controller/app_controller.dart';
@@ -31,6 +32,8 @@ class AdminClientRequestPositionEmployeesController extends GetxController {
   RxString hireStatus = "Hired".obs;
 
   String requestId = '';
+
+  RxList<NationalityDetailsModel> nationalityList = <NationalityDetailsModel>[].obs;
 
   @override
   void onInit() {
@@ -113,7 +116,8 @@ class AdminClientRequestPositionEmployeesController extends GetxController {
     String? maxTotalHour,
     String? dressSize,
     String? nationality,
-    String? height,
+    String? minHeight,
+    String? maxHeight,
     String? hourlyRate,
   }) async {
     isLoading.value = true;
@@ -146,7 +150,8 @@ class AdminClientRequestPositionEmployeesController extends GetxController {
     String positionId,
     String dressSize,
     String nationality,
-    String height,
+    String minHeight,
+    String maxHeight,
     String hourlyRate,
   ) {
     _getEmployees(
@@ -156,7 +161,8 @@ class AdminClientRequestPositionEmployeesController extends GetxController {
         maxTotalHour: maxTotalHour,
         dressSize: dressSize,
         hourlyRate: hourlyRate,
-        height: height,
+        minHeight: minHeight,
+        maxHeight: maxHeight,
         nationality: nationality);
   }
 
@@ -203,5 +209,14 @@ class AdminClientRequestPositionEmployeesController extends GetxController {
         }
       }
     }
+  }
+  Future<void> getNationalityList() async {
+    Either<CustomError, NationalityModel> response = await _apiHelper.getNationalities();
+    response.fold((CustomError customError) {
+      Utils.errorDialog(context!, customError);
+    }, (NationalityModel responseData) {
+      nationalityList.value = responseData.nationalities ?? [];
+      nationalityList.refresh();
+    });
   }
 }

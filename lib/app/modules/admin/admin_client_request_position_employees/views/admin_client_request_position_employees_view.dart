@@ -25,9 +25,9 @@ class AdminClientRequestPositionEmployeesView extends GetView<AdminClientRequest
         () => (controller.employees.value.users ?? []).isEmpty
             ? controller.isLoading.value
                 ? Padding(
-                  padding:  EdgeInsets.only(top: 70.h, left: 15.w, right: 15.w),
-                  child: ShimmerWidget.clientMyEmployeesShimmerWidget(),
-                )
+                    padding: EdgeInsets.only(top: 70.h, left: 15.w, right: 15.w),
+                    child: ShimmerWidget.clientMyEmployeesShimmerWidget(),
+                  )
                 : Column(
                     children: [
                       _resultCountWithFilter(),
@@ -70,9 +70,10 @@ class AdminClientRequestPositionEmployeesView extends GetView<AdminClientRequest
           const Spacer(),
           GestureDetector(
             onTap: () => CustomFilter.customFilter(
-              controller.context!,
-              controller.onApplyClick,
-              controller.onResetClick,
+              context: controller.context!,
+              nationalityList: controller.nationalityList,
+              onApplyClick: controller.onApplyClick,
+              onResetClick: controller.onResetClick,
             ),
             child: Container(
               width: 36.w,
@@ -159,12 +160,8 @@ class AdminClientRequestPositionEmployeesView extends GetView<AdminClientRequest
                                     Flexible(
                                         flex: user.rating! > 0.0 ? 3 : 4,
                                         child: _name("${user.firstName ?? "-"} ${user.lastName ?? ""}")),
-                                    Expanded(
-                                      flex: 2,
-                                        child: _rating(user.rating ?? 0.0)),
-                                    const Expanded(
-                                      flex: 2,
-                                        child: Wrap())
+                                    Expanded(flex: 2, child: _rating(user.rating ?? 0.0)),
+                                    const Expanded(flex: 2, child: Wrap())
                                   ],
                                 ),
                               ],
@@ -190,7 +187,8 @@ class AdminClientRequestPositionEmployeesView extends GetView<AdminClientRequest
                       SizedBox(height: 8.h),
                       Row(
                         children: [
-                          _detailsItem(MyAssets.rate, MyStrings.rate.tr, "${Utils.getCurrencySymbol(Get.find<AppController>().user.value.admin?.countryName ?? '')}${user.hourlyRate ?? 0}"),
+                          _detailsItem(MyAssets.rate, MyStrings.rate.tr,
+                              "${Utils.getCurrencySymbol(Get.find<AppController>().user.value.admin?.countryName ?? '')}${user.hourlyRate ?? 0}"),
                         ],
                       ),
                     ],

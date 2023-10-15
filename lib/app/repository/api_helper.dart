@@ -1,3 +1,4 @@
+import 'package:mh/app/models/hourly_rate_model.dart';
 import 'package:mh/app/models/nationality_model.dart';
 import 'package:mh/app/modules/auth/register/models/employee_extra_field_model.dart';
 import 'package:mh/app/modules/calender/models/calender_model.dart';
@@ -67,18 +68,18 @@ abstract class ApiHelper {
     String id,
   );
 
-  EitherModel<Employees> getEmployees({
-    String? positionId,
-    String? rating,
-    String? employeeExperience,
-    String? minTotalHour,
-    String? maxTotalHour,
-    bool? isReferred,
-    String? dressSize,
-    String? nationality,
-    String? height,
-    String? hourlyRate
-  });
+  EitherModel<Employees> getEmployees(
+      {String? positionId,
+      String? rating,
+      String? employeeExperience,
+      String? minTotalHour,
+      String? maxTotalHour,
+      bool? isReferred,
+      String? dressSize,
+      String? nationality,
+      String? minHeight,
+      String? maxHeight,
+      String? hourlyRate});
 
   EitherModel<Employees> getAllUsersFromAdmin(
       {String? positionId,
@@ -195,4 +196,5 @@ abstract class ApiHelper {
   EitherModel<ExtraFieldModel> getEmployeeExtraField({required String countryName});
 
   EitherModel<NationalityModel> getNationalities();
+  EitherModel<HourlyRateModel> getHourlyRate();
 }

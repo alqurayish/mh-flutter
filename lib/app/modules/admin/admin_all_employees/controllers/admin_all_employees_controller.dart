@@ -1,4 +1,6 @@
 import 'package:dartz/dartz.dart';
+import 'package:mh/app/models/nationality_model.dart';
+import 'package:mh/app/models/position.dart';
 
 import '../../../../common/controller/app_controller.dart';
 import '../../../../common/utils/exports.dart';
@@ -18,6 +20,8 @@ class AdminAllEmployeesController extends GetxController {
   Rx<Employees> employees = Employees().obs;
   RxBool employeeDataLoading = true.obs;
 
+  RxList<NationalityDetailsModel> nationalityList = <NationalityDetailsModel>[].obs;
+
   /* RxInt currentPage = 1.obs;
   final ScrollController scrollController = ScrollController();
   RxBool moreDataAvailable = true.obs;*/
@@ -25,6 +29,7 @@ class AdminAllEmployeesController extends GetxController {
   @override
   void onInit() async {
     await _getEmployees();
+    await getNationalityList();
     //paginateTask();
     super.onInit();
   }
@@ -53,7 +58,7 @@ class AdminAllEmployeesController extends GetxController {
   }
 
   String getPositionLogo(String positionId) {
-    var positions = appController.allActivePositions.where((element) => element.id == positionId);
+    Iterable<Position> positions = appController.allActivePositions.where((element) => element.id == positionId);
 
     if (positions.isEmpty) return MyAssets.defaultImage;
 
@@ -68,7 +73,8 @@ class AdminAllEmployeesController extends GetxController {
     String positionId,
     String dressSize,
     String nationality,
-    String height,
+    String minHeight,
+    String maxHeight,
     String hourlyRate,
   ) async {
     //currentPage.value = 1;
@@ -81,7 +87,8 @@ class AdminAllEmployeesController extends GetxController {
         positionId: positionId,
         dressSize: dressSize,
         nationality: nationality,
-        height: height,
+        minHeight: minHeight,
+        maxHeight: maxHeight,
         hourlyRate: hourlyRate);
   }
 
@@ -100,9 +107,9 @@ class AdminAllEmployeesController extends GetxController {
     String? positionId,
     String? dressSize,
     String? nationality,
-    String? height,
+    String? minHeight,
+    String? maxHeight,
     String? hourlyRate,
-
   }) async {
     employeeDataLoading.value = true;
 
@@ -178,4 +185,14 @@ class AdminAllEmployeesController extends GetxController {
       this.employees.refresh();
     });
   }*/
+
+  Future<void> getNationalityList() async {
+    Either<CustomError, NationalityModel> response = await _apiHelper.getNationalities();
+    response.fold((CustomError customError) {
+      Utils.errorDialog(context!, customError);
+    }, (NationalityModel responseData) {
+      nationalityList.value = responseData.nationalities ?? [];
+      nationalityList.refresh();
+    });
+  }
 }

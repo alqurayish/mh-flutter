@@ -47,7 +47,7 @@ class AdminAllEmployeesView extends GetView<AdminAllEmployeesController> {
                       padding: EdgeInsets.symmetric(vertical: 20.h),
                       itemCount: controller.employees.value.users?.length ?? 0,
                       itemBuilder: (context, index) {
-                      /*  if (index == controller.employees.value.users!.length - 1 &&
+                        /*  if (index == controller.employees.value.users!.length - 1 &&
                             controller.moreDataAvailable.value == true) {
                           return const SpinKitThreeBounce(
                             color: MyColors.c_C6A34F,
@@ -82,9 +82,10 @@ class AdminAllEmployeesView extends GetView<AdminAllEmployeesController> {
           const Spacer(),
           GestureDetector(
             onTap: () => CustomFilter.customFilter(
-              controller.context!,
-              controller.onApplyClick,
-              controller.onResetClick,
+              context: controller.context!,
+              nationalityList: controller.nationalityList,
+              onApplyClick: controller.onApplyClick,
+              onResetClick: controller.onResetClick,
               showPositionId: true,
             ),
             child: Container(
@@ -341,7 +342,7 @@ class AdminAllEmployeesView extends GetView<AdminAllEmployeesController> {
                             data["allAdmin_unread"] > 0);
                     if (result.isEmpty) return Container();
                     return Padding(
-                      padding:  EdgeInsets.only(top: 5.0.h, right: 3.0.w),
+                      padding: EdgeInsets.only(top: 5.0.h, right: 3.0.w),
                       child: CustomBadge(result.first["allAdmin_unread"].toString()),
                     );
                   },
