@@ -18,7 +18,7 @@ class AdminAllEmployeesController extends GetxController {
   Rx<Employees> employees = Employees().obs;
   RxBool employeeDataLoading = true.obs;
 
- /* RxInt currentPage = 1.obs;
+  /* RxInt currentPage = 1.obs;
   final ScrollController scrollController = ScrollController();
   RxBool moreDataAvailable = true.obs;*/
 
@@ -67,6 +67,9 @@ class AdminAllEmployeesController extends GetxController {
     String maxTotalHour,
     String positionId,
     String dressSize,
+    String nationality,
+    String height,
+    String hourlyRate,
   ) async {
     //currentPage.value = 1;
     employees.value.users?.clear();
@@ -75,7 +78,11 @@ class AdminAllEmployeesController extends GetxController {
         experience: selectedExp,
         minTotalHour: minTotalHour,
         maxTotalHour: maxTotalHour,
-        positionId: positionId);
+        positionId: positionId,
+        dressSize: dressSize,
+        nationality: nationality,
+        height: height,
+        hourlyRate: hourlyRate);
   }
 
   void onResetClick() {
@@ -91,6 +98,11 @@ class AdminAllEmployeesController extends GetxController {
     String? minTotalHour,
     String? maxTotalHour,
     String? positionId,
+    String? dressSize,
+    String? nationality,
+    String? height,
+    String? hourlyRate,
+
   }) async {
     employeeDataLoading.value = true;
 
@@ -136,7 +148,7 @@ class AdminAllEmployeesController extends GetxController {
     await _getMoreEmployees();
   }*/
 
- /* Future<void> _getMoreEmployees({
+  /* Future<void> _getMoreEmployees({
     String? rating,
     String? experience,
     String? minTotalHour,

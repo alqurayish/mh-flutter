@@ -18,7 +18,7 @@ class CustomFilter {
   static customFilter(
     BuildContext context,
     Function(String selectedRating, String selectedExp, String minTotalHour, String maxTotalHour, String positionId,
-            String dressSize)
+            String dressSize, String nationality, String height, String hourlyRate)
         onApplyClick,
     Function() onResetClick, {
     bool showPositionId = false,
@@ -32,6 +32,9 @@ class CustomFilter {
         String maxTotalHour = "";
         String positionId = "";
         String selectedDressSize = "";
+        String selectedNationality = "";
+        String selectedHeight = "";
+        String selectedHourlyRate = "";
 
         return Container(
           color: MyColors.lightCard(context),
@@ -296,8 +299,8 @@ class CustomFilter {
                         height: 52.h,
                         onTap: () {
                           Get.back();
-                          print('CustomFilter.customFilter: $selectedDressSize');
-                          onApplyClick(selectedRating, selectedExp, minTotalHour, maxTotalHour, positionId, selectedDressSize);
+                          onApplyClick(
+                              selectedRating, selectedExp, minTotalHour, maxTotalHour, positionId, selectedDressSize, selectedNationality, selectedHeight, selectedHourlyRate);
                         },
                         text: "Apply",
                         margin: EdgeInsets.zero,

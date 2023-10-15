@@ -1,3 +1,4 @@
+import 'package:mh/app/models/nationality_model.dart';
 import 'package:mh/app/modules/auth/register/models/employee_extra_field_model.dart';
 import 'package:mh/app/modules/calender/models/calender_model.dart';
 import 'package:mh/app/modules/calender/models/update_unavailable_date_request_model.dart';
@@ -73,7 +74,10 @@ abstract class ApiHelper {
     String? minTotalHour,
     String? maxTotalHour,
     bool? isReferred,
-    String? dressSize
+    String? dressSize,
+    String? nationality,
+    String? height,
+    String? hourlyRate
   });
 
   EitherModel<Employees> getAllUsersFromAdmin(
@@ -189,4 +193,6 @@ abstract class ApiHelper {
       {required UpdateUnavailableDateRequestModel updateUnavailableDateRequestModel});
 
   EitherModel<ExtraFieldModel> getEmployeeExtraField({required String countryName});
+
+  EitherModel<NationalityModel> getNationalities();
 }

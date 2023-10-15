@@ -40,12 +40,12 @@ class CalenderMonthWidget extends StatelessWidget {
         } else if (controller.dateListModel.value.pendingDates!.containsDate(currentDate)) {
           textColor = Colors.amber;
         } else if (controller.dateListModel.value.unavailableDates!.containsDate(currentDate)) {
-          textColor = MyColors.l111111_dwhite(context);
+          textColor = Colors.blue;
           if (Get.isRegistered<EmployeeHomeController>()) {
             canUpdateUnavailableDate = true;
           }
         } else if (currentDate.isBefore(DateTime.now()) || controller.selectedDate.value == currentDate) {
-          textColor = Colors.blue;
+          textColor = Colors.grey;
         } else {
           textColor = Colors.green; // Available days should be green
           canTapDate = true;

@@ -4,6 +4,7 @@ import 'package:dartz/dartz.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get/get_connect/http/src/request/request.dart';
+import 'package:mh/app/models/nationality_model.dart';
 import 'package:mh/app/modules/auth/register/models/employee_extra_field_model.dart';
 import 'package:mh/app/modules/calender/models/calender_model.dart';
 import 'package:mh/app/modules/calender/models/update_unavailable_date_request_model.dart';
@@ -289,15 +290,17 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
   }
 
   @override
-  EitherModel<Employees> getEmployees({
-    String? positionId,
-    String? rating,
-    String? employeeExperience,
-    String? minTotalHour,
-    String? maxTotalHour,
-    bool? isReferred,
-    String? dressSize
-  }) async {
+  EitherModel<Employees> getEmployees(
+      {String? positionId,
+      String? rating,
+      String? employeeExperience,
+      String? minTotalHour,
+      String? maxTotalHour,
+      bool? isReferred,
+      String? dressSize,
+      String? nationality,
+      String? height,
+      String? hourlyRate}) async {
     String url = "users/list?";
 
     if ((positionId ?? "").isNotEmpty) url += "positionId=$positionId";
@@ -307,7 +310,10 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
     if ((maxTotalHour ?? "").isNotEmpty) url += "&maxTotalHour=$maxTotalHour";
     if (isReferred ?? false) url += "&isReferPerson=${isReferred!.toApiFormat}";
     if ((dressSize ?? "").isNotEmpty) url += "&dressSize=$dressSize";
-    var response = await get(url);
+    if ((height ?? "").isNotEmpty) url += "&height=$height";
+    if ((hourlyRate ?? "").isNotEmpty) url += "&hourlyRate=$hourlyRate";
+    if ((nationality ?? "").isNotEmpty) url += "&nationality=$nationality";
+    Response response = await get(url);
     if (response.statusCode == null) response = await get(url);
     if (response.statusCode == null) response = await get(url);
     if (response.statusCode == null) response = await get(url);
@@ -1082,5 +1088,19 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
       response,
       ExtraFieldModel.fromJson,
     ).fold((CustomError l) => left(l), (ExtraFieldModel r) => right(r));
+  }
+
+  @override
+  EitherModel<NationalityModel> getNationalities() async {
+    String url = "commons/nationality";
+
+    Response response = await get(url);
+    if (response.statusCode == null) await get(url);
+    if (response.statusCode == null) await get(url);
+    if (response.statusCode == null) await get(url);
+    return _convert<NationalityModel>(
+      response,
+      NationalityModel.fromJson,
+    ).fold((CustomError l) => left(l), (NationalityModel r) => right(r));
   }
 }

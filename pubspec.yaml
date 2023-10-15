@@ -1,5 +1,5 @@
 name: mh
-version: 2.3.5+32
+version: 2.3.6+33
 publish_to: none
 description: A new Flutter project.
 environment:
@@ -25,7 +25,7 @@ dependencies:
   image_picker: ^1.0.4
   image_cropper: ^5.0.0
 
-  file_picker: ^5.5.0
+  file_picker: ^6.0.0
 
   # for image picker
   permission_handler: ^11.0.1
@@ -35,7 +35,7 @@ dependencies:
 
   http_parser: ^4.0.2
 
-  share_plus: ^7.1.0
+  share_plus: ^7.2.0
 
   # check ui in different device
 #  device_preview: ^1.1.0
@@ -88,7 +88,7 @@ dependencies:
   firebase_messaging: ^14.6.9
   flutter_local_notifications: ^16.1.0
   cloud_firestore: ^4.9.3
-  device_info_plus: ^9.0.3
+  device_info_plus: ^9.1.0
   http: ^1.1.0
   flutter_spinkit: ^5.2.0
   custom_radio_grouped_button: ^2.2.1

@@ -47,26 +47,30 @@ class MhEmployeesByIdController extends GetxController {
     });
   }
 
-  Future<void> _getEmployees({
-    String? rating,
-    String? experience,
-    String? minTotalHour,
-    String? maxTotalHour,
-    String? dressSize
-  }) async {
+  Future<void> _getEmployees(
+      {String? rating,
+      String? experience,
+      String? minTotalHour,
+      String? maxTotalHour,
+      String? dressSize,
+      String? nationality,
+      String? height,
+      String? hourlyRate}) async {
     if (isLoading.value) return;
 
     isLoading.value = true;
 
     await _apiHelper
         .getEmployees(
-      positionId: position.id,
-      rating: rating,
-      employeeExperience: experience,
-      minTotalHour: minTotalHour,
-      maxTotalHour: maxTotalHour,
-      dressSize: dressSize
-    )
+            positionId: position.id,
+            rating: rating,
+            employeeExperience: experience,
+            minTotalHour: minTotalHour,
+            maxTotalHour: maxTotalHour,
+            dressSize: dressSize,
+            nationality: nationality,
+            height: height,
+            hourlyRate: hourlyRate)
         .then((Either<CustomError, Employees> response) {
       isLoading.value = false;
 
@@ -80,15 +84,16 @@ class MhEmployeesByIdController extends GetxController {
   }
 
   void onApplyClick(String selectedRating, String selectedExp, String minTotalHour, String maxTotalHour,
-      String positionId, String dressSize) {
-    print('MhEmployeesByIdController.onApplyClick: $dressSize');
+      String positionId, String dressSize, String nationality, String height, String hourlyRate) {
     _getEmployees(
-      rating: selectedRating,
-      experience: selectedExp,
-      minTotalHour: minTotalHour,
-      maxTotalHour: maxTotalHour,
-      dressSize: dressSize
-    );
+        rating: selectedRating,
+        experience: selectedExp,
+        minTotalHour: minTotalHour,
+        maxTotalHour: maxTotalHour,
+        dressSize: dressSize,
+        nationality: nationality,
+        hourlyRate: hourlyRate,
+        height: height);
   }
 
   void onResetClick() {

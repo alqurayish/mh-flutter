@@ -45,11 +45,8 @@ class AdminClientRequestPositionEmployeesController extends GetxController {
   }
 
   void onEmployeeClick(Employee employee) {
-    Get.toNamed(Routes.employeeDetails, arguments: {
-      MyStrings.arg.data: employee,
-      MyStrings.arg.showAsAdmin: true,
-      MyStrings.arg.fromWhere: ''
-    });
+    Get.toNamed(Routes.employeeDetails,
+        arguments: {MyStrings.arg.data: employee, MyStrings.arg.showAsAdmin: true, MyStrings.arg.fromWhere: ''});
   }
 
   List<SuggestedEmployeeDetail> suggestedEmployees() {
@@ -114,6 +111,10 @@ class AdminClientRequestPositionEmployeesController extends GetxController {
     String? experience,
     String? minTotalHour,
     String? maxTotalHour,
+    String? dressSize,
+    String? nationality,
+    String? height,
+    String? hourlyRate,
   }) async {
     isLoading.value = true;
 
@@ -144,13 +145,19 @@ class AdminClientRequestPositionEmployeesController extends GetxController {
     String maxTotalHour,
     String positionId,
     String dressSize,
+    String nationality,
+    String height,
+    String hourlyRate,
   ) {
     _getEmployees(
-      rating: selectedRating,
-      experience: selectedExp,
-      minTotalHour: minTotalHour,
-      maxTotalHour: maxTotalHour,
-    );
+        rating: selectedRating,
+        experience: selectedExp,
+        minTotalHour: minTotalHour,
+        maxTotalHour: maxTotalHour,
+        dressSize: dressSize,
+        hourlyRate: hourlyRate,
+        height: height,
+        nationality: nationality);
   }
 
   void onResetClick() {
