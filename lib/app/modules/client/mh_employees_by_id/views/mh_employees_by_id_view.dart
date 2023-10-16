@@ -94,10 +94,13 @@ class MhEmployeesByIdView extends GetView<MhEmployeesByIdController> {
             style: MyColors.l111111_dwhite(controller.context!).semiBold16,
           ),
           const Spacer(),
-          GestureDetector(
+          Obx(() => Visibility(
+            visible: controller.hourlyDetailsDataLoaded.value == true && controller.nationalityDataLoaded.value == true,
+              child: GestureDetector(
             onTap: () => CustomFilter.customFilter(
               context: controller.context!,
               nationalityList: controller.nationalityList,
+              hourlyRateDetails: controller.hourlyRateDetails.value,
               onApplyClick: controller.onApplyClick,
               onResetClick: controller.onResetClick,
             ),
@@ -113,7 +116,7 @@ class MhEmployeesByIdView extends GetView<MhEmployeesByIdController> {
                 color: Colors.white,
               ),
             ),
-          ),
+          ))),
         ],
       ),
     );

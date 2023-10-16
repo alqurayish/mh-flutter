@@ -68,26 +68,29 @@ class AdminClientRequestPositionEmployeesView extends GetView<AdminClientRequest
             style: MyColors.l111111_dwhite(controller.context!).semiBold16,
           ),
           const Spacer(),
-          GestureDetector(
-            onTap: () => CustomFilter.customFilter(
-              context: controller.context!,
-              nationalityList: controller.nationalityList,
-              onApplyClick: controller.onApplyClick,
-              onResetClick: controller.onResetClick,
-            ),
-            child: Container(
-              width: 36.w,
-              height: 36.w,
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                color: MyColors.c_DDBD68,
-              ),
-              child: const Icon(
-                Icons.filter_list_rounded,
-                color: Colors.white,
-              ),
-            ),
-          ),
+          Obx(() => Visibility(
+              visible: controller.nationalityDataLoaded.value == true && controller.hourlyRateDataLoaded.value == true,
+              child: GestureDetector(
+                onTap: () => CustomFilter.customFilter(
+                  context: controller.context!,
+                  hourlyRateDetails: controller.hourlyRateDetails.value,
+                  nationalityList: controller.nationalityList,
+                  onApplyClick: controller.onApplyClick,
+                  onResetClick: controller.onResetClick,
+                ),
+                child: Container(
+                  width: 36.w,
+                  height: 36.w,
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: MyColors.c_DDBD68,
+                  ),
+                  child: const Icon(
+                    Icons.filter_list_rounded,
+                    color: Colors.white,
+                  ),
+                ),
+              ))),
         ],
       ),
     );

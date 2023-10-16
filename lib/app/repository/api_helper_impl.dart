@@ -302,7 +302,8 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
       String? nationality,
       String? minHeight,
       String? maxHeight,
-      String? hourlyRate}) async {
+      String? minHourlyRate,
+      String? maxHourlyRate}) async {
     String url = "users/list?";
 
     if ((positionId ?? "").isNotEmpty) url += "positionId=$positionId";
@@ -314,7 +315,8 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
     if ((dressSize ?? "").isNotEmpty) url += "&dressSize=$dressSize";
     if ((minHeight ?? "").isNotEmpty) url += "&minHeight=$minHeight";
     if ((maxHeight ?? "").isNotEmpty) url += "&maxHeight=$maxHeight";
-    if ((hourlyRate ?? "").isNotEmpty) url += "&hourlyRate=$hourlyRate";
+    if ((minHourlyRate ?? "").isNotEmpty) url += "&minHourlyRate=$minHourlyRate";
+    if ((maxHourlyRate ?? "").isNotEmpty) url += "&maxHourlyRate=$maxHourlyRate";
     if ((nationality ?? "").isNotEmpty) url += "&nationality=$nationality";
     Response response = await get(url);
     if (response.statusCode == null) response = await get(url);

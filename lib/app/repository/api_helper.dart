@@ -79,7 +79,8 @@ abstract class ApiHelper {
       String? nationality,
       String? minHeight,
       String? maxHeight,
-      String? hourlyRate});
+      String? minHourlyRate,
+      String? maxHourlyRate});
 
   EitherModel<Employees> getAllUsersFromAdmin(
       {String? positionId,

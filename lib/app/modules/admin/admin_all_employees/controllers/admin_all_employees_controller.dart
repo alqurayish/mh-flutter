@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:mh/app/models/hourly_rate_model.dart';
 import 'package:mh/app/models/nationality_model.dart';
 import 'package:mh/app/models/position.dart';
 
@@ -21,6 +22,9 @@ class AdminAllEmployeesController extends GetxController {
   RxBool employeeDataLoading = true.obs;
 
   RxList<NationalityDetailsModel> nationalityList = <NationalityDetailsModel>[].obs;
+  RxBool nationalityDataLoad = false.obs;
+  Rx<HourlyRateDetailsModel> hourlyRateDetails = HourlyRateDetailsModel().obs;
+  RxBool hourlyRateDataLoaded = false.obs;
 
   /* RxInt currentPage = 1.obs;
   final ScrollController scrollController = ScrollController();
@@ -29,7 +33,8 @@ class AdminAllEmployeesController extends GetxController {
   @override
   void onInit() async {
     await _getEmployees();
-    await getNationalityList();
+    await _getNationalityList();
+    await _getHourlyRate();
     //paginateTask();
     super.onInit();
   }
@@ -66,17 +71,17 @@ class AdminAllEmployeesController extends GetxController {
   }
 
   void onApplyClick(
-    String selectedRating,
-    String selectedExp,
-    String minTotalHour,
-    String maxTotalHour,
-    String positionId,
-    String dressSize,
-    String nationality,
-    String minHeight,
-    String maxHeight,
-    String hourlyRate,
-  ) async {
+      String selectedRating,
+      String selectedExp,
+      String minTotalHour,
+      String maxTotalHour,
+      String positionId,
+      String dressSize,
+      String nationality,
+      String minHeight,
+      String maxHeight,
+      String minHourlyRate,
+      String maxHourlyRate) async {
     //currentPage.value = 1;
     employees.value.users?.clear();
     await _getEmployees(
@@ -89,7 +94,8 @@ class AdminAllEmployeesController extends GetxController {
         nationality: nationality,
         minHeight: minHeight,
         maxHeight: maxHeight,
-        hourlyRate: hourlyRate);
+        minHourlyRate: minHourlyRate,
+        maxHourlyRate: maxHourlyRate);
   }
 
   void onResetClick() {
@@ -99,18 +105,18 @@ class AdminAllEmployeesController extends GetxController {
     _getEmployees();
   }
 
-  Future<void> _getEmployees({
-    String? rating,
-    String? experience,
-    String? minTotalHour,
-    String? maxTotalHour,
-    String? positionId,
-    String? dressSize,
-    String? nationality,
-    String? minHeight,
-    String? maxHeight,
-    String? hourlyRate,
-  }) async {
+  Future<void> _getEmployees(
+      {String? rating,
+      String? experience,
+      String? minTotalHour,
+      String? maxTotalHour,
+      String? positionId,
+      String? dressSize,
+      String? nationality,
+      String? minHeight,
+      String? maxHeight,
+      String? minHourlyRate,
+      String? maxHourlyRate}) async {
     employeeDataLoading.value = true;
 
     Either<CustomError, Employees> response = await _apiHelper.getAllUsersFromAdmin(
@@ -186,7 +192,7 @@ class AdminAllEmployeesController extends GetxController {
     });
   }*/
 
-  Future<void> getNationalityList() async {
+  Future<void> _getNationalityList() async {
     Either<CustomError, NationalityModel> response = await _apiHelper.getNationalities();
     response.fold((CustomError customError) {
       Utils.errorDialog(context!, customError);
@@ -194,5 +200,19 @@ class AdminAllEmployeesController extends GetxController {
       nationalityList.value = responseData.nationalities ?? [];
       nationalityList.refresh();
     });
+    nationalityDataLoad.value = true;
+  }
+
+  Future<void> _getHourlyRate() async {
+    Either<CustomError, HourlyRateModel> response = await _apiHelper.getHourlyRate();
+    response.fold((CustomError customError) {
+      Utils.errorDialog(context!, customError);
+    }, (HourlyRateModel responseData) {
+      if (responseData.status == "success" && responseData.result != null) {
+        hourlyRateDetails.value = responseData.result!;
+        hourlyRateDetails.refresh();
+      }
+    });
+    hourlyRateDataLoaded.value = true;
   }
 }

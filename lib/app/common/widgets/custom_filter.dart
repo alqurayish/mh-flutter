@@ -9,6 +9,7 @@ import 'package:another_xlider/models/tooltip/tooltip_position_offset.dart';
 import 'package:another_xlider/models/trackbar.dart';
 import 'package:custom_radio_grouped_button/custom_radio_grouped_button.dart';
 import 'package:mh/app/common/controller/app_controller.dart';
+import 'package:mh/app/models/hourly_rate_model.dart';
 import 'package:mh/app/models/nationality_model.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
@@ -19,8 +20,19 @@ class CustomFilter {
   static customFilter({
     required BuildContext context,
     required List<NationalityDetailsModel> nationalityList,
-    required Function(String selectedRating, String selectedExp, String minTotalHour, String maxTotalHour,
-            String positionId, String dressSize, String nationality, String minHeight, String maxHeight, String hourlyRate)
+    required HourlyRateDetailsModel hourlyRateDetails,
+    required Function(
+            String selectedRating,
+            String selectedExp,
+            String minTotalHour,
+            String maxTotalHour,
+            String positionId,
+            String dressSize,
+            String nationality,
+            String minHeight,
+            String maxHeight,
+            String minHourlyRate,
+            String maxHourlyRate)
         onApplyClick,
     required Function() onResetClick,
     bool showPositionId = false,
@@ -34,14 +46,15 @@ class CustomFilter {
         String maxTotalHour = "";
         String positionId = "";
         String selectedDressSize = "";
-        String selectedNationality = nationalityList.first.nationality ?? '';
+        String selectedNationality = nationalityList.isNotEmpty ? nationalityList.first.nationality ?? '' : '';
         String minSelectedHeight = "";
         String maxSelectedHeight = "";
-        String selectedHourlyRate = "";
+        String minSelectedHourlyRate = "";
+        String maxSelectedHourlyRate = "";
 
         return Container(
           color: MyColors.lightCard(context),
-          height: Get.width*1.5,
+          height: Get.width * 1.5,
           child: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -286,22 +299,29 @@ class CustomFilter {
                   SizedBox(height: 27.h),
                   _title(context, 'Nationality'),
                   SizedBox(height: 15.h),
-                  DropdownButton<String>(
-                    isDense: true,
-                    isExpanded: true,
-                    value: selectedNationality,
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        selectedNationality = newValue ?? '';
-                      });
-                    },
-                    items: nationalityList.map<DropdownMenuItem<String>>((NationalityDetailsModel value) {
-                      return DropdownMenuItem<String>(
-                        value: value.nationality,
-                        child: Text(value.nationality ?? ''),
-                      );
-                    }).toList(),
-                  ),
+                  StatefulBuilder(builder: (BuildContext context, StateSetter setState) {
+                    return Container(
+                      padding: const EdgeInsets.all(8.0),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5.0), color: MyColors.c_C6A34F.withOpacity(0.5)),
+                      child: DropdownButton<String>(
+                        isDense: true,
+                        isExpanded: true,
+                        value: selectedNationality,
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            selectedNationality = newValue ?? '';
+                          });
+                        },
+                        items: nationalityList.map<DropdownMenuItem<String>>((NationalityDetailsModel value) {
+                          return DropdownMenuItem<String>(
+                            value: value.nationality,
+                            child: Text(value.nationality ?? ''),
+                          );
+                        }).toList(),
+                      ),
+                    );
+                  }),
                   SizedBox(height: 27.h),
                   _title(context, 'Height (inches)'),
                   SizedBox(height: 15.h),
@@ -365,6 +385,73 @@ class CustomFilter {
                     ),
                   ),
                   SizedBox(height: 27.h),
+                  _title(context, 'Hourly Rate'),
+                  SizedBox(height: 15.h),
+                  FlutterSlider(
+                    min: double.parse(hourlyRateDetails.min.toString()),
+                    max: double.parse(hourlyRateDetails.max.toString()),
+                    rangeSlider: true,
+                    values: [
+                      double.parse(hourlyRateDetails.min.toString()),
+                      double.parse(hourlyRateDetails.max.toString())
+                    ],
+                    selectByTap: false,
+                    step: const FlutterSliderStep(step: 1),
+                    onDragCompleted: (int handlerIndex, dynamic lowerValue, dynamic upperValue) {
+                      minSelectedHourlyRate = lowerValue.toString().split(".").first;
+                      maxSelectedHourlyRate = upperValue.toString().split(".").first;
+                    },
+                    tooltip: FlutterSliderTooltip(
+                      alwaysShowTooltip: true,
+                      positionOffset: FlutterSliderTooltipPositionOffset(top: -10),
+                      format: (String value) {
+                        return value.split(".").first;
+                      },
+                      boxStyle: FlutterSliderTooltipBox(
+                        decoration: BoxDecoration(
+                          color: MyColors.c_C6A34F,
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                      ),
+                      textStyle: const TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                    trackBar: _sliderTrackbar(context),
+                    handler: FlutterSliderHandler(
+                      decoration: const BoxDecoration(),
+                      child: Container(
+                        height: 15,
+                        width: 15,
+                        decoration: const BoxDecoration(
+                          color: MyColors.c_C6A34F,
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                    ),
+                    rightHandler: FlutterSliderHandler(
+                      decoration: const BoxDecoration(),
+                      child: Container(
+                        height: 15,
+                        width: 15,
+                        decoration: const BoxDecoration(
+                          color: MyColors.c_C6A34F,
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                    ),
+                    hatchMark: FlutterSliderHatchMark(
+                      linesDistanceFromTrackBar: -5,
+                      labelsDistanceFromTrackBar: 40,
+                      labels: [
+                        FlutterSliderHatchMarkLabel(
+                            percent: 0, label: _sliderHatchMarkLabel(context, "${hourlyRateDetails.min}")),
+                        FlutterSliderHatchMarkLabel(
+                            percent: 100, label: _sliderHatchMarkLabel(context, "${hourlyRateDetails.max}")),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 27.h),
                   Row(
                     children: [
                       Expanded(
@@ -395,7 +482,8 @@ class CustomFilter {
                                 selectedNationality,
                                 minSelectedHeight,
                                 maxSelectedHeight,
-                                selectedHourlyRate);
+                                minSelectedHourlyRate,
+                                maxSelectedHourlyRate);
                           },
                           text: "Apply",
                           margin: EdgeInsets.zero,
@@ -404,7 +492,7 @@ class CustomFilter {
                       ),
                     ],
                   ),
-                  SizedBox(height: 11.h),
+                  SizedBox(height: 27.h),
                 ],
               ),
             ),

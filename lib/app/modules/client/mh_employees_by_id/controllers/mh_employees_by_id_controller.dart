@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:mh/app/models/hourly_rate_model.dart';
 import 'package:mh/app/models/nationality_model.dart';
 
 import '../../../../common/controller/app_controller.dart';
@@ -24,6 +25,10 @@ class MhEmployeesByIdController extends GetxController {
   RxBool isLoading = false.obs;
 
   RxList<NationalityDetailsModel> nationalityList = <NationalityDetailsModel>[].obs;
+  RxBool nationalityDataLoaded = false.obs;
+
+  Rx<HourlyRateDetailsModel> hourlyRateDetails = HourlyRateDetailsModel().obs;
+  RxBool hourlyDetailsDataLoaded = false.obs;
 
   @override
   void onInit() {
@@ -34,7 +39,8 @@ class MhEmployeesByIdController extends GetxController {
   @override
   void onReady() async {
     await _getEmployees();
-    await getNationalityList();
+    await _getNationalityList();
+    await _getHourlyRate();
     super.onReady();
   }
 
@@ -60,7 +66,8 @@ class MhEmployeesByIdController extends GetxController {
       String? nationality,
       String? minHeight,
       String? maxHeight,
-      String? hourlyRate}) async {
+      String? minHourlyRate,
+      String? maxHourlyRate}) async {
     if (isLoading.value) return;
 
     isLoading.value = true;
@@ -76,7 +83,8 @@ class MhEmployeesByIdController extends GetxController {
             nationality: nationality,
             minHeight: minHeight,
             maxHeight: maxHeight,
-            hourlyRate: hourlyRate)
+            minHourlyRate: minHourlyRate,
+            maxHourlyRate: maxHourlyRate)
         .then((Either<CustomError, Employees> response) {
       isLoading.value = false;
 
@@ -89,8 +97,18 @@ class MhEmployeesByIdController extends GetxController {
     });
   }
 
-  void onApplyClick(String selectedRating, String selectedExp, String minTotalHour, String maxTotalHour,
-      String positionId, String dressSize, String nationality, String minHeight, String maxHeight, String hourlyRate) {
+  void onApplyClick(
+      String selectedRating,
+      String selectedExp,
+      String minTotalHour,
+      String maxTotalHour,
+      String positionId,
+      String dressSize,
+      String nationality,
+      String minHeight,
+      String maxHeight,
+      String minHourlyRate,
+      String maxHourlyRate) {
     _getEmployees(
         rating: selectedRating,
         experience: selectedExp,
@@ -98,7 +116,8 @@ class MhEmployeesByIdController extends GetxController {
         maxTotalHour: maxTotalHour,
         dressSize: dressSize,
         nationality: nationality,
-        hourlyRate: hourlyRate,
+        minHourlyRate: minHourlyRate,
+        maxHourlyRate: maxHourlyRate,
         minHeight: minHeight,
         maxHeight: maxHeight);
   }
@@ -121,7 +140,7 @@ class MhEmployeesByIdController extends GetxController {
     return '';
   }
 
-  Future<void> getNationalityList() async {
+  Future<void> _getNationalityList() async {
     Either<CustomError, NationalityModel> response = await _apiHelper.getNationalities();
     response.fold((CustomError customError) {
       Utils.errorDialog(context!, customError);
@@ -131,5 +150,19 @@ class MhEmployeesByIdController extends GetxController {
         nationalityList.refresh();
       }
     });
+    nationalityDataLoaded.value = true;
+  }
+
+  Future<void> _getHourlyRate() async {
+    Either<CustomError, HourlyRateModel> response = await _apiHelper.getHourlyRate();
+    response.fold((CustomError customError) {
+      Utils.errorDialog(context!, customError);
+    }, (HourlyRateModel responseData) {
+      if (responseData.status == "success" && responseData.result != null) {
+        hourlyRateDetails.value = responseData.result!;
+        hourlyRateDetails.refresh();
+      }
+    });
+    hourlyDetailsDataLoaded.value = true;
   }
 }

@@ -320,7 +320,6 @@ class RegisterController extends GetxController implements RegisterInterface {
       responseReceivePort.close();
 
       Get.back(); // hide dialog
-
       if (response != null) {
         if ([200, 201].contains(response["data"]["statusCode"])) {
           await appController.afterSuccessRegister("");

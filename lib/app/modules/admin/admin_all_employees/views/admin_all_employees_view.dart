@@ -80,9 +80,12 @@ class AdminAllEmployeesView extends GetView<AdminAllEmployeesController> {
             style: MyColors.l111111_dwhite(controller.context!).semiBold16,
           ),
           const Spacer(),
-          GestureDetector(
+          Obx(() => Visibility(
+            visible: controller.nationalityDataLoad.value == true && controller.hourlyRateDataLoaded.value == true,
+              child: GestureDetector(
             onTap: () => CustomFilter.customFilter(
               context: controller.context!,
+              hourlyRateDetails: controller.hourlyRateDetails.value,
               nationalityList: controller.nationalityList,
               onApplyClick: controller.onApplyClick,
               onResetClick: controller.onResetClick,
@@ -100,7 +103,7 @@ class AdminAllEmployeesView extends GetView<AdminAllEmployeesController> {
                 color: Colors.white,
               ),
             ),
-          ),
+          )))
         ],
       ),
     );
