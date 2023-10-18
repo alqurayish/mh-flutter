@@ -131,7 +131,6 @@ class AdminClientRequestPositionEmployeesController extends GetxController {
     await _apiHelper
         .getEmployees(
       positionId: clientRequestDetail.positionId,
-      rating: rating,
       employeeExperience: experience,
       minTotalHour: minTotalHour,
       maxTotalHour: maxTotalHour,
@@ -149,7 +148,6 @@ class AdminClientRequestPositionEmployeesController extends GetxController {
   }
 
   void onApplyClick(
-      String selectedRating,
       String selectedExp,
       String minTotalHour,
       String maxTotalHour,
@@ -161,7 +159,6 @@ class AdminClientRequestPositionEmployeesController extends GetxController {
       String minHourlyRate,
       String maxHourlyRate) {
     _getEmployees(
-        rating: selectedRating,
         experience: selectedExp,
         minTotalHour: minTotalHour,
         maxTotalHour: maxTotalHour,
@@ -225,6 +222,7 @@ class AdminClientRequestPositionEmployeesController extends GetxController {
     }, (NationalityModel responseData) {
       nationalityList.value = responseData.nationalities ?? [];
       nationalityList.refresh();
+      nationalityList.insert(0, NationalityDetailsModel(sId: '99', country: '', nationality: ''));
     });
     nationalityDataLoaded.value = true;
   }

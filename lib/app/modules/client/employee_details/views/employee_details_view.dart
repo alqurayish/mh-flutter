@@ -35,6 +35,8 @@ class EmployeeDetailsView extends GetView<EmployeeDetailsController> {
 
               SizedBox(height: 12.h),
 
+              _skill,
+              SizedBox(height: 12.h),
               _education,
 
               SizedBox(height: 12.h),
@@ -94,7 +96,8 @@ class EmployeeDetailsView extends GetView<EmployeeDetailsController> {
           String? age,
           double? rating,
           int? totalRating,
-            String? nationality,
+          String? nationality,
+          bool? certified,
           String? phone}) =>
       Container(
         padding: EdgeInsets.fromLTRB(35.w, 13.h, 35.w, 13.h),
@@ -108,10 +111,16 @@ class EmployeeDetailsView extends GetView<EmployeeDetailsController> {
         ),
         child: Column(
           children: [
-            Text(
-              title,
-              textAlign: TextAlign.center,
-              style: MyColors.l111111_dwhite(controller.context!).medium16,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  title,
+                  textAlign: TextAlign.center,
+                  style: MyColors.l111111_dwhite(controller.context!).medium16,
+                ),
+                if (certified != null && certified == true) Image.asset(MyAssets.certified, height: 35, width: 35)
+              ],
             ),
             SizedBox(height: 10.h),
             if (phone != null && phone.isNotEmpty && controller.fromWhere == "admin_home_view")
@@ -130,15 +139,16 @@ class EmployeeDetailsView extends GetView<EmployeeDetailsController> {
                 ),
               ),
             if (phone != null && phone.isNotEmpty && controller.fromWhere == "admin_home_view") SizedBox(height: 10.h),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  if (position != null && position.isNotEmpty)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                if (position != null && position.isNotEmpty)
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 3.0),
                     decoration: const BoxDecoration(
                         color: Colors.blue,
-                        borderRadius: BorderRadius.only(topLeft: Radius.circular(5.0), bottomRight: Radius.circular(5.0))),
+                        borderRadius:
+                            BorderRadius.only(topLeft: Radius.circular(5.0), bottomRight: Radius.circular(5.0))),
                     child: Row(
                       children: [
                         const Icon(Icons.work_outline, size: 15, color: MyColors.white),
@@ -151,13 +161,14 @@ class EmployeeDetailsView extends GetView<EmployeeDetailsController> {
                       ],
                     ),
                   ),
-                  SizedBox(width: 10.w),
-                  if (nationality != null && nationality.isNotEmpty)
+                SizedBox(width: 10.w),
+                if (nationality != null && nationality.isNotEmpty)
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 3.0),
                     decoration: const BoxDecoration(
                         color: Colors.teal,
-                        borderRadius: BorderRadius.only(topLeft: Radius.circular(5.0), bottomRight: Radius.circular(5.0))),
+                        borderRadius:
+                            BorderRadius.only(topLeft: Radius.circular(5.0), bottomRight: Radius.circular(5.0))),
                     child: Row(
                       children: [
                         const Icon(CupertinoIcons.flag, size: 15, color: MyColors.white),
@@ -170,8 +181,8 @@ class EmployeeDetailsView extends GetView<EmployeeDetailsController> {
                       ],
                     ),
                   ),
-                ],
-              ),
+              ],
+            ),
             if (position != null && position.isNotEmpty) SizedBox(height: 10.h),
             Visibility(
               visible: age != null,
@@ -263,7 +274,8 @@ class EmployeeDetailsView extends GetView<EmployeeDetailsController> {
         age: 'Age: ${controller.employee.dateOfBirth?.calculateAge() ?? 0.0}',
         rating: controller.employee.rating ?? 0.0,
         totalRating: controller.employee.totalRating ?? 0,
-        nationality: controller.employee.nationality??'',
+        nationality: controller.employee.nationality ?? '',
+        certified: controller.employee.certified,
         child: Column(
           children: [
             SizedBox(height: 5.h),
@@ -295,14 +307,13 @@ class EmployeeDetailsView extends GetView<EmployeeDetailsController> {
             SizedBox(height: 18.h),
             Row(
               children: [
-                _detailsItem(MyAssets.organization, 'Current Organization:', controller.employee.currentOrganisation ?? "-"),
+                _detailsItem(
+                    MyAssets.organization, 'Current Organization:', controller.employee.currentOrganisation ?? "-"),
                 const Spacer(),
                 _detailsItem(MyAssets.weight, 'Weight: ', controller.employee.weight ?? "-"),
-
               ],
             ),
             SizedBox(height: 18.h),
-
             Row(
               children: [
                 _detailsItem(MyAssets.height, 'Height:', controller.employee.height ?? "-"),
@@ -323,6 +334,25 @@ class EmployeeDetailsView extends GetView<EmployeeDetailsController> {
         ),
       );
 
+  Widget get _skill => _base(
+        title: 'Skills',
+        child: Column(
+          children: [
+            if ((controller.employee.skills ?? []).isEmpty)
+              Text(
+                "No Data Found",
+                style: MyColors.l7B7B7B_dtext(controller.context!).regular12,
+              )
+            else
+              ...(controller.employee.skills ?? []).map((e) {
+                return _data(
+                  MyAssets.skill,
+                  e.skillName ?? "",
+                );
+              }),
+          ],
+        ),
+      );
   Widget get _education => _base(
         title: MyStrings.education.tr,
         child: _data(
@@ -376,7 +406,8 @@ class EmployeeDetailsView extends GetView<EmployeeDetailsController> {
           )
         : CustomBottomBar(
             child: CustomButtons.button(
-              onTap: controller.onViewCalenderClick,
-                text: 'View Calender', customButtonStyle: CustomButtonStyle.radiusTopBottomCorner));
+                onTap: controller.onViewCalenderClick,
+                text: 'View Calender',
+                customButtonStyle: CustomButtonStyle.radiusTopBottomCorner));
   }
 }

@@ -21,18 +21,8 @@ class CustomFilter {
     required BuildContext context,
     required List<NationalityDetailsModel> nationalityList,
     required HourlyRateDetailsModel hourlyRateDetails,
-    required Function(
-            String selectedRating,
-            String selectedExp,
-            String minTotalHour,
-            String maxTotalHour,
-            String positionId,
-            String dressSize,
-            String nationality,
-            String minHeight,
-            String maxHeight,
-            String minHourlyRate,
-            String maxHourlyRate)
+    required Function(String selectedExp, String minTotalHour, String maxTotalHour, String positionId, String dressSize,
+            String nationality, String minHeight, String maxHeight, String minHourlyRate, String maxHourlyRate)
         onApplyClick,
     required Function() onResetClick,
     bool showPositionId = false,
@@ -40,7 +30,6 @@ class CustomFilter {
     showMaterialModalBottomSheet(
       context: context,
       builder: (context) => StatefulBuilder(builder: (BuildContext context, StateSetter setState) {
-        String selectedRating = "";
         String selectedExp = "";
         String minTotalHour = "";
         String maxTotalHour = "";
@@ -106,46 +95,6 @@ class CustomFilter {
                     ),
                   ),
                   SizedBox(height: 16.h),
-                  _title(context, MyStrings.rating.tr),
-                  FlutterSlider(
-                    min: 0,
-                    max: 5,
-                    values: const [0],
-                    selectByTap: false,
-                    onDragging: (int handlerIndex, dynamic lowerValue, dynamic upperValue) {
-                      selectedRating = lowerValue.toString().split(".").first;
-                    },
-                    tooltip: FlutterSliderTooltip(
-                      disabled: true,
-                    ),
-                    trackBar: _sliderTrackbar(context),
-                    handler: FlutterSliderHandler(
-                      decoration: const BoxDecoration(),
-                      child: Container(
-                        height: 15,
-                        width: 15,
-                        decoration: const BoxDecoration(
-                          color: MyColors.c_C6A34F,
-                          shape: BoxShape.circle,
-                        ),
-                      ),
-                    ),
-                    hatchMark: FlutterSliderHatchMark(
-                      density: .05,
-                      displayLines: true,
-                      linesDistanceFromTrackBar: -5,
-                      labelsDistanceFromTrackBar: 40,
-                      labels: [
-                        FlutterSliderHatchMarkLabel(percent: 0, label: _sliderHatchMarkLabel(context, "0")),
-                        FlutterSliderHatchMarkLabel(percent: 20, label: _sliderHatchMarkLabel(context, "1")),
-                        FlutterSliderHatchMarkLabel(percent: 40, label: _sliderHatchMarkLabel(context, "2")),
-                        FlutterSliderHatchMarkLabel(percent: 60, label: _sliderHatchMarkLabel(context, "3")),
-                        FlutterSliderHatchMarkLabel(percent: 80, label: _sliderHatchMarkLabel(context, "4")),
-                        FlutterSliderHatchMarkLabel(percent: 100, label: _sliderHatchMarkLabel(context, "5")),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 27.h),
                   _title(context, MyStrings.experience.tr),
                   SizedBox(height: 15.h),
                   FlutterSlider(
@@ -307,6 +256,7 @@ class CustomFilter {
                       child: DropdownButton<String>(
                         isDense: true,
                         isExpanded: true,
+                        underline: const Wrap(),
                         value: selectedNationality,
                         onChanged: (String? newValue) {
                           setState(() {
@@ -473,7 +423,6 @@ class CustomFilter {
                           onTap: () {
                             Get.back();
                             onApplyClick(
-                                selectedRating,
                                 selectedExp,
                                 minTotalHour,
                                 maxTotalHour,

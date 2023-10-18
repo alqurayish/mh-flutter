@@ -58,8 +58,7 @@ class MhEmployeesByIdController extends GetxController {
   }
 
   Future<void> _getEmployees(
-      {String? rating,
-      String? experience,
+      {String? experience,
       String? minTotalHour,
       String? maxTotalHour,
       String? dressSize,
@@ -75,7 +74,6 @@ class MhEmployeesByIdController extends GetxController {
     await _apiHelper
         .getEmployees(
             positionId: position.id,
-            rating: rating,
             employeeExperience: experience,
             minTotalHour: minTotalHour,
             maxTotalHour: maxTotalHour,
@@ -97,20 +95,9 @@ class MhEmployeesByIdController extends GetxController {
     });
   }
 
-  void onApplyClick(
-      String selectedRating,
-      String selectedExp,
-      String minTotalHour,
-      String maxTotalHour,
-      String positionId,
-      String dressSize,
-      String nationality,
-      String minHeight,
-      String maxHeight,
-      String minHourlyRate,
-      String maxHourlyRate) {
+  void onApplyClick(String selectedExp, String minTotalHour, String maxTotalHour, String positionId, String dressSize,
+      String nationality, String minHeight, String maxHeight, String minHourlyRate, String maxHourlyRate) {
     _getEmployees(
-        rating: selectedRating,
         experience: selectedExp,
         minTotalHour: minTotalHour,
         maxTotalHour: maxTotalHour,
@@ -148,6 +135,7 @@ class MhEmployeesByIdController extends GetxController {
       if (responseData.status == "success") {
         nationalityList.value = responseData.nationalities ?? [];
         nationalityList.refresh();
+        nationalityList.insert(0, NationalityDetailsModel(sId: '99', country: '', nationality: ''));
       }
     });
     nationalityDataLoaded.value = true;

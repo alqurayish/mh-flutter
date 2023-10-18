@@ -98,7 +98,10 @@ class ClientShortlistedView extends GetView<ClientShortlistedController> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  _name(employee.employeeDetails?.name ?? "-"),
+                                  Flexible(
+                                      child: _name(employee.employeeDetails?.name ?? "-")),
+                                  if (employee.employeeDetails?.certified != null && employee.employeeDetails?.certified == true)
+                                    Image.asset(MyAssets.certified, height: 30, width: 30),
                                   _rating(employee.employeeDetails?.rating ?? 0.0),
                                   const Spacer(),
                                   Obx(
@@ -223,6 +226,8 @@ class ClientShortlistedView extends GetView<ClientShortlistedController> {
 
   Widget _name(String name) => Text(
         name,
+        maxLines: 2,
+        overflow: TextOverflow.ellipsis,
         style: MyColors.l111111_dwhite(controller.context!).medium14,
       );
 

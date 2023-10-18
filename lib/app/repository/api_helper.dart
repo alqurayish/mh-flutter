@@ -70,7 +70,6 @@ abstract class ApiHelper {
 
   EitherModel<Employees> getEmployees(
       {String? positionId,
-      String? rating,
       String? employeeExperience,
       String? minTotalHour,
       String? maxTotalHour,

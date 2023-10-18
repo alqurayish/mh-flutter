@@ -111,7 +111,6 @@ class AdminAllEmployeesView extends GetView<AdminAllEmployeesController> {
 
   Widget _employeeItem(Employee user) {
     return Container(
-      height: 105.h,
       margin: EdgeInsets.symmetric(horizontal: 15.w).copyWith(
         bottom: 20.h,
       ),
@@ -178,9 +177,11 @@ class AdminAllEmployeesView extends GetView<AdminAllEmployeesController> {
                                 SizedBox(height: 16.h),
                                 Row(
                                   children: [
-                                    Expanded(
+                                    Flexible(
                                         flex: user.rating! > 0.0 ? 2 : 4,
                                         child: _name("${user.firstName ?? "-"} ${user.lastName ?? ""}")),
+                                    if (user.certified != null && user.certified == true)
+                                      Image.asset(MyAssets.certified, height: 30, width: 30),
                                     Expanded(flex: 2, child: _rating(user.rating ?? 0)),
                                     const Expanded(flex: 2, child: Wrap()),
                                   ],

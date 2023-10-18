@@ -19,6 +19,8 @@ class EmployeeDetails {
   DateTime? fromDate;
   DateTime? toDate;
 
+  bool? certified;
+
   EmployeeDetails({
     this.employeeId,
     this.name,
@@ -37,6 +39,7 @@ class EmployeeDetails {
     this.restaurantAddress,
     this.fromDate,
     this.toDate,
+    this.certified
   });
 
   EmployeeDetails.fromJson(Map<String, dynamic> json) {
@@ -58,6 +61,7 @@ class EmployeeDetails {
     restaurantAddress = json['restaurantAddress'];
     fromDate = json["fromDate"] == null ? null : DateTime.parse(json["fromDate"]);
     toDate = json["toDate"] == null ? null : DateTime.parse(json["toDate"]);
+    certified = json["certified"];
   }
 
   Map<String, dynamic> toJson() {
@@ -77,6 +81,7 @@ class EmployeeDetails {
     data['profilePicture'] = profilePicture;
     data['restaurantName'] = restaurantName;
     data['restaurantAddress'] = restaurantAddress;
+    data['certified'] = certified;
     data['fromDate'] = fromDate?.toIso8601String();
     data['toDate'] = fromDate?.toIso8601String();
     return data;

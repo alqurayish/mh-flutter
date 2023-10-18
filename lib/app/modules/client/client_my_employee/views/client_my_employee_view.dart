@@ -116,6 +116,8 @@ class ClientMyEmployeeView extends GetView<ClientMyEmployeeController> {
                                     Flexible(
                                         flex: hiredHistory.employeeDetails!.rating! > 0.0 ? 3 : 4,
                                         child: _name(hiredHistory.employeeDetails?.name ?? "-")),
+                                    if (hiredHistory.employeeDetails?.certified != null && hiredHistory.employeeDetails?.certified == true)
+                                      Image.asset(MyAssets.certified, height: 30, width: 30),
                                     Expanded(flex: 2, child: _rating(hiredHistory.employeeDetails?.rating ?? 0.0)),
                                     const Expanded(flex: 2, child: Wrap())
                                   ],

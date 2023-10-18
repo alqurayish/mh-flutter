@@ -71,7 +71,6 @@ class AdminAllEmployeesController extends GetxController {
   }
 
   void onApplyClick(
-      String selectedRating,
       String selectedExp,
       String minTotalHour,
       String maxTotalHour,
@@ -85,7 +84,6 @@ class AdminAllEmployeesController extends GetxController {
     //currentPage.value = 1;
     employees.value.users?.clear();
     await _getEmployees(
-        rating: selectedRating,
         experience: selectedExp,
         minTotalHour: minTotalHour,
         maxTotalHour: maxTotalHour,
@@ -199,6 +197,7 @@ class AdminAllEmployeesController extends GetxController {
     }, (NationalityModel responseData) {
       nationalityList.value = responseData.nationalities ?? [];
       nationalityList.refresh();
+      nationalityList.insert(0, NationalityDetailsModel(sId: '99', country: '', nationality: ''));
     });
     nationalityDataLoad.value = true;
   }

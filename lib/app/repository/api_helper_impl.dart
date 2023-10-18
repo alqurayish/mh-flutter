@@ -293,7 +293,6 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
   @override
   EitherModel<Employees> getEmployees(
       {String? positionId,
-      String? rating,
       String? employeeExperience,
       String? minTotalHour,
       String? maxTotalHour,
@@ -307,7 +306,6 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
     String url = "users/list?";
 
     if ((positionId ?? "").isNotEmpty) url += "positionId=$positionId";
-    if ((rating ?? "").isNotEmpty) url += "&rating=$rating";
     if ((employeeExperience ?? "").isNotEmpty) url += "&employeeExperience=$employeeExperience";
     if ((minTotalHour ?? "").isNotEmpty) url += "&minTotalHour=$minTotalHour";
     if ((maxTotalHour ?? "").isNotEmpty) url += "&maxTotalHour=$maxTotalHour";

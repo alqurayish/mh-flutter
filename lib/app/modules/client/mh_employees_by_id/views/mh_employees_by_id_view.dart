@@ -95,28 +95,29 @@ class MhEmployeesByIdView extends GetView<MhEmployeesByIdController> {
           ),
           const Spacer(),
           Obx(() => Visibility(
-            visible: controller.hourlyDetailsDataLoaded.value == true && controller.nationalityDataLoaded.value == true,
+              visible:
+                  controller.hourlyDetailsDataLoaded.value == true && controller.nationalityDataLoaded.value == true,
               child: GestureDetector(
-            onTap: () => CustomFilter.customFilter(
-              context: controller.context!,
-              nationalityList: controller.nationalityList,
-              hourlyRateDetails: controller.hourlyRateDetails.value,
-              onApplyClick: controller.onApplyClick,
-              onResetClick: controller.onResetClick,
-            ),
-            child: Container(
-              width: 36.w,
-              height: 36.w,
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                color: MyColors.c_DDBD68,
-              ),
-              child: const Icon(
-                Icons.filter_list_rounded,
-                color: Colors.white,
-              ),
-            ),
-          ))),
+                onTap: () => CustomFilter.customFilter(
+                  context: controller.context!,
+                  nationalityList: controller.nationalityList,
+                  hourlyRateDetails: controller.hourlyRateDetails.value,
+                  onApplyClick: controller.onApplyClick,
+                  onResetClick: controller.onResetClick,
+                ),
+                child: Container(
+                  width: 36.w,
+                  height: 36.w,
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: MyColors.c_DDBD68,
+                  ),
+                  child: const Icon(
+                    Icons.filter_list_rounded,
+                    color: Colors.white,
+                  ),
+                ),
+              ))),
         ],
       ),
     );
@@ -171,6 +172,8 @@ class MhEmployeesByIdView extends GetView<MhEmployeesByIdController> {
                                     Flexible(
                                         flex: user.rating! > 0.0 ? 3 : 4,
                                         child: _name("${user.firstName ?? "-"} ${user.lastName ?? ""}")),
+                                    if (user.certified != null && user.certified == true)
+                                      Image.asset(MyAssets.certified, height: 30, width: 30),
                                     Expanded(flex: 2, child: _rating(user.rating ?? 0.0)),
                                     const Expanded(flex: 2, child: Wrap()),
                                   ],

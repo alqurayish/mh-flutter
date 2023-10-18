@@ -109,9 +109,12 @@ class Employee {
       this.nationality,
       this.height,
       this.weight,
+      this.certified,
       this.dressSize});
 
   final String? id;
+
+  final bool? certified;
   final String? firstName;
   final String? lastName;
   final String? positionId;
@@ -178,6 +181,7 @@ class Employee {
 
   factory Employee.fromJson(Map<String, dynamic> json) => Employee(
       id: json["_id"],
+      certified: json["certified"],
       available: json["available"],
       unAvailableDateList: json["unavailableDate"] == null
           ? []
@@ -245,6 +249,7 @@ class Employee {
 
   Map<String, dynamic> toJson() => {
         "_id": id,
+        "certified": certified,
         "firstName": firstName,
         "lastName": lastName,
         "positionId": positionId,

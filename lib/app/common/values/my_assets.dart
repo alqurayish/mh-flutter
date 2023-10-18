@@ -39,6 +39,9 @@ class MyAssets {
   static const education = "assets/images/education.png";
   static const certificate = "assets/images/certificate.png";
   static const language = "assets/images/language.png";
+
+  static const skill = "assets/icons/skills.png";
+  static const certified = "assets/images/certified.png";
   static const calender = "assets/images/calender.png";
 
   static const clientFixedLogo = "assets/images/client_fixed_logo.png";
