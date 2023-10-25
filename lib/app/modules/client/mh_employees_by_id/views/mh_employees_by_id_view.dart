@@ -12,7 +12,7 @@ import '../controllers/mh_employees_by_id_controller.dart';
 import 'package:badges/badges.dart' as badge;
 
 class MhEmployeesByIdView extends GetView<MhEmployeesByIdController> {
-  const MhEmployeesByIdView({Key? key}) : super(key: key);
+  const MhEmployeesByIdView({super.key});
 
   @override
   Widget build(BuildContext context) {

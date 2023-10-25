@@ -12,7 +12,7 @@ import '../controllers/client_shortlisted_controller.dart';
 import '../models/shortlisted_employees.dart';
 
 class ClientShortlistedView extends GetView<ClientShortlistedController> {
-  const ClientShortlistedView({Key? key}) : super(key: key);
+  const ClientShortlistedView({super.key});
 
   @override
   Widget build(BuildContext context) {

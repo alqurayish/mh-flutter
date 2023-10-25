@@ -3,7 +3,7 @@ import 'package:mh/app/modules/calender/controllers/calender_controller.dart';
 import 'package:mh/app/modules/calender/widgets/calender_month_widget.dart';
 
 class CalenderWidgetLatest extends GetWidget<CalenderController> {
-  const CalenderWidgetLatest({Key? key}) : super(key: key);
+  const CalenderWidgetLatest({super.key});
 
   @override
   Widget build(BuildContext context) {

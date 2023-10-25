@@ -9,11 +9,11 @@ class CustomNetworkImage extends StatelessWidget {
   final double radius;
 
   const CustomNetworkImage({
-    Key? key,
+    super.key,
     required this.url,
     this.fit = BoxFit.cover,
     this.radius = 0,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

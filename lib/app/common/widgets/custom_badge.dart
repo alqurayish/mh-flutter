@@ -3,7 +3,7 @@ import '../utils/exports.dart';
 class CustomBadge extends StatelessWidget {
   final String text;
 
-  const CustomBadge(this.text, {Key? key}) : super(key: key);
+  const CustomBadge(this.text, {super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -6,7 +6,7 @@ import 'package:mh/app/modules/employee/employee_home/controllers/employee_home_
 class CalenderMonthWidget extends StatelessWidget {
   final DateTime month;
   final CalenderController controller;
-  const CalenderMonthWidget({Key? key, required this.month, required this.controller}) : super(key: key);
+  const CalenderMonthWidget({super.key, required this.month, required this.controller});
 
   @override
   Widget build(BuildContext context) {

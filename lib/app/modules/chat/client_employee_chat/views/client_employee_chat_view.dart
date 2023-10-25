@@ -5,7 +5,7 @@ import '../../../../common/widgets/custom_bottombar.dart';
 import '../controllers/client_employee_chat_controller.dart';
 
 class ClientEmployeeChatView extends GetView<ClientEmployeeChatController> {
-  const ClientEmployeeChatView({Key? key}) : super(key: key);
+  const ClientEmployeeChatView({super.key});
 
   @override
   Widget build(BuildContext context) {

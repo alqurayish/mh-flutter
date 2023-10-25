@@ -3,7 +3,7 @@ import 'package:mh/app/modules/calender/controllers/calender_controller.dart';
 import 'package:mh/app/modules/employee/employee_home/controllers/employee_home_controller.dart';
 
 class SelectedDaysCountWidget extends GetWidget<CalenderController> {
-  const SelectedDaysCountWidget({Key? key}) : super(key: key);
+  const SelectedDaysCountWidget({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -8,7 +8,7 @@ import 'package:mh/app/modules/employee/employee_home/controllers/employee_home_
 import '../controllers/employee_booked_history_details_controller.dart';
 
 class EmployeeBookedHistoryDetailsView extends GetView<EmployeeBookedHistoryDetailsController> {
-  const EmployeeBookedHistoryDetailsView({Key? key}) : super(key: key);
+  const EmployeeBookedHistoryDetailsView({super.key});
   @override
   Widget build(BuildContext context) {
     controller.context = context;

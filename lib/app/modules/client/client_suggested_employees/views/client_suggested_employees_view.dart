@@ -8,7 +8,7 @@ import '../../../../common/widgets/custom_network_image.dart';
 import '../controllers/client_suggested_employees_controller.dart';
 
 class ClientSuggestedEmployeesView extends GetView<ClientSuggestedEmployeesController> {
-  const ClientSuggestedEmployeesView({Key? key}) : super(key: key);
+  const ClientSuggestedEmployeesView({super.key});
 
   @override
   Widget build(BuildContext context) {

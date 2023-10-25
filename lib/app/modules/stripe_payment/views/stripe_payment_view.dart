@@ -9,7 +9,7 @@ import 'package:webview_flutter/webview_flutter.dart';
 import '../controllers/stripe_payment_controller.dart';
 
 class StripePaymentView extends GetView<StripePaymentController> {
-  const StripePaymentView({Key? key}) : super(key: key);
+  const StripePaymentView({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(

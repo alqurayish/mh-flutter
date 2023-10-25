@@ -12,7 +12,7 @@ import 'package:mh/app/modules/employee/employee_home/controllers/employee_home_
 import '../controllers/calender_controller.dart';
 
 class CalenderView extends GetView<CalenderController> {
-  const CalenderView({Key? key}) : super(key: key);
+  const CalenderView({super.key});
   @override
   Widget build(BuildContext context) {
     controller.context = context;

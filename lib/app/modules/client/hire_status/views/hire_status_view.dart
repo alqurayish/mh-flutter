@@ -5,7 +5,7 @@ import '../../../../common/utils/exports.dart';
 import '../controllers/hire_status_controller.dart';
 
 class HireStatusView extends GetView<HireStatusController> {
-  const HireStatusView({Key? key}) : super(key: key);
+  const HireStatusView({super.key});
 
   @override
   Widget build(BuildContext context) {

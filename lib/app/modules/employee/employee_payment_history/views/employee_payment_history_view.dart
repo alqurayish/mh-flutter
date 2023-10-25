@@ -13,7 +13,7 @@ import 'package:mh/app/common/widgets/no_item_found.dart';
 import '../controllers/employee_payment_history_controller.dart';
 
 class EmployeePaymentHistoryView extends GetView<EmployeePaymentHistoryController> {
-  const EmployeePaymentHistoryView({Key? key}) : super(key: key);
+  const EmployeePaymentHistoryView({super.key});
 
   @override
   Widget build(BuildContext context) {

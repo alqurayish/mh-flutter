@@ -4,7 +4,7 @@ import '../../../../common/utils/exports.dart';
 import '../controllers/employee_register_success_controller.dart';
 
 class EmployeeRegisterSuccessView extends GetView<EmployeeRegisterSuccessController> {
-  const EmployeeRegisterSuccessView({Key? key}) : super(key: key);
+  const EmployeeRegisterSuccessView({super.key});
 
   @override
   Widget build(BuildContext context) {

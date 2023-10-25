@@ -8,7 +8,7 @@ import 'package:mh/app/modules/client/client_shortlisted/models/add_to_shortlist
 
 class EmployeeHiredHistoryDetailsWidget extends StatelessWidget {
   final List<RequestDateModel> requestDateList;
-  const EmployeeHiredHistoryDetailsWidget({Key? key, required this.requestDateList}) : super(key: key);
+  const EmployeeHiredHistoryDetailsWidget({super.key, required this.requestDateList});
 
   @override
   Widget build(BuildContext context) {

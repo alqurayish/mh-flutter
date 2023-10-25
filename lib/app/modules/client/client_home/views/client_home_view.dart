@@ -11,7 +11,7 @@ import '../../../../common/widgets/custom_menu.dart';
 import '../controllers/client_home_controller.dart';
 
 class ClientHomeView extends GetView<ClientHomeController> {
-  const ClientHomeView({Key? key}) : super(key: key);
+  const ClientHomeView({super.key});
 
   @override
   Widget build(BuildContext context) {

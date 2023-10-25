@@ -6,7 +6,7 @@ import 'package:mh/app/modules/notifications/models/notification_response_model.
 import '../controllers/employee_booked_history_controller.dart';
 
 class EmployeeBookedHistoryView extends GetView<EmployeeBookedHistoryController> {
-  const EmployeeBookedHistoryView({Key? key}) : super(key: key);
+  const EmployeeBookedHistoryView({super.key});
 
   @override
   Widget build(BuildContext context) {

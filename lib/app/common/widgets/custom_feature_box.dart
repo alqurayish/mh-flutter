@@ -11,15 +11,14 @@ class CustomFeatureBox extends StatelessWidget {
   final double? height;
 
   const CustomFeatureBox(
-      {Key? key,
+      {super.key,
       required this.title,
       required this.icon,
       this.visibleMH = false,
       required this.onTap,
       this.iconHeight,
       this.loading = false,
-      this.height})
-      : super(key: key);
+      this.height});
 
   @override
   Widget build(BuildContext context) {

@@ -3,7 +3,7 @@ import 'package:mh/app/modules/calender/controllers/calender_controller.dart';
 import 'package:mh/app/modules/calender/widgets/short_list_time_range_widget.dart';
 
 class ShortListDateRangeWidget extends GetWidget<CalenderController> {
-  const ShortListDateRangeWidget({Key? key}) : super(key: key);
+  const ShortListDateRangeWidget({super.key});
 
   @override
   Widget build(BuildContext context) {

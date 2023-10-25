@@ -10,7 +10,7 @@ import '../../../../models/employees_by_id.dart';
 import '../controllers/admin_client_request_position_employees_controller.dart';
 
 class AdminClientRequestPositionEmployeesView extends GetView<AdminClientRequestPositionEmployeesController> {
-  const AdminClientRequestPositionEmployeesView({Key? key}) : super(key: key);
+  const AdminClientRequestPositionEmployeesView({super.key});
 
   @override
   Widget build(BuildContext context) {

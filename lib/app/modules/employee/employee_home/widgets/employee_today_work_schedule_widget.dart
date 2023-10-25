@@ -5,7 +5,7 @@ import 'package:mh/app/modules/employee/employee_home/controllers/employee_home_
 import 'package:mh/app/modules/employee/employee_home/models/today_check_in_out_details.dart';
 
 class EmployeeTodayWorkScheduleWidget extends GetWidget<EmployeeHomeController> {
-  const EmployeeTodayWorkScheduleWidget({Key? key}) : super(key: key);
+  const EmployeeTodayWorkScheduleWidget({super.key});
 
   @override
   Widget build(BuildContext context) {

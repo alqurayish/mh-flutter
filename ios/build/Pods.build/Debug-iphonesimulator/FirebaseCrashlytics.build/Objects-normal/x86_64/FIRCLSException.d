@@ -1,0 +1,37 @@
+dependencies: \
+  /Users/marina/StudioProjects/mh-flutter/ios/Pods/FirebaseCrashlytics/Crashlytics/Crashlytics/Handlers/FIRCLSException.mm \
+  /Users/marina/StudioProjects/mh-flutter/ios/Pods/FirebaseCrashlytics/Crashlytics/Crashlytics/Handlers/FIRCLSException.h \
+  /Users/marina/StudioProjects/mh-flutter/ios/Pods/FirebaseCrashlytics/Crashlytics/Crashlytics/Private/FIRExceptionModel_Private.h \
+  /Users/marina/StudioProjects/mh-flutter/ios/Pods/FirebaseCrashlytics/Crashlytics/Crashlytics/Public/FirebaseCrashlytics/FIRExceptionModel.h \
+  /Users/marina/StudioProjects/mh-flutter/ios/Pods/FirebaseCrashlytics/Crashlytics/Crashlytics/Public/FirebaseCrashlytics/FIRStackFrame.h \
+  /Users/marina/StudioProjects/mh-flutter/ios/Pods/FirebaseCrashlytics/Crashlytics/Crashlytics/Private/FIRStackFrame_Private.h \
+  /Users/marina/StudioProjects/mh-flutter/ios/Pods/FirebaseCrashlytics/Crashlytics/Crashlytics/Components/FIRCLSApplication.h \
+  /Users/marina/StudioProjects/mh-flutter/ios/Pods/FirebaseCrashlytics/Crashlytics/Crashlytics/Components/FIRCLSContext.h \
+  /Users/marina/StudioProjects/mh-flutter/ios/Pods/FirebaseCrashlytics/Crashlytics/Crashlytics/Components/FIRCLSBinaryImage.h \
+  /Users/marina/StudioProjects/mh-flutter/ios/Pods/FirebaseCrashlytics/Crashlytics/Crashlytics/Helpers/FIRCLSFeatures.h \
+  /Users/marina/StudioProjects/mh-flutter/ios/Pods/FirebaseCrashlytics/Crashlytics/Crashlytics/Helpers/FIRCLSDefines.h \
+  /Users/marina/StudioProjects/mh-flutter/ios/Pods/FirebaseCrashlytics/Crashlytics/Crashlytics/Helpers/FIRCLSFile.h \
+  /Users/marina/StudioProjects/mh-flutter/ios/Pods/FirebaseCrashlytics/Crashlytics/Shared/FIRCLSMachO/FIRCLSMachO.h \
+  /Users/marina/StudioProjects/mh-flutter/ios/Pods/FirebaseCrashlytics/Crashlytics/Crashlytics/Components/FIRCLSHost.h \
+  /Users/marina/StudioProjects/mh-flutter/ios/Pods/FirebaseCrashlytics/Crashlytics/Crashlytics/Components/FIRCLSUserLogging.h \
+  /Users/marina/StudioProjects/mh-flutter/ios/Pods/FirebaseCrashlytics/Crashlytics/Crashlytics/Handlers/FIRCLSMachException.h \
+  /Users/marina/StudioProjects/mh-flutter/ios/Pods/FirebaseCrashlytics/Crashlytics/Crashlytics/Handlers/FIRCLSSignal.h \
+  /Users/marina/StudioProjects/mh-flutter/ios/Pods/FirebaseCrashlytics/Crashlytics/Crashlytics/Helpers/FIRCLSAllocate.h \
+  /Users/marina/StudioProjects/mh-flutter/ios/Pods/FirebaseCrashlytics/Crashlytics/Crashlytics/Helpers/FIRCLSInternalLogging.h \
+  /Users/marina/StudioProjects/mh-flutter/ios/Pods/FirebaseCrashlytics/Crashlytics/Crashlytics/Helpers/FIRCLSLogger.h \
+  /Users/marina/StudioProjects/mh-flutter/ios/Pods/FirebaseCrashlytics/Crashlytics/Crashlytics/Components/FIRCLSGlobals.h \
+  /Users/marina/StudioProjects/mh-flutter/ios/Pods/FirebaseCrashlytics/Crashlytics/Crashlytics/Components/FIRCLSProcess.h \
+  /Users/marina/StudioProjects/mh-flutter/ios/Pods/FirebaseCrashlytics/Crashlytics/Crashlytics/Handlers/FIRCLSHandler.h \
+  /Users/marina/StudioProjects/mh-flutter/ios/Pods/FirebaseCrashlytics/Crashlytics/Crashlytics/Helpers/FIRCLSUtility.h \
+  /Users/marina/StudioProjects/mh-flutter/ios/Pods/FirebaseCrashlytics/Crashlytics/Crashlytics/Controllers/FIRCLSReportManager_Private.h \
+  /Users/marina/StudioProjects/mh-flutter/ios/Pods/FirebaseCrashlytics/Crashlytics/Crashlytics/Controllers/FIRCLSReportManager.h \
+  /Users/marina/StudioProjects/mh-flutter/ios/Pods/FirebaseCrashlytics/Crashlytics/Crashlytics/Public/FirebaseCrashlytics/FIRCrashlytics.h \
+  /Users/marina/StudioProjects/mh-flutter/ios/Pods/FirebaseCrashlytics/Crashlytics/Crashlytics/Public/FirebaseCrashlytics/FIRCrashlyticsReport.h \
+  /Users/marina/StudioProjects/mh-flutter/ios/Pods/FirebaseCrashlytics/Crashlytics/Crashlytics/Helpers/FIRCLSProfiling.h \
+  /Users/marina/StudioProjects/mh-flutter/ios/Pods/FirebaseCrashlytics/Crashlytics/Crashlytics/Controllers/FIRCLSReportUploader.h \
+  /Users/marina/StudioProjects/mh-flutter/ios/Pods/FirebaseCrashlytics/Crashlytics/Crashlytics/Models/FIRCLSLaunchMarkerModel.h \
+  /Users/marina/StudioProjects/mh-flutter/ios/Pods/FirebaseCrashlytics/Crashlytics/Crashlytics/Models/FIRCLSFileManager.h \
+  /Users/marina/StudioProjects/mh-flutter/ios/Pods/FirebaseCrashlytics/Crashlytics/Crashlytics/Models/FIRCLSExecutionIdentifierModel.h \
+  /Users/marina/StudioProjects/mh-flutter/ios/Pods/FirebaseCrashlytics/Crashlytics/Crashlytics/Models/FIRCLSInternalReport.h \
+  /Users/marina/StudioProjects/mh-flutter/ios/Pods/FirebaseCrashlytics/Crashlytics/Crashlytics/Operations/Symbolication/FIRCLSDemangleOperation.h \
+  /Users/marina/StudioProjects/mh-flutter/ios/Pods/FirebaseCrashlytics/Crashlytics/Crashlytics/Operations/Symbolication/FIRCLSThreadArrayOperation.h

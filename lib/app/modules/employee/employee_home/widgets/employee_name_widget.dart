@@ -4,7 +4,7 @@ import 'package:mh/app/common/widgets/refresh_widget.dart';
 import 'package:mh/app/modules/employee/employee_home/controllers/employee_home_controller.dart';
 
 class EmployeeNameWidget extends GetWidget<EmployeeHomeController> {
-  const EmployeeNameWidget({Key? key}) : super(key: key);
+  const EmployeeNameWidget({super.key});
 
   @override
   Widget build(BuildContext context) {

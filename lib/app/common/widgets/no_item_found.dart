@@ -3,7 +3,7 @@ import 'package:lottie/lottie.dart';
 import '../utils/exports.dart';
 
 class NoItemFound extends StatelessWidget {
-  const NoItemFound({Key? key}) : super(key: key);
+  const NoItemFound({super.key});
 
   @override
   Widget build(BuildContext context) {

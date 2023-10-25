@@ -3,7 +3,7 @@ import 'package:mh/app/common/utils/exports.dart';
 import 'package:mh/app/modules/map/restaurant_location/controllers/restaurant_location_controller.dart';
 
 class AutoCompleteSearchWidget extends GetWidget<RestaurantLocationController> {
-  const AutoCompleteSearchWidget({Key? key}) : super(key: key);
+  const AutoCompleteSearchWidget({super.key});
 
   @override
   Widget build(BuildContext context) {

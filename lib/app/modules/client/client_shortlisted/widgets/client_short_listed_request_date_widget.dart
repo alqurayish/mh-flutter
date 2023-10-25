@@ -11,7 +11,7 @@ import 'package:mh/app/modules/client/client_shortlisted/models/add_to_shortlist
 class ClientShortListedRequestDateWidget extends StatelessWidget {
   final List<RequestDateModel> requestDateList;
   final String shortListId;
-  const ClientShortListedRequestDateWidget({Key? key, required this.requestDateList, required this.shortListId}) : super(key: key);
+  const ClientShortListedRequestDateWidget({super.key, required this.requestDateList, required this.shortListId});
 
   @override
   Widget build(BuildContext context) {

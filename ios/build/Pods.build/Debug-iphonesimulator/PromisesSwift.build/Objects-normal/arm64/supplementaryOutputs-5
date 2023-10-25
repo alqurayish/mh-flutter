@@ -1,0 +1,18 @@
+"/Users/marina/StudioProjects/mh-flutter/ios/Pods/PromisesSwift/Sources/Promises/Promise+Await.swift":
+  object: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/PromisesSwift.build/Objects-normal/arm64/Promise+Await.o"
+  dependencies: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/PromisesSwift.build/Objects-normal/arm64/Promise+Await.d"
+  const-values: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/PromisesSwift.build/Objects-normal/arm64/Promise+Await.swiftconstvalues"
+  swift-dependencies: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/PromisesSwift.build/Objects-normal/arm64/Promise+Await.swiftdeps"
+  diagnostics: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/PromisesSwift.build/Objects-normal/arm64/Promise+Await.dia"
+"/Users/marina/StudioProjects/mh-flutter/ios/Pods/PromisesSwift/Sources/Promises/Promise+Async.swift":
+  swift-dependencies: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/PromisesSwift.build/Objects-normal/arm64/Promise+Async.swiftdeps"
+  diagnostics: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/PromisesSwift.build/Objects-normal/arm64/Promise+Async.dia"
+  const-values: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/PromisesSwift.build/Objects-normal/arm64/Promise+Async.swiftconstvalues"
+  object: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/PromisesSwift.build/Objects-normal/arm64/Promise+Async.o"
+  dependencies: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/PromisesSwift.build/Objects-normal/arm64/Promise+Async.d"
+"/Users/marina/StudioProjects/mh-flutter/ios/Pods/PromisesSwift/Sources/Promises/Promise+Any.swift":
+  object: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/PromisesSwift.build/Objects-normal/arm64/Promise+Any.o"
+  swift-dependencies: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/PromisesSwift.build/Objects-normal/arm64/Promise+Any.swiftdeps"
+  const-values: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/PromisesSwift.build/Objects-normal/arm64/Promise+Any.swiftconstvalues"
+  dependencies: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/PromisesSwift.build/Objects-normal/arm64/Promise+Any.d"
+  diagnostics: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/PromisesSwift.build/Objects-normal/arm64/Promise+Any.dia"

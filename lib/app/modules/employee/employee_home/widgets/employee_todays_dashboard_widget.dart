@@ -7,7 +7,7 @@ import 'package:mh/app/common/widgets/shimmer_widget.dart';
 import 'package:mh/app/modules/employee/employee_home/controllers/employee_home_controller.dart';
 
 class EmployeeTodayDashboardWidget extends GetWidget<EmployeeHomeController> {
-  const EmployeeTodayDashboardWidget({Key? key}) : super(key: key);
+  const EmployeeTodayDashboardWidget({super.key});
 
   @override
   Widget build(BuildContext context) {

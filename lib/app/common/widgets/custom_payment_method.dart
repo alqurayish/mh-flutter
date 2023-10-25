@@ -6,10 +6,10 @@ class CustomPaymentMethod extends StatefulWidget {
   final Function(SelectedPaymentMethod selectedPaymentMethod) onChange;
 
   const CustomPaymentMethod({
-    Key? key,
+    super.key,
     required this.availablePaymentMethods,
     required this.onChange,
-  }) : super(key: key);
+  });
 
   @override
   State<CustomPaymentMethod> createState() => _CustomPaymentMethodState();

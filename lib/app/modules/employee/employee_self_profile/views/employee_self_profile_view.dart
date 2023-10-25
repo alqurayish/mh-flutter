@@ -7,7 +7,7 @@ import '../../../../common/widgets/custom_network_image.dart';
 import '../controllers/employee_self_profile_controller.dart';
 
 class EmployeeSelfProfileView extends GetView<EmployeeSelfProfileController> {
-  const EmployeeSelfProfileView({Key? key}) : super(key: key);
+  const EmployeeSelfProfileView({super.key});
 
   @override
   Widget build(BuildContext context) {

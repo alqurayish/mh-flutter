@@ -5,7 +5,7 @@ import '../../../../common/widgets/custom_appbar.dart';
 import '../controllers/admin_client_request_controller.dart';
 
 class AdminClientRequestView extends GetView<AdminClientRequestController> {
-  const AdminClientRequestView({Key? key}) : super(key: key);
+  const AdminClientRequestView({super.key});
 
   @override
   Widget build(BuildContext context) {

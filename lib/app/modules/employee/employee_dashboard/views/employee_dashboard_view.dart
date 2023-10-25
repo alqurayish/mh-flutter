@@ -9,7 +9,7 @@ import '../../../../models/employee_daily_statistics.dart';
 import '../controllers/employee_dashboard_controller.dart';
 
 class EmployeeDashboardView extends GetView<EmployeeDashboardController> {
-  const EmployeeDashboardView({Key? key}) : super(key: key);
+  const EmployeeDashboardView({super.key});
 
   @override
   Widget build(BuildContext context) {

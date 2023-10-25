@@ -9,7 +9,7 @@ import 'package:mh/app/modules/employee/employee_home/widgets/employee_today_wor
 import 'employee_todays_dashboard_widget.dart';
 
 class EmployeeHomeBodyWidget extends GetWidget<EmployeeHomeController> {
-  const EmployeeHomeBodyWidget({Key? key}) : super(key: key);
+  const EmployeeHomeBodyWidget({super.key});
 
   @override
   Widget build(BuildContext context) {

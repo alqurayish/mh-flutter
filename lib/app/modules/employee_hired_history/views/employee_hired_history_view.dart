@@ -6,7 +6,7 @@ import 'package:mh/app/modules/employee/employee_home/models/employee_hired_hist
 import '../controllers/employee_hired_history_controller.dart';
 
 class EmployeeHiredHistoryView extends GetView<EmployeeHiredHistoryController> {
-  const EmployeeHiredHistoryView({Key? key}) : super(key: key);
+  const EmployeeHiredHistoryView({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(

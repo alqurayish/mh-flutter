@@ -6,7 +6,7 @@ import '../../../../common/widgets/custom_appbar.dart';
 import '../controllers/client_payment_and_invoice_controller.dart';
 
 class ClientPaymentAndInvoiceView extends GetView<ClientPaymentAndInvoiceController> {
-  const ClientPaymentAndInvoiceView({Key? key}) : super(key: key);
+  const ClientPaymentAndInvoiceView({super.key});
 
   @override
   Widget build(BuildContext context) {

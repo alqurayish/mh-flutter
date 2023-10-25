@@ -11,7 +11,7 @@ import '../../client_dashboard/models/current_hired_employees.dart';
 import '../controllers/client_my_employee_controller.dart';
 
 class ClientMyEmployeeView extends GetView<ClientMyEmployeeController> {
-  const ClientMyEmployeeView({Key? key}) : super(key: key);
+  const ClientMyEmployeeView({super.key});
 
   @override
   Widget build(BuildContext context) {

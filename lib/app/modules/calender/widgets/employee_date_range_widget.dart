@@ -4,7 +4,7 @@ import 'package:mh/app/common/utils/exports.dart';
 import 'package:mh/app/modules/calender/controllers/calender_controller.dart';
 
 class EmployeeDateRangeWidget extends GetWidget<CalenderController> {
-  const EmployeeDateRangeWidget({Key? key}) : super(key: key);
+  const EmployeeDateRangeWidget({super.key});
 
   @override
   Widget build(BuildContext context) {

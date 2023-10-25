@@ -5,7 +5,7 @@ import 'package:mh/app/common/values/my_color.dart';
 import 'package:mh/app/modules/employee/employee_home/controllers/employee_home_controller.dart';
 
 class EmployeeLocationWidget extends GetWidget<EmployeeHomeController> {
-  const EmployeeLocationWidget({Key? key}) : super(key: key);
+  const EmployeeLocationWidget({super.key});
 
   @override
   Widget build(BuildContext context) {

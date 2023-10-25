@@ -10,7 +10,7 @@ import '../../../../common/widgets/custom_menu.dart';
 import '../controllers/admin_home_controller.dart';
 
 class AdminHomeView extends GetView<AdminHomeController> {
-  const AdminHomeView({Key? key}) : super(key: key);
+  const AdminHomeView({super.key});
 
   @override
   Widget build(BuildContext context) {

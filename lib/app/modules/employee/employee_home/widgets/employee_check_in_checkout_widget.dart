@@ -5,7 +5,7 @@ import 'package:mh/app/modules/employee/employee_home/widgets/slide_able_widget.
 
 
 class EmployeeCheckInCheckoutWidget extends GetWidget<EmployeeHomeController> {
-  const EmployeeCheckInCheckoutWidget({Key? key}) : super(key: key);
+  const EmployeeCheckInCheckoutWidget({super.key});
 
   @override
   Widget build(BuildContext context) {

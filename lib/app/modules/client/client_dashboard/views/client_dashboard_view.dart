@@ -18,7 +18,7 @@ import '../../../../models/employee_daily_statistics.dart';
 import '../controllers/client_dashboard_controller.dart';
 
 class ClientDashboardView extends GetView<ClientDashboardController> {
-  const ClientDashboardView({Key? key}) : super(key: key);
+  const ClientDashboardView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -328,62 +328,64 @@ class ClientDashboardView extends GetView<ClientDashboardController> {
           right: BorderSide(width: 3.0, color: Colors.grey.withOpacity(.1)),
         ),
       ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Stack(
-                clipBehavior: Clip.none,
-                children: [
-                  Container(
-                    height: 24.h,
-                    width: 24.h,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8.0),
-                      color: Colors.grey.withOpacity(.3),
-                    ),
-                    child: CustomNetworkImage(
-                      url: image.imageUrl,
-                      radius: 8.0,
-                    ),
-                  ),
-                  Positioned(
-                    top: -15,
-                    right: -3,
-                    child: Obx(
-                      () => Visibility(
-                        visible: controller.clientHomeController.employeeChatDetails
-                            .where((data) =>
-                                data["employeeId"] == id &&
-                                data["${controller.appController.user.value.userId}_unread"] > 0)
-                            .isNotEmpty,
-                        child: const CustomBadge(""),
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Stack(
+                  clipBehavior: Clip.none,
+                  children: [
+                    Container(
+                      height: 24.h,
+                      width: 24.h,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8.0),
+                        color: Colors.grey.withOpacity(.3),
+                      ),
+                      child: CustomNetworkImage(
+                        url: image.imageUrl,
+                        radius: 8.0,
                       ),
                     ),
-                  ),
-                ],
-              ),
-              SizedBox(width: 10.w),
-              Flexible(
-                child: Text(
-                  name,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: MyColors.l5C5C5C_dwhite(controller.context!).semiBold14,
+                    Positioned(
+                      top: -15,
+                      right: -3,
+                      child: Obx(
+                        () => Visibility(
+                          visible: controller.clientHomeController.employeeChatDetails
+                              .where((data) =>
+                                  data["employeeId"] == id &&
+                                  data["${controller.appController.user.value.userId}_unread"] > 0)
+                              .isNotEmpty,
+                          child: const CustomBadge(""),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-            ],
-          ),
-          SizedBox(height: 6.h),
-          Text(
-            positionName,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: MyColors.l50555C_dtext(controller.context!).medium12,
-          ),
-        ],
+                SizedBox(width: 10.w),
+                Flexible(
+                  child: Text(
+                    name,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: MyColors.l5C5C5C_dwhite(controller.context!).semiBold14,
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 6.h),
+            Text(
+              positionName,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: MyColors.l50555C_dtext(controller.context!).medium12,
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -511,7 +513,7 @@ class ClientDashboardView extends GetView<ClientDashboardController> {
 class BottomA extends StatelessWidget {
   final Widget updateOption;
 
-  const BottomA(this.updateOption, {Key? key}) : super(key: key);
+  const BottomA(this.updateOption, {super.key});
 
   @override
   Widget build(BuildContext context) {

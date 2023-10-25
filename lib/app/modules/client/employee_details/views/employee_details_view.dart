@@ -9,7 +9,7 @@ import '../../../../common/widgets/custom_network_image.dart';
 import '../controllers/employee_details_controller.dart';
 
 class EmployeeDetailsView extends GetView<EmployeeDetailsController> {
-  const EmployeeDetailsView({Key? key}) : super(key: key);
+  const EmployeeDetailsView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -307,20 +307,21 @@ class EmployeeDetailsView extends GetView<EmployeeDetailsController> {
             SizedBox(height: 18.h),
             Row(
               children: [
-                _detailsItem(
-                    MyAssets.organization, 'Current Organization:', controller.employee.currentOrganisation ?? "-"),
-                const Spacer(),
-                _detailsItem(MyAssets.weight, 'Weight: ', controller.employee.weight ?? "-"),
-              ],
-            ),
-            SizedBox(height: 18.h),
-            Row(
-              children: [
                 _detailsItem(MyAssets.height, 'Height:', controller.employee.height ?? "-"),
                 const Spacer(),
                 _detailsItem(MyAssets.dressSize, 'Dress Size: ', controller.employee.dressSize ?? "-"),
               ],
             ),
+            SizedBox(height: 18.h),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                _detailsItem(
+                    MyAssets.organization, 'Current Organization:', controller.employee.currentOrganisation ?? "-"),
+              ],
+            ),
+
             SizedBox(height: 5.h),
           ],
         ),

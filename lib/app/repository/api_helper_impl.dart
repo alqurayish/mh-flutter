@@ -387,7 +387,7 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
 
   @override
   EitherModel<short_list_employees.ShortlistedEmployees> fetchShortlistEmployees() async {
-    var response = await get("short-list");
+    Response response = await get("short-list");
     if (response.statusCode == null) response = await get("short-list");
     if (response.statusCode == null) response = await get("short-list");
     if (response.statusCode == null) response = await get("short-list");
@@ -602,7 +602,7 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
 
     if (date != null) url += "?filterDate=$date&utc=${DateTime.now().timeZoneOffset.inHours}";
 
-    var response = await get(url);
+    Response response = await get(url);
     if (response.statusCode == null) response = await get(url);
     if (response.statusCode == null) response = await get(url);
     if (response.statusCode == null) response = await get(url);

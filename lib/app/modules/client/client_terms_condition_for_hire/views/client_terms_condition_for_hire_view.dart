@@ -7,7 +7,7 @@ import '../controllers/client_terms_condition_for_hire_controller.dart';
 import '../models/terms_condition_for_hire.dart';
 
 class ClientTermsConditionForHireView extends GetView<ClientTermsConditionForHireController> {
-  const ClientTermsConditionForHireView({Key? key}) : super(key: key);
+  const ClientTermsConditionForHireView({super.key});
 
   @override
   Widget build(BuildContext context) {

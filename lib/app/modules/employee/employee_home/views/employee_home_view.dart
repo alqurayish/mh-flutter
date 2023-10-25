@@ -8,7 +8,7 @@ import '../../../../common/widgets/custom_menu.dart';
 import '../controllers/employee_home_controller.dart';
 
 class EmployeeHomeView extends GetView<EmployeeHomeController> {
-  const EmployeeHomeView({Key? key}) : super(key: key);
+  const EmployeeHomeView({super.key});
 
   @override
   Widget build(BuildContext context) {

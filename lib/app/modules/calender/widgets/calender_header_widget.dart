@@ -2,7 +2,7 @@ import 'package:mh/app/common/utils/exports.dart';
 import 'package:mh/app/modules/calender/widgets/calender_status_widget.dart';
 
 class CalenderHeaderWidget extends StatelessWidget {
-  const CalenderHeaderWidget({Key? key}) : super(key: key);
+  const CalenderHeaderWidget({super.key});
 
   @override
   Widget build(BuildContext context) {

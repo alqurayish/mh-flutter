@@ -4,7 +4,7 @@ import 'package:mh/app/common/utils/exports.dart';
 class SlideAbleWidget extends StatefulWidget {
   final bool checkIn;
   final VoidCallback? onSubmit;
-  const SlideAbleWidget({Key? key, required this.checkIn, required this.onSubmit}) : super(key: key);
+  const SlideAbleWidget({super.key, required this.checkIn, required this.onSubmit});
 
   @override
   State<SlideAbleWidget> createState() => _SlideAbleWidgetState();

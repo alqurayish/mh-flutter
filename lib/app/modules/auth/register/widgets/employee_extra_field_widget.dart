@@ -11,7 +11,7 @@ import 'package:mh/app/modules/auth/register/controllers/register_controller.dar
 import 'package:mh/app/modules/auth/register/models/employee_extra_field_model.dart';
 
 class EmployeeExtraFieldWidget extends GetWidget<RegisterController> {
-  const EmployeeExtraFieldWidget({Key? key}) : super(key: key);
+  const EmployeeExtraFieldWidget({super.key});
 
   @override
   Widget build(BuildContext context) {

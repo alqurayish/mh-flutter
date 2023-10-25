@@ -11,7 +11,7 @@ class CustomDropdown extends StatelessWidget {
   final EdgeInsets? padding;
 
   const CustomDropdown({
-    Key? key,
+    super.key,
     required this.prefixIcon,
     required this.hints,
     required this.value,
@@ -19,7 +19,7 @@ class CustomDropdown extends StatelessWidget {
     required this.onChange,
     this.validator,
     this.padding,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

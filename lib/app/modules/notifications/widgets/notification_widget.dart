@@ -6,7 +6,7 @@ import 'package:mh/app/modules/notifications/models/notification_response_model.
 
 class NotificationWidget extends StatelessWidget {
   final BookingDetailsModel notification;
-  const NotificationWidget({Key? key, required this.notification}) : super(key: key);
+  const NotificationWidget({super.key, required this.notification});
 
   @override
   Widget build(BuildContext context) {

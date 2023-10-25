@@ -4,7 +4,7 @@ import 'package:mh/app/common/widgets/custom_appbar.dart';
 import '../controllers/invoice_pdf_controller.dart';
 
 class InvoicePdfView extends GetView<InvoicePdfController> {
-  const InvoicePdfView({Key? key}) : super(key: key);
+  const InvoicePdfView({super.key});
   @override
   Widget build(BuildContext context) {
     controller.context = context;

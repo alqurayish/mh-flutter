@@ -5,7 +5,7 @@ import '../../../../models/position.dart';
 import '../controllers/admin_client_request_positions_controller.dart';
 
 class AdminClientRequestPositionsView extends GetView<AdminClientRequestPositionsController> {
-  const AdminClientRequestPositionsView({Key? key}) : super(key: key);
+  const AdminClientRequestPositionsView({super.key});
 
   @override
   Widget build(BuildContext context) {

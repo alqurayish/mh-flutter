@@ -6,7 +6,7 @@ import 'package:mh/app/modules/notifications/widgets/notification_widget.dart';
 import '../controllers/notifications_controller.dart';
 
 class NotificationsView extends GetView<NotificationsController> {
-  const NotificationsView({Key? key}) : super(key: key);
+  const NotificationsView({super.key});
   @override
   Widget build(BuildContext context) {
     controller.context = context;

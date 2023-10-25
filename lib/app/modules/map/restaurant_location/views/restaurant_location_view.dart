@@ -7,7 +7,7 @@ import '../../../../common/utils/exports.dart';
 import '../controllers/restaurant_location_controller.dart';
 
 class RestaurantLocationView extends GetView<RestaurantLocationController> {
-  const RestaurantLocationView({Key? key}) : super(key: key);
+  const RestaurantLocationView({super.key});
 
   @override
   Widget build(BuildContext context) {

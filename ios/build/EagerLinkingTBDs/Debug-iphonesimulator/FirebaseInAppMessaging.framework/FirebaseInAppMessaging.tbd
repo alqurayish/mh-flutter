@@ -1,0 +1,115 @@
+{
+  "main_library": {
+    "exported_symbols": [
+      {
+        "data": {
+          "global": [
+            "_kFIRIAMFetchIsDoneNotification",
+            "_kFIRIAMUserDefaultKeyForServerFetchCount",
+            "_kFIRIAMUserDefaultKeyForSDKMode",
+            "_FIRIAMTestMessageID",
+            "_kFirebaseInAppMessagingDisplayErrorDomain",
+            "_kFIRLoggerInAppMessagingDisplay",
+            "_FIRIAM_ImpressionDictKeyForTimestamp",
+            "_FIRIAM_UserDefaultsKeyForImpressions",
+            "_logs_proto_firebase_inappmessaging_CampaignAnalytics_fields",
+            "_FirebaseInAppMessagingVersionString",
+            "_logs_proto_firebase_inappmessaging_ClientAppInfo_fields",
+            "_FIRIAM_UserDefaultsKeyForLastFetchTimestamp",
+            "_kFIRIAMMaxFetchInNewlyInstalledMode",
+            "_kFirebaseInAppMessagingErrorDomain",
+            "_kFIRLoggerInAppMessaging",
+            "_FIRIAM_UserDefaultsKeyForLastImpressionTimestamp",
+            "_FirebaseInAppMessagingVersionNumber",
+            "_FIRIAM_ImpressionDictKeyForID"
+          ],
+          "objc_class": [
+            "FIRIAMAnalyticsEventLoggerImpl",
+            "FIRIAMRuntimeManager",
+            "FIRIAMMsgFetcherUsingRestful",
+            "PodsDummy_FirebaseInAppMessaging",
+            "FIRInAppMessagingBannerDisplay",
+            "FIRIAMDisplayCheckTriggerFlow",
+            "FIRInAppMessaging",
+            "FIRIAMModalViewController",
+            "FIRIAMActionURLFollower",
+            "FIRIAMBookKeeperViaUserDefaults",
+            "FIRInAppMessagingImageOnlyDisplay",
+            "FIRInAppMessagingCardDisplay",
+            "FIRInAppMessagingModalDisplay",
+            "FIRIAMMessageContentDataWithImageURL",
+            "FIRIAMMessageDefinition",
+            "FIRInAppMessagingDisplayMessage",
+            "FIRIAMClientInfoFetcher",
+            "FIRIAMFetchOnAppForegroundFlow",
+            "FIRIAMClearcutUploader",
+            "FIRIAMClearcutLogger",
+            "FIRIAMClearcutLogStorage",
+            "FIRIAMCardViewController",
+            "FIRIAMDefaultDisplayImpl",
+            "FIRIAMClearcutStrategy",
+            "FIRIAMDisplaySetting",
+            "FIRIAMClearcutHttpRequestSender",
+            "FIRIAMActivityLogger",
+            "FIRIAMImpressionRecord",
+            "FIRIAMMessageClientCache",
+            "FIRIAMRenderingEffectSetting",
+            "FIRIAMDisplayCheckOnAnalyticEventsFlow",
+            "FIRIAMBannerViewController",
+            "FIRIAMDisplayTriggerDefinition",
+            "FIRIAMDisplayExecutor",
+            "FIRIAMDisplayCheckOnFetchDoneNotificationFlow",
+            "FIRIAMImageOnlyViewController",
+            "FIRIAMActivityRecord",
+            "FIRIAMServerMsgFetchStorage",
+            "FIRInAppMessagingCampaignInfo",
+            "FIRIAMTimerWithNSDate",
+            "FIRIAMFetchSetting",
+            "FIRInAppMessagingActionButton",
+            "FIRIAMFetchResponseParser",
+            "FIRIAMElapsedTimeTracker",
+            "FIRIAMDisplayCheckOnAppForegroundFlow",
+            "FIRIAMMessageRenderData",
+            "FIRIAMBannerViewUIWindow",
+            "FIRIAMRenderingWindowHelper",
+            "FIRIAMSDKModeManager",
+            "FIRInAppMessagingImageData",
+            "FIRIAMClearcutLogRecord",
+            "FIRInAppMessagingAction",
+            "FIRIAMBaseRenderingViewController",
+            "FIRIAMSDKSettings",
+            "FIRIAMFetchFlow"
+          ]
+        },
+        "text": {
+          "global": [
+            "_FIRIAMDescriptonStringForSDKMode"
+          ]
+        }
+      }
+    ],
+    "flags": [
+      {
+        "attributes": [
+          "not_app_extension_safe"
+        ]
+      }
+    ],
+    "install_names": [
+      {
+        "name": "@rpath/FirebaseInAppMessaging.framework/FirebaseInAppMessaging"
+      }
+    ],
+    "target_info": [
+      {
+        "min_deployment": "11",
+        "target": "x86_64-ios-simulator"
+      },
+      {
+        "min_deployment": "14",
+        "target": "arm64-ios-simulator"
+      }
+    ]
+  },
+  "tapi_tbd_version": 5
+}

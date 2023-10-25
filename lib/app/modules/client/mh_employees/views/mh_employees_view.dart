@@ -5,7 +5,7 @@ import '../../../../models/position.dart';
 import '../controllers/mh_employees_controller.dart';
 
 class MhEmployeesView extends GetView<MhEmployeesController> {
-  const MhEmployeesView({Key? key}) : super(key: key);
+  const MhEmployeesView({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -12,8 +12,7 @@ class TimeRangeWidget extends StatelessWidget {
   final RequestDateModel requestDate;
   final bool hasDeleteOption;
   final VoidCallback onTap;
-  const TimeRangeWidget({Key? key, required this.requestDate, required this.hasDeleteOption, required this.onTap})
-      : super(key: key);
+  const TimeRangeWidget({super.key, required this.requestDate, required this.hasDeleteOption, required this.onTap});
 
   @override
   Widget build(BuildContext context) {

@@ -4,7 +4,7 @@ import '../../../../common/widgets/horizontal_divider_with_text.dart';
 import '../controllers/login_register_hints_controller.dart';
 
 class LoginRegisterHintsView extends GetView<LoginRegisterHintsController> {
-  const LoginRegisterHintsView({Key? key}) : super(key: key);
+  const LoginRegisterHintsView({super.key});
 
   @override
   Widget build(BuildContext context) {

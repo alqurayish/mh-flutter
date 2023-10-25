@@ -11,7 +11,7 @@ import '../../../../models/employees_by_id.dart';
 import '../controllers/admin_all_employees_controller.dart';
 
 class AdminAllEmployeesView extends GetView<AdminAllEmployeesController> {
-  const AdminAllEmployeesView({Key? key}) : super(key: key);
+  const AdminAllEmployeesView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -210,7 +210,7 @@ class AdminAllEmployeesView extends GetView<AdminAllEmployeesController> {
                       Row(
                         children: [
                           _detailsItem(
-                              MyAssets.totalHour, MyStrings.totalHour.tr, (user.totalWorkingHour ?? 0).toString()),
+                              MyAssets.totalHour, MyStrings.totalHour.tr, (user.totalWorkingHour ?? 0.0).toString()),
                         ],
                       ),
                     ],

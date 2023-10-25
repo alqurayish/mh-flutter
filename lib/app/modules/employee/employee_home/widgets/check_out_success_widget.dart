@@ -3,7 +3,7 @@ import 'package:mh/app/common/utils/exports.dart';
 import 'package:mh/app/routes/app_pages.dart';
 
 class CheckOutSuccessWidget extends StatelessWidget {
-  const CheckOutSuccessWidget({Key? key}) : super(key: key);
+  const CheckOutSuccessWidget({super.key});
 
   @override
   Widget build(BuildContext context) {

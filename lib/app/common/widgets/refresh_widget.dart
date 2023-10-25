@@ -4,7 +4,7 @@ import 'package:mh/app/common/values/my_color.dart';
 
 class RefreshWidget extends StatelessWidget {
   final void Function() onTap;
-  const RefreshWidget({Key? key, required this.onTap}) : super(key: key);
+  const RefreshWidget({super.key, required this.onTap});
 
   @override
   Widget build(BuildContext context) {

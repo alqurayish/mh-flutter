@@ -11,7 +11,7 @@ import 'package:mh/app/modules/client/client_shortlisted/models/add_to_shortlist
 class ShortListTimeRangeWidget extends StatelessWidget {
   final RequestDateModel requestDate;
   final int index;
-  const ShortListTimeRangeWidget({Key? key, required this.requestDate, required this.index}) : super(key: key);
+  const ShortListTimeRangeWidget({super.key, required this.requestDate, required this.index});
 
   @override
   Widget build(BuildContext context) {

@@ -10,7 +10,7 @@ import '../../../../models/employees_by_id.dart';
 import '../controllers/admin_all_clients_controller.dart';
 
 class AdminAllClientsView extends GetView<AdminAllClientsController> {
-  const AdminAllClientsView({Key? key}) : super(key: key);
+  const AdminAllClientsView({super.key});
 
   @override
   Widget build(BuildContext context) {

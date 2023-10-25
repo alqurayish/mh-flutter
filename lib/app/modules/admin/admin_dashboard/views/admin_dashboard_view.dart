@@ -13,7 +13,7 @@ import '../../../../common/widgets/no_item_found.dart';
 import '../controllers/admin_dashboard_controller.dart';
 
 class AdminDashboardView extends GetView<AdminDashboardController> {
-  const AdminDashboardView({Key? key}) : super(key: key);
+  const AdminDashboardView({super.key});
 
   @override
   Widget build(BuildContext context) {
