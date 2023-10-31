@@ -5,7 +5,7 @@ import '../../../../common/widgets/custom_bottombar.dart';
 import '../controllers/client_self_profile_controller.dart';
 
 class ClientSelfProfileView extends GetView<ClientSelfProfileController> {
-  const ClientSelfProfileView({Key? key}) : super(key: key);
+  const ClientSelfProfileView({super.key});
 
   @override
   Widget build(BuildContext context) {

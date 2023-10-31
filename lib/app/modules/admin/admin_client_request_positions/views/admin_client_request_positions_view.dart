@@ -5,7 +5,7 @@ import '../../../../models/position.dart';
 import '../controllers/admin_client_request_positions_controller.dart';
 
 class AdminClientRequestPositionsView extends GetView<AdminClientRequestPositionsController> {
-  const AdminClientRequestPositionsView({Key? key}) : super(key: key);
+  const AdminClientRequestPositionsView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +14,7 @@ class AdminClientRequestPositionsView extends GetView<AdminClientRequestPosition
     return Scaffold(
       appBar: CustomAppbar.appbar(
         context: context,
-        title: 'Requested positions',
+        title: 'Requested Positions',
       ),
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
@@ -34,7 +34,7 @@ class AdminClientRequestPositionsView extends GetView<AdminClientRequestPosition
                 ),
                 runSpacing: 20,
                 children: [
-                  ...controller.positions.map((e) {
+                  ...controller.positions.map((Position e) {
                     return _item(e);
                   }),
                 ],

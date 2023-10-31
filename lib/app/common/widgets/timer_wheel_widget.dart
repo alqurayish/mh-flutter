@@ -13,7 +13,7 @@ class TimerWheelWidget extends StatefulWidget {
   final Function(String time) onTimeChanged;
 
   const TimerWheelWidget({
-    Key? key,
+    super.key,
     required this.onTimeChanged,
     this.initialTime,
     this.spacing,
@@ -22,7 +22,7 @@ class TimerWheelWidget extends StatefulWidget {
     this.width,
     this.height,
     this.centerHighlightColor,
-  }) : super(key: key);
+  });
 
   @override
   TimerWheelWidgetState createState() => TimerWheelWidgetState();

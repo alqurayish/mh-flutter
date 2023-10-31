@@ -4,10 +4,30 @@ import 'package:dartz/dartz.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get/get_connect/http/src/request/request.dart';
-import 'package:mh/app/modules/employee/employee_home/models/single_notification_model_for_employee.dart';
+import 'package:mh/app/models/hourly_rate_model.dart';
+import 'package:mh/app/models/nationality_model.dart';
+import 'package:mh/app/modules/auth/register/models/employee_extra_field_model.dart';
+import 'package:mh/app/modules/calender/models/calender_model.dart';
+import 'package:mh/app/modules/calender/models/update_unavailable_date_request_model.dart';
+import 'package:mh/app/modules/client/client_shortlisted/models/add_to_shortlist_request_model.dart';
+import 'package:mh/app/modules/client/client_shortlisted/models/update_shortlist_request_model.dart';
+import 'package:mh/app/modules/client/client_suggested_employees/models/short_list_request_model.dart';
+import 'package:mh/app/modules/employee/employee_home/models/common_response_model.dart';
+import 'package:mh/app/modules/employee/employee_home/models/employee_check_in_request_model.dart';
+import 'package:mh/app/modules/employee/employee_home/models/employee_check_out_request_model.dart';
+import 'package:mh/app/modules/employee/employee_home/models/employee_hired_history_model.dart';
+import 'package:mh/app/modules/employee/employee_home/models/review_dialog_model.dart';
+import 'package:mh/app/modules/employee/employee_home/models/review_request_model.dart';
+import 'package:mh/app/modules/employee/employee_home/models/booking_history_model.dart';
+import 'package:mh/app/modules/employee/employee_home/models/single_booking_details_model.dart';
+import 'package:mh/app/modules/employee/employee_home/models/todays_work_schedule_model.dart';
+import 'package:mh/app/modules/employee/employee_payment_history/models/employee_payment_history_model.dart';
+import 'package:mh/app/modules/employee_booked_history_details/models/rejected_date_request_model.dart';
 import 'package:mh/app/modules/notifications/models/notification_response_model.dart';
 import 'package:mh/app/modules/notifications/models/notification_update_request_model.dart';
 import 'package:mh/app/modules/notifications/models/notification_update_response_model.dart';
+import 'package:mh/app/modules/stripe_payment/models/stripe_request_model.dart';
+import 'package:mh/app/modules/stripe_payment/models/stripe_response_model.dart';
 import 'package:mh/app/repository/server_urls.dart';
 
 import '../common/controller/app_error_controller.dart';
@@ -32,7 +52,7 @@ import '../modules/auth/register/models/client_register.dart';
 import '../modules/auth/register/models/client_register_response.dart';
 import '../modules/auth/register/models/employee_registration.dart';
 import '../modules/client/client_dashboard/models/current_hired_employees.dart';
-import '../modules/client/client_payment_and_invoice/model/client_invoice.dart';
+import '../modules/client/client_payment_and_invoice/model/client_invoice_model.dart';
 import '../modules/client/client_self_profile/model/client_profile_update.dart';
 import '../modules/client/client_shortlisted/models/shortlisted_employees.dart' as short_list_employees;
 import '../modules/client/client_terms_condition_for_hire/models/terms_condition_for_hire.dart';
@@ -43,7 +63,7 @@ import 'api_helper.dart';
 class ApiHelperImpl extends GetConnect implements ApiHelper {
   @override
   void onInit() {
-    httpClient.baseUrl = ServerUrls.serverUrlUser;
+    httpClient.baseUrl = ServerUrls.serverLiveUrlUser;
     httpClient.timeout = const Duration(seconds: 120);
 
     httpClient.addRequestModifier<dynamic>((Request request) {
@@ -165,7 +185,7 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
   EitherModel<LoginResponse> login(
     Login login,
   ) async {
-    var response = await post("users/login", jsonEncode(login.toJson));
+    Response response = await post("users/login", jsonEncode(login.toJson));
 
     if (response.statusCode == null) response = await post("users/login", jsonEncode(login.toJson));
     if (response.statusCode == null) response = await post("users/login", jsonEncode(login.toJson));
@@ -174,7 +194,7 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
     return _convert<LoginResponse>(
       response,
       LoginResponse.fromJson,
-    ).fold((l) => left(l), (r) => right(r));
+    ).fold((CustomError l) => left(l), (LoginResponse r) => right(r));
   }
 
   @override
@@ -271,23 +291,32 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
   }
 
   @override
-  EitherModel<Employees> getEmployees({
-    String? positionId,
-    String? rating,
-    String? employeeExperience,
-    String? minTotalHour,
-    String? maxTotalHour,
-    bool? isReferred,
-  }) async {
+  EitherModel<Employees> getEmployees(
+      {String? positionId,
+      String? employeeExperience,
+      String? minTotalHour,
+      String? maxTotalHour,
+      bool? isReferred,
+      String? dressSize,
+      String? nationality,
+      String? minHeight,
+      String? maxHeight,
+      String? minHourlyRate,
+      String? maxHourlyRate}) async {
     String url = "users/list?";
 
     if ((positionId ?? "").isNotEmpty) url += "positionId=$positionId";
-    if ((rating ?? "").isNotEmpty) url += "&rating=$rating";
     if ((employeeExperience ?? "").isNotEmpty) url += "&employeeExperience=$employeeExperience";
     if ((minTotalHour ?? "").isNotEmpty) url += "&minTotalHour=$minTotalHour";
     if ((maxTotalHour ?? "").isNotEmpty) url += "&maxTotalHour=$maxTotalHour";
     if (isReferred ?? false) url += "&isReferPerson=${isReferred!.toApiFormat}";
-    var response = await get(url);
+    if ((dressSize ?? "").isNotEmpty) url += "&dressSize=$dressSize";
+    if ((minHeight ?? "").isNotEmpty) url += "&minHeight=$minHeight";
+    if ((maxHeight ?? "").isNotEmpty) url += "&maxHeight=$maxHeight";
+    if ((minHourlyRate ?? "").isNotEmpty) url += "&minHourlyRate=$minHourlyRate";
+    if ((maxHourlyRate ?? "").isNotEmpty) url += "&maxHourlyRate=$maxHourlyRate";
+    if ((nationality ?? "").isNotEmpty) url += "&nationality=$nationality";
+    Response response = await get(url);
     if (response.statusCode == null) response = await get(url);
     if (response.statusCode == null) response = await get(url);
     if (response.statusCode == null) response = await get(url);
@@ -299,16 +328,15 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
   }
 
   @override
-  EitherModel<Employees> getAllUsersFromAdmin({
-    String? positionId,
-    String? rating,
-    String? employeeExperience,
-    String? minTotalHour,
-    String? maxTotalHour,
-    bool? isReferred,
-    String? requestType,
-    bool? active,
-  }) async {
+  EitherModel<Employees> getAllUsersFromAdmin(
+      {String? positionId,
+      String? rating,
+      String? employeeExperience,
+      String? minTotalHour,
+      String? maxTotalHour,
+      bool? isReferred,
+      String? requestType,
+      bool? active}) async {
     String url = "users?skipLimit=YES&requestType=$requestType";
 
     if ((positionId ?? "").isNotEmpty) url += "&positionId=$positionId";
@@ -359,7 +387,7 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
 
   @override
   EitherModel<short_list_employees.ShortlistedEmployees> fetchShortlistEmployees() async {
-    var response = await get("short-list");
+    Response response = await get("short-list");
     if (response.statusCode == null) response = await get("short-list");
     if (response.statusCode == null) response = await get("short-list");
     if (response.statusCode == null) response = await get("short-list");
@@ -371,19 +399,22 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
   }
 
   @override
-  EitherModel<Response> addToShortlist(
-    Map<String, dynamic> data,
-  ) async {
-    var response = await post("short-list/create", jsonEncode(data));
-    if (response.statusCode == null) response = await post("short-list/create", jsonEncode(data));
-    if (response.statusCode == null) response = await post("short-list/create", jsonEncode(data));
-    if (response.statusCode == null) response = await post("short-list/create", jsonEncode(data));
-
+  EitherModel<Response> addToShortlist({required AddToShortListRequestModel addToShortListRequestModel}) async {
+    Response response = await post("short-list/create", jsonEncode(addToShortListRequestModel.toJson()));
+    if (response.statusCode == null) {
+      response = await post("short-list/create", jsonEncode(addToShortListRequestModel.toJson()));
+    }
+    if (response.statusCode == null) {
+      response = await post("short-list/create", jsonEncode(addToShortListRequestModel.toJson()));
+    }
+    if (response.statusCode == null) {
+      response = await post("short-list/create", jsonEncode(addToShortListRequestModel.toJson()));
+    }
     return _convert<Response>(
       response,
       (Map<String, dynamic> data) {},
       onlyErrorCheck: true,
-    ).fold((l) => left(l), (r) => right(r));
+    ).fold((CustomError l) => left(l), (Response r) => right(r));
   }
 
   @override
@@ -400,11 +431,17 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
   }
 
   @override
-  EitherModel<Response> updateShortlistItem(Map<String, dynamic> data) async {
-    var response = await put("short-list/update", jsonEncode(data));
-    if (response.statusCode == null) response = await put("short-list/update", jsonEncode(data));
-    if (response.statusCode == null) response = await put("short-list/update", jsonEncode(data));
-    if (response.statusCode == null) response = await put("short-list/update", jsonEncode(data));
+  EitherModel<Response> updateShortlistItem({required UpdateShortListRequestModel updateShortListRequestModel}) async {
+    Response response = await put("short-list/update", jsonEncode(updateShortListRequestModel.toJson()));
+    if (response.statusCode == null) {
+      response = await put("short-list/update", jsonEncode(updateShortListRequestModel.toJson()));
+    }
+    if (response.statusCode == null) {
+      response = await put("short-list/update", jsonEncode(updateShortListRequestModel.toJson()));
+    }
+    if (response.statusCode == null) {
+      response = await put("short-list/update", jsonEncode(updateShortListRequestModel.toJson()));
+    }
 
     return _convert<Response>(
       response,
@@ -448,7 +485,7 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
     if (response.statusCode == null) response = await get("search?q=$query&format=jsonv2");
     if (response.statusCode == null) response = await get("search?q=$query&format=jsonv2");
     if (response.statusCode == null) response = await get("search?q=$query&format=jsonv2");
-    httpClient.baseUrl = ServerUrls.serverUrlUser;
+    httpClient.baseUrl = ServerUrls.serverLiveUrlUser;
 
     return _convert<Response>(
       response,
@@ -464,7 +501,7 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
     if (response.statusCode == null) response = await get("reverse?lat=$lat&lon=$lng&format=jsonv2");
     if (response.statusCode == null) response = await get("reverse?lat=$lat&lon=$lng&format=jsonv2");
     if (response.statusCode == null) response = await get("reverse?lat=$lat&lon=$lng&format=jsonv2");
-    httpClient.baseUrl = ServerUrls.serverUrlUser;
+    httpClient.baseUrl = ServerUrls.serverLiveUrlUser;
 
     return _convert<LatLngToAddress>(
       response,
@@ -492,24 +529,37 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
   }
 
   @override
-  EitherModel<TodayCheckInOutDetails> checkIn(Map<String, dynamic> data) async {
-    var response = await post("current-hired-employees/create", jsonEncode(data));
-    if (response.statusCode == null) response = await post("current-hired-employees/create", jsonEncode(data));
-    if (response.statusCode == null) response = await post("current-hired-employees/create", jsonEncode(data));
-    if (response.statusCode == null) response = await post("current-hired-employees/create", jsonEncode(data));
+  EitherModel<CommonResponseModel> checkIn({required EmployeeCheckInRequestModel employeeCheckInRequestModel}) async {
+    Response response = await post("current-hired-employees/create", jsonEncode(employeeCheckInRequestModel.toJson()));
 
-    return _convert<TodayCheckInOutDetails>(
+    if (response.statusCode == null) {
+      response = await post("current-hired-employees/create", jsonEncode(employeeCheckInRequestModel.toJson()));
+    }
+    if (response.statusCode == null) {
+      response = await post("current-hired-employees/create", jsonEncode(employeeCheckInRequestModel.toJson()));
+    }
+    if (response.statusCode == null) {
+      response = await post("current-hired-employees/create", jsonEncode(employeeCheckInRequestModel.toJson()));
+    }
+
+    return _convert<CommonResponseModel>(
       response,
-      TodayCheckInOutDetails.fromJson,
-    ).fold((l) => left(l), (r) => right(r));
+      CommonResponseModel.fromJson,
+    ).fold((CustomError l) => left(l), (CommonResponseModel r) => right(r));
   }
 
   @override
-  EitherModel<Response> checkout(Map<String, dynamic> data) async {
-    var response = await put("current-hired-employees/update", jsonEncode(data));
-    if (response.statusCode == null) response = await put("current-hired-employees/update", jsonEncode(data));
-    if (response.statusCode == null) response = await put("current-hired-employees/update", jsonEncode(data));
-    if (response.statusCode == null) response = await put("current-hired-employees/update", jsonEncode(data));
+  EitherModel<Response> checkout({required EmployeeCheckOutRequestModel employeeCheckOutRequestModel}) async {
+    var response = await put("current-hired-employees/update", jsonEncode(employeeCheckOutRequestModel.toJson()));
+    if (response.statusCode == null) {
+      response = await put("current-hired-employees/update", jsonEncode(employeeCheckOutRequestModel.toJson()));
+    }
+    if (response.statusCode == null) {
+      response = await put("current-hired-employees/update", jsonEncode(employeeCheckOutRequestModel.toJson()));
+    }
+    if (response.statusCode == null) {
+      response = await put("current-hired-employees/update", jsonEncode(employeeCheckOutRequestModel.toJson()));
+    }
 
     return _convert<Response>(
       response,
@@ -520,7 +570,7 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
 
   @override
   EitherModel<Response> updateCheckInOutByClient(Map<String, dynamic> data) async {
-    var response = await put("current-hired-employees/update-status", jsonEncode(data));
+    Response response = await put("current-hired-employees/update-status", jsonEncode(data));
     if (response.statusCode == null) response = await put("current-hired-employees/update-status", jsonEncode(data));
     if (response.statusCode == null) response = await put("current-hired-employees/update-status", jsonEncode(data));
     if (response.statusCode == null) response = await put("current-hired-employees/update-status", jsonEncode(data));
@@ -552,7 +602,7 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
 
     if (date != null) url += "?filterDate=$date&utc=${DateTime.now().timeZoneOffset.inHours}";
 
-    var response = await get(url);
+    Response response = await get(url);
     if (response.statusCode == null) response = await get(url);
     if (response.statusCode == null) response = await get(url);
     if (response.statusCode == null) response = await get(url);
@@ -569,7 +619,6 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
     if (response.statusCode == null) response = await get("current-hired-employees/details/$employeeId");
     if (response.statusCode == null) response = await get("current-hired-employees/details/$employeeId");
     if (response.statusCode == null) response = await get("current-hired-employees/details/$employeeId");
-
     return _convert<TodayCheckInOutDetails>(
       response,
       TodayCheckInOutDetails.fromJson,
@@ -590,14 +639,14 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
     if ((clientId ?? "").isNotEmpty) url += "&clientId=$clientId";
     if ((employeeId ?? "").isNotEmpty) url += "&employeeId=$employeeId";
 
-    var response = await get(url);
+    Response response = await get(url);
     if (response.statusCode == null) response = await get(url);
     if (response.statusCode == null) response = await get(url);
     if (response.statusCode == null) response = await get(url);
     return _convert<CheckInCheckOutHistory>(
       response,
       CheckInCheckOutHistory.fromJson,
-    ).fold((l) => left(l), (r) => right(r));
+    ).fold((CustomError l) => left(l), (CheckInCheckOutHistory r) => right(r));
   }
 
   @override
@@ -719,7 +768,7 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
   }
 
   @override
-  EitherModel<ClientInvoice> getClientInvoice(String clientId) async {
+  EitherModel<ClientInvoiceModel> getClientInvoice(String clientId) async {
     String url = "invoices?clientId=$clientId";
 
     var response = await get(url);
@@ -727,9 +776,9 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
     if (response.statusCode == null) response = await get(url);
     if (response.statusCode == null) response = await get(url);
 
-    return _convert<ClientInvoice>(
+    return _convert<ClientInvoiceModel>(
       response,
-      ClientInvoice.fromJson,
+      ClientInvoiceModel.fromJson,
     ).fold((l) => left(l), (r) => right(r));
   }
 
@@ -787,7 +836,7 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
   }
 
   @override
-  EitherModel<SingleNotificationModelForEmployee> singleNotificationForEmployee() async {
+  EitherModel<BookingHistoryModel> getBookingHistory() async {
     String url = "notifications/details";
 
     Response response = await get(url);
@@ -800,14 +849,14 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
     if (response.statusCode == null) {
       response = await get(url);
     }
-    return _convert<SingleNotificationModelForEmployee>(
+    return _convert<BookingHistoryModel>(
       response,
-      SingleNotificationModelForEmployee.fromJson,
-    ).fold((CustomError l) => left(l), (SingleNotificationModelForEmployee r) => right(r));
+      BookingHistoryModel.fromJson,
+    ).fold((CustomError l) => left(l), (BookingHistoryModel r) => right(r));
   }
 
   @override
-  EitherModel<SingleNotificationModelForEmployee> cancelClientRequestFromAdmin({required String requestId}) async {
+  EitherModel<BookingHistoryModel> cancelClientRequestFromAdmin({required String requestId}) async {
     String url = "request-employees/remove/$requestId";
 
     var response = await delete(url);
@@ -815,14 +864,14 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
     if (response.statusCode == null) response = await delete(url);
     if (response.statusCode == null) response = await delete(url);
 
-    return _convert<SingleNotificationModelForEmployee>(
+    return _convert<BookingHistoryModel>(
       response,
-      SingleNotificationModelForEmployee.fromJson,
-    ).fold((CustomError l) => left(l), (SingleNotificationModelForEmployee r) => right(r));
+      BookingHistoryModel.fromJson,
+    ).fold((CustomError l) => left(l), (BookingHistoryModel r) => right(r));
   }
 
   @override
-  EitherModel<SingleNotificationModelForEmployee> cancelEmployeeSuggestionFromAdmin(
+  EitherModel<BookingHistoryModel> cancelEmployeeSuggestionFromAdmin(
       {required String employeeId, required String requestId}) async {
     String url = "request-employees/cancel-suggest/$requestId";
 
@@ -831,9 +880,244 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
     if (response.statusCode == null) response = await patch(url, jsonEncode({"employeeId": employeeId}));
     if (response.statusCode == null) response = await patch(url, jsonEncode({"employeeId": employeeId}));
 
-    return _convert<SingleNotificationModelForEmployee>(
+    return _convert<BookingHistoryModel>(
       response,
-      SingleNotificationModelForEmployee.fromJson,
-    ).fold((CustomError l) => left(l), (SingleNotificationModelForEmployee r) => right(r));
+      BookingHistoryModel.fromJson,
+    ).fold((CustomError l) => left(l), (BookingHistoryModel r) => right(r));
+  }
+
+  @override
+  EitherModel<StripeResponseModel> stripePayment({required StripeRequestModel stripeRequestModel}) async {
+    String url = "payment/create-session";
+
+    Response response = await post(url, jsonEncode(stripeRequestModel.toJson()));
+    if (response.statusCode == null) await post(url, jsonEncode(stripeRequestModel.toJson()));
+    if (response.statusCode == null) await post(url, jsonEncode(stripeRequestModel.toJson()));
+    if (response.statusCode == null) await post(url, jsonEncode(stripeRequestModel.toJson()));
+
+    return _convert<StripeResponseModel>(
+      response,
+      StripeResponseModel.fromJson,
+    ).fold((CustomError l) => left(l), (StripeResponseModel r) => right(r));
+  }
+
+  @override
+  EitherModel<EmployeePaymentHistory> employeePaymentHistory({required String employeeId}) async {
+    String url = "employee-invoices?employeeId=$employeeId";
+
+    var response = await get(url);
+    if (response.statusCode == null) await get(url);
+    if (response.statusCode == null) await get(url);
+    if (response.statusCode == null) await get(url);
+
+    return _convert<EmployeePaymentHistory>(
+      response,
+      EmployeePaymentHistory.fromJson,
+    ).fold((CustomError l) => left(l), (EmployeePaymentHistory r) => right(r));
+  }
+
+  @override
+  EitherModel<ReviewDialogModel> showReviewDialog() async {
+    String url = "review/view-eligible";
+
+    var response = await get(url);
+    if (response.statusCode == null) await get(url);
+    if (response.statusCode == null) await get(url);
+    if (response.statusCode == null) await get(url);
+
+    return _convert<ReviewDialogModel>(
+      response,
+      ReviewDialogModel.fromJson,
+    ).fold((CustomError l) => left(l), (ReviewDialogModel r) => right(r));
+  }
+
+  @override
+  EitherModel<CommonResponseModel> giveReview({required ReviewRequestModel reviewRequestModel}) async {
+    String url = "review/create";
+
+    var response = await post(url, jsonEncode(reviewRequestModel.toJson()));
+    if (response.statusCode == null) await post(url, jsonEncode(reviewRequestModel.toJson()));
+    if (response.statusCode == null) await post(url, jsonEncode(reviewRequestModel.toJson()));
+    if (response.statusCode == null) await post(url, jsonEncode(reviewRequestModel.toJson()));
+
+    return _convert<CommonResponseModel>(
+      response,
+      CommonResponseModel.fromJson,
+    ).fold((CustomError l) => left(l), (CommonResponseModel r) => right(r));
+  }
+
+  @override
+  EitherModel<CommonResponseModel> addToShortlistNew({required ShortListRequestModel shortListRequestModel}) async {
+    String url = "request-employees/short-list-create";
+
+    var response = await post(url, jsonEncode(shortListRequestModel.toJson()));
+    if (response.statusCode == null) await post(url, jsonEncode(shortListRequestModel.toJson()));
+    if (response.statusCode == null) await post(url, jsonEncode(shortListRequestModel.toJson()));
+    if (response.statusCode == null) await post(url, jsonEncode(shortListRequestModel.toJson()));
+    return _convert<CommonResponseModel>(
+      response,
+      CommonResponseModel.fromJson,
+    ).fold((CustomError l) => left(l), (CommonResponseModel r) => right(r));
+  }
+
+  @override
+  EitherModel<CalenderModel> getCalenderData({required String employeeId}) async {
+    String url = "users/working-history/$employeeId";
+
+    Response response = await get(url);
+    if (response.statusCode == null) await get(url);
+    if (response.statusCode == null) await get(url);
+    if (response.statusCode == null) await get(url);
+    return _convert<CalenderModel>(
+      response,
+      CalenderModel.fromJson,
+    ).fold((CustomError l) => left(l), (CalenderModel r) => right(r));
+  }
+
+  @override
+  EitherModel<CommonResponseModel> updateUnavailableDate(
+      {required UpdateUnavailableDateRequestModel updateUnavailableDateRequestModel}) async {
+    String url = "users/update-unavailable-date";
+
+    Response response = await put(url, jsonEncode(updateUnavailableDateRequestModel.toJson()));
+    if (response.statusCode == null) await put(url, jsonEncode(updateUnavailableDateRequestModel.toJson()));
+    if (response.statusCode == null) await put(url, jsonEncode(updateUnavailableDateRequestModel.toJson()));
+    if (response.statusCode == null) await put(url, jsonEncode(updateUnavailableDateRequestModel.toJson()));
+
+    return _convert<CommonResponseModel>(
+      response,
+      CommonResponseModel.fromJson,
+    ).fold((CustomError l) => left(l), (CommonResponseModel r) => right(r));
+  }
+
+  @override
+  EitherModel<TodayWorkScheduleModel> getTodayWorkSchedule() async {
+    String url =
+        "check-in-check-out-histories/today-work-place?currentDate=${DateTime.now().toString().substring(0, 10)}";
+
+    Response response = await get(url);
+    if (response.statusCode == null) await get(url);
+    if (response.statusCode == null) await get(url);
+    if (response.statusCode == null) await get(url);
+    return _convert<TodayWorkScheduleModel>(
+      response,
+      TodayWorkScheduleModel.fromJson,
+    ).fold((CustomError l) => left(l), (TodayWorkScheduleModel r) => right(r));
+  }
+
+  @override
+  EitherModel<EmployeeHiredHistoryModel> getHiredHistory() async {
+    String url = "users/hired-history";
+
+    Response response = await get(url);
+    if (response.statusCode == null) await get(url);
+    if (response.statusCode == null) await get(url);
+    if (response.statusCode == null) await get(url);
+    return _convert<EmployeeHiredHistoryModel>(
+      response,
+      EmployeeHiredHistoryModel.fromJson,
+    ).fold((CustomError l) => left(l), (EmployeeHiredHistoryModel r) => right(r));
+  }
+
+  @override
+  EitherModel<SingleBookingDetailsModel> getBookingDetails({required String notificationId}) async {
+    String url = "notifications/$notificationId";
+
+    Response response = await get(url);
+    if (response.statusCode == null) await get(url);
+    if (response.statusCode == null) await get(url);
+    if (response.statusCode == null) await get(url);
+    return _convert<SingleBookingDetailsModel>(
+      response,
+      SingleBookingDetailsModel.fromJson,
+    ).fold((CustomError l) => left(l), (SingleBookingDetailsModel r) => right(r));
+  }
+
+  @override
+  EitherModel<Response> updateRequestDate({required RejectedDateRequestModel rejectedDateRequestModel}) async {
+    Response response = await put("notifications/update-request-date", jsonEncode(rejectedDateRequestModel.toJson()));
+    if (response.statusCode == null) {
+      response = await put("notifications/update-request-date", jsonEncode(rejectedDateRequestModel.toJson()));
+    }
+    if (response.statusCode == null) {
+      response = await put("notifications/update-request-date", jsonEncode(rejectedDateRequestModel.toJson()));
+    }
+    if (response.statusCode == null) {
+      response = await put("notifications/update-request-date", jsonEncode(rejectedDateRequestModel.toJson()));
+    }
+
+    return _convert<Response>(
+      response,
+      (Map<String, dynamic> data) {},
+      onlyErrorCheck: true,
+    ).fold((l) => left(l), (r) => right(r));
+  }
+
+  @override
+  EitherModel<TodayCheckInOutDetails> emergencyCheckIn(Map<String, dynamic> data) async {
+    Response response = await post("current-hired-employees/create", jsonEncode(data));
+    if (response.statusCode == null) response = await post("current-hired-employees/create", jsonEncode(data));
+    if (response.statusCode == null) response = await post("current-hired-employees/create", jsonEncode(data));
+    if (response.statusCode == null) response = await post("current-hired-employees/create", jsonEncode(data));
+
+    return _convert<TodayCheckInOutDetails>(
+      response,
+      TodayCheckInOutDetails.fromJson,
+    ).fold((l) => left(l), (r) => right(r));
+  }
+
+  @override
+  EitherModel<Response> emergencyCheckOut(Map<String, dynamic> data) async {
+    Response response = await put("current-hired-employees/update", jsonEncode(data));
+    if (response.statusCode == null) response = await put("current-hired-employees/update", jsonEncode(data));
+    if (response.statusCode == null) response = await put("current-hired-employees/update", jsonEncode(data));
+    if (response.statusCode == null) response = await put("current-hired-employees/update", jsonEncode(data));
+
+    return _convert<Response>(
+      response,
+      (Map<String, dynamic> data) {},
+      onlyErrorCheck: true,
+    ).fold((l) => left(l), (r) => right(r));
+  }
+
+  @override
+  EitherModel<ExtraFieldModel> getEmployeeExtraField({required String countryName}) async {
+    Response response = await post("document/get-fields", jsonEncode({"country": countryName}));
+    if (response.statusCode == null) response = await post("document/get-fields", jsonEncode({"country": countryName}));
+    if (response.statusCode == null) response = await post("document/get-fields", jsonEncode({"country": countryName}));
+    if (response.statusCode == null) response = await post("document/get-fields", jsonEncode({"country": countryName}));
+
+    return _convert<ExtraFieldModel>(
+      response,
+      ExtraFieldModel.fromJson,
+    ).fold((CustomError l) => left(l), (ExtraFieldModel r) => right(r));
+  }
+
+  @override
+  EitherModel<NationalityModel> getNationalities() async {
+    String url = "commons/nationality";
+
+    Response response = await get(url);
+    if (response.statusCode == null) await get(url);
+    if (response.statusCode == null) await get(url);
+    if (response.statusCode == null) await get(url);
+    return _convert<NationalityModel>(
+      response,
+      NationalityModel.fromJson,
+    ).fold((CustomError l) => left(l), (NationalityModel r) => right(r));
+  }
+
+  @override
+  EitherModel<HourlyRateModel> getHourlyRate() async {
+    String url = "users/hourly-rate-info";
+
+    Response response = await get(url);
+    if (response.statusCode == null) await get(url);
+    if (response.statusCode == null) await get(url);
+    if (response.statusCode == null) await get(url);
+    return _convert<HourlyRateModel>(
+      response,
+      HourlyRateModel.fromJson,
+    ).fold((CustomError l) => left(l), (HourlyRateModel r) => right(r));
   }
 }

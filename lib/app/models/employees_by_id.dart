@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:mh/app/modules/calender/models/calender_model.dart';
+
 import 'push_notification_details.dart';
 
 class Employees {
@@ -83,7 +85,8 @@ class Employee {
       this.verified,
       this.noOfEmployee,
       this.employeeExperience,
-      this.rating,
+      this.rating = 0.0,
+      this.totalRating = 0,
       this.totalWorkingHour,
       this.hourlyRate,
       this.contractorHourlyRate,
@@ -99,9 +102,19 @@ class Employee {
       this.lat,
       this.long,
       this.pushNotificationDetails,
-      this.isSuggested});
+      this.isSuggested,
+      this.available,
+      this.unAvailableDateList,
+      this.currentOrganisation,
+      this.nationality,
+      this.height,
+      this.weight,
+      this.certified,
+      this.dressSize});
 
   final String? id;
+
+  final bool? certified;
   final String? firstName;
   final String? lastName;
   final String? positionId;
@@ -137,8 +150,9 @@ class Employee {
   final bool? verified;
   final int? noOfEmployee;
   final dynamic employeeExperience;
-  final int? rating;
-  final int? totalWorkingHour;
+  final double? rating;
+  final int? totalRating;
+  final double? totalWorkingHour;
   final double? hourlyRate;
   final List<dynamic>? certificates;
   final DateTime? createdAt;
@@ -153,6 +167,13 @@ class Employee {
   final String? long;
   final PushNotificationDetails? pushNotificationDetails;
   final bool? isSuggested;
+  final List<CalenderDataModel>? unAvailableDateList;
+  final String? available;
+  final String? currentOrganisation;
+  final String? dressSize;
+  final String? height;
+  final String? weight;
+  final String? nationality;
 
   factory Employee.fromRawJson(String str) => Employee.fromJson(json.decode(str));
 
@@ -160,6 +181,11 @@ class Employee {
 
   factory Employee.fromJson(Map<String, dynamic> json) => Employee(
       id: json["_id"],
+      certified: json["certified"],
+      available: json["available"],
+      unAvailableDateList: json["unavailableDate"] == null
+          ? []
+          : List<CalenderDataModel>.from(json["unavailableDate"]!.map((x) => CalenderDataModel.fromJson(x))),
       firstName: json["firstName"],
       lastName: json["lastName"],
       positionId: json["positionId"],
@@ -196,8 +222,9 @@ class Employee {
           json["contractorHourlyRate"] == null ? 0.0 : double.parse(json["contractorHourlyRate"].toString()),
       noOfEmployee: json["noOfEmployee"],
       employeeExperience: json["employeeExperience"],
-      rating: json["rating"],
-      totalWorkingHour: json["totalWorkingHour"],
+      rating: json["rating"] == null ? 0.0 : double.parse(json["rating"].toString()),
+      totalRating: json["totalRating"],
+      totalWorkingHour: json["totalWorkingHour"] == null ? 0.0 : double.parse(json["totalWorkingHour"].toString()),
       hourlyRate: json["hourlyRate"] == null ? 0.0 : double.parse(json["hourlyRate"].toString()),
       certificates: json["certificates"] == null ? [] : List<dynamic>.from(json["certificates"]!.map((x) => x)),
       createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
@@ -210,6 +237,11 @@ class Employee {
       clientDiscount: json["clientDiscount"],
       lat: json["lat"],
       long: json["long"],
+      currentOrganisation: json["currentOrganisation"],
+      nationality: json["nationality"],
+      height: json["height"].toString(),
+      weight: json["weight"].toString(),
+      dressSize: json["dressSize"],
       pushNotificationDetails: json["pushNotificationDetails"] == null
           ? null
           : PushNotificationDetails.fromJson(json["pushNotificationDetails"]),
@@ -217,6 +249,7 @@ class Employee {
 
   Map<String, dynamic> toJson() => {
         "_id": id,
+        "certified": certified,
         "firstName": firstName,
         "lastName": lastName,
         "positionId": positionId,
@@ -253,6 +286,7 @@ class Employee {
         "noOfEmployee": noOfEmployee,
         "employeeExperience": employeeExperience,
         "rating": rating,
+        "totalRating": totalRating,
         "totalWorkingHour": totalWorkingHour,
         "hourlyRate": hourlyRate,
         "certificates": certificates == null ? [] : List<dynamic>.from(certificates!.map((x) => x)),
@@ -267,7 +301,12 @@ class Employee {
         "lat": lat,
         "long": long,
         "pushNotificationDetails": pushNotificationDetails?.toJson(),
-        "isSuggested": isSuggested
+        "isSuggested": isSuggested,
+        "currentOrganisation": currentOrganisation,
+        "nationality": nationality,
+        "height": height,
+        "weight": weight,
+        "dressSize": dressSize
       };
 }
 

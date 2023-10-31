@@ -1,5 +1,6 @@
+import 'package:dartz/dartz.dart';
 import 'package:intl/intl.dart';
-
+import 'package:mh/app/models/employee_details.dart';
 import '../../../../common/controller/app_controller.dart';
 import '../../../../common/utils/exports.dart';
 import '../../../../common/widgets/custom_loader.dart';
@@ -8,7 +9,6 @@ import '../../../../models/custom_error.dart';
 import '../../../../repository/api_helper.dart';
 import '../../../../routes/app_pages.dart';
 import '../../client_home/controllers/client_home_controller.dart';
-import '../models/current_hired_employees.dart';
 
 class ClientDashboardController extends GetxController {
   BuildContext? context;
@@ -47,53 +47,50 @@ class ClientDashboardController extends GetxController {
   RxString selectedDate = "".obs;
 
   RxBool loading = false.obs;
-
-  Rx<HiredEmployeesByDate> hiredEmployeesByDate = HiredEmployeesByDate().obs;
-
   Rx<CheckInCheckOutHistory> checkInCheckOutHistory = CheckInCheckOutHistory().obs;
-
-  // RxList<CheckInCheckOutHistoryElement> history = <CheckInCheckOutHistoryElement>[].obs;
+  RxList<String> totalActiveEmployee = <String>[].obs;
 
   @override
   void onInit() {
     super.onInit();
     onDatePicked(DateTime.now());
-
-    _fetchEmployees();
+    _fetchCheckInOutHistory();
   }
 
   String getComment(int index) {
-    return getCheckInOutDate(index)?.checkInCheckOutDetails?.clientComment ?? "";
+    return checkInCheckOutHistory.value.checkInCheckOutHistory?[index].checkInCheckOutDetails?.clientComment ?? '';
   }
 
-  CheckInCheckOutHistoryElement? getCheckInOutDate(int index) {
-    String id = hiredEmployeesByDate.value.hiredHistories![index].employeeDetails!.employeeId!;
+  /*CheckInCheckOutHistoryElement? getCheckInOutDate(int index) {
+    String id = checkInCheckOutHistory.value.checkInCheckOutHistory![index].employeeDetails!.employeeId!;
 
     for (var element in checkInCheckOutHistory.value.checkInCheckOutHistory ?? []) {
-      if(element.employeeDetails!.employeeId! == id) {
+      if (element.employeeDetails!.employeeId! == id) {
         return element;
       }
     }
 
     return null;
-  }
+  }*/
 
   bool clientCommentEnable(int index) {
-    CheckInCheckOutHistoryElement? element = getCheckInOutDate(index);
+    CheckInCheckOutHistoryElement? element = checkInCheckOutHistory.value.checkInCheckOutHistory![index];
 
-    if(element != null) {
+    if (element.checkInCheckOutDetails != null) {
       // checkout is 24h ago
-      if ((element.checkInCheckOutDetails?.checkOutTime != null) && DateTime.now().difference(element.checkInCheckOutDetails!.checkOutTime!.toLocal()).inHours > 12) {
+      if ((element.checkInCheckOutDetails?.checkOutTime != null) &&
+          DateTime.now().difference(element.checkInCheckOutDetails!.checkOutTime!.toLocal()).inHours > 12) {
         return false;
-      }
-      else if ((element.checkInCheckOutDetails?.clientCheckOutTime != null) && DateTime.now().difference(element.checkInCheckOutDetails!.clientCheckOutTime!.toLocal()).inHours > 12) {
+      } else if ((element.checkInCheckOutDetails?.clientCheckOutTime != null) &&
+          DateTime.now().difference(element.checkInCheckOutDetails!.clientCheckOutTime!.toLocal()).inHours > 12) {
         return false;
       }
       // check in 24h ago (forgot checkout)
-      else if ((element.checkInCheckOutDetails?.checkInTime != null) && DateTime.now().difference(element.checkInCheckOutDetails!.checkInTime!.toLocal()).inHours > 12) {
+      else if ((element.checkInCheckOutDetails?.checkInTime != null) &&
+          DateTime.now().difference(element.checkInCheckOutDetails!.checkInTime!.toLocal()).inHours > 12) {
         return false;
-      }
-      else if ((element.checkInCheckOutDetails?.clientCheckInTime != null) && DateTime.now().difference(element.checkInCheckOutDetails!.clientCheckInTime!.toLocal()).inHours > 12) {
+      } else if ((element.checkInCheckOutDetails?.clientCheckInTime != null) &&
+          DateTime.now().difference(element.checkInCheckOutDetails!.clientCheckInTime!.toLocal()).inHours > 12) {
         return false;
       }
     }
@@ -102,8 +99,8 @@ class ClientDashboardController extends GetxController {
   }
 
   void setUpdatedDate(int index) {
-    CheckInCheckOutHistoryElement? element = getCheckInOutDate(index);
-    if(element != null) {
+    CheckInCheckOutHistoryElement? element = checkInCheckOutHistory.value.checkInCheckOutHistory![index];
+    if (element.checkInCheckOutDetails != null) {
       tecComment.text = element.checkInCheckOutDetails?.clientComment ?? "";
       tecTime.clear();
 
@@ -112,7 +109,7 @@ class ClientDashboardController extends GetxController {
         "Check In After",
       ];
 
-      if(element.checkInCheckOutDetails?.checkOutTime != null) {
+      if (element.checkInCheckOutDetails?.checkOutTime != null) {
         complainType = [
           "Check In Before",
           "Check In After",
@@ -122,53 +119,50 @@ class ClientDashboardController extends GetxController {
         ];
       }
 
-      if(selectedComplainType == complainType[0] || selectedComplainType == complainType[1]) {
-        if(element.checkInCheckOutDetails?.clientCheckInTime != null) {
+      if (selectedComplainType == complainType[0] || selectedComplainType == complainType[1]) {
+        if (element.checkInCheckOutDetails?.clientCheckInTime != null) {
+          var dif = element.checkInCheckOutDetails!.clientCheckInTime!
+              .difference(element.checkInCheckOutDetails!.checkInTime!)
+              .inMinutes;
 
-          var dif = element.checkInCheckOutDetails!.clientCheckInTime!.difference(element.checkInCheckOutDetails!.checkInTime!).inMinutes;
-
-          if(selectedComplainType == complainType[0]) {
-            if(dif < 0) {
+          if (selectedComplainType == complainType[0]) {
+            if (dif < 0) {
               tecTime.text = dif.abs().toString();
             } else {
               tecTime.text = "";
             }
           } else {
-            if(dif > 0) {
+            if (dif > 0) {
               tecTime.text = dif.abs().toString();
             } else {
               tecTime.text = "";
             }
           }
-
         }
-      }
-      else if(selectedComplainType == complainType[2] || selectedComplainType == complainType[3]) {
-        if(element.checkInCheckOutDetails?.clientCheckOutTime != null) {
+      } else if (selectedComplainType == complainType[2] || selectedComplainType == complainType[3]) {
+        if (element.checkInCheckOutDetails?.clientCheckOutTime != null) {
+          var dif = element.checkInCheckOutDetails!.clientCheckOutTime!
+              .difference(element.checkInCheckOutDetails!.checkOutTime!)
+              .inMinutes;
 
-          var dif = element.checkInCheckOutDetails!.clientCheckOutTime!.difference(element.checkInCheckOutDetails!.checkOutTime!).inMinutes;
-
-          if(selectedComplainType == complainType[2]) {
-            if(dif < 0) {
+          if (selectedComplainType == complainType[2]) {
+            if (dif < 0) {
               tecTime.text = dif.abs().toString();
             } else {
               tecTime.text = "";
             }
           } else {
-            if(dif > 0) {
+            if (dif > 0) {
               tecTime.text = dif.abs().toString();
             } else {
               tecTime.text = "";
             }
           }
-
         }
-      }
-      else if(selectedComplainType == complainType.last) {
+      } else if (selectedComplainType == complainType.last) {
         tecTime.text = (element.checkInCheckOutDetails?.clientBreakTime ?? 0).toString();
       }
     }
-
   }
 
   void onDatePicked(DateTime dateTime) {
@@ -177,7 +171,7 @@ class ClientDashboardController extends GetxController {
 
     selectedDate.value = DateFormat('E, d MMM ,y').format(dashboardDate.value);
 
-    _fetchEmployees();
+    _fetchCheckInOutHistory();
   }
 
   void onComplainTypeChange(int index, String? type) {
@@ -186,116 +180,107 @@ class ClientDashboardController extends GetxController {
     setUpdatedDate(index);
   }
 
-  Future<void> _fetchEmployees() async {
-    if(loading.value) return;
-
-    loading.value = true;
-
-    await _apiHelper.getHiredEmployeesByDate(date: dashboardDate.value.toString().split(" ").first).then((response) {
-
-      response.fold((CustomError customError) {
-        loading.value = false;
-
-        Utils.errorDialog(context!, customError..onRetry = _fetchEmployees);
-
-      }, (HiredEmployeesByDate hiredEmployeesByDate) {
-
-        this.hiredEmployeesByDate.value = hiredEmployeesByDate;
-        this.hiredEmployeesByDate.refresh();
-
-        _fetchCheckInOutHistory();
-
-      });
-    });
-  }
-
   Future<void> _fetchCheckInOutHistory() async {
     loading.value = true;
-
-    await _apiHelper.getCheckInOutHistory(
+    Either<CustomError, CheckInCheckOutHistory> response = await _apiHelper.getCheckInOutHistory(
       filterDate: dashboardDate.value.toString().split(" ").first,
       clientId: appController.user.value.userId,
-    ).then((response) {
+    );
+    loading.value = false;
 
-      loading.value = false;
-
-      response.fold((CustomError customError) {
-        Utils.errorDialog(context!, customError..onRetry = _fetchCheckInOutHistory);
-      }, (CheckInCheckOutHistory checkInCheckOutHistory) async {
-
-        this.checkInCheckOutHistory.value = checkInCheckOutHistory;
-        // history..clear()..addAll(checkInCheckOutHistory.checkInCheckOutHistory ?? []);
-
-      });
+    response.fold((CustomError customError) {
+      Utils.errorDialog(context!, customError..onRetry = _fetchCheckInOutHistory);
+    }, (CheckInCheckOutHistory checkInCheckOutHistory) async {
+      this.checkInCheckOutHistory.value = checkInCheckOutHistory;
+      countTotalActiveEmployees();
     });
   }
 
   Future<void> onUpdatePressed(int index) async {
-
     Utils.unFocus();
 
     if (formKey.currentState!.validate()) {
       formKey.currentState!.save();
 
-      CheckInCheckOutHistoryElement element = getCheckInOutDate(index)!;
+      CheckInCheckOutHistoryElement element = checkInCheckOutHistory.value.checkInCheckOutHistory![index];
 
       int checkInDiff = 0, checkOutDiff = 0, breakTime = 0;
 
-      if(element.checkInCheckOutDetails!.clientCheckInTime != null) {
-        checkInDiff = element.checkInCheckOutDetails!.clientCheckInTime!.difference(element.checkInCheckOutDetails!.checkInTime!).inMinutes;
+      if (element.checkInCheckOutDetails!.clientCheckInTime != null) {
+        checkInDiff = element.checkInCheckOutDetails!.clientCheckInTime!
+            .difference(element.checkInCheckOutDetails!.checkInTime!)
+            .inMinutes;
       }
 
-      if(element.checkInCheckOutDetails!.clientCheckOutTime != null) {
-        checkOutDiff = element.checkInCheckOutDetails!.clientCheckOutTime!.difference(element.checkInCheckOutDetails!.checkOutTime!).inMinutes;
+      if (element.checkInCheckOutDetails!.clientCheckOutTime != null) {
+        checkOutDiff = element.checkInCheckOutDetails!.clientCheckOutTime!
+            .difference(element.checkInCheckOutDetails!.checkOutTime!)
+            .inMinutes;
       }
 
-      if(element.checkInCheckOutDetails!.clientBreakTime != null) {
+      if (element.checkInCheckOutDetails!.clientBreakTime != null) {
         breakTime = element.checkInCheckOutDetails?.clientBreakTime ?? 0;
       }
 
-
       Map<String, dynamic> data = {
         "id": element.currentHiredEmployeeId,
-        "checkIn": (element.checkInCheckOutDetails?.checkIn ?? false) || (element.checkInCheckOutDetails?.emmergencyCheckIn ?? false),
-        "checkOut": (element.checkInCheckOutDetails?.checkOut ?? false) || (element.checkInCheckOutDetails?.emmergencyCheckOut ?? false),
-        if(tecComment.text.isNotEmpty) "clientComment": tecComment.text,
+        "checkIn": (element.checkInCheckOutDetails?.checkIn ?? false) ||
+            (element.checkInCheckOutDetails?.emmergencyCheckIn ?? false),
+        "checkOut": (element.checkInCheckOutDetails?.checkOut ?? false) ||
+            (element.checkInCheckOutDetails?.emmergencyCheckOut ?? false),
+        if (tecComment.text.isNotEmpty) "clientComment": tecComment.text,
         "clientBreakTime": selectedComplainType == complainType.last ? int.parse(tecTime.text) : breakTime,
-        "clientCheckInTime": complainType[0] == selectedComplainType ? -(int.parse(tecTime.text)) : complainType[1] == selectedComplainType ? int.parse(tecTime.text) : checkInDiff,
-        "clientCheckOutTime": complainType.length > 2 ? complainType[2] == selectedComplainType ? -(int.parse(tecTime.text)) : complainType[3] == selectedComplainType ? int.parse(tecTime.text) : checkOutDiff : 0,
+        "clientCheckInTime": complainType[0] == selectedComplainType
+            ? -(int.parse(tecTime.text))
+            : complainType[1] == selectedComplainType
+                ? int.parse(tecTime.text)
+                : checkInDiff,
+        "clientCheckOutTime": complainType.length > 2
+            ? complainType[2] == selectedComplainType
+                ? -(int.parse(tecTime.text))
+                : complainType[3] == selectedComplainType
+                    ? int.parse(tecTime.text)
+                    : checkOutDiff
+            : 0,
       };
 
       CustomLoader.show(context!);
-      await _apiHelper.updateCheckInOutByClient(data).then((response) {
+      await _apiHelper.updateCheckInOutByClient(data).then((Either<CustomError, Response> response) {
         CustomLoader.hide(context!);
 
         response.fold((CustomError customError) {
-
           Utils.errorDialog(context!, customError);
-
         }, (result) {
-
           Get.back(); // hide dialog
 
-          if([200, 201].contains(result.statusCode)) {
-            _fetchEmployees();
+          if ([200, 201].contains(result.statusCode)) {
+            _fetchCheckInOutHistory();
           }
-
         });
       });
-
-
     }
   }
 
-  void chatWithEmployee(HiredHistory hiredHistory) {
+  void chatWithEmployee({required EmployeeDetails employeeDetails}) {
     Get.toNamed(Routes.clientEmployeeChat, arguments: {
-      MyStrings.arg.receiverName: hiredHistory.employeeDetails?.name ?? "-",
+      MyStrings.arg.receiverName: employeeDetails.name ?? "-",
       MyStrings.arg.fromId: appController.user.value.userId,
-      MyStrings.arg.toId: hiredHistory.employeeDetails?.employeeId ?? "",
+      MyStrings.arg.toId: employeeDetails.employeeId ?? "",
       MyStrings.arg.clientId: appController.user.value.userId,
-      MyStrings.arg.employeeId: hiredHistory.employeeDetails?.employeeId ?? "",
+      MyStrings.arg.employeeId: employeeDetails.employeeId ?? "",
     });
   }
 
-
+  void countTotalActiveEmployees() {
+    if (checkInCheckOutHistory.value.checkInCheckOutHistory != null &&
+        checkInCheckOutHistory.value.checkInCheckOutHistory!.isNotEmpty) {
+      totalActiveEmployee.clear();
+      for (var i in checkInCheckOutHistory.value.checkInCheckOutHistory!) {
+        if (!totalActiveEmployee.contains(i.employeeId ?? '')) {
+          totalActiveEmployee.add(i.employeeId ?? '');
+        }
+      }
+      totalActiveEmployee.refresh();
+    }
+  }
 }

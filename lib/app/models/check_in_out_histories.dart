@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:get/get.dart';
+import 'package:mh/app/modules/client/client_home/controllers/client_home_controller.dart';
 import 'package:mh/app/modules/employee/employee_home/controllers/employee_home_controller.dart';
+import 'package:mh/app/modules/employee/employee_home/models/today_check_in_out_details.dart';
 import 'check_in_check_out_details.dart';
 import 'employee_details.dart';
 
@@ -11,7 +13,6 @@ class CheckInCheckOutHistory {
     this.message,
     this.total,
     this.count,
-    this.next,
     this.checkInCheckOutHistory,
   });
 
@@ -20,7 +21,6 @@ class CheckInCheckOutHistory {
   final String? message;
   final int? total;
   final int? count;
-  final int? next;
   final List<CheckInCheckOutHistoryElement>? checkInCheckOutHistory;
 
   factory CheckInCheckOutHistory.fromRawJson(String str) => CheckInCheckOutHistory.fromJson(json.decode(str));
@@ -33,7 +33,6 @@ class CheckInCheckOutHistory {
         message: json["message"],
         total: json["total"],
         count: json["count"],
-        next: json["next"],
         checkInCheckOutHistory: Get.isRegistered<EmployeeHomeController>() == true
             ? json["checkInCheckOutHistory"] == null
                 ? []
@@ -51,9 +50,12 @@ class CheckInCheckOutHistory {
         "message": message,
         "total": total,
         "count": count,
-        "next": next,
-        "result":
-            checkInCheckOutHistory == null ? [] : List<dynamic>.from(checkInCheckOutHistory!.map((x) => x.toJson())),
+        if (Get.isRegistered<ClientHomeController>() == true)
+          "result":
+              checkInCheckOutHistory == null ? [] : List<dynamic>.from(checkInCheckOutHistory!.map((x) => x.toJson()))
+        else
+          "checkInCheckOutHistory":
+              checkInCheckOutHistory == null ? [] : List<dynamic>.from(checkInCheckOutHistory!.map((x) => x.toJson()))
       };
 }
 
@@ -130,45 +132,5 @@ class CheckInCheckOutHistoryElement {
         "createdAt": createdAt?.toIso8601String(),
         "updatedAt": updatedAt?.toIso8601String(),
         "__v": v,
-      };
-}
-
-class RestaurantDetails {
-  RestaurantDetails({
-    this.hiredBy,
-    this.restaurantName,
-    this.restaurantAddress,
-    this.lat,
-    this.long,
-    this.id,
-  });
-
-  final String? hiredBy;
-  final String? restaurantName;
-  final String? restaurantAddress;
-  final String? lat;
-  final String? long;
-  final String? id;
-
-  factory RestaurantDetails.fromRawJson(String str) => RestaurantDetails.fromJson(json.decode(str));
-
-  String toRawJson() => json.encode(toJson());
-
-  factory RestaurantDetails.fromJson(Map<String, dynamic> json) => RestaurantDetails(
-        hiredBy: json["hiredBy"],
-        restaurantName: json["restaurantName"],
-        restaurantAddress: json["restaurantAddress"],
-        lat: json["lat"],
-        long: json["long"],
-        id: json["_id"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "hiredBy": hiredBy,
-        "restaurantName": restaurantName,
-        "restaurantAddress": restaurantAddress,
-        "lat": lat,
-        "long": long,
-        "_id": id,
       };
 }

@@ -11,7 +11,8 @@ import 'common/utils/initializer.dart';
 import 'routes/app_pages.dart';
 
 class MirkoHospitality extends StatelessWidget {
-  const MirkoHospitality({Key? key}) : super(key: key);
+  const MirkoHospitality({super.key});
+
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +39,11 @@ class MirkoHospitality extends StatelessWidget {
           theme: AppTheme.light,
           darkTheme: AppTheme.dark,
           themeMode: ThemeMode.system,
+          supportedLocales: const [
+            Locale('en', 'US'), // English
+            Locale('bn', 'BD'), // Bangla
+            // Add more supported locales
+          ],
         );
       },
     );

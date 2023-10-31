@@ -3,7 +3,7 @@ import '../../../common/widgets/custom_appbar.dart';
 import '../controllers/contact_us_controller.dart';
 
 class ContactUsView extends GetView<ContactUsController> {
-  const ContactUsView({Key? key}) : super(key: key);
+  const ContactUsView({super.key});
 
   @override
   Widget build(BuildContext context) {

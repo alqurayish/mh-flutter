@@ -1,13 +1,12 @@
 import 'package:horizontal_data_table/horizontal_data_table.dart';
-import 'package:mh/app/modules/client/client_payment_and_invoice/model/client_invoice.dart';
-import 'package:mh/app/routes/app_pages.dart';
-
+import 'package:mh/app/common/controller/app_controller.dart';
+import 'package:mh/app/modules/client/client_payment_and_invoice/model/client_invoice_model.dart';
 import '../../../../common/utils/exports.dart';
 import '../../../../common/widgets/custom_appbar.dart';
 import '../controllers/client_payment_and_invoice_controller.dart';
 
 class ClientPaymentAndInvoiceView extends GetView<ClientPaymentAndInvoiceController> {
-  const ClientPaymentAndInvoiceView({Key? key}) : super(key: key);
+  const ClientPaymentAndInvoiceView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +28,7 @@ class ClientPaymentAndInvoiceView extends GetView<ClientPaymentAndInvoiceControl
                   ))
                 : HorizontalDataTable(
                     leftHandSideColumnWidth: 143.w,
-                    rightHandSideColumnWidth: 500.w,
+                    rightHandSideColumnWidth: 1000.w,
                     isFixedHeader: true,
                     headerWidgets: _getTitleWidget(),
                     leftSideItemBuilder: _generateFirstColumnRow,
@@ -56,7 +55,12 @@ class ClientPaymentAndInvoiceView extends GetView<ClientPaymentAndInvoiceControl
     return [
       _getTitleItemWidget('Week', 143.w),
       _getTitleItemWidget('Total\nEmployee', 100.w),
+      _getTitleItemWidget('Total\nHours', 100.w),
       _getTitleItemWidget('Amount', 100.w),
+      _getTitleItemWidget('VAT', 100.w),
+      _getTitleItemWidget('VAT\nAmount', 100.w),
+      _getTitleItemWidget('Platform\nFee', 100.w),
+      _getTitleItemWidget('Total\nAmount', 100.w),
       _getTitleItemWidget('Invoice\nNo', 100.w),
       _getTitleItemWidget('Status', 100.w),
       _getTitleItemWidget('View\nInvoice', 100.w),
@@ -79,7 +83,7 @@ class ClientPaymentAndInvoiceView extends GetView<ClientPaymentAndInvoiceControl
   }
 
   Widget _generateFirstColumnRow(BuildContext context, int index) {
-    Invoice invoice = controller.clientHomeController.clientInvoice.value.invoices![index];
+    InvoiceModel invoice = controller.clientHomeController.clientInvoice.value.invoices![index];
 
     double height = 71.h;
 
@@ -171,7 +175,7 @@ class ClientPaymentAndInvoiceView extends GetView<ClientPaymentAndInvoiceControl
       );
 
   Widget _generateRightHandSideColumnRow(BuildContext context, int index) {
-    Invoice invoice = controller.clientHomeController.clientInvoice.value.invoices![index];
+    InvoiceModel invoice = controller.clientHomeController.clientInvoice.value.invoices![index];
 
     double height = 71.h;
 
@@ -189,7 +193,32 @@ class ClientPaymentAndInvoiceView extends GetView<ClientPaymentAndInvoiceControl
         _cell(
             width: 100.w,
             height: height,
-            value: '£ ${(invoice.amount ?? 0).toStringAsFixed(2)}',
+            value: '${(invoice.totalWorkingHour ?? 0.0).toString()}h',
+            isPaid: invoice.status == "PAID"),
+        _cell(
+            width: 100.w,
+            height: height,
+            value:
+                '${Utils.getCurrencySymbol(Get.find<AppController>().user.value.client?.countryName ?? '')}${(invoice.amount ?? 0).toStringAsFixed(2)}',
+            isPaid: invoice.status == "PAID"),
+        _cell(width: 100.w, height: height, value: '${invoice.vat ?? "-"}%', isPaid: invoice.status == "PAID"),
+        _cell(
+            width: 100.w,
+            height: height,
+            value:
+            '${Utils.getCurrencySymbol(Get.find<AppController>().user.value.client?.countryName ?? '')}${(invoice.vatAmount ?? 0).toStringAsFixed(2)}',
+            isPaid: invoice.status == "PAID"),
+        _cell(
+            width: 100.w,
+            height: height,
+            value:
+                '${Utils.getCurrencySymbol(Get.find<AppController>().user.value.client?.countryName ?? '')}${(invoice.platformFee ?? 0).toStringAsFixed(2)}',
+            isPaid: invoice.status == "PAID"),
+        _cell(
+            width: 100.w,
+            height: height,
+            value:
+                '${Utils.getCurrencySymbol(Get.find<AppController>().user.value.client?.countryName ?? '')}${(invoice.totalAmount ?? 0).toStringAsFixed(2)}',
             isPaid: invoice.status == "PAID"),
         _cell(width: 100.w, height: height, value: invoice.invoiceNumber ?? "-", isPaid: invoice.status == "PAID"),
         _cell(
@@ -209,16 +238,18 @@ class ClientPaymentAndInvoiceView extends GetView<ClientPaymentAndInvoiceControl
             height: height,
             value: "-",
             isPaid: invoice.status == "PAID",
-            child: Padding(
-              padding: const EdgeInsets.all(27.0),
-              child: InkWell(
-                onTap: () => controller.onViewInvoicePress(invoice: invoice),
-                child: const CircleAvatar(
-                    radius: 10,
-                    backgroundColor: MyColors.c_C6A34F,
-                    child: Icon(Icons.remove_red_eye_outlined, color: MyColors.c_FFFFFF, size: 20)),
-              ),
-            ))
+            child: Visibility(
+                visible: invoice.status == "PAID",
+                child: Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: InkWell(
+                    onTap: () => controller.onViewInvoicePress(invoice: invoice),
+                    child: const CircleAvatar(
+                        radius: 10,
+                        backgroundColor: MyColors.c_C6A34F,
+                        child: Icon(Icons.remove_red_eye_outlined, color: MyColors.c_FFFFFF, size: 20)),
+                  ),
+                )))
       ],
     );
   }

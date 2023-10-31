@@ -3,7 +3,7 @@ import 'package:mh/app/common/widgets/custom_dialog.dart';
 import 'package:mh/app/common/widgets/custom_loader.dart';
 import 'package:mh/app/models/custom_error.dart';
 import 'package:mh/app/models/employee_full_details.dart';
-import 'package:mh/app/modules/employee/employee_home/models/single_notification_model_for_employee.dart';
+import 'package:mh/app/modules/employee/employee_home/models/booking_history_model.dart';
 import 'package:mh/app/repository/api_helper.dart';
 import 'package:mh/app/routes/app_pages.dart';
 
@@ -28,7 +28,7 @@ class ClientSuggestedEmployeesController extends GetxController {
     List<String> ids = [];
     List<ClientRequestDetail> idsWithCounts = [];
 
-    for (RequestEmployee element in clientHomeController.requestedEmployees.value.requestEmployees ?? []) {
+    for (RequestedEmployeeModel element in clientHomeController.requestedEmployees.value.requestEmployeeList ?? []) {
       for (ClientRequestDetail positions in element.clientRequestDetails ?? []) {
         if (ids.contains(positions.id)) {
           idsWithCounts[ids.indexOf(positions.id!)].numOfEmployee =
@@ -46,7 +46,7 @@ class ClientSuggestedEmployeesController extends GetxController {
   List<SuggestedEmployeeDetail> getUniquePositionEmployees(String positionId) {
     List<SuggestedEmployeeDetail> employees = [];
 
-    for (RequestEmployee element in clientHomeController.requestedEmployees.value.requestEmployees ?? []) {
+    for (RequestedEmployeeModel element in clientHomeController.requestedEmployees.value.requestEmployeeList ?? []) {
       for (SuggestedEmployeeDetail employee in element.suggestedEmployeeDetails ?? []) {
         if (employee.positionId == positionId) {
           employees.add(employee);
@@ -88,10 +88,9 @@ class ClientSuggestedEmployeesController extends GetxController {
             .cancelEmployeeSuggestionFromAdmin(employeeId: employeeId, requestId: requestId)
             .then((response) {
           CustomLoader.hide(context!);
-
           response.fold((CustomError customError) {
             Utils.errorDialog(context!, customError);
-          }, (SingleNotificationModelForEmployee response) async {
+          }, (BookingHistoryModel response) async {
             if ((response.statusCode == 200 || response.statusCode == 201) && response.status == 'success') {
               clientHomeController.homeMethods();
             }
@@ -102,7 +101,7 @@ class ClientSuggestedEmployeesController extends GetxController {
   }
 
   void findRequestId({required String employeeId}) {
-    for (var i in clientHomeController.requestedEmployees.value.requestEmployees!) {
+    for (var i in clientHomeController.requestedEmployees.value.requestEmployeeList!) {
       for (var v in i.suggestedEmployeeDetails!) {
         if (v.employeeId == employeeId) {
           requestId = i.id ?? "";
@@ -110,5 +109,16 @@ class ClientSuggestedEmployeesController extends GetxController {
         }
       }
     }
+  }
+
+  String getRequestId({required String employeeId}) {
+    for (var i in clientHomeController.requestedEmployees.value.requestEmployeeList!) {
+      for (var v in i.suggestedEmployeeDetails!) {
+        if (v.employeeId == employeeId) {
+          return i.id ?? "";
+        }
+      }
+    }
+    return '';
   }
 }

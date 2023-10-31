@@ -1,4 +1,5 @@
 import 'package:horizontal_data_table/horizontal_data_table.dart';
+import 'package:mh/app/common/widgets/custom_loader.dart';
 
 import '../../../../common/utils/exports.dart';
 import '../../../../common/widgets/custom_appbar.dart';
@@ -8,7 +9,7 @@ import '../../../../models/employee_daily_statistics.dart';
 import '../controllers/employee_dashboard_controller.dart';
 
 class EmployeeDashboardView extends GetView<EmployeeDashboardController> {
-  const EmployeeDashboardView({Key? key}) : super(key: key);
+  const EmployeeDashboardView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,11 +18,11 @@ class EmployeeDashboardView extends GetView<EmployeeDashboardController> {
     return Scaffold(
       appBar: CustomAppbar.appbar(
         context: context,
-        title: 'Features',
+        title: 'My Dashboard',
       ),
       body: Obx(
         () => controller.loading.value
-            ? const Center(child: CircularProgressIndicator.adaptive(backgroundColor: MyColors.c_C6A34F))
+            ? Center(child: CustomLoader.loading())
             : controller.history.isEmpty
                 ? const NoItemFound()
                 : Column(

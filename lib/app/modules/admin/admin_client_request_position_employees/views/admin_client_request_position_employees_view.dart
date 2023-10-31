@@ -1,3 +1,6 @@
+import 'package:mh/app/common/controller/app_controller.dart';
+import 'package:mh/app/common/widgets/shimmer_widget.dart';
+
 import '../../../../common/utils/exports.dart';
 import '../../../../common/widgets/custom_appbar.dart';
 import '../../../../common/widgets/custom_filter.dart';
@@ -7,7 +10,7 @@ import '../../../../models/employees_by_id.dart';
 import '../controllers/admin_client_request_position_employees_controller.dart';
 
 class AdminClientRequestPositionEmployeesView extends GetView<AdminClientRequestPositionEmployeesController> {
-  const AdminClientRequestPositionEmployeesView({Key? key}) : super(key: key);
+  const AdminClientRequestPositionEmployeesView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +24,10 @@ class AdminClientRequestPositionEmployeesView extends GetView<AdminClientRequest
       body: Obx(
         () => (controller.employees.value.users ?? []).isEmpty
             ? controller.isLoading.value
-                ? const SizedBox()
+                ? Padding(
+                    padding: EdgeInsets.only(top: 70.h, left: 15.w, right: 15.w),
+                    child: ShimmerWidget.clientMyEmployeesShimmerWidget(),
+                  )
                 : Column(
                     children: [
                       _resultCountWithFilter(),
@@ -50,7 +56,7 @@ class AdminClientRequestPositionEmployeesView extends GetView<AdminClientRequest
 
   Widget _resultCountWithFilter() {
     return Padding(
-      padding: EdgeInsets.fromLTRB(23.w, 10.h, 23.w, 0),
+      padding: EdgeInsets.fromLTRB(15.w, 10.h, 15.w, 0),
       child: Row(
         children: [
           Text(
@@ -62,25 +68,29 @@ class AdminClientRequestPositionEmployeesView extends GetView<AdminClientRequest
             style: MyColors.l111111_dwhite(controller.context!).semiBold16,
           ),
           const Spacer(),
-          GestureDetector(
-            onTap: () => CustomFilter.customFilter(
-              controller.context!,
-              controller.onApplyClick,
-              controller.onResetClick,
-            ),
-            child: Container(
-              width: 36.w,
-              height: 36.w,
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                color: MyColors.c_DDBD68,
-              ),
-              child: const Icon(
-                Icons.filter_list_rounded,
-                color: Colors.white,
-              ),
-            ),
-          ),
+          Obx(() => Visibility(
+              visible: controller.nationalityDataLoaded.value == true && controller.hourlyRateDataLoaded.value == true,
+              child: GestureDetector(
+                onTap: () => CustomFilter.customFilter(
+                  context: controller.context!,
+                  hourlyRateDetails: controller.hourlyRateDetails.value,
+                  nationalityList: controller.nationalityList,
+                  onApplyClick: controller.onApplyClick,
+                  onResetClick: controller.onResetClick,
+                ),
+                child: Container(
+                  width: 36.w,
+                  height: 36.w,
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: MyColors.c_DDBD68,
+                  ),
+                  child: const Icon(
+                    Icons.filter_list_rounded,
+                    color: Colors.white,
+                  ),
+                ),
+              ))),
         ],
       ),
     );
@@ -88,8 +98,7 @@ class AdminClientRequestPositionEmployeesView extends GetView<AdminClientRequest
 
   Widget _employeeItem(Employee user) {
     return Container(
-      height: 105.h,
-      margin: EdgeInsets.symmetric(horizontal: 24.w).copyWith(
+      margin: EdgeInsets.symmetric(horizontal: 15.w).copyWith(
         bottom: 20.h,
       ),
       decoration: BoxDecoration(
@@ -114,28 +123,15 @@ class AdminClientRequestPositionEmployeesView extends GetView<AdminClientRequest
                   if (user.isSuggested != null && user.isSuggested == true)
                     InkWell(
                         onTap: () => controller.onCancelClick(employeeId: user.id ?? ''),
-                        child: const Icon(Icons.cancel, color: Colors.red)),
+                        child: const Icon(Icons.cancel, color: Colors.red, size: 20)),
                   SizedBox(width: 10.w),
                   SizedBox(
-                      width: 122.w,
+                      width: 100.w,
                       child: CustomButtons.button(
-                        height: 28.w,
+                        height: 23.w,
                         text: (user.isHired ?? false)
                             ? controller.hireStatus.value
                             : user.isSuggested != null && user.isSuggested == true
-                                /*(controller
-                                            .adminHomeController
-                                            .requestedEmployees
-                                            .value
-                                            .requestEmployees?[
-                                                controller.adminClientRequestPositionsController.selectedIndex]
-                                            .suggestedEmployeeDetails ??
-                                        [])
-                                    .where((SuggestedEmployeeDetail element) =>
-                                        element.positionId == controller.clientRequestDetail.positionId)
-                                    .toList()
-                                    .where((SuggestedEmployeeDetail element) => element.employeeId == user.id!)
-                                    .isNotEmpty*/
                                 ? "Suggested"
                                 : "Suggest",
                         margin: EdgeInsets.zero,
@@ -164,8 +160,11 @@ class AdminClientRequestPositionEmployeesView extends GetView<AdminClientRequest
                                 SizedBox(height: 16.h),
                                 Row(
                                   children: [
-                                    Expanded(child: _name("${user.firstName ?? "-"} ${user.lastName ?? ""}")),
-                                    _rating(user.rating ?? 0),
+                                    Flexible(
+                                        flex: user.rating! > 0.0 ? 3 : 4,
+                                        child: _name("${user.firstName ?? "-"} ${user.lastName ?? ""}")),
+                                    Expanded(flex: 2, child: _rating(user.rating ?? 0.0)),
+                                    const Expanded(flex: 2, child: Wrap())
                                   ],
                                 ),
                               ],
@@ -191,7 +190,8 @@ class AdminClientRequestPositionEmployeesView extends GetView<AdminClientRequest
                       SizedBox(height: 8.h),
                       Row(
                         children: [
-                          _detailsItem(MyAssets.rate, MyStrings.rate.tr, "£${user.hourlyRate ?? 0}"),
+                          _detailsItem(MyAssets.rate, MyStrings.rate.tr,
+                              "${Utils.getCurrencySymbol(Get.find<AppController>().user.value.admin?.countryName ?? '')}${user.hourlyRate ?? 0}"),
                         ],
                       ),
                     ],
@@ -226,7 +226,7 @@ class AdminClientRequestPositionEmployeesView extends GetView<AdminClientRequest
         style: MyColors.l111111_dwhite(controller.context!).medium14,
       );
 
-  Widget _rating(int rating) => Visibility(
+  Widget _rating(double rating) => Visibility(
         visible: rating > 0,
         child: Row(
           children: [

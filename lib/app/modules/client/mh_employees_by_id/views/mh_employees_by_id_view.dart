@@ -1,5 +1,7 @@
-import 'package:badges/badges.dart' as badge;
-
+import 'package:badges/badges.dart';
+import 'package:mh/app/common/controller/app_controller.dart';
+import 'package:mh/app/common/widgets/shimmer_widget.dart';
+import 'package:mh/app/modules/client/client_shortlisted/models/add_to_shortlist_request_model.dart';
 import '../../../../common/utils/exports.dart';
 import '../../../../common/widgets/custom_appbar.dart';
 import '../../../../common/widgets/custom_filter.dart';
@@ -7,9 +9,10 @@ import '../../../../common/widgets/custom_network_image.dart';
 import '../../../../common/widgets/no_item_found.dart';
 import '../../../../models/employees_by_id.dart';
 import '../controllers/mh_employees_by_id_controller.dart';
+import 'package:badges/badges.dart' as badge;
 
 class MhEmployeesByIdView extends GetView<MhEmployeesByIdController> {
-  const MhEmployeesByIdView({Key? key}) : super(key: key);
+  const MhEmployeesByIdView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,8 +20,8 @@ class MhEmployeesByIdView extends GetView<MhEmployeesByIdController> {
 
     return Scaffold(
       appBar: CustomAppbar.appbar(
-        title: controller.position.name ?? "Employees",
-        context: context,
+          title: controller.position.name ?? "Employees",
+          context: context,
           centerTitle: true,
           actions: [
             Obx(
@@ -33,7 +36,7 @@ class MhEmployeesByIdView extends GetView<MhEmployeesByIdController> {
                       controller.shortlistController.totalShortlisted.value.toString(),
                       style: MyColors.white.semiBold12,
                     ),
-                    badgeStyle: const badge.BadgeStyle(
+                    badgeStyle: const BadgeStyle(
                       badgeColor: MyColors.c_C6A34F,
                       elevation: 0,
                     ),
@@ -49,7 +52,14 @@ class MhEmployeesByIdView extends GetView<MhEmployeesByIdController> {
           ]),
       body: Obx(
         () => (controller.employees.value.users ?? []).isEmpty
-            ? controller.isLoading.value ? const SizedBox() : const NoItemFound()
+            ? controller.isLoading.value
+                ? Center(
+                    child: Padding(
+                      padding: EdgeInsets.only(left: 15.w, right: 15.w, top: 70.h),
+                      child: ShimmerWidget.clientMyEmployeesShimmerWidget(),
+                    ),
+                  )
+                : const NoItemFound()
             : Column(
                 children: [
                   _resultCountWithFilter(),
@@ -72,7 +82,7 @@ class MhEmployeesByIdView extends GetView<MhEmployeesByIdController> {
 
   Widget _resultCountWithFilter() {
     return Padding(
-      padding: EdgeInsets.fromLTRB(23.w, 10.h, 23.w, 0),
+      padding: EdgeInsets.fromLTRB(15, 10.h, 15, 0),
       child: Row(
         children: [
           Text(
@@ -83,25 +93,31 @@ class MhEmployeesByIdView extends GetView<MhEmployeesByIdController> {
             " ${controller.position.name ?? "Employees"} are showing",
             style: MyColors.l111111_dwhite(controller.context!).semiBold16,
           ),
-
           const Spacer(),
-
-          GestureDetector(
-            onTap: () => CustomFilter.customFilter(
-              controller.context!,
-              controller.onApplyClick,
-              controller.onResetClick,
-            ),
-            child: Container(
-              width: 36.w,
-              height: 36.w,
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                color: MyColors.c_DDBD68,
-              ),
-              child: const Icon(Icons.filter_list_rounded, color: Colors.white,),
-            ),
-          ),
+          Obx(() => Visibility(
+              visible:
+                  controller.hourlyDetailsDataLoaded.value == true && controller.nationalityDataLoaded.value == true,
+              child: GestureDetector(
+                onTap: () => CustomFilter.customFilter(
+                  context: controller.context!,
+                  nationalityList: controller.nationalityList,
+                  hourlyRateDetails: controller.hourlyRateDetails.value,
+                  onApplyClick: controller.onApplyClick,
+                  onResetClick: controller.onResetClick,
+                ),
+                child: Container(
+                  width: 36.w,
+                  height: 36.w,
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: MyColors.c_DDBD68,
+                  ),
+                  child: const Icon(
+                    Icons.filter_list_rounded,
+                    color: Colors.white,
+                  ),
+                ),
+              ))),
         ],
       ),
     );
@@ -109,8 +125,7 @@ class MhEmployeesByIdView extends GetView<MhEmployeesByIdController> {
 
   Widget _employeeItem(Employee user) {
     return Container(
-      height: 105.h,
-      margin: EdgeInsets.symmetric(horizontal: 24.w).copyWith(
+      margin: EdgeInsets.symmetric(horizontal: 15.w).copyWith(
         bottom: 20.h,
       ),
       decoration: BoxDecoration(
@@ -128,43 +143,22 @@ class MhEmployeesByIdView extends GetView<MhEmployeesByIdController> {
         child: Stack(
           children: [
             Positioned(
-              right: 0,
-              bottom: 0,
-              child: SizedBox(
-                width: 122.w,
-                child: CustomButtons.button(
-                  height: 28.w,
-                  text: (user.isHired ?? false) ? "Booked" : "Book Now",
-                  margin: EdgeInsets.zero,
-                  fontSize: 12,
-                  customButtonStyle: CustomButtonStyle.radiusTopBottomCorner,
-                  onTap: (user.isHired ?? false) ? null : () => controller.onBookNowClick(user),
-                ),
-              ),
-            ),
-
-            Positioned(
               right: 5,
               top: 3,
               child: Obx(
-                () => Visibility(
-                  visible: !(user.isHired ?? false),
-                  child: controller.shortlistController.getIcon(
-                    user.id!,
-                    controller.shortlistController.isFetching.value,
-                  ),
-                ),
+                () => controller.shortlistController.getIcon(
+                    requestedDateList: <RequestDateModel>[],
+                    employeeId: user.id!,
+                    isFetching: controller.shortlistController.isFetching.value,
+                    fromWhere: ''),
               ),
             ),
-
             Row(
               children: [
                 _image((user.profilePicture ?? "").imageUrl),
-
                 Expanded(
                   child: Column(
                     children: [
-
                       Row(
                         children: [
                           Expanded(
@@ -175,8 +169,13 @@ class MhEmployeesByIdView extends GetView<MhEmployeesByIdController> {
                                 SizedBox(height: 16.h),
                                 Row(
                                   children: [
-                                    Expanded(child: _name("${user.firstName ?? "-"} ${user.lastName ?? ""}")),
-                                    _rating(user.rating ?? 0),
+                                    Flexible(
+                                        flex: user.rating! > 0.0 ? 3 : 4,
+                                        child: _name("${user.firstName ?? "-"} ${user.lastName ?? ""}")),
+                                    if (user.certified != null && user.certified == true)
+                                      Image.asset(MyAssets.certified, height: 30, width: 30),
+                                    Expanded(flex: 2, child: _rating(user.rating ?? 0.0)),
+                                    const Expanded(flex: 2, child: Wrap()),
                                   ],
                                 ),
                               ],
@@ -184,33 +183,52 @@ class MhEmployeesByIdView extends GetView<MhEmployeesByIdController> {
                           ),
                         ],
                       ),
-
                       SizedBox(height: 8.h),
-
                       const Divider(
                         thickness: .5,
                         height: 1,
                         color: MyColors.c_D9D9D9,
                         endIndent: 13,
                       ),
-
                       SizedBox(height: 8.h),
-
                       Row(
                         children: [
-                          _detailsItem(MyAssets.exp, MyStrings.exp.tr, (user.employeeExperience ?? 0).toString()),
-                          _detailsItem(MyAssets.totalHour, MyStrings.totalHour.tr, (user.totalWorkingHour ?? 0).toString()),
+                          _detailsItem(MyAssets.exp, MyStrings.exp.tr, "${user.employeeExperience ?? 0} years"),
+                          _detailsItem(MyAssets.totalHour, 'Total Hour:', "${user.totalWorkingHour ?? 0} hours"),
                         ],
                       ),
-
                       SizedBox(height: 8.h),
-
+                      Row(children: [
+                        _detailsItem(MyAssets.rate, 'Rate:',
+                            "${Utils.getCurrencySymbol(Get.find<AppController>().user.value.client?.countryName ?? '')}${(user.hourlyRate ?? 0.0).toStringAsFixed(2)}"),
+                        _detailsItem(MyAssets.manager, MyStrings.age.tr, user.dateOfBirth?.calculateAge() ?? ''),
+                      ]),
+                      SizedBox(height: 8.h),
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          _detailsItem(MyAssets.rate, MyStrings.rate.tr, "£${(user.hourlyRate ?? 0.0).toStringAsFixed(2)}"),
+                          _detailsItem(MyAssets.calender2, 'Available:', user.available ?? ''),
                         ],
                       ),
-
+                      SizedBox(height: 8.h),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          CustomButtons.button(
+                            padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                            height: 23,
+                            text: (user.available == null || int.parse(user.available!.split(' ').first) <= 0)
+                                ? "Booked"
+                                : "Book Now",
+                            margin: EdgeInsets.zero,
+                            fontSize: 12,
+                            customButtonStyle: CustomButtonStyle.radiusTopBottomCorner,
+                            onTap: (user.available == null || int.parse(user.available!.split(' ').first) <= 0)
+                                ? null
+                                : () => controller.onBookNowClick(user),
+                          )
+                        ],
+                      )
                     ],
                   ),
                 ),
@@ -243,8 +261,8 @@ class MhEmployeesByIdView extends GetView<MhEmployeesByIdController> {
         style: MyColors.l111111_dwhite(controller.context!).medium14,
       );
 
-  Widget _rating(int rating) => Visibility(
-        visible: rating > 0,
+  Widget _rating(double rating) => Visibility(
+        visible: rating > 0.0,
         child: Row(
           children: [
             SizedBox(width: 10.w),
@@ -292,5 +310,4 @@ class MhEmployeesByIdView extends GetView<MhEmployeesByIdController> {
           ],
         ),
       );
-
 }

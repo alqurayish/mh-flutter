@@ -30,6 +30,8 @@ class EmployeeSelfProfileController extends GetxController {
 
   RxBool loading = false.obs;
 
+  RxString rating = ''.obs;
+
   @override
   void onInit() {
     _getDetails();
@@ -45,7 +47,9 @@ class EmployeeSelfProfileController extends GetxController {
   Future<void> _getDetails() async {
     loading.value = true;
 
-    await _apiHelper.employeeFullDetails(appController.user.value.userId).then((Either<CustomError, EmployeeFullDetails> response) {
+    await _apiHelper
+        .employeeFullDetails(appController.user.value.userId)
+        .then((Either<CustomError, EmployeeFullDetails> response) {
       loading.value = false;
 
       response.fold((CustomError l) {
@@ -64,6 +68,7 @@ class EmployeeSelfProfileController extends GetxController {
         tecPresentAddress.text = employee.value.details?.presentAddress ?? "";
         tecPermanentAddress.text = employee.value.details?.permanentAddress ?? "";
         tecEmergencyContact.text = employee.value.details?.phoneNumber ?? "";
+        rating.value = '${employee.value.details?.rating ?? 0.0} (${employee.value.details?.totalRating ?? 0})';
       });
     });
   }

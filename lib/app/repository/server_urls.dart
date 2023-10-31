@@ -15,12 +15,19 @@ class ServerUrls {
   }
 
   /// server urls
-  static String serverUrlUser = '$_getBaseServerUrl$_apiVersion/';
+  static String serverLiveUrlUser = '$_getLiveServerUrl$_apiVersion/';
+  static String serverTestUrlUser = '$_getTestServerUrl$_apiVersion/';
 
-  static String get _getBaseServerUrl {
+  static String get _getLiveServerUrl {
     const String prodUrl = "https://server.mhpremierstaffingsolutions.com/";
 
     return _url(prodUrl);
+  }
+
+  static String get _getTestServerUrl {
+    const String testUrl = "http://52.86.43.146:8000/";
+
+    return _url(testUrl);
   }
 
   static String get _apiVersion {

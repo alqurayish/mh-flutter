@@ -4,7 +4,7 @@ import '../../../../common/widgets/horizontal_divider_with_text.dart';
 import '../controllers/login_register_hints_controller.dart';
 
 class LoginRegisterHintsView extends GetView<LoginRegisterHintsController> {
-  const LoginRegisterHintsView({Key? key}) : super(key: key);
+  const LoginRegisterHintsView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +78,7 @@ class LoginRegisterHintsView extends GetView<LoginRegisterHintsController> {
           CustomButtons.button(
             text: MyStrings.login.tr,
             onTap: controller.onLoginPressed,
-            height: 53.h,
+            height: 48,
             fontSize: 16.sp,
           ),
 
@@ -88,7 +88,7 @@ class LoginRegisterHintsView extends GetView<LoginRegisterHintsController> {
             text: MyStrings.signUp.tr,
             onTap: controller.onSignUpPressed,
             customButtonStyle: CustomButtonStyle.outline,
-            height: 53.h,
+            height: 48,
             fontSize: 16.sp,
             context: controller.context,
           ),

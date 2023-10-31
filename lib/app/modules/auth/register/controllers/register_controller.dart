@@ -1,8 +1,11 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:isolate';
+import 'package:dartz/dartz.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl_phone_field/countries.dart';
+import 'package:mh/app/modules/auth/register/models/employee_extra_field_model.dart';
 import '../../../../common/controller/app_controller.dart';
 import '../../../../common/data/data.dart';
 import '../../../../common/utils/exports.dart';
@@ -30,8 +33,8 @@ class RegisterController extends GetxController implements RegisterInterface {
   /// or swipe page
   Rx<UserType> userType = UserType.client.obs;
 
-  final formKeyClient = GlobalKey<FormState>();
-  final formKeyEmployee = GlobalKey<FormState>();
+  final GlobalKey<FormState> formKeyClient = GlobalKey<FormState>();
+  final GlobalKey<FormState> formKeyEmployee = GlobalKey<FormState>();
 
   final PageController pageController = PageController();
 
@@ -91,6 +94,10 @@ class RegisterController extends GetxController implements RegisterInterface {
   // phone number country code
   Country selectedEmployeeWisePhoneNumber = countries.where((element) => element.code == "GB").first;
   Country selectedClientWisePhoneNumber = countries.where((element) => element.code == "GB").first;
+
+  RxBool employeeExtraFieldDataLoading = false.obs;
+  RxList<Fields> extraFieldList = <Fields>[].obs;
+  String? documentString;
 
   @override
   void onInit() {
@@ -218,6 +225,9 @@ class RegisterController extends GetxController implements RegisterInterface {
 
   void onEmployeeCountryChange(String? country) {
     selectedEmployeeCountry.value = country!;
+    extraFieldList.clear();
+    documentString = null;
+    _getEmployeeExtraField();
   }
 
   void onEmployeeCountryWisePhoneNumberChange(Country phone) {
@@ -238,7 +248,7 @@ class RegisterController extends GetxController implements RegisterInterface {
         _errorDialog("Invalid Input", "CV must be PDF format");
       } else if (!termsAndConditionCheck.value) {
         _errorDialog("Invalid Input", "you must accept our terms and condition");
-      } else {
+      } else if (hasEmptyRequiredLabel() == false) {
         _employeeRegister();
       }
     }
@@ -274,27 +284,30 @@ class RegisterController extends GetxController implements RegisterInterface {
   }
 
   Future<void> _employeeRegister() async {
+    if (extraFieldList.isNotEmpty) {
+      List<Map<String, dynamic>> fieldListJson = extraFieldList.map((field) => field.toJson()).toList();
+      documentString = jsonEncode(jsonEncode(fieldListJson));
+    }
     EmployeeRegistration employeeRegistration = EmployeeRegistration(
-      firstName: tecEmployeeFirstName.text.trim(),
-      lastName: tecEmployeeLastName.text.trim(),
-      email: tecEmployeeEmail.text.trim(),
-      phoneNumber: tecEmployeePhone.text.trim(),
-      countryName: selectedEmployeeCountry.value,
-      positionId: Utils.getPositionId(selectedPosition.value.trim()),
-    );
+        firstName: tecEmployeeFirstName.text.trim(),
+        lastName: tecEmployeeLastName.text.trim(),
+        email: tecEmployeeEmail.text.trim(),
+        phoneNumber: tecEmployeePhone.text.trim(),
+        countryName: selectedEmployeeCountry.value,
+        positionId: Utils.getPositionId(selectedPosition.value.trim()),
+        documents: documentString);
 
     // update dialogue text
 
-    if(cv.isNotEmpty) {
+    if (cv.isNotEmpty) {
       uploadTitle.value = "Uploading CV...";
     }
-    if(profileImage.isNotEmpty) {
+    if (profileImage.isNotEmpty) {
       uploadTitle.value = "Uploading profile image...";
     }
-    if(cv.isNotEmpty && profileImage.isNotEmpty) {
+    if (cv.isNotEmpty && profileImage.isNotEmpty) {
       uploadTitle.value = "Uploading CV and profile image...";
     }
-
 
     // show dialog
     _showPercentIsolate();
@@ -307,12 +320,12 @@ class RegisterController extends GetxController implements RegisterInterface {
       responseReceivePort.close();
 
       Get.back(); // hide dialog
-
       if (response != null) {
         if ([200, 201].contains(response["data"]["statusCode"])) {
           await appController.afterSuccessRegister("");
         } else {
-          _errorDialog("Something wrong", response["data"]["message"] ?? "Failed to register. Please check you data and try again");
+          _errorDialog("Something wrong",
+              response["data"]["message"] ?? "Failed to register. Please check you data and try again");
         }
       } else {
         _errorDialog("Server Error", "Failed to register. Please try again");
@@ -324,7 +337,7 @@ class RegisterController extends GetxController implements RegisterInterface {
     });
 
     Map<String, dynamic> data = {
-      "basicData" : employeeRegistration.toJson,
+      "basicData": employeeRegistration.toJson,
       "profilePicture": profileImage.isEmpty ? null : profileImage.last.path,
       "cv": cv.isEmpty ? null : cv.last.path,
       "responseReceivePort": responseReceivePort.sendPort,
@@ -374,15 +387,19 @@ class RegisterController extends GetxController implements RegisterInterface {
   }
 
   Future<void> onCvClick() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ['pdf'],
-    );
+    FilePickerResult? result = await FilePicker.platform.pickFiles(type: FileType.custom, allowedExtensions: ['pdf']);
 
     if (result != null) {
-      cv
-        ..clear()
-        ..add(File(result.files.single.path!));
+      File file = File(result.files.single.path!);
+      int size = await file.length();
+
+      if (size <= 5 * 1024 * 1024) {
+        cv
+          ..clear()
+          ..add(File(result.files.single.path!));
+      } else {
+        Utils.showSnackBar(message: 'File size must be less than 5MB', isTrue: false);
+      }
     } else {
       cv.clear();
     }
@@ -424,5 +441,50 @@ class RegisterController extends GetxController implements RegisterInterface {
 
       loading.value = false;
     });
+  }
+
+  Future<void> _getEmployeeExtraField() async {
+    employeeExtraFieldDataLoading.value = true;
+    Either<CustomError, ExtraFieldModel> responseData =
+        await _apiHelper.getEmployeeExtraField(countryName: selectedEmployeeCountry.value.trim());
+    employeeExtraFieldDataLoading.value = false;
+    responseData.fold((CustomError customError) {
+      Utils.errorDialog(context!, customError);
+    }, (ExtraFieldModel response) {
+      if (response.status == "success" && (response.statusCode == 201 || response.statusCode == 200)) {
+        extraFieldList.value = response.extraFieldDetails?.fields ?? [];
+      }
+    });
+  }
+
+  Future<void> uploadExtraFile({required File file, required String fileName, required String label}) async {
+    String response = await ApiHelperImplementWithFileUpload.uploadExtraFile(file: file, fileName: fileName);
+    if (response.isNotEmpty) {
+      for (var i in extraFieldList) {
+        if (i.label == label) {
+          i.value = response;
+          return;
+        }
+      }
+    }
+  }
+
+  bool hasEmptyRequiredLabel() {
+    if (extraFieldList.isEmpty) {
+      return false;
+    } else {
+      for (final Fields field in extraFieldList) {
+        final bool required = field.required ?? false;
+        final String value = field.value ?? '';
+
+        if (required == true && value.isEmpty) {
+          Utils.showSnackBar(message: '${field.placeholder} is required', isTrue: false);
+          return true;
+        } else {
+          continue;
+        }
+      }
+    }
+    return false; // No required field with an invalid label found
   }
 }

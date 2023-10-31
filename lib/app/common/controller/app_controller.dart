@@ -35,7 +35,7 @@ class AppController extends GetxService {
   void setTokenFromLocal() {
     _updateUserModel();
 
-    if(user.value.isGuest) {
+    if (user.value.isGuest) {
       _updateFCMToken(isLogin: false);
       Get.offAndToNamed(Routes.loginRegisterHints);
     } else {
@@ -48,13 +48,12 @@ class AppController extends GetxService {
   void _updateUserModel() {
     if (StorageHelper.hasToken && StorageHelper.getToken.isNotEmpty) {
       if (!_isTokenExpire()) {
-
         Client temp = Client.fromJson(JwtDecoder.decode(StorageHelper.getToken));
 
-        if(temp.role == "CLIENT") {
+        if (temp.role == "CLIENT") {
           user.value.userType = UserType.client;
           user.value.client = temp;
-        } else if(temp.role == "EMPLOYEE") {
+        } else if (temp.role == "EMPLOYEE") {
           user.value.userType = UserType.employee;
           user.value.employee = Employee.fromJson(JwtDecoder.decode(StorageHelper.getToken));
         } else if (temp.role == "ADMIN") {
@@ -65,7 +64,6 @@ class AppController extends GetxService {
         }
 
         user.refresh();
-
       } else {
         Logcat.msg("Token Expire");
         Get.offAllNamed(Routes.login);
@@ -106,8 +104,7 @@ class AppController extends GetxService {
 
     _updateFCMToken();
 
-    if(user.value.userType == null) {
-
+    if (user.value.userType == null) {
     } else {
       activeShortlistService();
       Get.offAndToNamed(user.value.userType!.homeRoute);
@@ -127,7 +124,7 @@ class AppController extends GetxService {
     this.commons?.refresh();
 
     for (DropdownItem element in (this.commons?.value.positions ?? [])) {
-      if(element.active ?? false) {
+      if (element.active ?? false) {
         bool found = false;
         for (var position in Data.positions) {
           if (element.id == position.id) {
@@ -144,12 +141,10 @@ class AppController extends GetxService {
             logo: MyAssets.defaultImage,
           ));
         }
-
       }
     }
 
     allActivePositions.refresh();
-
   }
 
   /// call when
@@ -159,7 +154,7 @@ class AppController extends GetxService {
   void activeShortlistService() {
     Get.put(ShortlistController());
 
-    if(user.value.isClient) {
+    if (user.value.isClient) {
       Get.find<ShortlistController>().fetchShortListEmployees();
     }
   }
@@ -171,10 +166,9 @@ class AppController extends GetxService {
   }
 
   Future<void> onLogoutClick() async {
-
     CustomLoader.show(Get.context!);
 
-    if(Get.isRegistered<ShortlistController>()) {
+    if (Get.isRegistered<ShortlistController>()) {
       Get.find<ShortlistController>().removeAllSelected();
     }
 
@@ -191,7 +185,7 @@ class AppController extends GetxService {
   }
 
   bool hasPermission() {
-    if(user.value.isGuest) {
+    if (user.value.isGuest) {
       Get.toNamed(Routes.login);
       return false;
     }
@@ -200,7 +194,7 @@ class AppController extends GetxService {
   }
 
   Future<void> _updateFCMToken({bool isLogin = true}) async {
-    if(Get.isRegistered<ApiHelper>()) {
+    if (Get.isRegistered<ApiHelper>()) {
       await Get.find<ApiHelper>().updateFcmToken(isLogin: isLogin);
     }
   }

@@ -67,7 +67,7 @@ class SlideActionWidget extends StatefulWidget {
 
   /// Create a new instance of the widget
   const SlideActionWidget({
-    Key? key,
+    super.key,
     this.sliderButtonIconSize = 24,
     this.sliderButtonIconPadding = 16,
     this.sliderButtonYOffset = 0,
@@ -86,7 +86,7 @@ class SlideActionWidget extends StatefulWidget {
     this.text,
     this.textStyle,
     this.sliderButtonIcon,
-  }) : super(key: key);
+  });
   @override
   SlideActionWidgetState createState() => SlideActionWidgetState();
 }

@@ -6,11 +6,11 @@ class BaseScreen extends StatelessWidget {
   final double height;
 
   const BaseScreen({
-    Key? key,
+    super.key,
     required this.appbar,
     required this.body,
     this.height = 120,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

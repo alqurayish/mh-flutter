@@ -5,7 +5,7 @@ import '../../../../common/widgets/custom_appbar.dart';
 import '../controllers/admin_client_request_controller.dart';
 
 class AdminClientRequestView extends GetView<AdminClientRequestController> {
-  const AdminClientRequestView({Key? key}) : super(key: key);
+  const AdminClientRequestView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,11 +17,11 @@ class AdminClientRequestView extends GetView<AdminClientRequestController> {
         title: 'Request',
       ),
       body: Obx(
-        () => (controller.adminHomeController.requestedEmployees.value.requestEmployees ?? []).isEmpty ||
+        () => (controller.adminHomeController.requestedEmployees.value.requestEmployeeList ?? []).isEmpty ||
                 controller.adminHomeController.numberOfRequestFromClient == 0
             ? const NoItemFound()
             : ListView.builder(
-                itemCount: (controller.adminHomeController.requestedEmployees.value.requestEmployees ?? []).length,
+                itemCount: (controller.adminHomeController.requestedEmployees.value.requestEmployeeList ?? []).length,
                 itemBuilder: (context, index) {
                   return int.parse(controller.getSuggested(index).split(' ')[2]) > 0 ? const Wrap() : _item(index);
                 },
@@ -78,11 +78,11 @@ class AdminClientRequestView extends GetView<AdminClientRequestController> {
                   InkWell(
                     onTap: () => controller.onCancelClick(
                         requestId:
-                            controller.adminHomeController.requestedEmployees.value.requestEmployees?[index].id ?? ''),
+                            controller.adminHomeController.requestedEmployees.value.requestEmployeeList?[index].id ?? ''),
                     child: const Icon(
                       Icons.cancel,
                       color: Colors.red,
-                      size: 30,
+                      size: 25,
                     ),
                   ),
                 ],

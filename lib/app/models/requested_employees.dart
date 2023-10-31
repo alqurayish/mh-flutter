@@ -8,7 +8,7 @@ class RequestedEmployees {
     this.total,
     this.count,
     this.next,
-    this.requestEmployees,
+    this.requestEmployeeList,
   });
 
   final String? status;
@@ -17,7 +17,7 @@ class RequestedEmployees {
   final int? total;
   final int? count;
   final int? next;
-  final List<RequestEmployee>? requestEmployees;
+  final List<RequestedEmployeeModel>? requestEmployeeList;
 
   factory RequestedEmployees.fromRawJson(String str) => RequestedEmployees.fromJson(json.decode(str));
 
@@ -30,7 +30,7 @@ class RequestedEmployees {
     total: json["total"],
     count: json["count"],
     next: json["next"],
-    requestEmployees: json["requestEmployees"] == null ? [] : List<RequestEmployee>.from(json["requestEmployees"]!.map((x) => RequestEmployee.fromJson(x))),
+    requestEmployeeList: json["requestEmployees"] == null ? [] : List<RequestedEmployeeModel>.from(json["requestEmployees"]!.map((x) => RequestedEmployeeModel.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
@@ -40,12 +40,12 @@ class RequestedEmployees {
     "total": total,
     "count": count,
     "next": next,
-    "requestEmployees": requestEmployees == null ? [] : List<dynamic>.from(requestEmployees!.map((x) => x.toJson())),
+    "requestEmployees": requestEmployeeList == null ? [] : List<dynamic>.from(requestEmployeeList!.map((x) => x.toJson())),
   };
 }
 
-class RequestEmployee {
-  RequestEmployee({
+class RequestedEmployeeModel {
+  RequestedEmployeeModel({
     this.id,
     this.requestClientId,
     this.clientDetails,
@@ -69,11 +69,11 @@ class RequestEmployee {
   final DateTime? updatedAt;
   final int? v;
 
-  factory RequestEmployee.fromRawJson(String str) => RequestEmployee.fromJson(json.decode(str));
+  factory RequestedEmployeeModel.fromRawJson(String str) => RequestedEmployeeModel.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory RequestEmployee.fromJson(Map<String, dynamic> json) => RequestEmployee(
+  factory RequestedEmployeeModel.fromJson(Map<String, dynamic> json) => RequestedEmployeeModel(
     id: json["_id"],
     requestClientId: json["requestClientId"],
     clientDetails: json["clientDetails"] == null ? null : ClientDetails.fromJson(json["clientDetails"]),
@@ -186,7 +186,7 @@ class SuggestedEmployeeDetail {
     this.name,
     this.positionId,
     this.positionName,
-    this.rating,
+    this.rating = 0.0,
     this.totalWorkingHour,
     this.hourlyRate,
     this.profilePicture,
@@ -198,8 +198,8 @@ class SuggestedEmployeeDetail {
   final String? name;
   final String? positionId;
   final String? positionName;
-  final int? rating;
-  final int? totalWorkingHour;
+  final double? rating;
+  final double? totalWorkingHour;
   final double? hourlyRate;
   final String? profilePicture;
   final String? cv;
@@ -214,8 +214,8 @@ class SuggestedEmployeeDetail {
     name: json["name"],
     positionId: json["positionId"],
     positionName: json["positionName"],
-    rating: json["rating"],
-    totalWorkingHour: json["totalWorkingHour"],
+    rating: json["rating"] == null ? 0.0 : double.parse(json["rating"].toString()),
+    totalWorkingHour: json["totalWorkingHour"] == null ? 0.0 : double.parse(json["totalWorkingHour"].toString()),
     hourlyRate: double.parse(json["hourlyRate"].toString()),
     profilePicture: json["profilePicture"],
     cv: json["cv"],

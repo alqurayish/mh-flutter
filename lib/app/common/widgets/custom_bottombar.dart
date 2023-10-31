@@ -5,8 +5,8 @@ class CustomBottomBar extends StatelessWidget {
 
   const CustomBottomBar({
     required this.child,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

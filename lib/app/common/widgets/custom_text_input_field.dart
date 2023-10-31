@@ -20,7 +20,7 @@ class CustomTextInputField extends StatefulWidget {
   final Function()? onSuffixPressed;
 
   const CustomTextInputField({
-    Key? key,
+    super.key,
     this.prefixIcon,
     this.selectedIcon,
     this.unselectedIcon,
@@ -36,7 +36,7 @@ class CustomTextInputField extends StatefulWidget {
     this.onTap,
     this.onSubmit,
     this.onSuffixPressed,
-  }) : super(key: key);
+  });
 
   @override
   State<CustomTextInputField> createState() => _CustomTextInputFieldState();

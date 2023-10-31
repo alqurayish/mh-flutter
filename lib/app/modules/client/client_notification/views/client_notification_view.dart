@@ -5,7 +5,7 @@ import '../../../../common/widgets/custom_appbar.dart';
 import '../controllers/client_notification_controller.dart';
 
 class ClientNotificationView extends GetView<ClientNotificationController> {
-  const ClientNotificationView({Key? key}) : super(key: key);
+  const ClientNotificationView({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(

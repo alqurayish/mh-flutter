@@ -13,7 +13,7 @@ class MyStrings {
   static _PayloadScreen get payloadScreen => _PayloadScreen();
 
   // validation
-  static const String required = "required";
+  static const String required = "This field is required";
   static const String invalidEmailAddress = "invalidEmailAddress";
   static const String atLeast1CharNeeded = "atLeast1CharNeeded";
   static const String atLeast1DigitNeeded = "atLeast1DigitNeeded";
@@ -79,10 +79,14 @@ class MyStrings {
   static const String dashboard = "dashboard";
   static const String myEmployees = "myEmployees";
   static const String invoicePayment = "invoicePayment";
+  static const String stripePayment = "Stripe Payment";
   static const String invoice = "Invoice";
   static const String helpSupport = "helpSupport";
-  static const String myDashboard = "myDashboard";
-  static const String emergencyCheckInCheckOut = "emergencyCheckInCheckOut";
+  static const String myDashboard = "My Dashboard";
+  static const String paymentHistory = "Payment History";
+  static const String bookedHistory = "Booked History";
+  static const String calendar = "Calendar";
+  static const String hiredHistory = "Hired History";
   static const String areShowing = "areShowing";
   static const String exp = "exp";
   static const String countYears = "countYears";
@@ -101,6 +105,7 @@ class MyStrings {
   static const String resetData = "resetData";
   static const String apply = "apply";
   static const String ageWithYears = "ageWithYears";
+  static const String age = "Age:";
   static const String review = "Review";
   static const String countTime = "countTime";
   static const String licenseNo = "licenseNo";
@@ -114,6 +119,7 @@ class MyStrings {
   static const String selectDateRange = "selectDateRange";
   static const String applyRange = "applyRange";
   static const String rememberMeText = "Remember Me";
+  static const String paymentSucessText = "Payment Successful";
 }
 
 class _Arguements {

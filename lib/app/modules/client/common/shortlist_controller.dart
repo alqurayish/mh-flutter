@@ -1,14 +1,19 @@
 import 'package:dartz/dartz.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:mh/app/common/controller/app_controller.dart';
 import 'package:mh/app/common/widgets/custom_dialog.dart';
+import 'package:mh/app/common/widgets/custom_loader.dart';
 import 'package:mh/app/models/custom_error.dart';
+import 'package:mh/app/modules/client/client_home/controllers/client_home_controller.dart';
+import 'package:mh/app/modules/client/client_shortlisted/models/add_to_shortlist_request_model.dart';
+import 'package:mh/app/modules/client/client_suggested_employees/models/short_list_request_model.dart';
+import 'package:mh/app/modules/employee/employee_home/models/common_response_model.dart';
 
 import '../../../common/utils/exports.dart';
 import '../../../repository/api_helper.dart';
 import '../client_shortlisted/models/shortlisted_employees.dart';
 
 class ShortlistController extends GetxService {
-
   RxList<ShortList> shortList = <ShortList>[].obs;
 
   RxList<ShortList> selectedForHire = <ShortList>[].obs;
@@ -33,7 +38,7 @@ class ShortlistController extends GetxService {
     double discount = _appController.user.value.client?.clientDiscount ?? 0;
     double discountedAmount = 0;
 
-    if(discount != 0) {
+    if (discount != 0) {
       discountedAmount = (discount / 100) * getIntroductionFeesWithoutDiscount();
     }
 
@@ -43,18 +48,14 @@ class ShortlistController extends GetxService {
   Future<void> fetchShortListEmployees() async {
     isFetching.value = true;
 
-    await _apiHelper.fetchShortlistEmployees().then((Either<CustomError, ShortlistedEmployees> response) {
-
-      isFetching.value = false;
-
-      response.fold((l) {
-        Logcat.msg(l.msg);
-      }, (r) {
-        shortList.value = r.shortList ?? [];
-        shortList.refresh();
-        totalShortlisted.value = shortList.length;
-      });
-
+    Either<CustomError, ShortlistedEmployees> response = await _apiHelper.fetchShortlistEmployees();
+    isFetching.value = false;
+    response.fold((l) {
+      Logcat.msg(l.msg);
+    }, (r) {
+      shortList.value = r.shortList ?? [];
+      shortList.refresh();
+      totalShortlisted.value = shortList.length;
     });
   }
 
@@ -72,38 +73,38 @@ class ShortlistController extends GetxService {
     return shortList.where((employee) => employee.employeeDetails!.positionId == position).toList();
   }
 
-  Future<void> onBookNowClick(String employeeId) async {
+  Future<void> onBookNowClick({required String employeeId, required List<RequestDateModel> requestDateList}) async {
     _selectedId = employeeId;
     if (_isEmployeeAddedInShortlist(employeeId)) return;
 
-    await _addEmployeeToShortlist(employeeId);
+    await _addEmployeeToShortlist(employeeId: employeeId, requestDateList: requestDateList);
   }
 
-  Future<void> _addEmployeeToShortlist(String employeeId) async {
-
+  Future<void> _addEmployeeToShortlist(
+      {required String employeeId, required List<RequestDateModel> requestDateList}) async {
     isFetching.value = true;
+    CustomLoader.show(Get.context!);
+    AddToShortListRequestModel addToShortListRequestModel =
+        AddToShortListRequestModel(employeeId: employeeId, requestDateList: requestDateList);
 
-    Map<String, dynamic> data  = {"employeeId" : employeeId};
-
-    await _apiHelper.addToShortlist(data).then((response) {
-      response.fold((l) {
-        Logcat.msg(l.msg);
+    Either<CustomError, Response> response =
+        await _apiHelper.addToShortlist(addToShortListRequestModel: addToShortListRequestModel);
+    CustomLoader.hide(Get.context!);
+    response.fold((l) {
+      Logcat.msg(l.msg);
+      isFetching.value = false;
+    }, (r) {
+      if ([200, 201].contains(r.statusCode)) {
+        fetchShortListEmployees();
+      } else {
         isFetching.value = false;
-      }, (r) {
-
-        if([200,201].contains(r.statusCode)) {
-          fetchShortListEmployees();
-        } else {
-          isFetching.value = false;
-          CustomDialogue.information(
-            context: Get.context!,
-            title: "Error",
-            description: "Employee already hired",
-          );
-        }
-      });
+        CustomDialogue.information(
+          context: Get.context!,
+          title: "Error",
+          description: "Employee already hired",
+        );
+      }
     });
-
   }
 
   Future<void> _removeEmployeeFromFromShortlist(String employeeId) async {
@@ -112,7 +113,6 @@ class ShortlistController extends GetxService {
     String shortlistId = shortList.firstWhere((element) => element.employeeId == employeeId).sId!;
 
     await _apiHelper.deleteFromShortlist(shortlistId).then((response) {
-
       deleteFromShortlist.value = false;
 
       response.fold((l) {
@@ -120,8 +120,9 @@ class ShortlistController extends GetxService {
       }, (r) {
         for (var element in shortList) {
           if (element.employeeId == employeeId) {
-
-            shortList..remove(element)..refresh();
+            shortList
+              ..remove(element)
+              ..refresh();
 
             totalShortlisted.value = shortList.length;
 
@@ -132,26 +133,27 @@ class ShortlistController extends GetxService {
           }
         }
       });
-
     });
-
   }
 
-  Widget getIcon(String employeeId, bool isFetching) {
+  Widget getIcon(
+      {required String employeeId,
+      required bool isFetching,
+      required String fromWhere,
+      String? id,
+      required List<RequestDateModel> requestedDateList}) {
     return GestureDetector(
       onTap: () {
-        if(!_appController.hasPermission()) return;
+        if (!_appController.hasPermission()) return;
 
-        _onBookmarkClick(employeeId);
+        _onBookmarkClick(employeeId: employeeId, fromWhere: fromWhere, id: id, requestedDateList: requestedDateList);
       },
       child: (this.isFetching.value || deleteFromShortlist.value) && employeeId == _selectedId
           ? const SizedBox(
               width: 20,
               height: 20,
               child: Center(
-                child: CircularProgressIndicator.adaptive(
-                  backgroundColor: MyColors.c_C6A34F,
-                ),
+                child: CupertinoActivityIndicator(),
               ),
             )
           : _isEmployeeAddedInShortlist(employeeId)
@@ -166,18 +168,26 @@ class ShortlistController extends GetxService {
     );
   }
 
-  void _onBookmarkClick(String employeeId) {
+  void _onBookmarkClick(
+      {required String employeeId,
+      String? id,
+      required String fromWhere,
+      required List<RequestDateModel> requestedDateList}) {
     _selectedId = employeeId;
 
-    if(_isEmployeeAddedInShortlist(employeeId)) {
+    if (_isEmployeeAddedInShortlist(employeeId)) {
       _confirmationForRemoveEmployeeFromShortlist(employeeId);
     } else {
-      _addEmployeeToShortlist(employeeId);
+      if (fromWhere == 'Requested Employees') {
+        _addEmployeeToShortListNew(employeeId: employeeId, id: id ?? '');
+      } else {
+        _addEmployeeToShortlist(employeeId: employeeId, requestDateList: requestedDateList);
+      }
     }
   }
 
   void onSelectClick(ShortList shortList) {
-    if(selectedForHire.contains(shortList)) {
+    if (selectedForHire.contains(shortList)) {
       selectedForHire.remove(shortList);
     } else {
       selectedForHire.add(shortList);
@@ -188,9 +198,9 @@ class ShortlistController extends GetxService {
 
   bool isDateRangeSetForSelectedUser() {
     // book all employee
-    if(selectedForHire.isEmpty) {
-      for(ShortList employee in shortList) {
-        if(employee.fromDate != null && employee.toDate != null && employee.fromTime != null && employee.toTime != null) {
+    if (selectedForHire.isEmpty) {
+      for (ShortList employee in shortList) {
+        if (employee.requestDateList != null && employee.requestDateList!.isNotEmpty) {
           selectedForHire.add(employee);
         }
       }
@@ -204,7 +214,7 @@ class ShortlistController extends GetxService {
     bool valid = true;
 
     for (ShortList element in selectedForHire) {
-      if(element.fromDate == null || element.toDate == null || element.fromTime == null || element.toTime == null) {
+      if (element.requestDateList == null || element.requestDateList!.isEmpty) {
         valid = false;
         break;
       }
@@ -231,7 +241,35 @@ class ShortlistController extends GetxService {
   }
 
   void removeAllSelected() {
-    selectedForHire..clear()..refresh();
+    selectedForHire
+      ..clear()
+      ..refresh();
   }
 
+  void _addEmployeeToShortListNew({required String employeeId, required String id}) async {
+    isFetching.value = true;
+
+    ShortListRequestModel shortListRequestModel = ShortListRequestModel(id: id, employeeId: employeeId);
+
+    await _apiHelper
+        .addToShortlistNew(shortListRequestModel: shortListRequestModel)
+        .then((Either<CustomError, CommonResponseModel> response) {
+      response.fold((l) {
+        Logcat.msg(l.msg);
+        isFetching.value = false;
+      }, (r) {
+        if ([200, 201].contains(r.statusCode)) {
+          fetchShortListEmployees();
+          Get.find<ClientHomeController>().homeMethods();
+        } else {
+          isFetching.value = false;
+          CustomDialogue.information(
+            context: Get.context!,
+            title: "Error",
+            description: "Employee already hired",
+          );
+        }
+      });
+    });
+  }
 }

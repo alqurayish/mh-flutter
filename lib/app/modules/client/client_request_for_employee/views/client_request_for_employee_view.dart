@@ -4,7 +4,7 @@ import '../../../../common/widgets/custom_bottombar.dart';
 import '../controllers/client_request_for_employee_controller.dart';
 
 class ClientRequestForEmployeeView extends GetView<ClientRequestForEmployeeController> {
-  const ClientRequestForEmployeeView({Key? key}) : super(key: key);
+  const ClientRequestForEmployeeView({super.key});
 
   @override
   Widget build(BuildContext context) {

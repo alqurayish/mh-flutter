@@ -1,9 +1,12 @@
-import 'package:intl/intl.dart';
+import 'package:dartz/dartz.dart';
+import 'package:mh/app/common/widgets/custom_loader.dart';
+import 'package:mh/app/models/custom_error.dart';
+import 'package:mh/app/modules/client/client_shortlisted/models/add_to_shortlist_request_model.dart';
+import 'package:mh/app/modules/client/client_shortlisted/models/update_shortlist_request_model.dart';
+import 'package:mh/app/modules/client/client_shortlisted/widgets/client_short_listed_request_date_widget.dart';
 
 import '../../../../common/utils/exports.dart';
 import '../../../../common/widgets/custom_dialog.dart';
-import '../../../../common/widgets/custom_hire_time.dart';
-import '../../../../common/widgets/custom_loader.dart';
 import '../../../../repository/api_helper.dart';
 import '../../../../routes/app_pages.dart';
 import '../../common/shortlist_controller.dart';
@@ -16,68 +19,8 @@ class ClientShortlistedController extends GetxController {
 
   final ShortlistController shortlistController = Get.find();
 
-
   void onSelectClick(ShortList shortList) {
     shortlistController.onSelectClick(shortList);
-  }
-
-  Future<void> onDateSelect(String shortlistId) async {
-    DateTimeRange? selectedRange = await showDateRangePicker(
-      context: context!,
-      initialDateRange: DateTimeRange(
-        start: DateTime.now().add(const Duration(days: 1)),
-        end: DateTime.now().add(const Duration(days: 1)),
-      ),
-      firstDate: DateTime.now().add(const Duration(days: 1)),
-      lastDate: DateTime.now().add(const Duration(days: 1000)),
-      builder: (context, child) {
-        return Theme(
-          data: Theme.of(context).brightness == Brightness.light
-              ? ThemeData.light().copyWith(
-                  colorScheme: ColorScheme.light(
-                    primary: MyColors.c_C6A34F,
-                    onPrimary: Colors.white,
-                    onSurface: MyColors.l111111_dwhite(context),
-                  ),
-                )
-              : ThemeData.dark().copyWith(
-                  colorScheme: ColorScheme.dark(
-                    primary: MyColors.c_C6A34F,
-                    onPrimary: Colors.white,
-                    onSurface: MyColors.l111111_dwhite(context),
-                  ),
-                ),
-          child: child!,
-        );
-      },
-    );
-
-    if (selectedRange != null) {
-      Map<String, dynamic> data = {
-        "id": shortlistId,
-        "fromDate": selectedRange.start.toString().split(" ").first,
-        "toDate": selectedRange.end.toString().split(" ").first
-      };
-
-      _updateShortListDateOrTime(data);
-    }
-  }
-
-  Future<void> _updateShortListDateOrTime(Map<String, dynamic> data) async {
-    CustomLoader.show(context!);
-
-    await _apiHelper.updateShortlistItem(data).then((value) async {
-      await shortlistController.fetchShortListEmployees();
-      CustomLoader.hide(context!);
-    });
-  }
-
-  void onTimeSelect(String shortlistId) {
-    CustomHireTime.show(context!, (String fromTime, String toTime) {
-      Map<String, dynamic> data = {"id": shortlistId, "fromTime": fromTime, "toTime": toTime};
-
-      _updateShortListDateOrTime(data);
-    });
   }
 
   void onBookAllClick() {
@@ -98,37 +41,55 @@ class ClientShortlistedController extends GetxController {
     }
   }
 
-  TimeOfDay timeConverter({required String time}) {
-    TimeOfDay timeOfDay;
-    List<String> timeParts = time.split(":");
-    int hour = int.parse(timeParts[0]);
-    int minute = int.parse(timeParts[1]);
-    timeOfDay = TimeOfDay(hour: hour, minute: minute);
-    return timeOfDay;
-  }
-
-  double calculateTotalRate(
-      {required String fromTime, required String toTime, required String daysDifference, required double hourlyRate}) {
-    double totalRate =
-        int.parse(daysDifference.split(' ').first) * calculateHourDifference(fromTime, toTime) * hourlyRate;
-    return totalRate;
-  }
-
-  int calculateHourDifference(String fromTime, String toTime) {
-    // Parse the time strings into DateTime objects
-    DateFormat dateFormat = DateFormat("hh:mm a");
-    DateTime fromDateTime = dateFormat.parse(fromTime);
-    DateTime toDateTime = dateFormat.parse(toTime);
-
-    // If the 'toTime' is before the 'fromTime', it means it spans across two days
-    // We add one day (24 hours) to the 'toTime' to handle this case
-    if (toDateTime.isBefore(fromDateTime)) {
-      toDateTime = toDateTime.add(const Duration(hours: 24));
+  void onDaysSelectedClick({required List<RequestDateModel> requestDateList, required String shortListId}) {
+    if (requestDateList.isEmpty) {
+      Utils.showSnackBar(
+          message: 'You have not any selected dates currently.\nPlease select the dates first', isTrue: false);
+    } else {
+      Get.dialog(Dialog(
+        backgroundColor: MyColors.lightCard(Get.context!),
+        insetPadding: EdgeInsets.symmetric(horizontal: 20.0.w),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+        child: ClientShortListedRequestDateWidget(requestDateList: requestDateList, shortListId: shortListId),
+      ));
     }
+  }
 
-    // Calculate the difference in hours
-    int differenceInMilliseconds = toDateTime.difference(fromDateTime).inMilliseconds;
-    double differenceInHours = differenceInMilliseconds / (1000 * 60 * 60);
-    return differenceInHours.round();
+  void onDateRemoveClick(
+      {required int index, required String shortListId, required List<RequestDateModel> requestDateList}) {
+    CustomDialogue.confirmation(
+      context: Get.context!,
+      title: "Confirm?",
+      msg: "Are you sure you want to remove this range?",
+      confirmButtonText: "Remove",
+      onConfirm: () async {
+        Get.back();
+        requestDateList.removeAt(index);
+        UpdateShortListRequestModel updateShortListRequestModel =
+            UpdateShortListRequestModel(shortListId: shortListId, requestDateList: requestDateList);
+        await updateShortListDateOrTime(updateShortListRequestModel: updateShortListRequestModel);
+      },
+    );
+  }
+
+  Future<void> updateShortListDateOrTime({required UpdateShortListRequestModel updateShortListRequestModel}) async {
+    CustomLoader.show(context!);
+    Either<CustomError, Response> response =
+        await _apiHelper.updateShortlistItem(updateShortListRequestModel: updateShortListRequestModel);
+    CustomLoader.hide(context!);
+    Get.back();
+    response.fold((l) {
+      Logcat.msg(l.msg);
+    }, (r) async {
+      if ([200, 201].contains(r.statusCode)) {
+        await shortlistController.fetchShortListEmployees();
+      } else {
+        CustomDialogue.information(
+          context: Get.context!,
+          title: "Error",
+          description: "Something went wrong",
+        );
+      }
+    });
   }
 }

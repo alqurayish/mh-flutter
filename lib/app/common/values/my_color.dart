@@ -1,6 +1,6 @@
 // ignore_for_file: non_constant_identifier_names, constant_identifier_names
 
-import 'package:flutter/material.dart';
+import 'package:mh/app/common/utils/exports.dart';
 
 class MyColors {
   MyColors._();
@@ -13,10 +13,10 @@ class MyColors {
   static Color l111111_dffffff(BuildContext context) => _isLight(context) ? c_111111 : c_FFFFFF;
   static Color l111111_dtext(BuildContext context) => _isLight(context) ? c_111111 : text;
   static Color lffffff_dbox(BuildContext context) => _isLight(context) ? c_FFFFFF : box;
-  static Color lffffff_dframeBg(BuildContext context) =>  _isLight(context) ? c_FFFFFF : frameBg;
-  static Color lffffff_dstock(BuildContext context) =>  _isLight(context) ? c_FFFFFF : stock;
+  static Color lffffff_dframeBg(BuildContext context) => _isLight(context) ? c_FFFFFF : frameBg;
+  static Color lffffff_dstock(BuildContext context) => _isLight(context) ? c_FFFFFF : stock;
   static Color lbox_dffffff(BuildContext context) => _isLight(context) ? box : c_FFFFFF;
-  static Color lF6F6F6_dframeBg(BuildContext context) =>  _isLight(context) ? c_F6F6F6  : frameBg;
+  static Color lF6F6F6_dframeBg(BuildContext context) => _isLight(context) ? c_F6F6F6 : frameBg;
   static Color l7B7B7B_dicon(BuildContext context) => _isLight(context) ? c_7B7B7B : icon;
   static Color l7B7B7B_dtext(BuildContext context) => _isLight(context) ? c_7B7B7B : text;
   static Color l313131_dtext(BuildContext context) => _isLight(context) ? c_313131 : text;
@@ -31,7 +31,6 @@ class MyColors {
 
   static Color lightCard(BuildContext context) => lffffff_dbox(context);
   static Color darkCard(BuildContext context) => lbox_dffffff(context);
-
 
   ///  color by name
   static const Color primaryDark = c_C6A34F;
@@ -81,4 +80,5 @@ class MyColors {
   static Color c_FF5029_10 = const Color(0xffFF5029).withOpacity(.1);
   static const Color c_F6F6F6 = Color(0xffF6F6F6);
   static const Color c_909090 = Color(0xff909090);
+  static final Color shimmerColor = Get.isDarkMode ? Colors.grey.shade700 : Colors.grey.shade400;
 }

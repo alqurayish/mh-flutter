@@ -1,3 +1,7 @@
+import 'package:mh/app/common/controller/app_controller.dart';
+import 'package:mh/app/common/widgets/custom_badge.dart';
+import 'package:mh/app/common/widgets/shimmer_widget.dart';
+
 import '../../../../common/utils/exports.dart';
 import '../../../../common/widgets/custom_appbar.dart';
 import '../../../../common/widgets/custom_filter.dart';
@@ -7,7 +11,7 @@ import '../../../../models/employees_by_id.dart';
 import '../controllers/admin_all_employees_controller.dart';
 
 class AdminAllEmployeesView extends GetView<AdminAllEmployeesController> {
-  const AdminAllEmployeesView({Key? key}) : super(key: key);
+  const AdminAllEmployeesView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -15,30 +19,41 @@ class AdminAllEmployeesView extends GetView<AdminAllEmployeesController> {
 
     return Scaffold(
       appBar: CustomAppbar.appbar(
-          title: "Employees",
-          context: context,
-          centerTitle: true,
+        title: "Employees",
+        context: context,
+        centerTitle: true,
       ),
       body: Obx(
         () => (controller.employees.value.users ?? []).isEmpty
-            ? controller.isLoading.value
-                ? const SizedBox()
+            ? controller.employeeDataLoading.value
+                ? Padding(
+                    padding: EdgeInsets.only(left: 15.w, right: 15.w, top: 70.h),
+                    child: Center(child: ShimmerWidget.clientMyEmployeesShimmerWidget()),
+                  )
                 : Column(
-                  children: [
-                    _resultCountWithFilter(),
-                    const Spacer(),
-                    const NoItemFound(),
-                    const Spacer(),
-                  ],
-                )
+                    children: [
+                      _resultCountWithFilter(),
+                      const Spacer(),
+                      const NoItemFound(),
+                      const Spacer(),
+                    ],
+                  )
             : Column(
                 children: [
                   _resultCountWithFilter(),
                   Expanded(
                     child: ListView.builder(
+                      //controller: controller.scrollController,
                       padding: EdgeInsets.symmetric(vertical: 20.h),
                       itemCount: controller.employees.value.users?.length ?? 0,
                       itemBuilder: (context, index) {
+                        /*  if (index == controller.employees.value.users!.length - 1 &&
+                            controller.moreDataAvailable.value == true) {
+                          return const SpinKitThreeBounce(
+                            color: MyColors.c_C6A34F,
+                            size: 40,
+                          );
+                        }*/
                         return _employeeItem(
                           controller.employees.value.users![index],
                         );
@@ -53,7 +68,7 @@ class AdminAllEmployeesView extends GetView<AdminAllEmployeesController> {
 
   Widget _resultCountWithFilter() {
     return Padding(
-      padding: EdgeInsets.fromLTRB(23.w, 10.h, 23.w, 0),
+      padding: EdgeInsets.fromLTRB(15.w, 10.h, 15.w, 0),
       child: Row(
         children: [
           Text(
@@ -64,14 +79,16 @@ class AdminAllEmployeesView extends GetView<AdminAllEmployeesController> {
             " Employees are showing",
             style: MyColors.l111111_dwhite(controller.context!).semiBold16,
           ),
-
           const Spacer(),
-
-          GestureDetector(
+          Obx(() => Visibility(
+            visible: controller.nationalityDataLoad.value == true && controller.hourlyRateDataLoaded.value == true,
+              child: GestureDetector(
             onTap: () => CustomFilter.customFilter(
-              controller.context!,
-              controller.onApplyClick,
-              controller.onResetClick,
+              context: controller.context!,
+              hourlyRateDetails: controller.hourlyRateDetails.value,
+              nationalityList: controller.nationalityList,
+              onApplyClick: controller.onApplyClick,
+              onResetClick: controller.onResetClick,
               showPositionId: true,
             ),
             child: Container(
@@ -81,9 +98,12 @@ class AdminAllEmployeesView extends GetView<AdminAllEmployeesController> {
                 shape: BoxShape.circle,
                 color: MyColors.c_DDBD68,
               ),
-              child: const Icon(Icons.filter_list_rounded, color: Colors.white,),
+              child: const Icon(
+                Icons.filter_list_rounded,
+                color: Colors.white,
+              ),
             ),
-          ),
+          )))
         ],
       ),
     );
@@ -91,8 +111,7 @@ class AdminAllEmployeesView extends GetView<AdminAllEmployeesController> {
 
   Widget _employeeItem(Employee user) {
     return Container(
-      height: 105.h,
-      margin: EdgeInsets.symmetric(horizontal: 24.w).copyWith(
+      margin: EdgeInsets.symmetric(horizontal: 15.w).copyWith(
         bottom: 20.h,
       ),
       decoration: BoxDecoration(
@@ -116,7 +135,8 @@ class AdminAllEmployeesView extends GetView<AdminAllEmployeesController> {
                 width: 122.w,
                 child: CustomButtons.button(
                   height: 28.w,
-                  text: "£${user.hourlyRate ?? 0} / hour",
+                  text:
+                      "${Utils.getCurrencySymbol(Get.find<AppController>().user.value.admin?.countryName ?? '')}${user.hourlyRate ?? 0} / hour",
                   margin: EdgeInsets.zero,
                   fontSize: 12,
                   customButtonStyle: CustomButtonStyle.radiusTopBottomCorner,
@@ -124,30 +144,29 @@ class AdminAllEmployeesView extends GetView<AdminAllEmployeesController> {
                 ),
               ),
             ),
-
             Positioned(
-              right: 7,
-              top: 4,
-              child: Obx(
-                () => GestureDetector(
-                  onTap: () => controller.onChatClick(user),
-                  child: Icon(
-                    Icons.chat,
-                    size: 20,
-                    color: controller.adminHomeController.chatUserIds.contains(user.id) ? MyColors.c_C6A34F : MyColors.stock,
-                  ),
+              right: 10.w,
+              top: 5.h,
+              child: _chat(user: user),
+            ),
+            Positioned(
+              right: 40.w,
+              top: 5.h,
+              child: GestureDetector(
+                onTap: () => controller.onCalenderClick(employeeId: user.id ?? ''),
+                child: Image.asset(
+                  MyAssets.calender2,
+                  height: 20,
+                  width: 20,
                 ),
               ),
             ),
-
             Row(
               children: [
                 _image((user.profilePicture ?? "").imageUrl),
-
                 Expanded(
                   child: Column(
                     children: [
-
                       Row(
                         children: [
                           Expanded(
@@ -158,8 +177,13 @@ class AdminAllEmployeesView extends GetView<AdminAllEmployeesController> {
                                 SizedBox(height: 16.h),
                                 Row(
                                   children: [
-                                    Expanded(child: _name("${user.firstName ?? "-"} ${user.lastName ?? ""}")),
-                                    _rating(user.rating ?? 0),
+                                    Flexible(
+                                        flex: user.rating! > 0.0 ? 2 : 4,
+                                        child: _name("${user.firstName ?? "-"} ${user.lastName ?? ""}")),
+                                    if (user.certified != null && user.certified == true)
+                                      Image.asset(MyAssets.certified, height: 30, width: 30),
+                                    Expanded(flex: 2, child: _rating(user.rating ?? 0)),
+                                    const Expanded(flex: 2, child: Wrap()),
                                   ],
                                 ),
                               ],
@@ -167,31 +191,26 @@ class AdminAllEmployeesView extends GetView<AdminAllEmployeesController> {
                           ),
                         ],
                       ),
-
                       SizedBox(height: 8.h),
-
                       const Divider(
                         thickness: .5,
                         height: 1,
                         color: MyColors.c_D9D9D9,
                         endIndent: 13,
                       ),
-
                       SizedBox(height: 8.h),
-
                       Row(
                         children: [
                           _detailsItem(controller.getPositionLogo(user.positionId!), user.positionName ?? "", ""),
-                          _activeStatus(user.isHired ?? false),
+                          _activeStatus(available: user.available ?? ''),
                           const SizedBox(width: 7),
                         ],
                       ),
-
                       SizedBox(height: 8.h),
-
                       Row(
                         children: [
-                          _detailsItem(MyAssets.totalHour, MyStrings.totalHour.tr, (user.totalWorkingHour ?? 0).toString()),
+                          _detailsItem(
+                              MyAssets.totalHour, MyStrings.totalHour.tr, (user.totalWorkingHour ?? 0.0).toString()),
                         ],
                       ),
                     ],
@@ -206,53 +225,52 @@ class AdminAllEmployeesView extends GetView<AdminAllEmployeesController> {
   }
 
   Widget _image(String profilePicture) => Container(
-    margin: const EdgeInsets.fromLTRB(16, 16, 13, 16),
-    width: 74.w,
-    height: 74.w,
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(5),
-      color: Colors.grey.withOpacity(.1),
-    ),
-    child: CustomNetworkImage(
-      url: profilePicture,
-      radius: 5,
-    ),
-  );
+        margin: const EdgeInsets.fromLTRB(16, 16, 13, 16),
+        width: 74.w,
+        height: 74.w,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(5),
+          color: Colors.grey.withOpacity(.1),
+        ),
+        child: CustomNetworkImage(
+          url: profilePicture,
+          radius: 5,
+        ),
+      );
 
   Widget _name(String name) => Text(
-    name,
-    maxLines: 1,
-    overflow: TextOverflow.ellipsis,
-    style: MyColors.l111111_dwhite(controller.context!).medium14,
-  );
+        name,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+        style: MyColors.l111111_dwhite(controller.context!).medium14,
+      );
 
-  Widget _rating(int rating) => Visibility(
-    visible: rating > 0,
-    child: Row(
-      children: [
-        SizedBox(width: 10.w),
-        Container(
-          height: 2.h,
-          width: 2.h,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: MyColors.l111111_dwhite(controller.context!),
-          ),
+  Widget _rating(double rating) => Visibility(
+        visible: rating > 0.0,
+        child: Row(
+          children: [
+            Container(
+              height: 2.h,
+              width: 2.h,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: MyColors.l111111_dwhite(controller.context!),
+              ),
+            ),
+            SizedBox(width: 10.w),
+            const Icon(
+              Icons.star,
+              color: MyColors.c_FFA800,
+              size: 16,
+            ),
+            SizedBox(width: 2.w),
+            Text(
+              rating.toString(),
+              style: MyColors.l111111_dwhite(controller.context!).medium14,
+            ),
+          ],
         ),
-        SizedBox(width: 10.w),
-        const Icon(
-          Icons.star,
-          color: MyColors.c_FFA800,
-          size: 16,
-        ),
-        SizedBox(width: 2.w),
-        Text(
-          rating.toString(),
-          style: MyColors.l111111_dwhite(controller.context!).medium14,
-        ),
-      ],
-    ),
-  );
+      );
 
   Widget _detailsItem(String icon, String title, String value) => Expanded(
         child: Row(
@@ -276,14 +294,16 @@ class AdminAllEmployeesView extends GetView<AdminAllEmployeesController> {
         ),
       );
 
-  Widget _activeStatus(bool isHired) => Container(
+  Widget _activeStatus({required String available}) => Container(
         padding: const EdgeInsets.symmetric(
           horizontal: 5,
           vertical: 2,
         ),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(50),
-          color: isHired ? MyColors.c_00C92C_10 : MyColors.c_FF5029_10,
+          color: ((available.isEmpty || int.parse(available.split(' ').first) <= 0))
+              ? MyColors.c_FF5029_10
+              : MyColors.c_00C92C_10,
         ),
         child: Row(
           children: [
@@ -292,17 +312,48 @@ class AdminAllEmployeesView extends GetView<AdminAllEmployeesController> {
               width: 11,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: isHired ? MyColors.c_00C92C : MyColors.c_FF5029,
+                color: ((available.isEmpty || int.parse(available.split(' ').first) <= 0))
+                    ? MyColors.c_C92C1A
+                    : MyColors.c_00C92C,
               ),
             ),
-
             const SizedBox(width: 5),
-
-            Text(
-              isHired ? "Hired" : "Available",
-              style: MyColors.l111111_dwhite(controller.context!).medium10,
-            ),
+            Text(((available.isEmpty || int.parse(available.split(' ').first) <= 0)) ? 'Booked' : 'Available',
+                style: MyColors.l111111_dwhite(controller.context!).medium11)
           ],
+        ),
+      );
+
+  Widget _chat({required Employee user}) => GestureDetector(
+        onTap: () => controller.onChatClick(user),
+        child: Center(
+          child: Stack(
+            clipBehavior: Clip.none,
+            children: [
+              const Icon(
+                Icons.message,
+                color: MyColors.c_C6A34F,
+              ),
+              Positioned(
+                top: -15,
+                right: -10.w,
+                child: Obx(
+                  () {
+                    Iterable<Map<String, dynamic>> result = controller.adminHomeController.employeeChatDetails.where(
+                        (Map<String, dynamic> data) =>
+                            data["role"] == "EMPLOYEE" &&
+                            data['${user.id}_unread'] == 0 &&
+                            data["allAdmin_unread"] > 0);
+                    if (result.isEmpty) return Container();
+                    return Padding(
+                      padding: EdgeInsets.only(top: 5.0.h, right: 3.0.w),
+                      child: CustomBadge(result.first["allAdmin_unread"].toString()),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
         ),
       );
 }

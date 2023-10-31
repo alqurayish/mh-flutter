@@ -20,6 +20,7 @@ class MyAssets {
   static const invoicePayment = "assets/images/invoice_payment.png";
   static const splash = "assets/images/splash.png";
   static const request = "assets/images/request.jpeg";
+  static const restaurant = "assets/images/restaurant.jpeg";
 
   static const emergencyCheckInCheckout = "assets/images/emergency_checin_checkout.png";
 
@@ -29,13 +30,24 @@ class MyAssets {
   static const totalHour = "assets/images/total_hour.png";
   static const review = "assets/images/review.png";
   static const license = "assets/images/license.png";
+  static const height = "assets/icons/height.png";
+  static const weight = "assets/icons/weight.png";
+  static const nationality = "assets/icons/nationality.png";
+  static const organization = "assets/icons/organization.png";
+  static const dressSize = "assets/icons/dress_size.png";
   static const location = "assets/images/location.png";
   static const education = "assets/images/education.png";
   static const certificate = "assets/images/certificate.png";
   static const language = "assets/images/language.png";
+
+  static const skill = "assets/icons/skills.png";
+  static const certified = "assets/images/certified.png";
   static const calender = "assets/images/calender.png";
 
   static const clientFixedLogo = "assets/images/client_fixed_logo.png";
+
+  //Custom Map Style
+  static const customMapStyle = 'assets/map_style/custom_map_style.txt';
 
   // position
   static const barista = "assets/icons/positions/barista.png";
@@ -54,11 +66,22 @@ class MyAssets {
   static const toiletAssistant = "assets/icons/positions/toilet_assistant.png";
   static const waiter = "assets/icons/positions/waiter.png";
   static const defaultImage = "assets/icons/positions/default_position.png";
-
+  static const bartender = "assets/icons/positions/bartender.png";
+  static const receptionist = "assets/icons/positions/receptionist.png";
+  static const sousChef = "assets/icons/positions/sous_chef.png";
+  static const assistantManager = "assets/icons/positions/assistant_manager.png";
+  static const barBack = "assets/icons/positions/bar_back.png";
+  static const mixologist = "assets/icons/positions/mixologist.png";
+  static const pastryChef = "assets/icons/positions/pastry_chef.png";
   static const locationPin = "assets/icons/location_pin.png";
-
   static const msgSend = "assets/icons/msg_send.png";
+  static const bookedHistory = "assets/icons/booked_history.png";
+  static const hiredHistory = "assets/icons/hired_history.png";
 
+  //Calender View
+  static const String calender1 = 'assets/icons/calender1.png';
+  static const String calender2 = 'assets/icons/calender2.png';
+  static const String clock = 'assets/icons/clock.png';
 }
 
 class _Lottie {
@@ -72,6 +95,10 @@ class _Lottie {
   String hireFailed = "assets/lottie/hire_failed.json";
   String notFound = "assets/lottie/not_found.json";
   String noNotification = "assets/lottie/no_notification.json";
+  String mapLoading = "assets/lottie/map_loading.json";
+  String calenderLoading = "assets/lottie/calender_loading.json";
+  String hiLottie = "assets/lottie/hi.json";
+  String successLottie = "assets/lottie/success.json";
 }
 
 class _PaymentMethod {

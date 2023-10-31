@@ -44,6 +44,7 @@ class Employee {
     this.hiredByLong,
     this.iat,
     this.exp,
+    this.certified
   });
 
   final String? id;
@@ -79,6 +80,8 @@ class Employee {
   final String? hiredByRestaurantName;
   final String? hiredByRestaurantAddress;
   final bool? isMhEmployee;
+
+  final bool? certified;
   final List<String>? languages;
   final double? clientDiscount;
   final String? hiredByLat;
@@ -94,6 +97,7 @@ class Employee {
 
   factory Employee.fromJson(Map<String, dynamic> json) => Employee(
     id: json["_id"],
+    certified: json["certified"],
     name: json["name"],
     email: json["email"],
     userIdNumber: json["userIdNumber"],
@@ -137,6 +141,7 @@ class Employee {
 
   Map<String, dynamic> toJson() => {
     "_id": id,
+    "certified": certified,
     "name": name,
     "email": email,
     "userIdNumber": userIdNumber,
@@ -218,5 +223,6 @@ class Employee {
     hiredByLong: userInfo.details?.hiredByLong ?? hiredByLong,
     iat: iat,
     exp: exp,
+    certified: certified,
   );
 }

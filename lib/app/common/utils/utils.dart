@@ -1,7 +1,9 @@
 import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
-import 'package:mh/app/modules/client/client_payment_and_invoice/model/client_invoice.dart';
+import 'package:mh/app/modules/client/client_payment_and_invoice/model/client_invoice_model.dart';
+import 'package:mh/app/modules/employee/employee_payment_history/models/employee_payment_history_model.dart';
+import 'package:mh/app/modules/employee/employee_payment_history/models/employee_payment_model.dart';
 import 'package:pdf/pdf.dart';
 import '../../enums/error_from.dart';
 import '../../models/check_in_out_histories.dart';
@@ -25,6 +27,7 @@ class Utils {
   static unFocus() => FocusManager.instance.primaryFocus?.unfocus();
 
   static get exitApp => SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+
   static Future<bool> appExitConfirmation(BuildContext context) async => CustomDialogue.appExit(context) ?? false;
 
   static void setStatusBarColorColor(Brightness brightness) {
@@ -70,10 +73,6 @@ class Utils {
         msg: customError.msg,
       );
     }
-  }
-
-  static String calculateAge(DateTime? dateTime) {
-    return (DateTime.now().year - (dateTime ?? DateTime.now()).year).toString();
   }
 
   static bool isPositionActive(String positionId) {
@@ -217,6 +216,33 @@ class Utils {
     return dailyStatistics;
   }
 
+  static EmployeePaymentModel employeePaymentHistory(EmployeePaymentHistoryModel element) {
+    EmployeePaymentModel employeePayment = EmployeePaymentModel(
+        week: "-",
+        contractor: '-',
+        restaurantName: '-',
+        position: '-',
+        contractorPerHoursRate: 0.0,
+        totalHours: 0.0,
+        employeeAmount: 0.0,
+        status: '-');
+
+    DateTime? fromDate = element.fromDate;
+    DateTime? toDate = element.toDate;
+
+    if (fromDate != null && toDate != null) {
+      employeePayment.week = "${fromDate.toLocal().dMMMy} - ${toDate.toLocal().dMMMy}";
+    }
+    employeePayment.contractor = element.employeeName ?? '';
+    employeePayment.restaurantName = element.restaurantName ?? '';
+    employeePayment.position = element.positionName ?? '';
+    employeePayment.contractorPerHoursRate = element.contractorHourlyRate ?? 0.0;
+    employeePayment.totalHours = element.totalHours ?? 0.0;
+    employeePayment.employeeAmount = element.employeeAmount ?? 0.0;
+    employeePayment.status = element.status ?? '';
+    return employeePayment;
+  }
+
   static String getCurrentTimeWithAMPM() {
     DateTime now = DateTime.now();
     String formattedTime = DateFormat('hh:mm a').format(now);
@@ -224,7 +250,7 @@ class Utils {
   }
 
   // Function to generate the PDF
-  static Future<File> generatePdfWithImageAndText({required Invoice invoice}) async {
+  static Future<File> generatePdfWithImageAndText({required InvoiceModel invoice}) async {
     final pw.Document pdf = pw.Document();
     pw.MemoryImage? image;
     File file;
@@ -242,8 +268,8 @@ class Utils {
               mainAxisAlignment: pw.MainAxisAlignment.center,
               crossAxisAlignment: pw.CrossAxisAlignment.center,
               children: [
-                pw.Image(image!, height: 100, width: 100),
-                pw.SizedBox(height: 20), // Add some spacing between image and text
+                pw.Image(image!, height: 120, width: 120),
+                pw.SizedBox(height: 30), // Add some spacing between image and text
                 pw.Text(
                   'MH Premier Staffing Solutions',
                   style: pw.TextStyle(
@@ -251,43 +277,57 @@ class Utils {
                     fontSize: 30,
                   ),
                 ),
-                pw.SizedBox(height: 30),
+                pw.SizedBox(height: 70),
                 pw.Row(children: [
                   pw.Expanded(
                       flex: 1,
                       child: pw.Column(crossAxisAlignment: pw.CrossAxisAlignment.start, children: [
                         pw.Text('To:'),
-                        pw.SizedBox(height: 20),
-                        pw.Text('House: 35 (Rose garden), Road no: 08, Shekhertek, Adabor, Dhaka: 1208',
-                            style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+                        pw.SizedBox(height: 10),
+                        pw.Text(invoice.restaurantName ?? "", style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+                        pw.Text(invoice.restaurantAddress ?? '', style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+                        pw.Text(invoice.restaurantEmail ?? '', style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+                        pw.Text(invoice.restaurantPhone ?? '', style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
                       ])),
                   pw.Expanded(flex: 1, child: pw.Wrap())
                 ]),
-                pw.SizedBox(height: 10),
+                pw.SizedBox(height: 20),
                 pw.Row(children: [
                   pw.Expanded(flex: 1, child: pw.Wrap()),
                   pw.Expanded(
                       flex: 1,
                       child: pw.Column(crossAxisAlignment: pw.CrossAxisAlignment.end, children: [
                         pw.Text('Invoice N: ${invoice.invoiceNumber}'),
-                        pw.Text('Invoice date: ${DateFormat('d MMMM, y').format(invoice.invoiceDate!)}'),
+                        pw.Text('Invoice date: ${DateFormat('d MMMM, y').format(invoice.invoiceDate!)}')
                       ]))
                 ]),
-                pw.SizedBox(height: 30),
-                pw.Text('Total: £${invoice.amount}', style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 16)),
-                pw.SizedBox(height: 30),
+                pw.SizedBox(height: 50),
+                pw.Text(
+                    '${invoice.restaurantName ?? ''} week from ${DateFormat('d MMMM, y').format(invoice.fromWeekDate!)} to ${DateFormat('d MMMM, y').format(invoice.toWeekDate!)}',
+                    style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 16)),
+                pw.SizedBox(height: 20),
+                pw.Text(
+                    'Amount: ${getCurrencySymbol(Get.find<AppController>().user.value.client?.countryName ?? '')}${invoice.amount}'),
+                pw.Text('VAT: ${invoice.vat}%'),
+                pw.Text('VAT Amount: ${getCurrencySymbol(Get.find<AppController>().user.value.client?.countryName ?? '')}${invoice.vatAmount}'),
+                pw.Text(
+                    'Platform Fee: ${getCurrencySymbol(Get.find<AppController>().user.value.client?.countryName ?? '')}${invoice.platformFee}'),
+
+                pw.Divider(indent: 100, endIndent: 100),
+               // pw.SizedBox(height: 10),
+                pw.Text(
+                    'Total Amount: ${getCurrencySymbol(Get.find<AppController>().user.value.client?.countryName ?? '')}${invoice.amount?.toStringAsFixed(2)}',
+                    style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 16)),
+                pw.SizedBox(height: 70),
                 pw.Row(children: [
                   pw.Expanded(
                       flex: 1,
                       child: pw.Column(crossAxisAlignment: pw.CrossAxisAlignment.start, children: [
-                        pw.Text('Bank Transfer:',
-                            style: pw.TextStyle(
-                                decoration: pw.TextDecoration.underline,
-                                decorationColor: PdfColors.black, // Optional: Set the underline color
-                                decorationThickness: 10.0,
-                                fontSize: 16,
-                                fontWeight: pw.FontWeight.bold)),
-                        pw.Text('Invoice date: ${DateFormat('d MMMM, y').format(invoice.invoiceDate!)}'),
+                        pw.Text('Bank Transfer:', style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+                        pw.Text('MH Premier Staffing Solutions'),
+                        pw.Text('48 Warwick St Regent Street W1B 5AW London'),
+                        pw.Text('+44 20 3980 9360'),
+                        pw.Text('info@mhpremierstaffingsolutions.com'),
                       ])),
                   pw.Expanded(flex: 1, child: pw.Wrap()),
                 ]),
@@ -321,5 +361,28 @@ class Utils {
     await tempFile.writeAsBytes(bytes);
 
     return tempFile;
+  }
+
+  static String getCurrencySymbol(String countryName) {
+    switch (countryName.toLowerCase()) {
+      case 'united kingdom':
+        return '£';
+      case 'united arab emirates':
+        return 'د.إ';
+      // Add more cases for other countries as needed
+      default:
+        return '\$';
+    }
+  }
+
+  static void showSnackBar({required String message, required bool isTrue}) {
+    Get.rawSnackbar(
+        snackStyle: SnackStyle.FLOATING,
+        snackPosition: SnackPosition.TOP,
+        margin: const EdgeInsets.all(10.0),
+        title: isTrue == true ? 'Success' : 'Warning!',
+        message: message,
+        backgroundColor: isTrue == true ? MyColors.c_C6A34F : Colors.red,
+        borderRadius: 10.0);
   }
 }

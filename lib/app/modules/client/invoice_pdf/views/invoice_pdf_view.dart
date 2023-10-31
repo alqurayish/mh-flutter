@@ -4,14 +4,13 @@ import 'package:mh/app/common/widgets/custom_appbar.dart';
 import '../controllers/invoice_pdf_controller.dart';
 
 class InvoicePdfView extends GetView<InvoicePdfController> {
-  const InvoicePdfView({Key? key}) : super(key: key);
+  const InvoicePdfView({super.key});
   @override
   Widget build(BuildContext context) {
-    controller.enableFullScreen();
     controller.context = context;
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: controller.downloadInvoicePDF,
+        onPressed: controller.onDownloadPressed,
         backgroundColor: MyColors.c_C6A34F,
         child: const Icon(Icons.download, color: MyColors.c_FFFFFF),
       ),

@@ -25,7 +25,7 @@ class ClientEmployeeChatController extends GetxController {
   CollectionReference onChatScreenCollection = FirebaseFirestore.instance.collection('onChatScreen');
   CollectionReference employeeClientChatCollection = FirebaseFirestore.instance.collection("employee_client_chat");
   late DocumentReference employeeClientChatDocument;
-  late CollectionReference massageCollection;
+  late CollectionReference messageCollection;
 
   RxBool loading = true.obs;
 
@@ -109,7 +109,7 @@ class ClientEmployeeChatController extends GetxController {
 
   void _updateReadAllMsg(String docId) {
     employeeClientChatDocument = employeeClientChatCollection.doc(docId);
-    massageCollection = employeeClientChatDocument.collection("massages");
+    messageCollection = employeeClientChatDocument.collection("massages");
 
     employeeClientChatDocument.update({
       "${fromId}_unread" : 0
@@ -139,7 +139,7 @@ class ClientEmployeeChatController extends GetxController {
 
   void _trackBothUserAreOnline() {
 
-    onChatScreenCollection.doc(toId).get().then((value) {
+    onChatScreenCollection.doc(toId).get().then((DocumentSnapshot<Object?> value) {
       if(value.exists) {
         onChatScreenCollection.doc(toId).snapshots().listen((DocumentSnapshot doc) {
           Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
@@ -165,8 +165,7 @@ class ClientEmployeeChatController extends GetxController {
     };
 
     tecController.clear();
-
-    massageCollection.add(data).then((value) {
+    messageCollection.add(data).then((DocumentReference<Object?> value) {
       _sendNotification(data["text"]);
     });
 

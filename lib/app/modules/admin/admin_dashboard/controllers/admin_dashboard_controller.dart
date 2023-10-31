@@ -105,8 +105,7 @@ class AdminDashboardController extends GetxController {
 
     await _apiHelper
         .getAllUsersFromAdmin(
-      requestType: "CLIENT",
-    )
+      requestType: "CLIENT")
         .then((response) {
       clientLoading.value = false;
 
@@ -142,10 +141,11 @@ class AdminDashboardController extends GetxController {
   }
 
   CheckInCheckOutHistoryElement? getCheckInOutDate(int index) {
-    String id = checkInCheckOutHistory.value.checkInCheckOutHistory![index].employeeDetails!.employeeId!;
+    String employeeId = checkInCheckOutHistory.value.checkInCheckOutHistory![index].employeeDetails!.employeeId!;
+    String id = checkInCheckOutHistory.value.checkInCheckOutHistory![index].id!;
 
-    for (var element in checkInCheckOutHistory.value.checkInCheckOutHistory ?? []) {
-      if (element.employeeDetails!.employeeId! == id) {
+    for (CheckInCheckOutHistoryElement element in checkInCheckOutHistory.value.checkInCheckOutHistory ?? []) {
+      if (element.employeeDetails!.employeeId! == employeeId && element.id == id) {
         return element;
       }
     }
@@ -182,8 +182,7 @@ class AdminDashboardController extends GetxController {
       if(selectedComplainType == complainType[0] || selectedComplainType == complainType[1]) {
         if(element.checkInCheckOutDetails?.clientCheckInTime != null) {
 
-          var dif = element.checkInCheckOutDetails!.clientCheckInTime!.difference(element.checkInCheckOutDetails!.checkInTime!).inMinutes;
-
+          int dif = element.checkInCheckOutDetails!.clientCheckInTime!.difference(element.checkInCheckOutDetails!.checkInTime!).inMinutes;
           if(selectedComplainType == complainType[0]) {
             if(dif < 0) {
               tecTime.text = dif.abs().toString();

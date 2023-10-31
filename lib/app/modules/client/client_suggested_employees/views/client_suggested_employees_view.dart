@@ -1,4 +1,6 @@
+import 'package:mh/app/common/controller/app_controller.dart';
 import 'package:mh/app/models/requested_employees.dart';
+import 'package:mh/app/modules/client/client_shortlisted/models/add_to_shortlist_request_model.dart';
 
 import '../../../../common/utils/exports.dart';
 import '../../../../common/widgets/custom_appbar.dart';
@@ -6,7 +8,7 @@ import '../../../../common/widgets/custom_network_image.dart';
 import '../controllers/client_suggested_employees_controller.dart';
 
 class ClientSuggestedEmployeesView extends GetView<ClientSuggestedEmployeesController> {
-  const ClientSuggestedEmployeesView({Key? key}) : super(key: key);
+  const ClientSuggestedEmployeesView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +56,7 @@ class ClientSuggestedEmployeesView extends GetView<ClientSuggestedEmployeesContr
             child: const Text("No employee suggest yet"),
           )
         else
-          ...employees.map((e) {
+          ...employees.map((SuggestedEmployeeDetail e) {
             return _employeeItem(e);
           }),
       ],
@@ -97,15 +99,15 @@ class ClientSuggestedEmployeesView extends GetView<ClientSuggestedEmployeesContr
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                _name(employee.name ?? "-"),
+                                Expanded(child: _name(employee.name ?? "-")),
                                 _rating(employee.rating ?? 0),
                                 const Spacer(),
-                                Obx(
-                                  () => controller.shortlistController.getIcon(
-                                    employee.employeeId!,
-                                    controller.shortlistController.isFetching.value,
-                                  ),
-                                ),
+                                Obx(() => controller.shortlistController.getIcon(
+                                  requestedDateList: <RequestDateModel>[],
+                                    employeeId: employee.employeeId!,
+                                    isFetching: controller.shortlistController.isFetching.value,
+                                    fromWhere: 'Requested Employees',
+                                    id: controller.getRequestId(employeeId: employee.employeeId ?? ""))),
                                 SizedBox(width: 9.w),
                               ],
                             ),
@@ -124,8 +126,13 @@ class ClientSuggestedEmployeesView extends GetView<ClientSuggestedEmployeesContr
                   SizedBox(height: 10.h),
                   Row(
                     children: [
-                      _detailsItem(MyAssets.exp, MyStrings.rate.tr,
-                          MyStrings.ratePerHour.trParams({"rate": "£${(employee.hourlyRate?.toStringAsFixed(2) ?? 0)}"})),
+                      _detailsItem(
+                          MyAssets.exp,
+                          MyStrings.rate.tr,
+                          MyStrings.ratePerHour.trParams({
+                            "rate":
+                                "${Utils.getCurrencySymbol(Get.find<AppController>().user.value.client?.countryName ?? '')}${(employee.hourlyRate?.toStringAsFixed(2) ?? 0)}"
+                          })),
                       _detailsItem(
                           MyAssets.totalHour, MyStrings.totalHour.tr, (employee.totalWorkingHour ?? 0).toString()),
                     ],
@@ -172,8 +179,8 @@ class ClientSuggestedEmployeesView extends GetView<ClientSuggestedEmployeesContr
         style: MyColors.l111111_dwhite(controller.context!).medium14,
       );
 
-  Widget _rating(int rating) => Visibility(
-        visible: rating > 0,
+  Widget _rating(double rating) => Visibility(
+        visible: rating > 0.0,
         child: Row(
           children: [
             SizedBox(width: 10.w),

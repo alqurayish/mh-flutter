@@ -5,7 +5,7 @@ import '../../../../common/widgets/custom_bottombar.dart';
 import '../controllers/client_employee_chat_controller.dart';
 
 class ClientEmployeeChatView extends GetView<ClientEmployeeChatController> {
-  const ClientEmployeeChatView({Key? key}) : super(key: key);
+  const ClientEmployeeChatView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +32,7 @@ class ClientEmployeeChatView extends GetView<ClientEmployeeChatController> {
             ),
             elevation: 0,
             leading: const Align(child: CustomAppbarBackButton()),
+            centerTitle: true,
             title: Obx(
               () => Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -51,7 +52,7 @@ class ClientEmployeeChatView extends GetView<ClientEmployeeChatController> {
                           color: Colors.green,
                           shape: BoxShape.circle,
                         ),
-                      )),
+                      ))
                 ],
               ),
             ),
@@ -69,7 +70,7 @@ class ClientEmployeeChatView extends GetView<ClientEmployeeChatController> {
                       ),
                     )
                   : StreamBuilder<QuerySnapshot>(
-                      stream: controller.massageCollection.orderBy('time').snapshots(),
+                      stream: controller.messageCollection.orderBy('time').snapshots(),
                       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
                         if (snapshot.hasError) {
                           return const Center(child: Text('Something went wrong'));

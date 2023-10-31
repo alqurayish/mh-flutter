@@ -23,11 +23,13 @@ class AdminHomeController extends GetxController {
   RxInt unreadMsgFromEmployee = 0.obs;
   RxInt unreadMsgFromClient = 0.obs;
 
-  RxList<String> chatUserIds = <String>[].obs;
-
   int numberOfRequestFromClient = 0;
 
   String requestId = '';
+
+  RxList<Map<String, dynamic>> employeeChatDetails = <Map<String, dynamic>>[].obs;
+  RxList<Map<String, dynamic>> clientChatDetails = <Map<String, dynamic>>[].obs;
+  RxList<String> chatUserIds = <String>[].obs;
 
   @override
   void onInit() {
@@ -52,18 +54,18 @@ class AdminHomeController extends GetxController {
   }
 
   int getTotalRequestByPosition(int index) {
-    return (requestedEmployees.value.requestEmployees?[index].clientRequestDetails ?? [])
+    return (requestedEmployees.value.requestEmployeeList?[index].clientRequestDetails ?? [])
         .fold(0, (previousValue, element) => previousValue + (element.numOfEmployee ?? 0));
   }
 
   int getTotalSuggestByPosition(int index) {
-    return requestedEmployees.value.requestEmployees?[index].suggestedEmployeeDetails?.length ?? 0;
+    return requestedEmployees.value.requestEmployeeList?[index].suggestedEmployeeDetails?.length ?? 0;
   }
 
   int get getTotalSuggestLeft {
     int total = 0;
 
-    for (int i = 0; i < (requestedEmployees.value.requestEmployees ?? []).length; i++) {
+    for (int i = 0; i < (requestedEmployees.value.requestEmployeeList ?? []).length; i++) {
       total += getTotalRequestByPosition(i) - getTotalSuggestByPosition(i);
     }
 
@@ -98,19 +100,23 @@ class AdminHomeController extends GetxController {
         .listen((QuerySnapshot<Map<String, dynamic>> event) {
       unreadMsgFromEmployee.value = 0;
       unreadMsgFromClient.value = 0;
+      employeeChatDetails.clear();
+      clientChatDetails.clear();
       chatUserIds.clear();
 
       for (QueryDocumentSnapshot<Map<String, dynamic>> element in event.docs) {
         Map<String, dynamic> data = element.data();
         if (data["role"] == "CLIENT") {
           unreadMsgFromClient.value += data["allAdmin_unread"] as int;
+          clientChatDetails.add(data);
         } else if (data["role"] == "EMPLOYEE") {
           unreadMsgFromEmployee.value += data["allAdmin_unread"] as int;
+          employeeChatDetails.add(data);
         }
-
         chatUserIds.add(element.id);
       }
-
+      clientChatDetails.refresh();
+      employeeChatDetails.refresh();
       chatUserIds.refresh();
     });
   }
@@ -121,13 +127,17 @@ class AdminHomeController extends GetxController {
     notificationsController.getNotificationList();
   }
 
+  void refreshPage() {
+    homeMethods();
+    Utils.showSnackBar(message: 'This page has been refreshed...', isTrue: true);
+  }
+
   void calculateNumberOfRequestFromClient() {
     numberOfRequestFromClient = 0;
-    for (var i in requestedEmployees.value.requestEmployees!) {
+    for (var i in requestedEmployees.value.requestEmployeeList!) {
       if (i.suggestedEmployeeDetails!.isEmpty) {
         numberOfRequestFromClient += 1;
       }
     }
   }
-
 }

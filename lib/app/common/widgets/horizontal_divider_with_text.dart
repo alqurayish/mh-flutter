@@ -6,11 +6,11 @@ class HorizontalDividerWithText extends StatelessWidget {
   final double? thickness;
 
   const HorizontalDividerWithText({
-    Key? key,
+    super.key,
     this.text,
     this.child,
     this.thickness = 1.5,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

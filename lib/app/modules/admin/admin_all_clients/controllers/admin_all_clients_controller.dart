@@ -1,6 +1,6 @@
+import 'package:dartz/dartz.dart';
 import '../../../../common/controller/app_controller.dart';
 import '../../../../common/utils/exports.dart';
-import '../../../../common/widgets/custom_loader.dart';
 import '../../../../models/custom_error.dart';
 import '../../../../models/employees_by_id.dart';
 import '../../../../repository/api_helper.dart';
@@ -15,48 +15,45 @@ class AdminAllClientsController extends GetxController {
   final ApiHelper _apiHelper = Get.find();
 
   Rx<Employees> clients = Employees().obs;
+  RxBool clientsDataLoading = true.obs;
 
-  RxBool isLoading = false.obs;
+/*  RxInt currentPage = 1.obs;
+  final ScrollController scrollController = ScrollController();
+  RxBool moreDataAvailable = true.obs;*/
 
   @override
-  void onReady() {
+  void onInit() {
     _getClients();
-    super.onReady();
+    // paginateTask();
+    super.onInit();
+  }
+
+  @override
+  void onClose() {
+    // scrollController.dispose();
+    super.onInit();
   }
 
   Future<void> _getClients() async {
-    if (isLoading.value) return;
+    clientsDataLoading.value = true;
 
-    isLoading.value = true;
+    Either<CustomError, Employees> response = await _apiHelper.getAllUsersFromAdmin(requestType: "CLIENT");
+    clientsDataLoading.value = false;
 
-    CustomLoader.show(context!);
+    response.fold((CustomError customError) {
+      Utils.errorDialog(context!, customError..onRetry = _getClients);
+    }, (Employees clients) {
+      this.clients.value = clients;
 
-    await _apiHelper.getAllUsersFromAdmin(
-      requestType: "CLIENT",
-    ).then((response) {
-
-      isLoading.value = false;
-      CustomLoader.hide(context!);
-
-      response.fold((CustomError customError) {
-
-        Utils.errorDialog(context!, customError..onRetry = _getClients);
-
-      }, (Employees clients) {
-
-        this.clients.value = clients;
-
-        for(int i = 0; i < (this.clients.value.users ?? []).length; i++) {
-          var item = this.clients.value.users![i];
-          if(adminHomeController.chatUserIds.contains(item.id)) {
-            this.clients.value.users?.removeAt(i);
-            this.clients.value.users?.insert(0, item);
-          }
+      for (int i = 0; i < (this.clients.value.users ?? []).length; i++) {
+        var item = this.clients.value.users![i];
+        if (adminHomeController.chatUserIds.contains(item.id)) {
+          this.clients.value.users?.removeAt(i);
+          this.clients.value.users?.insert(0, item);
         }
+      }
 
-        this.clients.refresh();
-
-      });
+      this.clients.refresh();
     });
   }
 
@@ -68,4 +65,36 @@ class AdminAllClientsController extends GetxController {
       MyStrings.arg.receiverName: employee.restaurantName ?? "-",
     });
   }
+
+  /* void paginateTask() {
+    scrollController.addListener(() {
+      if (scrollController.position.pixels == scrollController.position.maxScrollExtent) {
+        loadNextPage();
+      }
+    });
+  }
+
+  void loadNextPage() async {
+    currentPage.value++;
+    await _getMoreClients();
+  }
+
+  Future<void> _getMoreClients() async {
+    Either<CustomError, Employees> response =
+        await _apiHelper.getAllUsersFromAdmin(requestType: "CLIENT");
+
+    response.fold((CustomError customError) {
+      moreDataAvailable.value = false;
+      Utils.showSnackBar(message: 'No more client are here...', isTrue: false);
+    }, (Employees clients) {
+      if (clients.users!.isNotEmpty) {
+        moreDataAvailable.value = true;
+      } else {
+        moreDataAvailable.value = false;
+        Utils.showSnackBar(message: 'No more client are here...', isTrue: false);
+      }
+      this.clients.value.users?.addAll(clients.users ?? []);
+      this.clients.refresh();
+    });
+  }*/
 }

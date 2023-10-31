@@ -72,8 +72,8 @@ class Users {
   bool? isHired;
   bool? verified;
   int? noOfEmployee;
-  int? rating;
-  int? totalWorkingHour;
+  double? rating;
+  double? totalWorkingHour;
   double? hourlyRate;
   int? clientDiscount;
   MenuPermission? menuPermission;
@@ -150,8 +150,8 @@ class Users {
     isHired = json['isHired'];
     verified = json['verified'];
     noOfEmployee = json['noOfEmployee'];
-    rating = json['rating'];
-    totalWorkingHour = json['totalWorkingHour'];
+    rating = json['rating'] == null ? 0.0 : double.parse(json['rating'].toString());
+    totalWorkingHour = json['totalWorkingHour'] ==  null ? 0.0 : double.parse(json['totalWorkingHour'].toString());
     hourlyRate = double.parse(json['hourlyRate'].toString());
     clientDiscount = json['clientDiscount'];
     menuPermission = json['menuPermission'] != null

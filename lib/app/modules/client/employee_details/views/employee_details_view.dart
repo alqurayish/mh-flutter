@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:mh/app/common/controller/app_controller.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../common/utils/exports.dart';
@@ -8,7 +9,7 @@ import '../../../../common/widgets/custom_network_image.dart';
 import '../controllers/employee_details_controller.dart';
 
 class EmployeeDetailsView extends GetView<EmployeeDetailsController> {
-  const EmployeeDetailsView({Key? key}) : super(key: key);
+  const EmployeeDetailsView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +35,8 @@ class EmployeeDetailsView extends GetView<EmployeeDetailsController> {
 
               SizedBox(height: 12.h),
 
+              _skill,
+              SizedBox(height: 12.h),
               _education,
 
               SizedBox(height: 12.h),
@@ -71,18 +74,18 @@ class EmployeeDetailsView extends GetView<EmployeeDetailsController> {
             ),
           ),
           const Spacer(),
-          Obx(
-            () => Visibility(
+          /* Obx(
+            () => Visibility(c
               visible: !controller.showAsAdmin,
               child: Visibility(
                 visible: !(controller.employee.isHired ?? false),
                 child: controller.shortlistController.getIcon(
-                  controller.employee.id!,
-                  controller.shortlistController.isFetching.value,
-                ),
+                    employeeId: controller.employee.id!,
+                    isFetching: controller.shortlistController.isFetching.value,
+                    fromWhere: ''),
               ),
             ),
-          ),
+          ),*/
         ],
       );
 
@@ -91,7 +94,10 @@ class EmployeeDetailsView extends GetView<EmployeeDetailsController> {
           required String title,
           String? position,
           String? age,
-          String? rating,
+          double? rating,
+          int? totalRating,
+          String? nationality,
+          bool? certified,
           String? phone}) =>
       Container(
         padding: EdgeInsets.fromLTRB(35.w, 13.h, 35.w, 13.h),
@@ -105,10 +111,16 @@ class EmployeeDetailsView extends GetView<EmployeeDetailsController> {
         ),
         child: Column(
           children: [
-            Text(
-              title,
-              textAlign: TextAlign.center,
-              style: MyColors.l111111_dwhite(controller.context!).medium16,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  title,
+                  textAlign: TextAlign.center,
+                  style: MyColors.l111111_dwhite(controller.context!).medium16,
+                ),
+                if (certified != null && certified == true) Image.asset(MyAssets.certified, height: 35, width: 35)
+              ],
             ),
             SizedBox(height: 10.h),
             if (phone != null && phone.isNotEmpty && controller.fromWhere == "admin_home_view")
@@ -127,18 +139,50 @@ class EmployeeDetailsView extends GetView<EmployeeDetailsController> {
                 ),
               ),
             if (phone != null && phone.isNotEmpty && controller.fromWhere == "admin_home_view") SizedBox(height: 10.h),
-            if (position != null && position.isNotEmpty)
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 3.0),
-                decoration: const BoxDecoration(
-                    color: MyColors.c_C6A34F,
-                    borderRadius: BorderRadius.only(topLeft: Radius.circular(5.0), bottomRight: Radius.circular(5.0))),
-                child: Text(
-                  position,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(color: MyColors.white, fontWeight: FontWeight.bold),
-                ),
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                if (position != null && position.isNotEmpty)
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 3.0),
+                    decoration: const BoxDecoration(
+                        color: Colors.blue,
+                        borderRadius:
+                            BorderRadius.only(topLeft: Radius.circular(5.0), bottomRight: Radius.circular(5.0))),
+                    child: Row(
+                      children: [
+                        const Icon(Icons.work_outline, size: 15, color: MyColors.white),
+                        SizedBox(width: 5.w),
+                        Text(
+                          position,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(color: MyColors.white, fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                  ),
+                SizedBox(width: 10.w),
+                if (nationality != null && nationality.isNotEmpty)
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 3.0),
+                    decoration: const BoxDecoration(
+                        color: Colors.teal,
+                        borderRadius:
+                            BorderRadius.only(topLeft: Radius.circular(5.0), bottomRight: Radius.circular(5.0))),
+                    child: Row(
+                      children: [
+                        const Icon(CupertinoIcons.flag, size: 15, color: MyColors.white),
+                        SizedBox(width: 5.w),
+                        Text(
+                          nationality,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(color: MyColors.white, fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                  ),
+              ],
+            ),
             if (position != null && position.isNotEmpty) SizedBox(height: 10.h),
             Visibility(
               visible: age != null,
@@ -160,7 +204,7 @@ class EmployeeDetailsView extends GetView<EmployeeDetailsController> {
                       ),
                       SizedBox(width: 3.w),
                       Text(
-                        rating ?? "0",
+                        "${rating ?? 0.0} (${totalRating ?? 0})",
                         style: MyColors.l111111_dwhite(controller.context!).medium12,
                       ),
                     ],
@@ -227,14 +271,18 @@ class EmployeeDetailsView extends GetView<EmployeeDetailsController> {
         phone: controller.employee.phoneNumber ?? '',
         position: controller.employee.positionName ?? "-",
         title: "${controller.employee.firstName ?? "-"} ${controller.employee.lastName ?? ""}",
-        age: MyStrings.ageWithYears.trParams({"year": Utils.calculateAge(controller.employee.dateOfBirth)}),
+        age: 'Age: ${controller.employee.dateOfBirth?.calculateAge() ?? 0.0}',
+        rating: controller.employee.rating ?? 0.0,
+        totalRating: controller.employee.totalRating ?? 0,
+        nationality: controller.employee.nationality ?? '',
+        certified: controller.employee.certified,
         child: Column(
           children: [
             SizedBox(height: 5.h),
             Row(
               children: [
-                _detailsItem(MyAssets.rate, MyStrings.rate.tr,
-                    "£${(controller.employee.hourlyRate?.toStringAsFixed(2) ?? 0)}/hour"),
+                _detailsItem(MyAssets.rate, '${MyStrings.rate.tr}:',
+                    "${Utils.getCurrencySymbol(Get.find<AppController>().user.value.client?.countryName ?? '')}${(controller.employee.hourlyRate?.toStringAsFixed(2) ?? 0)}/hour"),
                 const Spacer(),
                 _detailsItem(MyAssets.exp, MyStrings.exp.tr, "${(controller.employee.employeeExperience ?? 0)} years"),
               ],
@@ -242,14 +290,38 @@ class EmployeeDetailsView extends GetView<EmployeeDetailsController> {
             SizedBox(height: 18.h),
             Row(
               children: [
-                _detailsItem(
-                    MyAssets.totalHour, MyStrings.totalHour.tr, "${(controller.employee.totalWorkingHour ?? 0)} H"),
+                _detailsItem(MyAssets.totalHour, '${MyStrings.totalHour.tr}:',
+                    "${(controller.employee.totalWorkingHour ?? 0)} H"),
                 const Spacer(),
                 _detailsItem(MyAssets.review, MyStrings.review.tr, "1 time"),
               ],
             ),
             SizedBox(height: 18.h),
-            _detailsItem(MyAssets.license, MyStrings.licenseNo.tr, controller.employee.licensesNo ?? "-"),
+            Row(
+              children: [
+                _detailsItem(MyAssets.license, MyStrings.licenseNo.tr, controller.employee.licensesNo ?? "-"),
+                const Spacer(),
+                _detailsItem(MyAssets.calender2, 'Free: ', controller.employee.available ?? "-"),
+              ],
+            ),
+            SizedBox(height: 18.h),
+            Row(
+              children: [
+                _detailsItem(MyAssets.height, 'Height:', controller.employee.height ?? "-"),
+                const Spacer(),
+                _detailsItem(MyAssets.dressSize, 'Dress Size: ', controller.employee.dressSize ?? "-"),
+              ],
+            ),
+            SizedBox(height: 18.h),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                _detailsItem(
+                    MyAssets.organization, 'Current Organization:', controller.employee.currentOrganisation ?? "-"),
+              ],
+            ),
+
             SizedBox(height: 5.h),
           ],
         ),
@@ -263,6 +335,25 @@ class EmployeeDetailsView extends GetView<EmployeeDetailsController> {
         ),
       );
 
+  Widget get _skill => _base(
+        title: 'Skills',
+        child: Column(
+          children: [
+            if ((controller.employee.skills ?? []).isEmpty)
+              Text(
+                "No Data Found",
+                style: MyColors.l7B7B7B_dtext(controller.context!).regular12,
+              )
+            else
+              ...(controller.employee.skills ?? []).map((e) {
+                return _data(
+                  MyAssets.skill,
+                  e.skillName ?? "",
+                );
+              }),
+          ],
+        ),
+      );
   Widget get _education => _base(
         title: MyStrings.education.tr,
         child: _data(
@@ -303,20 +394,21 @@ class EmployeeDetailsView extends GetView<EmployeeDetailsController> {
     return controller.fromWhere == MyStrings.arg.mhEmployeeViewByIdText
         ? CustomBottomBar(
             child: CustomButtons.button(
-              onTap: controller.showAsAdmin
-                  ? controller.onChatClick
-                  : (controller.employee.isHired ?? false)
-                      ? null
-                      : controller.onBookNowClick,
-              text: controller.showAsAdmin
-                  ? "Chat"
-                  : (controller.employee.isHired ?? false)
-                      ? "Booked"
-                      : "Book Now",
-              height: 52.h,
+              onTap: (controller.employee.available == null ||
+                      int.parse(controller.employee.available!.split(' ').first) <= 0)
+                  ? null
+                  : controller.onBookNowClick,
+              text: (controller.employee.available == null ||
+                      int.parse(controller.employee.available!.split(' ').first) <= 0)
+                  ? "Booked"
+                  : "Book Now",
               customButtonStyle: CustomButtonStyle.radiusTopBottomCorner,
             ),
           )
-        : const Wrap();
+        : CustomBottomBar(
+            child: CustomButtons.button(
+                onTap: controller.onViewCalenderClick,
+                text: 'View Calender',
+                customButtonStyle: CustomButtonStyle.radiusTopBottomCorner));
   }
 }

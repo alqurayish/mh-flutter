@@ -1,7 +1,27 @@
-import 'package:mh/app/modules/employee/employee_home/models/single_notification_model_for_employee.dart';
+import 'package:mh/app/models/hourly_rate_model.dart';
+import 'package:mh/app/models/nationality_model.dart';
+import 'package:mh/app/modules/auth/register/models/employee_extra_field_model.dart';
+import 'package:mh/app/modules/calender/models/calender_model.dart';
+import 'package:mh/app/modules/calender/models/update_unavailable_date_request_model.dart';
+import 'package:mh/app/modules/client/client_shortlisted/models/add_to_shortlist_request_model.dart';
+import 'package:mh/app/modules/client/client_shortlisted/models/update_shortlist_request_model.dart';
+import 'package:mh/app/modules/client/client_suggested_employees/models/short_list_request_model.dart';
+import 'package:mh/app/modules/employee/employee_home/models/common_response_model.dart';
+import 'package:mh/app/modules/employee/employee_home/models/employee_check_in_request_model.dart';
+import 'package:mh/app/modules/employee/employee_home/models/employee_check_out_request_model.dart';
+import 'package:mh/app/modules/employee/employee_home/models/employee_hired_history_model.dart';
+import 'package:mh/app/modules/employee/employee_home/models/review_dialog_model.dart';
+import 'package:mh/app/modules/employee/employee_home/models/review_request_model.dart';
+import 'package:mh/app/modules/employee/employee_home/models/booking_history_model.dart';
+import 'package:mh/app/modules/employee/employee_home/models/single_booking_details_model.dart';
+import 'package:mh/app/modules/employee/employee_home/models/todays_work_schedule_model.dart';
+import 'package:mh/app/modules/employee/employee_payment_history/models/employee_payment_history_model.dart';
+import 'package:mh/app/modules/employee_booked_history_details/models/rejected_date_request_model.dart';
 import 'package:mh/app/modules/notifications/models/notification_response_model.dart';
 import 'package:mh/app/modules/notifications/models/notification_update_request_model.dart';
 import 'package:mh/app/modules/notifications/models/notification_update_response_model.dart';
+import 'package:mh/app/modules/stripe_payment/models/stripe_request_model.dart';
+import 'package:mh/app/modules/stripe_payment/models/stripe_response_model.dart';
 
 import '../common/utils/exports.dart';
 import '../common/utils/type_def.dart';
@@ -21,7 +41,7 @@ import '../modules/auth/register/models/client_register.dart';
 import '../modules/auth/register/models/client_register_response.dart';
 import '../modules/auth/register/models/employee_registration.dart';
 import '../modules/client/client_dashboard/models/current_hired_employees.dart';
-import '../modules/client/client_payment_and_invoice/model/client_invoice.dart';
+import '../modules/client/client_payment_and_invoice/model/client_invoice_model.dart';
 import '../modules/client/client_self_profile/model/client_profile_update.dart';
 import '../modules/client/client_shortlisted/models/shortlisted_employees.dart' as short_list_employees;
 import '../modules/client/client_terms_condition_for_hire/models/terms_condition_for_hire.dart';
@@ -48,25 +68,28 @@ abstract class ApiHelper {
     String id,
   );
 
-  EitherModel<Employees> getEmployees({
-    String? positionId,
-    String? rating,
-    String? employeeExperience,
-    String? minTotalHour,
-    String? maxTotalHour,
-    bool? isReferred,
-  });
+  EitherModel<Employees> getEmployees(
+      {String? positionId,
+      String? employeeExperience,
+      String? minTotalHour,
+      String? maxTotalHour,
+      bool? isReferred,
+      String? dressSize,
+      String? nationality,
+      String? minHeight,
+      String? maxHeight,
+      String? minHourlyRate,
+      String? maxHourlyRate});
 
-  EitherModel<Employees> getAllUsersFromAdmin({
-    String? positionId,
-    String? rating,
-    String? employeeExperience,
-    String? minTotalHour,
-    String? maxTotalHour,
-    bool? isReferred,
-    String? requestType,
-    bool? active,
-  });
+  EitherModel<Employees> getAllUsersFromAdmin(
+      {String? positionId,
+      String? rating,
+      String? employeeExperience,
+      String? minTotalHour,
+      String? maxTotalHour,
+      bool? isReferred,
+      String? requestType,
+      bool? active});
 
   EitherModel<AllAdmins> getAllAdmins();
 
@@ -76,9 +99,9 @@ abstract class ApiHelper {
 
   EitherModel<Sources> fetchSources();
 
-  EitherModel<Response> addToShortlist(Map<String, dynamic> data);
+  EitherModel<Response> addToShortlist({required AddToShortListRequestModel addToShortListRequestModel});
 
-  EitherModel<Response> updateShortlistItem(Map<String, dynamic> data);
+  EitherModel<Response> updateShortlistItem({required UpdateShortListRequestModel updateShortListRequestModel});
 
   EitherModel<Response> deleteFromShortlist(String shortlistId);
 
@@ -92,9 +115,13 @@ abstract class ApiHelper {
 
   EitherModel<TodayCheckInOutDetails> dailyCheckInCheckoutDetails(String employeeId);
 
-  EitherModel<TodayCheckInOutDetails> checkIn(Map<String, dynamic> data);
+  EitherModel<CommonResponseModel> checkIn({required EmployeeCheckInRequestModel employeeCheckInRequestModel});
 
-  EitherModel<Response> checkout(Map<String, dynamic> data);
+  EitherModel<TodayCheckInOutDetails> emergencyCheckIn(Map<String, dynamic> data);
+
+  EitherModel<Response> emergencyCheckOut(Map<String, dynamic> data);
+
+  EitherModel<Response> checkout({required EmployeeCheckOutRequestModel employeeCheckOutRequestModel});
 
   EitherModel<Response> updateCheckInOutByClient(Map<String, dynamic> data);
 
@@ -127,7 +154,7 @@ abstract class ApiHelper {
 
   EitherModel<ClientRegistrationResponse> updateClientProfile(ClientProfileUpdate clientProfileUpdate);
 
-  EitherModel<ClientInvoice> getClientInvoice(String clientId);
+  EitherModel<ClientInvoiceModel> getClientInvoice(String clientId);
 
   EitherModel<Response> updatePaymentStatus(Map<String, dynamic> data);
 
@@ -136,9 +163,38 @@ abstract class ApiHelper {
   EitherModel<NotificationUpdateResponseModel> updateNotification(
       {required NotificationUpdateRequestModel notificationUpdateRequestModel});
 
-  EitherModel<SingleNotificationModelForEmployee> singleNotificationForEmployee();
+  EitherModel<BookingHistoryModel> getBookingHistory();
 
-  EitherModel<SingleNotificationModelForEmployee> cancelClientRequestFromAdmin({required String requestId});
+  EitherModel<BookingHistoryModel> cancelClientRequestFromAdmin({required String requestId});
 
-  EitherModel<SingleNotificationModelForEmployee> cancelEmployeeSuggestionFromAdmin({required String employeeId,  required String requestId});
+  EitherModel<BookingHistoryModel> cancelEmployeeSuggestionFromAdmin(
+      {required String employeeId, required String requestId});
+
+  EitherModel<StripeResponseModel> stripePayment({required StripeRequestModel stripeRequestModel});
+
+  EitherModel<EmployeePaymentHistory> employeePaymentHistory({required String employeeId});
+
+  EitherModel<ReviewDialogModel> showReviewDialog();
+
+  EitherModel<CommonResponseModel> giveReview({required ReviewRequestModel reviewRequestModel});
+
+  EitherModel<CommonResponseModel> addToShortlistNew({required ShortListRequestModel shortListRequestModel});
+
+  EitherModel<CalenderModel> getCalenderData({required String employeeId});
+
+  EitherModel<TodayWorkScheduleModel> getTodayWorkSchedule();
+
+  EitherModel<EmployeeHiredHistoryModel> getHiredHistory();
+
+  EitherModel<SingleBookingDetailsModel> getBookingDetails({required String notificationId});
+
+  EitherModel<Response> updateRequestDate({required RejectedDateRequestModel rejectedDateRequestModel});
+
+  EitherModel<CommonResponseModel> updateUnavailableDate(
+      {required UpdateUnavailableDateRequestModel updateUnavailableDateRequestModel});
+
+  EitherModel<ExtraFieldModel> getEmployeeExtraField({required String countryName});
+
+  EitherModel<NationalityModel> getNationalities();
+  EitherModel<HourlyRateModel> getHourlyRate();
 }

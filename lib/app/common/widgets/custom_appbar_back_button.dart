@@ -1,7 +1,7 @@
 import '../utils/exports.dart';
 
 class CustomAppbarBackButton extends StatelessWidget {
-  const CustomAppbarBackButton({Key? key}) : super(key: key);
+  const CustomAppbarBackButton({super.key});
 
   @override
   Widget build(BuildContext context) {

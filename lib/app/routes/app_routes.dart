@@ -20,7 +20,6 @@ abstract class Routes {
 
   static const employeeHome = _Paths.employeeHome;
   static const employeeDashboard = _Paths.employeeDashboard;
-  static const employeeEmergencyCheckInOut = _Paths.employeeEmergencyCheckInOut;
 
   static const clientHome = _Paths.clientHome;
   static const clientMyEmployee = _Paths.clientMyEmployee;
@@ -48,6 +47,13 @@ abstract class Routes {
   static const supportChat = _Paths.supportChat;
   static const notifications = _Paths.notifications;
   static const invoicePdf = _Paths.invoicePdf;
+  static const stripePayment = _Paths.stripePayment;
+  static const employeePaymentHistory = _Paths.employeePaymentHistory;
+  static const calender = _Paths.calender;
+  static const employeeBookedHistory = _Paths.employeeBookedHistory;
+  static const employeeHiredHistory = _Paths.employeeHiredHistory;
+  static const employeeBookedHistoryDetails =
+      _Paths.employeeBookedHistoryDetails;
 }
 
 abstract class _Paths {
@@ -68,7 +74,6 @@ abstract class _Paths {
   static const employeeRegisterSuccess = '/employee-register-success';
   static const employeeHome = '/employee-home';
   static const employeeDashboard = '/employee-dashboard';
-  static const employeeEmergencyCheckInOut = '/employee-emergency-check-in-out';
   static const employeeSelfProfile = '/employee-self-profile';
 
   static const clientHome = '/client-home';
@@ -100,4 +105,11 @@ abstract class _Paths {
   static const supportChat = '/support-chat';
   static const notifications = '/notifications';
   static const invoicePdf = '/invoice-pdf';
+  static const stripePayment = '/stripe-payment';
+  static const employeePaymentHistory = '/employee-payment-history';
+  static const calender = '/calender';
+  static const employeeBookedHistory = '/employee-booked-history';
+  static const employeeHiredHistory = '/employee-hired-history';
+  static const employeeBookedHistoryDetails =
+      '/employee-booked-history-details';
 }

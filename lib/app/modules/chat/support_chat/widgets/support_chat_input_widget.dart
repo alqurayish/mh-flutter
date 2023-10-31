@@ -9,8 +9,8 @@ import '../../../../common/values/my_color.dart';
 
 class SupportChatInputWidget extends GetWidget<SupportChatController> {
   const SupportChatInputWidget({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

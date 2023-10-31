@@ -4,9 +4,9 @@ class CustomHelpSupport extends StatelessWidget {
   final Function() onTap;
 
   const CustomHelpSupport({
-    Key? key,
+    super.key,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

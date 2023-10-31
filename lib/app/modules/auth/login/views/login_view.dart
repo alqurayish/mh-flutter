@@ -6,7 +6,7 @@ import '../../../../common/widgets/custom_text_input_field.dart';
 import '../controllers/login_controller.dart';
 
 class LoginView extends GetView<LoginController> {
-  const LoginView({Key? key}) : super(key: key);
+  const LoginView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +61,9 @@ class LoginView extends GetView<LoginController> {
             // _forgotPassword,x
             SizedBox(height: 57.h),
             CustomButtons.button(
+              customButtonStyle: CustomButtonStyle.radiusTopBottomCorner,
               text: MyStrings.login.tr,
+              height: 48,
               onTap: controller.onLoginPressed,
               margin: const EdgeInsets.symmetric(horizontal: 18),
             ),
@@ -145,7 +147,8 @@ class LoginView extends GetView<LoginController> {
         ),
       );
 
-  Widget get _rememberMeWidget => Obx(() => Padding(
+  Widget get _rememberMeWidget =>
+      Obx(() => Padding(
         padding: EdgeInsets.only(left: 5.w),
         child: Row(
           children: [
@@ -156,7 +159,7 @@ class LoginView extends GetView<LoginController> {
                   borderRadius: BorderRadius.circular(2.0),
                 ),
                 side: MaterialStateBorderSide.resolveWith(
-                      (states) => const BorderSide(width: 2.0, color: MyColors.c_C6A34F),
+                      (Set<MaterialState> states) => const BorderSide(width: 2.0, color: MyColors.c_C6A34F),
                 ),
                 value: controller.rememberMe.value,
                 onChanged: controller.onRememberMePressed),

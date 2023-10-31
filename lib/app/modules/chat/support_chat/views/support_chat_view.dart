@@ -6,7 +6,7 @@ import '../../../../common/widgets/custom_bottombar.dart';
 import '../controllers/support_chat_controller.dart';
 
 class SupportChatView extends GetView<SupportChatController> {
-  const SupportChatView({Key? key}) : super(key: key);
+  const SupportChatView({super.key});
 
   @override
   Widget build(BuildContext context) {

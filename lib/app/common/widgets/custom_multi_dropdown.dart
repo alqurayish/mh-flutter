@@ -15,11 +15,9 @@ class _SelectRow extends StatelessWidget {
   final String text;
 
   const _SelectRow(
-      {Key? key,
-        required this.onChange,
+      {required this.onChange,
         required this.selected,
-        required this.text})
-      : super(key: key);
+        required this.text});
 
   @override
   Widget build(BuildContext context) {
@@ -100,7 +98,7 @@ class DropDownMultiSelect extends StatefulWidget {
   final Widget? hint;
 
   const DropDownMultiSelect({
-    Key? key,
+    super.key,
     required this.options,
     required this.selectedValues,
     required this.onChanged,
@@ -115,7 +113,7 @@ class DropDownMultiSelect extends StatefulWidget {
     this.decoration,
     this.validator,
     this.readOnly = false,
-  }) : super(key: key);
+  });
 
   @override
   _DropDownMultiSelectState createState() => _DropDownMultiSelectState();

@@ -6,7 +6,7 @@ import '../../client/client_terms_condition_for_hire/models/terms_condition_for_
 import '../controllers/terms_and_condition_controller.dart';
 
 class TermsAndConditionView extends GetView<TermsAndConditionController> {
-  const TermsAndConditionView({Key? key}) : super(key: key);
+  const TermsAndConditionView({super.key});
 
   @override
   Widget build(BuildContext context) {

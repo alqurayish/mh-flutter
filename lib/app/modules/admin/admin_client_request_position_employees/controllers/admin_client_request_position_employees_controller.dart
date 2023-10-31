@@ -1,4 +1,7 @@
-import 'package:mh/app/modules/employee/employee_home/models/single_notification_model_for_employee.dart';
+import 'package:dartz/dartz.dart';
+import 'package:mh/app/models/hourly_rate_model.dart';
+import 'package:mh/app/models/nationality_model.dart';
+import 'package:mh/app/modules/employee/employee_home/models/booking_history_model.dart';
 
 import '../../../../common/controller/app_controller.dart';
 import '../../../../common/utils/exports.dart';
@@ -31,6 +34,11 @@ class AdminClientRequestPositionEmployeesController extends GetxController {
 
   String requestId = '';
 
+  RxList<NationalityDetailsModel> nationalityList = <NationalityDetailsModel>[].obs;
+  RxBool nationalityDataLoaded = false.obs;
+  Rx<HourlyRateDetailsModel> hourlyRateDetails = HourlyRateDetailsModel().obs;
+  RxBool hourlyRateDataLoaded = false.obs;
+
   @override
   void onInit() {
     clientRequestDetail = Get.arguments[MyStrings.arg.data];
@@ -38,21 +46,21 @@ class AdminClientRequestPositionEmployeesController extends GetxController {
   }
 
   @override
-  void onReady() {
-    _getEmployees();
+  void onReady() async {
+    await _getEmployees();
+    await _getNationalityList();
+    await _getHourlyRate();
     super.onReady();
   }
 
   void onEmployeeClick(Employee employee) {
-    Get.toNamed(Routes.employeeDetails, arguments: {
-      MyStrings.arg.data: employee,
-      MyStrings.arg.showAsAdmin: true,
-    });
+    Get.toNamed(Routes.employeeDetails,
+        arguments: {MyStrings.arg.data: employee, MyStrings.arg.showAsAdmin: true, MyStrings.arg.fromWhere: ''});
   }
 
   List<SuggestedEmployeeDetail> suggestedEmployees() {
     return (adminHomeController.requestedEmployees.value
-                .requestEmployees?[adminClientRequestPositionsController.selectedIndex].suggestedEmployeeDetails ??
+                .requestEmployeeList?[adminClientRequestPositionsController.selectedIndex].suggestedEmployeeDetails ??
             [])
         .where((element) => element.positionId == clientRequestDetail.positionId)
         .toList();
@@ -70,7 +78,7 @@ class AdminClientRequestPositionEmployeesController extends GetxController {
 
   Future<void> onSuggestClick(Employee employee) async {
     int total = (adminHomeController.requestedEmployees.value
-                    .requestEmployees?[adminClientRequestPositionsController.selectedIndex].clientRequestDetails ??
+                    .requestEmployeeList?[adminClientRequestPositionsController.selectedIndex].clientRequestDetails ??
                 [])
             .firstWhere((element) => element.positionId == clientRequestDetail.positionId)
             .numOfEmployee ??
@@ -88,7 +96,7 @@ class AdminClientRequestPositionEmployeesController extends GetxController {
 
       Map<String, dynamic> data = {
         "id": adminHomeController
-            .requestedEmployees.value.requestEmployees![adminClientRequestPositionsController.selectedIndex].id,
+            .requestedEmployees.value.requestEmployeeList![adminClientRequestPositionsController.selectedIndex].id,
         "employeeIds": [employee.id]
       };
 
@@ -107,29 +115,28 @@ class AdminClientRequestPositionEmployeesController extends GetxController {
     }
   }
 
-  Future<void> _getEmployees({
-    String? rating,
-    String? experience,
-    String? minTotalHour,
-    String? maxTotalHour,
-  }) async {
-    if (isLoading.value) return;
-
+  Future<void> _getEmployees(
+      {String? rating,
+      String? experience,
+      String? minTotalHour,
+      String? maxTotalHour,
+      String? dressSize,
+      String? nationality,
+      String? minHeight,
+      String? maxHeight,
+      String? minHourlyRate,
+      String? maxHourlyRate}) async {
     isLoading.value = true;
-
-    CustomLoader.show(context!);
 
     await _apiHelper
         .getEmployees(
       positionId: clientRequestDetail.positionId,
-      rating: rating,
       employeeExperience: experience,
       minTotalHour: minTotalHour,
       maxTotalHour: maxTotalHour,
     )
-        .then((response) {
+        .then((Either<CustomError, Employees> response) {
       isLoading.value = false;
-      CustomLoader.hide(context!);
 
       response.fold((CustomError customError) {
         Utils.errorDialog(context!, customError..onRetry = _getEmployees);
@@ -141,18 +148,26 @@ class AdminClientRequestPositionEmployeesController extends GetxController {
   }
 
   void onApplyClick(
-    String selectedRating,
-    String selectedExp,
-    String minTotalHour,
-    String maxTotalHour,
-    String positionId,
-  ) {
+      String selectedExp,
+      String minTotalHour,
+      String maxTotalHour,
+      String positionId,
+      String dressSize,
+      String nationality,
+      String minHeight,
+      String maxHeight,
+      String minHourlyRate,
+      String maxHourlyRate) {
     _getEmployees(
-      rating: selectedRating,
-      experience: selectedExp,
-      minTotalHour: minTotalHour,
-      maxTotalHour: maxTotalHour,
-    );
+        experience: selectedExp,
+        minTotalHour: minTotalHour,
+        maxTotalHour: maxTotalHour,
+        dressSize: dressSize,
+        minHourlyRate: minHourlyRate,
+        maxHourlyRate: maxHourlyRate,
+        minHeight: minHeight,
+        maxHeight: maxHeight,
+        nationality: nationality);
   }
 
   void onResetClick() {
@@ -178,7 +193,7 @@ class AdminClientRequestPositionEmployeesController extends GetxController {
 
           response.fold((CustomError customError) {
             Utils.errorDialog(context!, customError);
-          }, (SingleNotificationModelForEmployee response) async {
+          }, (BookingHistoryModel response) async {
             if ((response.statusCode == 200 || response.statusCode == 201) && response.status == 'success') {
               _getEmployees();
               await adminHomeController.reloadPage();
@@ -190,7 +205,7 @@ class AdminClientRequestPositionEmployeesController extends GetxController {
   }
 
   void findRequestId({required String employeeId}) {
-    for (var i in adminHomeController.requestedEmployees.value.requestEmployees!) {
+    for (var i in adminHomeController.requestedEmployees.value.requestEmployeeList!) {
       for (var v in i.suggestedEmployeeDetails!) {
         if (v.employeeId == employeeId) {
           requestId = i.id ?? "";
@@ -198,5 +213,30 @@ class AdminClientRequestPositionEmployeesController extends GetxController {
         }
       }
     }
+  }
+
+  Future<void> _getNationalityList() async {
+    Either<CustomError, NationalityModel> response = await _apiHelper.getNationalities();
+    response.fold((CustomError customError) {
+      Utils.errorDialog(context!, customError);
+    }, (NationalityModel responseData) {
+      nationalityList.value = responseData.nationalities ?? [];
+      nationalityList.refresh();
+      nationalityList.insert(0, NationalityDetailsModel(sId: '99', country: '', nationality: ''));
+    });
+    nationalityDataLoaded.value = true;
+  }
+
+  Future<void> _getHourlyRate() async {
+    Either<CustomError, HourlyRateModel> response = await _apiHelper.getHourlyRate();
+    response.fold((CustomError customError) {
+      Utils.errorDialog(context!, customError);
+    }, (HourlyRateModel responseData) {
+      if (responseData.status == "success" && responseData.result != null) {
+        hourlyRateDetails.value = responseData.result!;
+        hourlyRateDetails.refresh();
+      }
+    });
+    hourlyRateDataLoaded.value = true;
   }
 }
