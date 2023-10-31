@@ -267,9 +267,7 @@ class CalenderController extends GetxController {
   ///---------------- For Client only ----------------------------------
 
   void onDateClickForShortList({required DateTime currentDate}) {
-    if (currentDate.isBefore(DateTime.now()) ||
-        selectedDate.value == currentDate ||
-        selectedDates.contains(currentDate) == true ||
+    if (selectedDates.contains(currentDate) == true ||
         requestDateList.any((dateRange) => isDateInSelectedRangeForShortList(currentDate, dateRange)) == true) {
       return; // Skip processing for previous dates and current date
     }
