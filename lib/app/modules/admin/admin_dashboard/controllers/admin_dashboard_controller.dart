@@ -182,8 +182,7 @@ class AdminDashboardController extends GetxController {
       if(selectedComplainType == complainType[0] || selectedComplainType == complainType[1]) {
         if(element.checkInCheckOutDetails?.clientCheckInTime != null) {
 
-          var dif = element.checkInCheckOutDetails!.clientCheckInTime!.difference(element.checkInCheckOutDetails!.checkInTime!).inMinutes;
-
+          int dif = element.checkInCheckOutDetails!.clientCheckInTime!.difference(element.checkInCheckOutDetails!.checkInTime!).inMinutes;
           if(selectedComplainType == complainType[0]) {
             if(dif < 0) {
               tecTime.text = dif.abs().toString();

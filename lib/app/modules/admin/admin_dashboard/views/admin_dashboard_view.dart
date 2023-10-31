@@ -378,6 +378,7 @@ class AdminDashboardView extends GetView<AdminDashboardController> {
         )
       : GestureDetector(
           onTap: () {
+            controller.setUpdatedDate(index);
             showMaterialModalBottomSheet(
               context: controller.context!,
               builder: (context) => Container(

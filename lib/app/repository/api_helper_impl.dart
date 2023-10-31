@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
 import 'package:dartz/dartz.dart';
 import 'package:device_info_plus/device_info_plus.dart';
@@ -576,8 +575,6 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
     if (response.statusCode == null) response = await put("current-hired-employees/update-status", jsonEncode(data));
     if (response.statusCode == null) response = await put("current-hired-employees/update-status", jsonEncode(data));
 
-    log('ApiHelperImpl.updateCheckInOutByClient request body: ${jsonEncode(data)}');
-    log('ApiHelperImpl.updateCheckInOutByClient response body: ${response.bodyString}');
     return _convert<Response>(
       response,
       (Map<String, dynamic> data) {},
@@ -646,11 +643,10 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
     if (response.statusCode == null) response = await get(url);
     if (response.statusCode == null) response = await get(url);
     if (response.statusCode == null) response = await get(url);
-    log('ApiHelperImpl.getCheckInOutHistory: ${response.bodyString}');
     return _convert<CheckInCheckOutHistory>(
       response,
       CheckInCheckOutHistory.fromJson,
-    ).fold((CustomError l) => left(l), (r) => right(r));
+    ).fold((CustomError l) => left(l), (CheckInCheckOutHistory r) => right(r));
   }
 
   @override
