@@ -298,16 +298,25 @@ class Utils {
                       flex: 1,
                       child: pw.Column(crossAxisAlignment: pw.CrossAxisAlignment.end, children: [
                         pw.Text('Invoice N: ${invoice.invoiceNumber}'),
-                        pw.Text('Invoice date: ${DateFormat('d MMMM, y').format(invoice.invoiceDate!)}'),
+                        pw.Text('Invoice date: ${DateFormat('d MMMM, y').format(invoice.invoiceDate!)}')
                       ]))
                 ]),
-                pw.SizedBox(height: 70),
+                pw.SizedBox(height: 50),
                 pw.Text(
                     '${invoice.restaurantName ?? ''} week from ${DateFormat('d MMMM, y').format(invoice.fromWeekDate!)} to ${DateFormat('d MMMM, y').format(invoice.toWeekDate!)}',
                     style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 16)),
-                pw.SizedBox(height: 10),
+                pw.SizedBox(height: 20),
                 pw.Text(
-                    'Total: ${getCurrencySymbol(Get.find<AppController>().user.value.client?.countryName ?? '')}${invoice.amount?.toStringAsFixed(2)}',
+                    'Amount: ${getCurrencySymbol(Get.find<AppController>().user.value.client?.countryName ?? '')}${invoice.amount}'),
+                pw.Text('VAT: ${invoice.vat}%'),
+                pw.Text('VAT Amount: ${getCurrencySymbol(Get.find<AppController>().user.value.client?.countryName ?? '')}${invoice.vatAmount}'),
+                pw.Text(
+                    'Platform Fee: ${getCurrencySymbol(Get.find<AppController>().user.value.client?.countryName ?? '')}${invoice.platformFee}'),
+
+                pw.Divider(indent: 100, endIndent: 100),
+               // pw.SizedBox(height: 10),
+                pw.Text(
+                    'Total Amount: ${getCurrencySymbol(Get.find<AppController>().user.value.client?.countryName ?? '')}${invoice.amount?.toStringAsFixed(2)}',
                     style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 16)),
                 pw.SizedBox(height: 70),
                 pw.Row(children: [
@@ -368,7 +377,7 @@ class Utils {
 
   static void showSnackBar({required String message, required bool isTrue}) {
     Get.rawSnackbar(
-      snackStyle: SnackStyle.FLOATING,
+        snackStyle: SnackStyle.FLOATING,
         snackPosition: SnackPosition.TOP,
         margin: const EdgeInsets.all(10.0),
         title: isTrue == true ? 'Success' : 'Warning!',

@@ -141,10 +141,11 @@ class AdminDashboardController extends GetxController {
   }
 
   CheckInCheckOutHistoryElement? getCheckInOutDate(int index) {
-    String id = checkInCheckOutHistory.value.checkInCheckOutHistory![index].employeeDetails!.employeeId!;
+    String employeeId = checkInCheckOutHistory.value.checkInCheckOutHistory![index].employeeDetails!.employeeId!;
+    String id = checkInCheckOutHistory.value.checkInCheckOutHistory![index].id!;
 
-    for (var element in checkInCheckOutHistory.value.checkInCheckOutHistory ?? []) {
-      if (element.employeeDetails!.employeeId! == id) {
+    for (CheckInCheckOutHistoryElement element in checkInCheckOutHistory.value.checkInCheckOutHistory ?? []) {
+      if (element.employeeDetails!.employeeId! == employeeId && element.id == id) {
         return element;
       }
     }

@@ -273,13 +273,13 @@ class CustomFilter {
                     );
                   }),
                   SizedBox(height: 27.h),
-                  _title(context, 'Height (inches)'),
+                  _title(context, 'Height (cm)'),
                   SizedBox(height: 15.h),
                   FlutterSlider(
-                    min: 48,
-                    max: 84,
+                    min: 120,
+                    max: 215,
                     rangeSlider: true,
-                    values: const [48, 84],
+                    values: const [120, 215],
                     selectByTap: false,
                     step: const FlutterSliderStep(step: 1),
                     onDragCompleted: (int handlerIndex, dynamic lowerValue, dynamic upperValue) {
@@ -329,8 +329,8 @@ class CustomFilter {
                       linesDistanceFromTrackBar: -5,
                       labelsDistanceFromTrackBar: 40,
                       labels: [
-                        FlutterSliderHatchMarkLabel(percent: 0, label: _sliderHatchMarkLabel(context, "48")),
-                        FlutterSliderHatchMarkLabel(percent: 100, label: _sliderHatchMarkLabel(context, "84")),
+                        FlutterSliderHatchMarkLabel(percent: 0, label: _sliderHatchMarkLabel(context, "120")),
+                        FlutterSliderHatchMarkLabel(percent: 100, label: _sliderHatchMarkLabel(context, "215")),
                       ],
                     ),
                   ),

@@ -1,8 +1,8 @@
 dependencies: \
   /Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/firebase_core.build/module.modulemap \
-  /Users/marina/.pub-cache/hosted/pub.dev/firebase_core-2.20.0/ios/Classes/messages.g.m \
+  /Users/marina/.pub-cache/hosted/pub.dev/firebase_core-2.21.0/ios/Classes/messages.g.m \
   /Users/marina/StudioProjects/mh-flutter/ios/Pods/Target\ Support\ Files/firebase_core/firebase_core-prefix.pch \
-  /Users/marina/.pub-cache/hosted/pub.dev/firebase_core-2.20.0/ios/Classes/messages.g.h \
+  /Users/marina/.pub-cache/hosted/pub.dev/firebase_core-2.21.0/ios/Classes/messages.g.h \
   /Users/marina/Downloads/flutter/bin/cache/artifacts/engine/ios/Flutter.xcframework/ios-arm64_x86_64-simulator/Flutter.framework/Modules/module.modulemap \
   /Users/marina/Downloads/flutter/bin/cache/artifacts/engine/ios/Flutter.xcframework/ios-arm64_x86_64-simulator/Flutter.framework/Headers/Flutter.h \
   /Users/marina/Downloads/flutter/bin/cache/artifacts/engine/ios/Flutter.xcframework/ios-arm64_x86_64-simulator/Flutter.framework/Headers/FlutterAppDelegate.h \

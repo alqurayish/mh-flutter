@@ -1,8 +1,8 @@
 dependencies: \
   /Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/firebase_crashlytics.build/module.modulemap \
-  /Users/marina/.pub-cache/hosted/pub.dev/firebase_crashlytics-3.4.2/ios/Classes/FLTFirebaseCrashlyticsPlugin.m \
+  /Users/marina/.pub-cache/hosted/pub.dev/firebase_crashlytics-3.4.3/ios/Classes/FLTFirebaseCrashlyticsPlugin.m \
   /Users/marina/StudioProjects/mh-flutter/ios/Pods/Target\ Support\ Files/firebase_crashlytics/firebase_crashlytics-prefix.pch \
-  /Users/marina/.pub-cache/hosted/pub.dev/firebase_crashlytics-3.4.2/ios/Classes/FLTFirebaseCrashlyticsPlugin.h \
+  /Users/marina/.pub-cache/hosted/pub.dev/firebase_crashlytics-3.4.3/ios/Classes/FLTFirebaseCrashlyticsPlugin.h \
   /Users/marina/Downloads/flutter/bin/cache/artifacts/engine/ios/Flutter.xcframework/ios-arm64_x86_64-simulator/Flutter.framework/Modules/module.modulemap \
   /Users/marina/Downloads/flutter/bin/cache/artifacts/engine/ios/Flutter.xcframework/ios-arm64_x86_64-simulator/Flutter.framework/Headers/Flutter.h \
   /Users/marina/Downloads/flutter/bin/cache/artifacts/engine/ios/Flutter.xcframework/ios-arm64_x86_64-simulator/Flutter.framework/Headers/FlutterAppDelegate.h \
@@ -30,11 +30,11 @@ dependencies: \
   /Users/marina/StudioProjects/mh-flutter/ios/Pods/FirebaseCore/FirebaseCore/Sources/Public/FirebaseCore/FIROptions.h \
   /Users/marina/StudioProjects/mh-flutter/ios/Pods/FirebaseCore/FirebaseCore/Sources/Public/FirebaseCore/FIRVersion.h \
   /Users/marina/StudioProjects/mh-flutter/ios/Pods/Target\ Support\ Files/firebase_core/firebase_core-umbrella.h \
-  /Users/marina/.pub-cache/hosted/pub.dev/firebase_core-2.20.0/ios/Classes/FLTFirebaseCorePlugin.h \
-  /Users/marina/.pub-cache/hosted/pub.dev/firebase_core-2.20.0/ios/Classes/FLTFirebasePlugin.h \
-  /Users/marina/.pub-cache/hosted/pub.dev/firebase_core-2.20.0/ios/Classes/messages.g.h \
-  /Users/marina/.pub-cache/hosted/pub.dev/firebase_core-2.20.0/ios/Classes/FLTFirebasePluginRegistry.h \
-  /Users/marina/.pub-cache/hosted/pub.dev/firebase_crashlytics-3.4.2/ios/Classes/Crashlytics_Platform.h \
+  /Users/marina/.pub-cache/hosted/pub.dev/firebase_core-2.21.0/ios/Classes/FLTFirebaseCorePlugin.h \
+  /Users/marina/.pub-cache/hosted/pub.dev/firebase_core-2.21.0/ios/Classes/FLTFirebasePlugin.h \
+  /Users/marina/.pub-cache/hosted/pub.dev/firebase_core-2.21.0/ios/Classes/messages.g.h \
+  /Users/marina/.pub-cache/hosted/pub.dev/firebase_core-2.21.0/ios/Classes/FLTFirebasePluginRegistry.h \
+  /Users/marina/.pub-cache/hosted/pub.dev/firebase_crashlytics-3.4.3/ios/Classes/Crashlytics_Platform.h \
   /Users/marina/StudioProjects/mh-flutter/ios/Pods/Headers/Public/Firebase/Firebase.h \
   /Users/marina/StudioProjects/mh-flutter/ios/Pods/FirebaseCrashlytics/Crashlytics/Crashlytics/Public/FirebaseCrashlytics/FirebaseCrashlytics.h \
   /Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/FirebaseCrashlytics.build/module.modulemap \
@@ -88,6 +88,6 @@ dependencies: \
   /Users/marina/StudioProjects/mh-flutter/ios/Pods/Target\ Support\ Files/FirebaseMessaging/FirebaseMessaging-umbrella.h \
   /Users/marina/StudioProjects/mh-flutter/ios/Pods/FirebaseMessaging/FirebaseMessaging/Sources/Public/FirebaseMessaging/FIRMessaging.h \
   /Users/marina/StudioProjects/mh-flutter/ios/Pods/FirebaseMessaging/FirebaseMessaging/Sources/Public/FirebaseMessaging/FIRMessagingExtensionHelper.h \
-  /Users/marina/.pub-cache/hosted/pub.dev/firebase_crashlytics-3.4.2/ios/Classes/ExceptionModel_Platform.h \
+  /Users/marina/.pub-cache/hosted/pub.dev/firebase_crashlytics-3.4.3/ios/Classes/ExceptionModel_Platform.h \
   /Users/marina/StudioProjects/mh-flutter/ios/Pods/FirebaseABTesting/Interop/Analytics/Public/FIRAnalyticsInterop.h \
   /Users/marina/StudioProjects/mh-flutter/ios/Pods/FirebaseCrashlytics/Crashlytics/Crashlytics/Controllers/FIRCLSAnalyticsManager.h

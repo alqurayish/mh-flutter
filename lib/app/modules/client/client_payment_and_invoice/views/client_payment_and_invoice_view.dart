@@ -25,11 +25,10 @@ class ClientPaymentAndInvoiceView extends GetView<ClientPaymentAndInvoiceControl
                     child: Text(
                     "No invoice found",
                     style: MyColors.l111111_dwhite(context).semiBold16,
-                  )
-        )
+                  ))
                 : HorizontalDataTable(
                     leftHandSideColumnWidth: 143.w,
-                    rightHandSideColumnWidth: 500.w,
+                    rightHandSideColumnWidth: 1000.w,
                     isFixedHeader: true,
                     headerWidgets: _getTitleWidget(),
                     leftSideItemBuilder: _generateFirstColumnRow,
@@ -56,7 +55,12 @@ class ClientPaymentAndInvoiceView extends GetView<ClientPaymentAndInvoiceControl
     return [
       _getTitleItemWidget('Week', 143.w),
       _getTitleItemWidget('Total\nEmployee', 100.w),
+      _getTitleItemWidget('Total\nHours', 100.w),
       _getTitleItemWidget('Amount', 100.w),
+      _getTitleItemWidget('VAT', 100.w),
+      _getTitleItemWidget('VAT\nAmount', 100.w),
+      _getTitleItemWidget('Platform\nFee', 100.w),
+      _getTitleItemWidget('Total\nAmount', 100.w),
       _getTitleItemWidget('Invoice\nNo', 100.w),
       _getTitleItemWidget('Status', 100.w),
       _getTitleItemWidget('View\nInvoice', 100.w),
@@ -189,8 +193,32 @@ class ClientPaymentAndInvoiceView extends GetView<ClientPaymentAndInvoiceControl
         _cell(
             width: 100.w,
             height: height,
+            value: '${(invoice.totalWorkingHour ?? 0.0).toString()}h',
+            isPaid: invoice.status == "PAID"),
+        _cell(
+            width: 100.w,
+            height: height,
             value:
                 '${Utils.getCurrencySymbol(Get.find<AppController>().user.value.client?.countryName ?? '')}${(invoice.amount ?? 0).toStringAsFixed(2)}',
+            isPaid: invoice.status == "PAID"),
+        _cell(width: 100.w, height: height, value: '${invoice.vat ?? "-"}%', isPaid: invoice.status == "PAID"),
+        _cell(
+            width: 100.w,
+            height: height,
+            value:
+            '${Utils.getCurrencySymbol(Get.find<AppController>().user.value.client?.countryName ?? '')}${(invoice.vatAmount ?? 0).toStringAsFixed(2)}',
+            isPaid: invoice.status == "PAID"),
+        _cell(
+            width: 100.w,
+            height: height,
+            value:
+                '${Utils.getCurrencySymbol(Get.find<AppController>().user.value.client?.countryName ?? '')}${(invoice.platformFee ?? 0).toStringAsFixed(2)}',
+            isPaid: invoice.status == "PAID"),
+        _cell(
+            width: 100.w,
+            height: height,
+            value:
+                '${Utils.getCurrencySymbol(Get.find<AppController>().user.value.client?.countryName ?? '')}${(invoice.totalAmount ?? 0).toStringAsFixed(2)}',
             isPaid: invoice.status == "PAID"),
         _cell(width: 100.w, height: height, value: invoice.invoiceNumber ?? "-", isPaid: invoice.status == "PAID"),
         _cell(

@@ -1,8 +1,8 @@
 dependencies: \
   /Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/cloud_firestore.build/module.modulemap \
-  /Users/marina/.pub-cache/hosted/pub.dev/cloud_firestore-4.12.0/ios/Classes/FirestorePigeonParser.m \
+  /Users/marina/.pub-cache/hosted/pub.dev/cloud_firestore-4.12.2/ios/Classes/FirestorePigeonParser.m \
   /Users/marina/StudioProjects/mh-flutter/ios/Pods/Target\ Support\ Files/cloud_firestore/cloud_firestore-prefix.pch \
-  /Users/marina/.pub-cache/hosted/pub.dev/cloud_firestore-4.12.0/ios/Classes/Private/FirestorePigeonParser.h \
+  /Users/marina/.pub-cache/hosted/pub.dev/cloud_firestore-4.12.2/ios/Classes/Private/FirestorePigeonParser.h \
   /Users/marina/StudioProjects/mh-flutter/ios/Pods/Headers/Public/Firebase/Firebase.h \
   /Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/FirebaseCore.build/module.modulemap \
   /Users/marina/StudioProjects/mh-flutter/ios/Pods/Target\ Support\ Files/FirebaseCore/FirebaseCore-umbrella.h \
@@ -64,4 +64,4 @@ dependencies: \
   /Users/marina/StudioProjects/mh-flutter/ios/Pods/Target\ Support\ Files/FirebaseMessaging/FirebaseMessaging-umbrella.h \
   /Users/marina/StudioProjects/mh-flutter/ios/Pods/FirebaseMessaging/FirebaseMessaging/Sources/Public/FirebaseMessaging/FIRMessaging.h \
   /Users/marina/StudioProjects/mh-flutter/ios/Pods/FirebaseMessaging/FirebaseMessaging/Sources/Public/FirebaseMessaging/FIRMessagingExtensionHelper.h \
-  /Users/marina/.pub-cache/hosted/pub.dev/cloud_firestore-4.12.0/ios/Classes/Public/FirestoreMessages.g.h
+  /Users/marina/.pub-cache/hosted/pub.dev/cloud_firestore-4.12.2/ios/Classes/Public/FirestoreMessages.g.h

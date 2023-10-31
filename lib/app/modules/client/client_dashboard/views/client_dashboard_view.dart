@@ -230,7 +230,8 @@ class ClientDashboardView extends GetView<ClientDashboardController> {
       );
     }
 
-    UserDailyStatistics dailyStatistics = Utils.checkInOutToStatistics(controller.checkInCheckOutHistory.value.checkInCheckOutHistory![index]);
+    UserDailyStatistics dailyStatistics =
+        Utils.checkInOutToStatistics(controller.checkInCheckOutHistory.value.checkInCheckOutHistory![index]);
 
     return Row(
       children: <Widget>[
@@ -356,7 +357,7 @@ class ClientDashboardView extends GetView<ClientDashboardController> {
                       child: Obx(
                         () => Visibility(
                           visible: controller.clientHomeController.employeeChatDetails
-                              .where((data) =>
+                              .where((Map<String, dynamic> data) =>
                                   data["employeeId"] == id &&
                                   data["${controller.appController.user.value.userId}_unread"] > 0)
                               .isNotEmpty,

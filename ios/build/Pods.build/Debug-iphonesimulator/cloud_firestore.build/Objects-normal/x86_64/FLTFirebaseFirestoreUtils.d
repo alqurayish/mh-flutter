@@ -1,6 +1,6 @@
 dependencies: \
   /Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/cloud_firestore.build/module.modulemap \
-  /Users/marina/.pub-cache/hosted/pub.dev/cloud_firestore-4.12.0/ios/Classes/FLTFirebaseFirestoreUtils.m \
+  /Users/marina/.pub-cache/hosted/pub.dev/cloud_firestore-4.12.2/ios/Classes/FLTFirebaseFirestoreUtils.m \
   /Users/marina/StudioProjects/mh-flutter/ios/Pods/Target\ Support\ Files/cloud_firestore/cloud_firestore-prefix.pch \
   /Users/marina/StudioProjects/mh-flutter/ios/Pods/Headers/Public/Firebase/Firebase.h \
   /Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/FirebaseCore.build/module.modulemap \
@@ -63,8 +63,8 @@ dependencies: \
   /Users/marina/StudioProjects/mh-flutter/ios/Pods/Target\ Support\ Files/FirebaseMessaging/FirebaseMessaging-umbrella.h \
   /Users/marina/StudioProjects/mh-flutter/ios/Pods/FirebaseMessaging/FirebaseMessaging/Sources/Public/FirebaseMessaging/FIRMessaging.h \
   /Users/marina/StudioProjects/mh-flutter/ios/Pods/FirebaseMessaging/FirebaseMessaging/Sources/Public/FirebaseMessaging/FIRMessagingExtensionHelper.h \
-  /Users/marina/.pub-cache/hosted/pub.dev/cloud_firestore-4.12.0/ios/Classes/Private/FLTFirebaseFirestoreExtension.h \
-  /Users/marina/.pub-cache/hosted/pub.dev/cloud_firestore-4.12.0/ios/Classes/Private/FLTFirebaseFirestoreReader.h \
+  /Users/marina/.pub-cache/hosted/pub.dev/cloud_firestore-4.12.2/ios/Classes/Private/FLTFirebaseFirestoreExtension.h \
+  /Users/marina/.pub-cache/hosted/pub.dev/cloud_firestore-4.12.2/ios/Classes/Private/FLTFirebaseFirestoreReader.h \
   /Users/marina/Downloads/flutter/bin/cache/artifacts/engine/ios/Flutter.xcframework/ios-arm64_x86_64-simulator/Flutter.framework/Modules/module.modulemap \
   /Users/marina/Downloads/flutter/bin/cache/artifacts/engine/ios/Flutter.xcframework/ios-arm64_x86_64-simulator/Flutter.framework/Headers/Flutter.h \
   /Users/marina/Downloads/flutter/bin/cache/artifacts/engine/ios/Flutter.xcframework/ios-arm64_x86_64-simulator/Flutter.framework/Headers/FlutterAppDelegate.h \
@@ -82,5 +82,5 @@ dependencies: \
   /Users/marina/Downloads/flutter/bin/cache/artifacts/engine/ios/Flutter.xcframework/ios-arm64_x86_64-simulator/Flutter.framework/Headers/FlutterHeadlessDartRunner.h \
   /Users/marina/Downloads/flutter/bin/cache/artifacts/engine/ios/Flutter.xcframework/ios-arm64_x86_64-simulator/Flutter.framework/Headers/FlutterPluginAppLifeCycleDelegate.h \
   /Users/marina/Downloads/flutter/bin/cache/artifacts/engine/ios/Flutter.xcframework/ios-arm64_x86_64-simulator/Flutter.framework/Headers/FlutterViewController.h \
-  /Users/marina/.pub-cache/hosted/pub.dev/cloud_firestore-4.12.0/ios/Classes/Private/FLTFirebaseFirestoreUtils.h \
-  /Users/marina/.pub-cache/hosted/pub.dev/cloud_firestore-4.12.0/ios/Classes/Private/FLTFirebaseFirestoreWriter.h
+  /Users/marina/.pub-cache/hosted/pub.dev/cloud_firestore-4.12.2/ios/Classes/Private/FLTFirebaseFirestoreUtils.h \
+  /Users/marina/.pub-cache/hosted/pub.dev/cloud_firestore-4.12.2/ios/Classes/Private/FLTFirebaseFirestoreWriter.h

@@ -47,10 +47,10 @@
             "GULHeartbeatDateStorageUserDefaults",
             "GULSceneDelegateSwizzler",
             "GULUserDefaults",
-            "PodsDummy_GoogleUtilities",
             "GULKeychainStorage",
             "GULReachabilityChecker",
             "GULNetworkInfo",
+            "PodsDummy_GoogleUtilities",
             "GULLoggerWrapper",
             "GULURLSessionDataResponse",
             "GULMutableDictionary"
@@ -74,6 +74,7 @@
             "_GULIsLoggableLevel",
             "_GULLogDebug",
             "_GULLoggerEnableSTDERR",
+            "_IsAppEncrypted",
             "_getGULClientQueue"
           ]
         }

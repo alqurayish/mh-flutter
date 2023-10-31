@@ -1,6 +1,6 @@
 dependencies: \
   /Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/firebase_messaging.build/module.modulemap \
-  /Users/marina/.pub-cache/hosted/pub.dev/firebase_messaging-14.7.2/ios/Classes/FLTFirebaseMessagingPlugin.m \
+  /Users/marina/.pub-cache/hosted/pub.dev/firebase_messaging-14.7.3/ios/Classes/FLTFirebaseMessagingPlugin.m \
   /Users/marina/StudioProjects/mh-flutter/ios/Pods/Target\ Support\ Files/firebase_messaging/firebase_messaging-prefix.pch \
   /Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/GoogleUtilities.build/module.modulemap \
   /Users/marina/StudioProjects/mh-flutter/ios/Pods/Target\ Support\ Files/GoogleUtilities/GoogleUtilities-umbrella.h \
@@ -55,11 +55,11 @@ dependencies: \
   /Users/marina/StudioProjects/mh-flutter/ios/Pods/FirebaseCore/FirebaseCore/Sources/Public/FirebaseCore/FIROptions.h \
   /Users/marina/StudioProjects/mh-flutter/ios/Pods/FirebaseCore/FirebaseCore/Sources/Public/FirebaseCore/FIRVersion.h \
   /Users/marina/StudioProjects/mh-flutter/ios/Pods/Target\ Support\ Files/firebase_core/firebase_core-umbrella.h \
-  /Users/marina/.pub-cache/hosted/pub.dev/firebase_core-2.20.0/ios/Classes/FLTFirebaseCorePlugin.h \
-  /Users/marina/.pub-cache/hosted/pub.dev/firebase_core-2.20.0/ios/Classes/FLTFirebasePlugin.h \
-  /Users/marina/.pub-cache/hosted/pub.dev/firebase_core-2.20.0/ios/Classes/messages.g.h \
-  /Users/marina/.pub-cache/hosted/pub.dev/firebase_core-2.20.0/ios/Classes/FLTFirebasePluginRegistry.h \
-  /Users/marina/.pub-cache/hosted/pub.dev/firebase_messaging-14.7.2/ios/Classes/FLTFirebaseMessagingPlugin.h \
+  /Users/marina/.pub-cache/hosted/pub.dev/firebase_core-2.21.0/ios/Classes/FLTFirebaseCorePlugin.h \
+  /Users/marina/.pub-cache/hosted/pub.dev/firebase_core-2.21.0/ios/Classes/FLTFirebasePlugin.h \
+  /Users/marina/.pub-cache/hosted/pub.dev/firebase_core-2.21.0/ios/Classes/messages.g.h \
+  /Users/marina/.pub-cache/hosted/pub.dev/firebase_core-2.21.0/ios/Classes/FLTFirebasePluginRegistry.h \
+  /Users/marina/.pub-cache/hosted/pub.dev/firebase_messaging-14.7.3/ios/Classes/FLTFirebaseMessagingPlugin.h \
   /Users/marina/StudioProjects/mh-flutter/ios/Pods/Headers/Public/Firebase/Firebase.h \
   /Users/marina/StudioProjects/mh-flutter/ios/Pods/FirebaseCrashlytics/Crashlytics/Crashlytics/Public/FirebaseCrashlytics/FirebaseCrashlytics.h \
   /Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/FirebaseCrashlytics.build/module.modulemap \

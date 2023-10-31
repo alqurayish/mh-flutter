@@ -30,7 +30,7 @@ class HireStatusView extends GetView<HireStatusController> {
                         ),
                         const SizedBox(height: 30),
                         Text(
-                          "Our authority will contact with you within 3 hours",
+                          "Our authority will contact with you within 1 hour",
                           style: MyColors.l111111_dwhite(context).semiBold15,
                         ),
                         const SizedBox(height: 5),

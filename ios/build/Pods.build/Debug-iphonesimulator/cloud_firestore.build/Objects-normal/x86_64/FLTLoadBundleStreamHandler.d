@@ -1,6 +1,6 @@
 dependencies: \
   /Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/cloud_firestore.build/module.modulemap \
-  /Users/marina/.pub-cache/hosted/pub.dev/cloud_firestore-4.12.0/ios/Classes/FLTLoadBundleStreamHandler.m \
+  /Users/marina/.pub-cache/hosted/pub.dev/cloud_firestore-4.12.2/ios/Classes/FLTLoadBundleStreamHandler.m \
   /Users/marina/StudioProjects/mh-flutter/ios/Pods/Target\ Support\ Files/cloud_firestore/cloud_firestore-prefix.pch \
   /Users/marina/StudioProjects/mh-flutter/ios/Pods/Headers/Public/Firebase/Firebase.h \
   /Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/FirebaseCore.build/module.modulemap \
@@ -82,10 +82,10 @@ dependencies: \
   /Users/marina/Downloads/flutter/bin/cache/artifacts/engine/ios/Flutter.xcframework/ios-arm64_x86_64-simulator/Flutter.framework/Headers/FlutterPluginAppLifeCycleDelegate.h \
   /Users/marina/Downloads/flutter/bin/cache/artifacts/engine/ios/Flutter.xcframework/ios-arm64_x86_64-simulator/Flutter.framework/Headers/FlutterViewController.h \
   /Users/marina/StudioProjects/mh-flutter/ios/Pods/Target\ Support\ Files/firebase_core/firebase_core-umbrella.h \
-  /Users/marina/.pub-cache/hosted/pub.dev/firebase_core-2.20.0/ios/Classes/FLTFirebaseCorePlugin.h \
-  /Users/marina/.pub-cache/hosted/pub.dev/firebase_core-2.20.0/ios/Classes/FLTFirebasePlugin.h \
-  /Users/marina/.pub-cache/hosted/pub.dev/firebase_core-2.20.0/ios/Classes/messages.g.h \
-  /Users/marina/.pub-cache/hosted/pub.dev/firebase_core-2.20.0/ios/Classes/FLTFirebasePluginRegistry.h \
-  /Users/marina/.pub-cache/hosted/pub.dev/cloud_firestore-4.12.0/ios/Classes/Private/FLTFirebaseFirestoreUtils.h \
-  /Users/marina/.pub-cache/hosted/pub.dev/cloud_firestore-4.12.0/ios/Classes/Private/FLTFirebaseFirestoreExtension.h \
-  /Users/marina/.pub-cache/hosted/pub.dev/cloud_firestore-4.12.0/ios/Classes/Private/FLTLoadBundleStreamHandler.h
+  /Users/marina/.pub-cache/hosted/pub.dev/firebase_core-2.21.0/ios/Classes/FLTFirebaseCorePlugin.h \
+  /Users/marina/.pub-cache/hosted/pub.dev/firebase_core-2.21.0/ios/Classes/FLTFirebasePlugin.h \
+  /Users/marina/.pub-cache/hosted/pub.dev/firebase_core-2.21.0/ios/Classes/messages.g.h \
+  /Users/marina/.pub-cache/hosted/pub.dev/firebase_core-2.21.0/ios/Classes/FLTFirebasePluginRegistry.h \
+  /Users/marina/.pub-cache/hosted/pub.dev/cloud_firestore-4.12.2/ios/Classes/Private/FLTFirebaseFirestoreUtils.h \
+  /Users/marina/.pub-cache/hosted/pub.dev/cloud_firestore-4.12.2/ios/Classes/Private/FLTFirebaseFirestoreExtension.h \
+  /Users/marina/.pub-cache/hosted/pub.dev/cloud_firestore-4.12.2/ios/Classes/Private/FLTLoadBundleStreamHandler.h
