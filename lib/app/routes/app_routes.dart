@@ -54,6 +54,7 @@ abstract class Routes {
   static const employeeHiredHistory = _Paths.employeeHiredHistory;
   static const employeeBookedHistoryDetails =
       _Paths.employeeBookedHistoryDetails;
+  static const settings = _Paths.settings;
 }
 
 abstract class _Paths {
@@ -112,4 +113,5 @@ abstract class _Paths {
   static const employeeHiredHistory = '/employee-hired-history';
   static const employeeBookedHistoryDetails =
       '/employee-booked-history-details';
+  static const settings = '/settings';
 }

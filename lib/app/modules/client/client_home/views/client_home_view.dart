@@ -52,6 +52,7 @@ class ClientHomeView extends GetView<ClientHomeController> {
               onPressed: () {
                 CustomMenu.accountMenu(
                   context,
+                  onSettingsTap: controller.onSettingsClick,
                   onProfileTap: controller.onProfileClick,
                 );
               },
@@ -248,52 +249,6 @@ class ClientHomeView extends GetView<ClientHomeController> {
   Widget get _promotionText => Text(
         MyStrings.exploreTheFeaturesOfMhAppBelow.tr,
         style: MyColors.l777777_dtext(controller.context!).medium15,
-      );
-
-  Widget get _dueInvoice => Visibility(
-        visible: controller.shortlistController.totalShortlisted.value > 0,
-        child: Container(
-          padding: const EdgeInsets.all(20),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10.0),
-            color: Colors.red.withOpacity(.6),
-          ),
-          child: Row(
-            children: [
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "5 Invoice are pending",
-                      style: MyColors.white.semiBold16,
-                    ),
-                    SizedBox(height: 7.h),
-                    Text(
-                      "Please clear due ASAP",
-                      style: MyColors.white.regular12,
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(
-                width: 10.w,
-              ),
-              Container(
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.red.withOpacity(.45),
-                ),
-                child: const Icon(
-                  Icons.arrow_forward,
-                  color: MyColors.white,
-                ),
-              ),
-            ],
-          ),
-        ),
       );
 
   Widget get _suggestedEmployees => Obx(

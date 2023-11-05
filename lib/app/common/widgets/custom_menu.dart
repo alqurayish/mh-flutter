@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 import '../../enums/user_type.dart';
@@ -9,6 +10,7 @@ class CustomMenu {
   static accountMenu(
     BuildContext context, {
     Function()? onProfileTap,
+    Function()? onSettingsTap,
   }) {
     showMaterialModalBottomSheet(
       context: context,
@@ -20,11 +22,25 @@ class CustomMenu {
             _menuItem(
               context,
               [UserType.client, UserType.employee,],
-              Icons.person,
+              CupertinoIcons.person,
               "Profile",
               onProfileTap ?? () {},
             ),
             const Divider(height: 1),
+            if(Get.isRegistered<ClientHomeController>() == true)
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  _menuItem(
+                    context,
+                    [UserType.client, UserType.employee,],
+                    CupertinoIcons.settings,
+                    "Settings",
+                    onSettingsTap ?? () {},
+                  ),
+                  const Divider(height: 1),
+                ],
+              ),
             _menuItem(
               context,
               [UserType.client, UserType.employee, UserType.admin],

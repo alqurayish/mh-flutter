@@ -25,10 +25,14 @@ class MyStrings {
   static const String skip = "skip";
   static const String premierStaffingSolutions = "premierStaffingSolutions";
   static const String login = "login";
+
+  static const String submit = "Submit";
   static const String signUp = "signUp";
   static const String welcomeBack = "welcomeBack";
   static const String userNameEmailId = "userNameEmailId";
   static const String password = "password";
+  static const String newPassword = "New Password";
+  static const String currentPassword = "Current Password";
   static const String savePassword = "savePassword";
   static const String forgotPassword = "forgotPassword";
   static const String dontHaveAnAccount = "dontHaveAnAccount";

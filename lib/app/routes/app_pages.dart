@@ -79,6 +79,8 @@ import '../modules/map/restaurant_location/bindings/restaurant_location_binding.
 import '../modules/map/restaurant_location/views/restaurant_location_view.dart';
 import '../modules/notifications/bindings/notifications_binding.dart';
 import '../modules/notifications/views/notifications_view.dart';
+import '../modules/settings/bindings/settings_binding.dart';
+import '../modules/settings/views/settings_view.dart';
 import '../modules/splash/bindings/splash_binding.dart';
 import '../modules/splash/views/splash_view.dart';
 import '../modules/stripe_payment/bindings/stripe_payment_binding.dart';
@@ -366,6 +368,11 @@ class AppPages {
       name: _Paths.employeeBookedHistoryDetails,
       page: () => const EmployeeBookedHistoryDetailsView(),
       binding: EmployeeBookedHistoryDetailsBinding(),
+    ),
+    GetPage(
+      name: _Paths.settings,
+      page: () => const SettingsView(),
+      binding: SettingsBinding(),
     ),
   ];
 }

@@ -13,9 +13,13 @@ class NotificationsController extends GetxController {
   final ApiHelper _apiHelper = Get.find();
   RxBool notificationDataLoaded = false.obs;
   RxList<BookingDetailsModel> notificationList = <BookingDetailsModel>[].obs;
+  RxBool isDataProcessing = false.obs;
+  RxBool isMoreDataAvailable = true.obs;
+  ScrollController scrollController = ScrollController();
+  int page = 1;
   BuildContext? context;
-
   RxInt unreadCount = 0.obs;
+
 
   @override
   void onInit() {

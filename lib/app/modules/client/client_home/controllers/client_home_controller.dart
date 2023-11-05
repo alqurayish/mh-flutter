@@ -82,6 +82,11 @@ class ClientHomeController extends GetxController {
     Get.toNamed(Routes.clientSelfProfile);
   }
 
+  void onSettingsClick() {
+    Get.toNamed(Routes.settings);
+  }
+
+
   void chatWithAdmin() {
     Get.back(); // hide dialogue
 
