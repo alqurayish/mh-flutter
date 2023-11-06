@@ -26,6 +26,7 @@ import 'package:mh/app/modules/employee_booked_history_details/models/rejected_d
 import 'package:mh/app/modules/notifications/models/notification_response_model.dart';
 import 'package:mh/app/modules/notifications/models/notification_update_request_model.dart';
 import 'package:mh/app/modules/notifications/models/notification_update_response_model.dart';
+import 'package:mh/app/modules/settings/models/change_password_request_model.dart';
 import 'package:mh/app/modules/stripe_payment/models/stripe_request_model.dart';
 import 'package:mh/app/modules/stripe_payment/models/stripe_response_model.dart';
 import 'package:mh/app/repository/server_urls.dart';
@@ -1119,5 +1120,27 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
       response,
       HourlyRateModel.fromJson,
     ).fold((CustomError l) => left(l), (HourlyRateModel r) => right(r));
+  }
+
+  @override
+  EitherModel<CommonResponseModel> changePassword(
+      {required ChangePasswordRequestModel changePasswordRequestModel}) async {
+    Response response = await put("users/update-password", jsonEncode(changePasswordRequestModel.toJson()));
+    if (response.statusCode == null) {
+      response = await put("users/update-password", jsonEncode(changePasswordRequestModel.toJson()));
+    }
+    if (response.statusCode == null) {
+      response = await put("users/update-password", jsonEncode(changePasswordRequestModel.toJson()));
+    }
+    if (response.statusCode == null) {
+      response = await put("users/update-password", jsonEncode(changePasswordRequestModel.toJson()));
+    }
+
+    print('ApiHelperImpl.changePassword: ${response.bodyString}');
+
+    return _convert<CommonResponseModel>(
+      response,
+      CommonResponseModel.fromJson,
+    ).fold((CustomError l) => left(l), (r) => right(r));
   }
 }

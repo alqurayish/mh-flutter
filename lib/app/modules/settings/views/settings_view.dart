@@ -16,23 +16,28 @@ class SettingsView extends GetView<SettingsController> {
   const SettingsView({super.key});
   @override
   Widget build(BuildContext context) {
+    controller.context = context;
     return Scaffold(
       appBar: CustomAppbar.appbar(title: "Settings", context: context),
-      body: const SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            HeaderImageWidget(),
-            WelcomeBackTextWidget(),
-            SizedBox(height: 50),
-            CurrentPasswordFieldWidget(),
-            SizedBox(height: 20),
-            NewPasswordFieldWidget(),
-            SizedBox(height: 50),
-            ButtonWidget()
+      body:  SingleChildScrollView(
+        child: Form(
+          key: controller.formKey,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+          child: const Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              HeaderImageWidget(),
+              WelcomeBackTextWidget(),
+              SizedBox(height: 50),
+              CurrentPasswordFieldWidget(),
+              SizedBox(height: 20),
+              NewPasswordFieldWidget(),
+              SizedBox(height: 50),
+              ButtonWidget()
 
-          ],
+            ],
+          ),
         ),
       ),
     );

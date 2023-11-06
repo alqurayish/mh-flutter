@@ -20,6 +20,7 @@ import 'package:mh/app/modules/employee_booked_history_details/models/rejected_d
 import 'package:mh/app/modules/notifications/models/notification_response_model.dart';
 import 'package:mh/app/modules/notifications/models/notification_update_request_model.dart';
 import 'package:mh/app/modules/notifications/models/notification_update_response_model.dart';
+import 'package:mh/app/modules/settings/models/change_password_request_model.dart';
 import 'package:mh/app/modules/stripe_payment/models/stripe_request_model.dart';
 import 'package:mh/app/modules/stripe_payment/models/stripe_response_model.dart';
 
@@ -194,7 +195,7 @@ abstract class ApiHelper {
       {required UpdateUnavailableDateRequestModel updateUnavailableDateRequestModel});
 
   EitherModel<ExtraFieldModel> getEmployeeExtraField({required String countryName});
-
   EitherModel<NationalityModel> getNationalities();
   EitherModel<HourlyRateModel> getHourlyRate();
+  EitherModel<CommonResponseModel> changePassword({required ChangePasswordRequestModel changePasswordRequestModel});
 }

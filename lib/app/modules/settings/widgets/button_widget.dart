@@ -14,7 +14,7 @@ class ButtonWidget extends GetWidget<SettingsController> {
       customButtonStyle: CustomButtonStyle.radiusTopBottomCorner,
       text: MyStrings.submit,
       height: 48,
-      onTap: (){},//controller.onLoginPressed,
+      onTap: controller.onSubmitPressed, //controller.onLoginPressed,
       margin: const EdgeInsets.symmetric(horizontal: 18),
     );
   }
