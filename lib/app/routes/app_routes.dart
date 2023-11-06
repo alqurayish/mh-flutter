@@ -55,6 +55,9 @@ abstract class Routes {
   static const employeeBookedHistoryDetails =
       _Paths.employeeBookedHistoryDetails;
   static const settings = _Paths.settings;
+  static const emailInput = _Paths.emailInput;
+  static const otp = _Paths.otp;
+  static const resetPassword = _Paths.resetPassword;
 }
 
 abstract class _Paths {
@@ -114,4 +117,7 @@ abstract class _Paths {
   static const employeeBookedHistoryDetails =
       '/employee-booked-history-details';
   static const settings = '/settings';
+  static const emailInput = '/email-input';
+  static const otp = '/otp';
+  static const resetPassword = '/reset-password';
 }

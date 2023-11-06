@@ -6,6 +6,7 @@ import 'package:mh/app/modules/calender/models/update_unavailable_date_request_m
 import 'package:mh/app/modules/client/client_shortlisted/models/add_to_shortlist_request_model.dart';
 import 'package:mh/app/modules/client/client_shortlisted/models/update_shortlist_request_model.dart';
 import 'package:mh/app/modules/client/client_suggested_employees/models/short_list_request_model.dart';
+import 'package:mh/app/modules/email_input/models/forget_password_response_model.dart';
 import 'package:mh/app/modules/employee/employee_home/models/common_response_model.dart';
 import 'package:mh/app/modules/employee/employee_home/models/employee_check_in_request_model.dart';
 import 'package:mh/app/modules/employee/employee_home/models/employee_check_out_request_model.dart';
@@ -20,6 +21,8 @@ import 'package:mh/app/modules/employee_booked_history_details/models/rejected_d
 import 'package:mh/app/modules/notifications/models/notification_response_model.dart';
 import 'package:mh/app/modules/notifications/models/notification_update_request_model.dart';
 import 'package:mh/app/modules/notifications/models/notification_update_response_model.dart';
+import 'package:mh/app/modules/otp/models/otp_check_request_model.dart';
+import 'package:mh/app/modules/reset_password/models/reset_password_request_model.dart';
 import 'package:mh/app/modules/settings/models/change_password_request_model.dart';
 import 'package:mh/app/modules/stripe_payment/models/stripe_request_model.dart';
 import 'package:mh/app/modules/stripe_payment/models/stripe_response_model.dart';
@@ -198,4 +201,7 @@ abstract class ApiHelper {
   EitherModel<NationalityModel> getNationalities();
   EitherModel<HourlyRateModel> getHourlyRate();
   EitherModel<CommonResponseModel> changePassword({required ChangePasswordRequestModel changePasswordRequestModel});
+  EitherModel<ForgetPasswordResponseModel> inputEmail({required String email});
+  EitherModel<CommonResponseModel> otpCheck({required OtpCheckRequestModel otpCheckRequestModel});
+  EitherModel<CommonResponseModel> resetPassword({required ResetPasswordRequestModel resetPasswordRequestModel});
 }

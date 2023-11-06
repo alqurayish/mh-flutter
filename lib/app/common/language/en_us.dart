@@ -18,7 +18,7 @@ Map<String, String> en = {
   MyStrings.userNameEmailId: "User Name / Email / ID",
   MyStrings.password: "Password",
   MyStrings.savePassword: "Save password",
-  MyStrings.forgotPassword: "Forgot password?",
+  MyStrings.forgotPassword: "Forgot Password?",
   MyStrings.dontHaveAnAccount: "Don’t have an account?",
   MyStrings.register: "Register",
   MyStrings.client: "Client",

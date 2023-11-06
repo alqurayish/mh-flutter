@@ -49,7 +49,7 @@ class MyStrings {
   static const String mhApp = "mhApp";
   static const String alreadyHaveAnAccount = "alreadyHaveAnAccount";
   static const String continue_ = "continue";
-  static const String confirmPassword = "confirmPassword";
+  static const String confirmPassword = "Confirm Password";
   static const String almostDoneRegisteringTheAccount = "almostDoneRegisteringTheAccount";
   static const String countryAddressLanguage = "countryAddressLanguage";
   static const String educationLicenseSkill = "educationLicenseSkill";

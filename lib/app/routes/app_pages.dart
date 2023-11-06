@@ -59,6 +59,8 @@ import '../modules/client/mh_employees_by_id/bindings/mh_employees_by_id_binding
 import '../modules/client/mh_employees_by_id/views/mh_employees_by_id_view.dart';
 import '../modules/contact_us/bindings/contact_us_binding.dart';
 import '../modules/contact_us/views/contact_us_view.dart';
+import '../modules/email_input/bindings/email_input_binding.dart';
+import '../modules/email_input/views/email_input_view.dart';
 import '../modules/employee/employee_dashboard/bindings/employee_dashboard_binding.dart';
 import '../modules/employee/employee_dashboard/views/employee_dashboard_view.dart';
 import '../modules/employee/employee_home/bindings/employee_home_binding.dart';
@@ -79,6 +81,10 @@ import '../modules/map/restaurant_location/bindings/restaurant_location_binding.
 import '../modules/map/restaurant_location/views/restaurant_location_view.dart';
 import '../modules/notifications/bindings/notifications_binding.dart';
 import '../modules/notifications/views/notifications_view.dart';
+import '../modules/otp/bindings/otp_binding.dart';
+import '../modules/otp/views/otp_view.dart';
+import '../modules/reset_password/bindings/reset_password_binding.dart';
+import '../modules/reset_password/views/reset_password_view.dart';
 import '../modules/settings/bindings/settings_binding.dart';
 import '../modules/settings/views/settings_view.dart';
 import '../modules/splash/bindings/splash_binding.dart';
@@ -373,6 +379,21 @@ class AppPages {
       name: _Paths.settings,
       page: () => const SettingsView(),
       binding: SettingsBinding(),
+    ),
+    GetPage(
+      name: _Paths.emailInput,
+      page: () => const EmailInputView(),
+      binding: EmailInputBinding(),
+    ),
+    GetPage(
+      name: _Paths.otp,
+      page: () => const OtpView(),
+      binding: OtpBinding(),
+    ),
+    GetPage(
+      name: _Paths.resetPassword,
+      page: () => const ResetPasswordView(),
+      binding: ResetPasswordBinding(),
     ),
   ];
 }
