@@ -16,18 +16,11 @@ class SettingsController extends GetxController {
   BuildContext? context;
   final ApiHelper _apiHelper = Get.find();
 
-  @override
-  void onInit() {
-    super.onInit();
-  }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
 
   @override
   void onClose() {
+    tecCurrentPassword.value.dispose();
+    tecNewPassword.value.dispose();
     super.onClose();
   }
 
