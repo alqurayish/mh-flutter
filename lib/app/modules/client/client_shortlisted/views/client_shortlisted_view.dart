@@ -247,7 +247,7 @@ class ClientShortlistedView extends GetView<ClientShortlistedController> {
                 color: MyColors.l111111_dwhite(controller.context!),
               ),
             ),
-            SizedBox(width: 10.w),
+            SizedBox(width: 5.w),
             const Icon(
               Icons.star,
               color: MyColors.c_FFA800,
