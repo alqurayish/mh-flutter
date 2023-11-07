@@ -309,9 +309,9 @@ class Utils {
                 pw.Text(
                     'Amount: ${getCurrencySymbol(Get.find<AppController>().user.value.client?.countryName ?? '')}${invoice.amount?.toStringAsFixed(2)}'),
                 pw.Text('VAT: ${invoice.vat}%'),
-                pw.Text('VAT Amount: ${getCurrencySymbol(Get.find<AppController>().user.value.client?.countryName ?? '')}${invoice.vatAmount}'),
+                pw.Text('VAT Amount: ${getCurrencySymbol(Get.find<AppController>().user.value.client?.countryName ?? '')}${invoice.vatAmount?.toStringAsFixed(2)}'),
                 pw.Text(
-                    'Platform Fee: ${getCurrencySymbol(Get.find<AppController>().user.value.client?.countryName ?? '')}${invoice.platformFee}'),
+                    'Platform Fee: ${getCurrencySymbol(Get.find<AppController>().user.value.client?.countryName ?? '')}${invoice.platformFee?.toStringAsFixed(2)}'),
 
                 pw.Divider(indent: 100, endIndent: 100),
                // pw.SizedBox(height: 10),
