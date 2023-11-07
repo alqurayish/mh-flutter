@@ -20,6 +20,7 @@ class EmailInputController extends GetxController {
   }
 
   void onSubmitPressed() async {
+    Utils.unFocus();
     if (tecClientEmailAddress.text.isEmpty) {
       Utils.showSnackBar(message: 'Email is required', isTrue: false);
     }

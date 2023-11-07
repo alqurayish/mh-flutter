@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:mh/app/common/values/my_color.dart';
+import 'package:mh/app/common/utils/exports.dart';
 import 'package:mh/app/modules/otp/controllers/otp_controller.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
@@ -10,7 +8,7 @@ class OtpFieldWidget extends GetWidget<OtpController> {
   @override
   Widget build(BuildContext context) {
     return PinCodeTextField(
-      textStyle: TextStyle(color: context.textTheme.bodyLarge?.color),
+      textStyle: MyColors.l5C5C5C_dwhite(context).semiBold20,
       autoFocus: true,
       controller: controller.tecOtp.value,
       appContext: Get.context!,

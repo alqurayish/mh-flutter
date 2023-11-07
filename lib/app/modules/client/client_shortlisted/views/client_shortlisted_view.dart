@@ -99,10 +99,14 @@ class ClientShortlistedView extends GetView<ClientShortlistedController> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Flexible(
+                                      flex: employee.employeeDetails!.rating! > 0.0 ? 3 : 4,
                                       child: _name(employee.employeeDetails?.name ?? "-")),
-                                  if (employee.employeeDetails?.certified != null && employee.employeeDetails?.certified == true)
+                                  if (employee.employeeDetails?.certified != null &&
+                                      employee.employeeDetails?.certified == true)
                                     Image.asset(MyAssets.certified, height: 30, width: 30),
-                                  _rating(employee.employeeDetails?.rating ?? 0.0),
+                                  Expanded(
+                                    flex: 2,
+                                      child: _rating(employee.employeeDetails?.rating ?? 0.0)),
                                   const Spacer(),
                                   Obx(
                                     () => controller.shortlistController.getIcon(
@@ -235,7 +239,6 @@ class ClientShortlistedView extends GetView<ClientShortlistedController> {
         visible: rating > 0,
         child: Row(
           children: [
-            SizedBox(width: 10.w),
             Container(
               height: 2.h,
               width: 2.h,

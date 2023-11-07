@@ -44,13 +44,12 @@ class OtpView extends GetView<OtpController> {
                       child: RichText(
                         text: TextSpan(
                           text: "Haven't you gotten OTP yet?",
-                          style: TextStyle(color: context.textTheme.bodyLarge?.color),
+                          style: MyColors.l5C5C5C_dwhite(context).medium16,
                           children: [
                             const TextSpan(text: ' '),
                             TextSpan(
                               text: 'RESEND',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 15, color: context.textTheme.bodyLarge?.color),
+                              style: MyColors.l5C5C5C_dwhite(context).semiBold16,
                               recognizer: TapGestureRecognizer()..onTap = () => controller.resendOtpPressed(),
                             )
                           ],

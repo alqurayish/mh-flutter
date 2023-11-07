@@ -307,7 +307,7 @@ class Utils {
                     style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 16)),
                 pw.SizedBox(height: 20),
                 pw.Text(
-                    'Amount: ${getCurrencySymbol(Get.find<AppController>().user.value.client?.countryName ?? '')}${invoice.amount}'),
+                    'Amount: ${getCurrencySymbol(Get.find<AppController>().user.value.client?.countryName ?? '')}${invoice.amount?.toStringAsFixed(2)}'),
                 pw.Text('VAT: ${invoice.vat}%'),
                 pw.Text('VAT Amount: ${getCurrencySymbol(Get.find<AppController>().user.value.client?.countryName ?? '')}${invoice.vatAmount}'),
                 pw.Text(
