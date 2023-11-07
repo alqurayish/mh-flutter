@@ -13,7 +13,6 @@ class EmployeeHomeView extends GetView<EmployeeHomeController> {
   @override
   Widget build(BuildContext context) {
     controller.context = context;
-
     return WillPopScope(
       onWillPop: () => Utils.appExitConfirmation(context),
       child: Scaffold(

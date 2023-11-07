@@ -1,8 +1,8 @@
 dependencies: \
   /Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/file_picker.build/module.modulemap \
-  /Users/marina/.pub-cache/hosted/pub.dev/file_picker-6.0.0/ios/Classes/FilePickerPlugin.m \
+  /Users/marina/.pub-cache/hosted/pub.dev/file_picker-6.1.1/ios/Classes/FilePickerPlugin.m \
   /Users/marina/StudioProjects/mh-flutter/ios/Pods/Target\ Support\ Files/file_picker/file_picker-prefix.pch \
-  /Users/marina/.pub-cache/hosted/pub.dev/file_picker-6.0.0/ios/Classes/FilePickerPlugin.h \
+  /Users/marina/.pub-cache/hosted/pub.dev/file_picker-6.1.1/ios/Classes/FilePickerPlugin.h \
   /Users/marina/Downloads/flutter/bin/cache/artifacts/engine/ios/Flutter.xcframework/ios-arm64_x86_64-simulator/Flutter.framework/Modules/module.modulemap \
   /Users/marina/Downloads/flutter/bin/cache/artifacts/engine/ios/Flutter.xcframework/ios-arm64_x86_64-simulator/Flutter.framework/Headers/Flutter.h \
   /Users/marina/Downloads/flutter/bin/cache/artifacts/engine/ios/Flutter.xcframework/ios-arm64_x86_64-simulator/Flutter.framework/Headers/FlutterAppDelegate.h \
@@ -20,8 +20,8 @@ dependencies: \
   /Users/marina/Downloads/flutter/bin/cache/artifacts/engine/ios/Flutter.xcframework/ios-arm64_x86_64-simulator/Flutter.framework/Headers/FlutterHeadlessDartRunner.h \
   /Users/marina/Downloads/flutter/bin/cache/artifacts/engine/ios/Flutter.xcframework/ios-arm64_x86_64-simulator/Flutter.framework/Headers/FlutterPluginAppLifeCycleDelegate.h \
   /Users/marina/Downloads/flutter/bin/cache/artifacts/engine/ios/Flutter.xcframework/ios-arm64_x86_64-simulator/Flutter.framework/Headers/FlutterViewController.h \
-  /Users/marina/.pub-cache/hosted/pub.dev/file_picker-6.0.0/ios/Classes/FileUtils.h \
-  /Users/marina/.pub-cache/hosted/pub.dev/file_picker-6.0.0/ios/Classes/ImageUtils.h \
+  /Users/marina/.pub-cache/hosted/pub.dev/file_picker-6.1.1/ios/Classes/FileUtils.h \
+  /Users/marina/.pub-cache/hosted/pub.dev/file_picker-6.1.1/ios/Classes/ImageUtils.h \
   /Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/module.modulemap \
   /Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/DKPhotoGallery.build/module.modulemap \
   /Users/marina/StudioProjects/mh-flutter/ios/Pods/Target\ Support\ Files/DKPhotoGallery/DKPhotoGallery-umbrella.h \

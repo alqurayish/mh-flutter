@@ -148,7 +148,6 @@ extension DateListExtension on List<CalenderDataModel> {
   bool anyDatesExistInRange({required String rangeStart, required String rangeEnd}) {
     DateTime startDate = DateTime.parse(rangeStart);
     DateTime endDate = DateTime.parse(rangeEnd);
-
     return any((dateModel) {
       DateTime modelStartDate = DateTime.parse(dateModel.startDate!);
       DateTime modelEndDate = DateTime.parse(dateModel.endDate!);
@@ -165,7 +164,7 @@ extension DateTimeExtensions on DateTime {
   String calculateAge() {
     final DateTime currentDate = DateTime.now();
     final double age = currentDate.year - year + (currentDate.month - month) / 12;
-    return '${age.toStringAsFixed(1)} years';
+    return '${age.round()} years';
   }
 }
 

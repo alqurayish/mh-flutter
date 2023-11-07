@@ -12,6 +12,7 @@ import 'package:mh/app/modules/calender/models/update_unavailable_date_request_m
 import 'package:mh/app/modules/client/client_shortlisted/models/add_to_shortlist_request_model.dart';
 import 'package:mh/app/modules/client/client_shortlisted/models/update_shortlist_request_model.dart';
 import 'package:mh/app/modules/client/client_suggested_employees/models/short_list_request_model.dart';
+import 'package:mh/app/modules/email_input/models/forget_password_response_model.dart';
 import 'package:mh/app/modules/employee/employee_home/models/common_response_model.dart';
 import 'package:mh/app/modules/employee/employee_home/models/employee_check_in_request_model.dart';
 import 'package:mh/app/modules/employee/employee_home/models/employee_check_out_request_model.dart';
@@ -26,6 +27,9 @@ import 'package:mh/app/modules/employee_booked_history_details/models/rejected_d
 import 'package:mh/app/modules/notifications/models/notification_response_model.dart';
 import 'package:mh/app/modules/notifications/models/notification_update_request_model.dart';
 import 'package:mh/app/modules/notifications/models/notification_update_response_model.dart';
+import 'package:mh/app/modules/otp/models/otp_check_request_model.dart';
+import 'package:mh/app/modules/reset_password/models/reset_password_request_model.dart';
+import 'package:mh/app/modules/settings/models/change_password_request_model.dart';
 import 'package:mh/app/modules/stripe_payment/models/stripe_request_model.dart';
 import 'package:mh/app/modules/stripe_payment/models/stripe_response_model.dart';
 import 'package:mh/app/repository/server_urls.dart';
@@ -1119,5 +1123,82 @@ class ApiHelperImpl extends GetConnect implements ApiHelper {
       response,
       HourlyRateModel.fromJson,
     ).fold((CustomError l) => left(l), (HourlyRateModel r) => right(r));
+  }
+
+  @override
+  EitherModel<CommonResponseModel> changePassword(
+      {required ChangePasswordRequestModel changePasswordRequestModel}) async {
+    Response response = await put("users/update-password", jsonEncode(changePasswordRequestModel.toJson()));
+    if (response.statusCode == null) {
+      response = await put("users/update-password", jsonEncode(changePasswordRequestModel.toJson()));
+    }
+    if (response.statusCode == null) {
+      response = await put("users/update-password", jsonEncode(changePasswordRequestModel.toJson()));
+    }
+    if (response.statusCode == null) {
+      response = await put("users/update-password", jsonEncode(changePasswordRequestModel.toJson()));
+    }
+
+    return _convert<CommonResponseModel>(
+      response,
+      CommonResponseModel.fromJson,
+    ).fold((CustomError l) => left(l), (r) => right(r));
+  }
+
+  @override
+  EitherModel<ForgetPasswordResponseModel> inputEmail({required String email}) async {
+    Response response = await put("users/forgot-password", jsonEncode({"email": email}));
+    if (response.statusCode == null) {
+      response = await put("users/forgot-password", jsonEncode({"email": email}));
+    }
+    if (response.statusCode == null) {
+      response = await put("users/forgot-password", jsonEncode({"email": email}));
+    }
+    if (response.statusCode == null) {
+      response = await put("users/forgot-password", jsonEncode({"email": email}));
+    }
+
+    return _convert<ForgetPasswordResponseModel>(
+      response,
+      ForgetPasswordResponseModel.fromJson,
+    ).fold((CustomError l) => left(l), (r) => right(r));
+  }
+
+  @override
+  EitherModel<CommonResponseModel> otpCheck({required OtpCheckRequestModel otpCheckRequestModel}) async {
+    Response response = await post("users/otp-check", jsonEncode(otpCheckRequestModel.toJson()));
+    if (response.statusCode == null) {
+      response = await post("users/otp-check", jsonEncode(otpCheckRequestModel.toJson()));
+    }
+    if (response.statusCode == null) {
+      response = await post("users/otp-check", jsonEncode(otpCheckRequestModel.toJson()));
+    }
+    if (response.statusCode == null) {
+      response = await post("users/otp-check", jsonEncode(otpCheckRequestModel.toJson()));
+    }
+
+    return _convert<CommonResponseModel>(
+      response,
+      CommonResponseModel.fromJson,
+    ).fold((CustomError l) => left(l), (r) => right(r));
+  }
+
+  @override
+  EitherModel<CommonResponseModel> resetPassword({required ResetPasswordRequestModel resetPasswordRequestModel}) async {
+    Response response = await put("users/reset-password", jsonEncode(resetPasswordRequestModel.toJson()));
+    if (response.statusCode == null) {
+      response = await put("users/reset-password", jsonEncode(resetPasswordRequestModel.toJson()));
+    }
+    if (response.statusCode == null) {
+      response = await put("users/reset-password", jsonEncode(resetPasswordRequestModel.toJson()));
+    }
+    if (response.statusCode == null) {
+      response = await put("users/reset-password", jsonEncode(resetPasswordRequestModel.toJson()));
+    }
+
+    return _convert<CommonResponseModel>(
+      response,
+      CommonResponseModel.fromJson,
+    ).fold((CustomError l) => left(l), (r) => right(r));
   }
 }

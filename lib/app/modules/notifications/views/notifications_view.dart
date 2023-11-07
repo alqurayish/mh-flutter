@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:mh/app/common/utils/exports.dart';
 import 'package:mh/app/common/widgets/custom_appbar.dart';
 import 'package:mh/app/common/widgets/no_item_found.dart';
@@ -20,8 +21,12 @@ class NotificationsView extends GetView<NotificationsController> {
           } else {
             return ListView.builder(
               padding: EdgeInsets.zero,
+              controller: controller.scrollController,
               itemCount: controller.notificationList.length,
               itemBuilder: (BuildContext context, int index) {
+                if(index == controller.notificationList.length -1 && controller.isMoreDataAvailable.value == true){
+                  return const Center(child: CupertinoActivityIndicator());
+                }
                 BookingDetailsModel notification = controller.notificationList[index];
                 return NotificationWidget(
                   notification: notification,

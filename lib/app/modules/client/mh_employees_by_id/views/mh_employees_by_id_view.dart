@@ -194,7 +194,7 @@ class MhEmployeesByIdView extends GetView<MhEmployeesByIdController> {
                       Row(
                         children: [
                           _detailsItem(MyAssets.exp, MyStrings.exp.tr, "${user.employeeExperience ?? 0} years"),
-                          _detailsItem(MyAssets.totalHour, 'Total Hour:', "${user.totalWorkingHour ?? 0} hours"),
+                          _detailsItem(MyAssets.totalHour, 'Total Hour:', "${user.totalWorkingHour?.toStringAsFixed(2) ?? 0}h"),
                         ],
                       ),
                       SizedBox(height: 8.h),

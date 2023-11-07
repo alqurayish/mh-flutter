@@ -16,6 +16,7 @@ import '../../../../repository/api_helper.dart';
 import '../../../../routes/app_pages.dart';
 import '../../client_payment_and_invoice/model/client_invoice_model.dart';
 import '../../common/shortlist_controller.dart';
+import 'package:socket_io_client/socket_io_client.dart' as i_o;
 
 class ClientHomeController extends GetxController {
   final NotificationsController notificationsController = Get.find<NotificationsController>();
@@ -39,6 +40,7 @@ class ClientHomeController extends GetxController {
   RxDouble rating = 0.0.obs;
   TextEditingController tecReview = TextEditingController();
 
+  i_o.Socket? socket;
   @override
   void onInit() {
     homeMethods();
@@ -81,6 +83,11 @@ class ClientHomeController extends GetxController {
   void onProfileClick() {
     Get.toNamed(Routes.clientSelfProfile);
   }
+
+  void onSettingsClick() {
+    Get.toNamed(Routes.settings);
+  }
+
 
   void chatWithAdmin() {
     Get.back(); // hide dialogue
@@ -304,4 +311,5 @@ class ClientHomeController extends GetxController {
   void onRatingUpdate(double rat) {
     rating.value = rat;
   }
+
 }

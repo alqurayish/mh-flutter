@@ -1,4 +1,5 @@
 import 'package:flutter/gestures.dart';
+import 'package:mh/app/routes/app_pages.dart';
 
 import '../../../../common/utils/exports.dart';
 import '../../../../common/utils/validators.dart';
@@ -56,9 +57,10 @@ class LoginView extends GetView<LoginController> {
             SizedBox(height: 34.h),
             _passwordField,
             SizedBox(height: 10.h),
-            _rememberMeWidget,
-            SizedBox(height: 34.h),
-            // _forgotPassword,x
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [_rememberMeWidget, _forgotPassword],
+            ),
             SizedBox(height: 57.h),
             CustomButtons.button(
               customButtonStyle: CustomButtonStyle.radiusTopBottomCorner,
@@ -110,9 +112,12 @@ class LoginView extends GetView<LoginController> {
         alignment: Alignment.centerRight,
         child: Padding(
           padding: EdgeInsets.only(right: 18.w),
-          child: Text(
-            MyStrings.forgotPassword.tr,
-            style: MyColors.c_C6A34F.semiBold16,
+          child: InkWell(
+            onTap: () => Get.toNamed(Routes.emailInput),
+            child: Text(
+              MyStrings.forgotPassword.tr,
+              style: MyColors.c_C6A34F.semiBold16,
+            ),
           ),
         ),
       );
@@ -147,8 +152,7 @@ class LoginView extends GetView<LoginController> {
         ),
       );
 
-  Widget get _rememberMeWidget =>
-      Obx(() => Padding(
+  Widget get _rememberMeWidget => Obx(() => Padding(
         padding: EdgeInsets.only(left: 5.w),
         child: Row(
           children: [
@@ -159,11 +163,11 @@ class LoginView extends GetView<LoginController> {
                   borderRadius: BorderRadius.circular(2.0),
                 ),
                 side: MaterialStateBorderSide.resolveWith(
-                      (Set<MaterialState> states) => const BorderSide(width: 2.0, color: MyColors.c_C6A34F),
+                  (Set<MaterialState> states) => const BorderSide(width: 2.0, color: MyColors.c_C6A34F),
                 ),
                 value: controller.rememberMe.value,
                 onChanged: controller.onRememberMePressed),
-             Text(MyStrings.rememberMeText, style: MyColors.l111111_dwhite(controller.context!).semiBold15),
+            Text(MyStrings.rememberMeText, style: MyColors.l111111_dwhite(controller.context!).semiBold15),
           ],
         ),
       ));
