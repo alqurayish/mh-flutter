@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:mh/app/common/utils/utils.dart';
 import 'package:mh/app/common/widgets/custom_loader.dart';
 import 'package:mh/app/models/custom_error.dart';
+import 'package:mh/app/modules/email_input/models/forget_password_response_model.dart';
 import 'package:mh/app/modules/employee/employee_home/models/common_response_model.dart';
 import 'package:mh/app/modules/otp/models/otp_check_request_model.dart';
 import 'package:mh/app/repository/api_helper.dart';
@@ -33,7 +34,6 @@ class OtpController extends GetxController {
     super.onReady();
   }
 
-
   void onPinCodeChange(String value) {
     if (value.length == 6) {
       disableButton.value = false;
@@ -48,8 +48,7 @@ class OtpController extends GetxController {
 
   void verifyOtpPressed() async {
     CustomLoader.show(context!);
-    OtpCheckRequestModel otpCheckRequestModel =
-        OtpCheckRequestModel(email: email, otpNumber: tecOtp.value.text);
+    OtpCheckRequestModel otpCheckRequestModel = OtpCheckRequestModel(email: email, otpNumber: tecOtp.value.text);
 
     Either<CustomError, CommonResponseModel> responseData =
         await _apiHelper.otpCheck(otpCheckRequestModel: otpCheckRequestModel);
@@ -66,8 +65,23 @@ class OtpController extends GetxController {
     });
   }
 
-  void resendOtpPressed() {
-    Utils.showSnackBar(message: 'Coming soon...', isTrue: false);
+  void resendOtpPressed() async {
+    CustomLoader.show(context!);
+    Either<CustomError, ForgetPasswordResponseModel> responseData = await _apiHelper.inputEmail(email: email);
+    CustomLoader.hide(context!);
+    responseData.fold((CustomError customError) {
+      Utils.errorDialog(context!, customError);
+    }, (ForgetPasswordResponseModel res) {
+      if (res.status == 'success' && [200, 201].contains(res.statusCode)) {
+        Utils.showSnackBar(message: '${res.message}', isTrue: true);
+        isFinished.value = false;
+        disableButton.value = true;
+        countdown.value = 60;
+        startCountdown();
+      } else {
+        Utils.showSnackBar(message: '${res.message}', isTrue: false);
+      }
+    });
   }
 
   void startCountdown() {

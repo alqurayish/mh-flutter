@@ -51,7 +51,7 @@ class OtpView extends GetView<OtpController> {
                               text: 'RESEND',
                               style: TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 15, color: context.textTheme.bodyLarge?.color),
-                              recognizer: TapGestureRecognizer()..onTap = () => controller.resendOtpPressed,
+                              recognizer: TapGestureRecognizer()..onTap = () => controller.resendOtpPressed(),
                             )
                           ],
                         ),
