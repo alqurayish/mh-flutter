@@ -1,6 +1,3 @@
-import 'package:flutter/material.dart';
-
-import 'package:get/get.dart';
 import 'package:mh/app/common/utils/exports.dart';
 import 'package:mh/app/common/widgets/custom_appbar.dart';
 import 'package:mh/app/common/widgets/header_image_widget.dart';

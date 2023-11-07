@@ -73,7 +73,6 @@ class NotificationsController extends GetxController {
   void paginateNotification() {
     scrollController.addListener(() async {
       if (scrollController.position.pixels == scrollController.position.maxScrollExtent) {
-        print('NotificationsController.paginateNotification: reached end');
         await getMoreNotifications();
       }
     });

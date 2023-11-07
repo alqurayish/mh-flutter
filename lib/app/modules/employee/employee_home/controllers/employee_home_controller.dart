@@ -29,6 +29,7 @@ import '../../../../models/employee_daily_statistics.dart';
 import '../../../../repository/api_helper.dart';
 import '../../../../routes/app_pages.dart';
 import '../models/today_check_in_out_details.dart';
+import 'package:socket_io_client/socket_io_client.dart' as i_o;
 
 class EmployeeHomeController extends GetxController {
   final NotificationsController notificationsController = Get.find<NotificationsController>();
@@ -64,7 +65,7 @@ class EmployeeHomeController extends GetxController {
 
   RxList<HiredHistoryModel> hiredHistoryList = <HiredHistoryModel>[].obs;
   RxBool hiredHistoryDataLoaded = false.obs;
-
+  i_o.Socket? socket;
   @override
   void onInit() async {
     await homeMethods();
@@ -74,6 +75,7 @@ class EmployeeHomeController extends GetxController {
   @override
   void onReady() {
     Future.delayed(const Duration(seconds: 2), () => showReviewBottomSheet());
+    //connectWithSocket();
     super.onReady();
   }
 
@@ -505,4 +507,22 @@ class EmployeeHomeController extends GetxController {
           child: const CheckOutSuccessWidget()));
     }
   }
+
+ /* void connectWithSocket() {
+    try {
+      socket = i_o.io("http://52.86.43.146:8000", <String, dynamic>{
+        "transports": ["websocket"],
+        "autoConnect": false,
+      });
+      socket?.connect();
+      socket?.onConnect((_) {
+        socket?.on('notification', (data) {
+            //Get.find<NotificationsController>().getNotificationList();
+            log('ConnectWithSocket: ${jsonEncode(data)}');
+        });
+      });
+    } catch (_) {
+    }
+  }*/
+
 }

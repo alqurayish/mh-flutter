@@ -12,10 +12,6 @@ class EmailInputController extends GetxController {
   TextEditingController tecClientEmailAddress = TextEditingController();
   BuildContext? context;
   final ApiHelper _apiHelper = Get.find();
-  @override
-  void onInit() {
-    super.onInit();
-  }
 
   @override
   void onClose() {
@@ -38,7 +34,8 @@ class EmailInputController extends GetxController {
         Utils.showSnackBar(message: '${res.message}', isTrue: true);
         if (res.user?.toLowerCase() == 'client') {
           Get.toNamed(Routes.otp, arguments: tecClientEmailAddress.text);
-          print('EmailInputController.onSubmitPressed: ${tecClientEmailAddress.text}');
+        } else {
+          Get.offAllNamed(Routes.login);
         }
       } else {
         Utils.showSnackBar(message: '${res.message}', isTrue: false);

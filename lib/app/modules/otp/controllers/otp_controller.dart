@@ -24,7 +24,6 @@ class OtpController extends GetxController {
   @override
   void onInit() {
     email = Get.arguments ?? '';
-    print('OtpController.onInit: $email');
     super.onInit();
   }
 
@@ -34,10 +33,6 @@ class OtpController extends GetxController {
     super.onReady();
   }
 
-  @override
-  void onClose() {
-    super.onClose();
-  }
 
   void onPinCodeChange(String value) {
     if (value.length == 6) {
