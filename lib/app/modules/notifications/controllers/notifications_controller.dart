@@ -11,8 +11,8 @@ import 'package:mh/app/repository/api_helper.dart';
 
 class NotificationsController extends GetxController {
   final ApiHelper _apiHelper = Get.find();
-  RxBool notificationDataLoaded = false.obs;
   RxList<BookingDetailsModel> notificationList = <BookingDetailsModel>[].obs;
+  RxBool notificationDataLoaded = false.obs;
   RxBool isDataProcessing = false.obs;
   RxBool isMoreDataAvailable = true.obs;
   ScrollController scrollController = ScrollController();
@@ -20,24 +20,25 @@ class NotificationsController extends GetxController {
   BuildContext? context;
   RxInt unreadCount = 0.obs;
 
-
   @override
-  void onInit() {
-    getNotificationList();
+  void onInit() async {
+    await getNotificationList();
+    paginateNotification();
     super.onInit();
   }
 
-  void getNotificationList() {
-    _apiHelper.getNotifications().then((Either<CustomError, NotificationResponseModel> response) {
-      response.fold((CustomError customError) {
-        Utils.errorDialog(Get.context!, customError..onRetry = getNotificationList);
-      }, (NotificationResponseModel responseModel) {
-        if (responseModel.status == 'success' && responseModel.statusCode == 200) {
-          notificationList.value = responseModel.notifications ?? [];
-          _countUnread();
-          notificationDataLoaded.value = true;
-        }
-      });
+  Future<void> getNotificationList() async {
+    isDataProcessing.value = true;
+    Either<CustomError, NotificationResponseModel> response = await _apiHelper.getNotifications();
+    isDataProcessing.value = false;
+    response.fold((CustomError customError) {
+      Utils.errorDialog(Get.context!, customError..onRetry = getNotificationList);
+    }, (NotificationResponseModel responseModel) {
+      if (responseModel.status == 'success' && responseModel.statusCode == 200) {
+        notificationList.value = responseModel.notifications ?? [];
+        _countUnread();
+        notificationDataLoaded.value = true;
+      }
     });
   }
 
@@ -66,6 +67,38 @@ class NotificationsController extends GetxController {
       if (i.readStatus == false) {
         unreadCount.value += 1;
       }
+    }
+  }
+
+  void paginateNotification() {
+    scrollController.addListener(() async {
+      if (scrollController.position.pixels == scrollController.position.maxScrollExtent) {
+        print('NotificationsController.paginateNotification: reached end');
+        await getMoreNotifications();
+      }
+    });
+  }
+
+  Future<void> getMoreNotifications() async {
+    try {
+      Either<CustomError, NotificationResponseModel> response = await _apiHelper.getNotifications();
+      response.fold((CustomError customError) {
+        Utils.errorDialog(Get.context!, customError..onRetry = getNotificationList);
+      }, (NotificationResponseModel responseModel) {
+        if (responseModel.status == 'success' && responseModel.statusCode == 200) {
+          if (responseModel.notifications!.isNotEmpty) {
+            isMoreDataAvailable.value = true;
+          } else {
+            isMoreDataAvailable.value = false;
+            Utils.showSnackBar(message: 'No more items', isTrue: false);
+          }
+          notificationList.addAll(responseModel.notifications ?? []);
+          _countUnread();
+        }
+      });
+    } catch (e) {
+      isMoreDataAvailable.value = false;
+      Utils.showSnackBar(message: 'No more items', isTrue: false);
     }
   }
 }
