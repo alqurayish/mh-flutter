@@ -38,7 +38,10 @@ class EmployeeHomeView extends GetView<EmployeeHomeController> {
                         child: Badge(
                           backgroundColor: MyColors.c_C92C1A,
                           label: Obx(() {
-                            return Text(controller.notificationsController.unreadCount.toString(),
+                            return Text(
+                                controller.notificationsController.unreadCount.value == 20
+                                    ? '20+'
+                                    : controller.notificationsController.unreadCount.toString(),
                                 style: MyColors.white.semiBold12);
                           }),
                           child: const Icon(CupertinoIcons.bell),

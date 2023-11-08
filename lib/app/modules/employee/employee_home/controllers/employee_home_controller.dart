@@ -29,7 +29,6 @@ import '../../../../models/employee_daily_statistics.dart';
 import '../../../../repository/api_helper.dart';
 import '../../../../routes/app_pages.dart';
 import '../models/today_check_in_out_details.dart';
-import 'package:socket_io_client/socket_io_client.dart' as i_o;
 
 class EmployeeHomeController extends GetxController {
   final NotificationsController notificationsController = Get.find<NotificationsController>();
@@ -65,7 +64,6 @@ class EmployeeHomeController extends GetxController {
 
   RxList<HiredHistoryModel> hiredHistoryList = <HiredHistoryModel>[].obs;
   RxBool hiredHistoryDataLoaded = false.obs;
-  i_o.Socket? socket;
   @override
   void onInit() async {
     await homeMethods();
@@ -169,9 +167,6 @@ class EmployeeHomeController extends GetxController {
     );
   }
 
-  void onNotificationClick() {
-    Get.toNamed(Routes.clientNotification);
-  }
 
   void onProfileClick() {
     Get.toNamed(Routes.employeeSelfProfile);

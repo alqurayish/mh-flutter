@@ -1,5 +1,5 @@
 name: mh
-version: 2.3.9+36
+version: 2.4.0+37
 publish_to: none
 description: A new Flutter project.
 environment:
@@ -81,7 +81,6 @@ dependencies:
 
   google_maps_flutter: ^2.5.0
   geolocator: ^10.1.0
-  socket_io_client: ^2.0.3+1
   firebase_core: ^2.21.0
   firebase_crashlytics: ^3.4.3
   carousel_slider: ^4.2.1

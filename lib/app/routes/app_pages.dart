@@ -33,8 +33,6 @@ import '../modules/client/client_home/bindings/client_home_binding.dart';
 import '../modules/client/client_home/views/client_home_view.dart';
 import '../modules/client/client_my_employee/bindings/client_my_employee_binding.dart';
 import '../modules/client/client_my_employee/views/client_my_employee_view.dart';
-import '../modules/client/client_notification/bindings/client_notification_binding.dart';
-import '../modules/client/client_notification/views/client_notification_view.dart';
 import '../modules/client/client_payment_and_invoice/bindings/client_payment_and_invoice_binding.dart';
 import '../modules/client/client_payment_and_invoice/views/client_payment_and_invoice_view.dart';
 import '../modules/client/client_request_for_employee/bindings/client_request_for_employee_binding.dart';
@@ -246,14 +244,6 @@ class AppPages {
       name: _Paths.clientSelfProfile,
       page: () => const ClientSelfProfileView(),
       binding: ClientSelfProfileBinding(),
-      middlewares: [
-        AuthMiddleware(),
-      ],
-    ),
-    GetPage(
-      name: _Paths.clientNotification,
-      page: () => const ClientNotificationView(),
-      binding: ClientNotificationBinding(),
       middlewares: [
         AuthMiddleware(),
       ],

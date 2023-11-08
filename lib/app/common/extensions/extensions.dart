@@ -148,9 +148,7 @@ extension DateListExtension on List<CalenderDataModel> {
   bool anyDatesExistInRange({required String rangeStart, required String rangeEnd}) {
     DateTime startDate = DateTime.parse(rangeStart);
     DateTime endDate = DateTime.parse(rangeEnd);
-    print('anyDatesExistInRange: $startDate');
-    print('anyDatesExistInRange: $endDate');
-    return any((dateModel) {
+    return any((CalenderDataModel dateModel) {
       DateTime modelStartDate = DateTime.parse(dateModel.startDate!);
       DateTime modelEndDate = DateTime.parse(dateModel.endDate!);
 

@@ -37,7 +37,6 @@ abstract class Routes {
   static const clientTermsConditionForHire = _Paths.clientTermsConditionForHire;
   static const payment = _Paths.paymentForHire;
   static const hireStatus = _Paths.hireStatus;
-  static const clientNotification = _Paths.clientNotification;
   static const contactUs = _Paths.contactUs;
 
   static const restaurantLocation = _Paths.restaurantLocation;

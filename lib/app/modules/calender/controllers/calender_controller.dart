@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:dartz/dartz.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -212,19 +210,13 @@ class CalenderController extends GetxController {
 
   //For employee only
   void loadSelectedDates({required DateTime currentDate}) {
-    print('CalenderController.loadSelectedDates dhukse');
     if (selectedDates.contains(currentDate)) {
-      print('CalenderController.loadSelectedDates if');
       selectedDates.remove(currentDate);
     } else {
-      print('CalenderController.loadSelectedDates else');
-      print(
-          'CalenderController.loadSelectedDates: ${totalDateList.anyDatesExistInRange(rangeStart: rangeStartDate.value.toString().substring(0, 10), rangeEnd: currentDate.toString().substring(0, 10))}');
       if (totalDateList.anyDatesExistInRange(
               rangeStart: rangeStartDate.value.toString().substring(0, 10),
               rangeEnd: currentDate.toString().substring(0, 10)) ==
           false) {
-        print('CalenderController.loadSelectedDates last');
         selectedDates.add(currentDate);
       }
     }
@@ -283,20 +275,14 @@ class CalenderController extends GetxController {
     if (rangeStartDate.value == null) {
       sameAsStartDate.value = false;
       rangeStartDate.value = currentDate;
-      print('CalenderController.onDateClickForShortList 1');
     } else if (inValidRange(currentDate: currentDate) == true) {
       Utils.showSnackBar(message: 'You cannot select this range', isTrue: false);
-      print('CalenderController.onDateClickForShortList 2');
     } else if (rangeStartDate.value != null && currentDate.isBefore(rangeStartDate.value!)) {
       rangeEndDate.value = rangeStartDate.value;
       rangeStartDate.value = currentDate;
-      print('CalenderController.onDateClickForShortList 3');
     } else if (rangeEndDate.value == null) {
       rangeEndDate.value = currentDate;
-      print('CalenderController.onDateClickForShortList 4');
-    } else {
-      print('CalenderController.onDateClickForShortList 5');
-    }
+    } else {}
 
     loadSelectedDates(currentDate: currentDate);
     loadRequestedDateList(currentDate: currentDate);
@@ -326,7 +312,6 @@ class CalenderController extends GetxController {
         rangeEndDate.value = null;
       }
       requestDateList.refresh();
-      print('CalenderController.loadRequestedDateList: ${requestDateList.length}');
     }
   }
 
