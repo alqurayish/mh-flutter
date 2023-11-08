@@ -1,18 +1,18 @@
 "/Users/marina/StudioProjects/mh-flutter/ios/Pods/FirebaseSessions/FirebaseSessions/Sources/SessionStartEvent.swift":
-  dependencies: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/FirebaseSessions.build/Objects-normal/x86_64/SessionStartEvent.d"
-  const-values: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/FirebaseSessions.build/Objects-normal/x86_64/SessionStartEvent.swiftconstvalues"
-  swift-dependencies: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/FirebaseSessions.build/Objects-normal/x86_64/SessionStartEvent.swiftdeps"
   diagnostics: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/FirebaseSessions.build/Objects-normal/x86_64/SessionStartEvent.dia"
+  dependencies: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/FirebaseSessions.build/Objects-normal/x86_64/SessionStartEvent.d"
+  swift-dependencies: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/FirebaseSessions.build/Objects-normal/x86_64/SessionStartEvent.swiftdeps"
   object: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/FirebaseSessions.build/Objects-normal/x86_64/SessionStartEvent.o"
+  const-values: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/FirebaseSessions.build/Objects-normal/x86_64/SessionStartEvent.swiftconstvalues"
+"/Users/marina/StudioProjects/mh-flutter/ios/Pods/FirebaseSessions/FirebaseSessions/Sources/Settings/SettingsDownloadClient.swift":
+  swift-dependencies: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/FirebaseSessions.build/Objects-normal/x86_64/SettingsDownloadClient.swiftdeps"
+  const-values: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/FirebaseSessions.build/Objects-normal/x86_64/SettingsDownloadClient.swiftconstvalues"
+  object: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/FirebaseSessions.build/Objects-normal/x86_64/SettingsDownloadClient.o"
+  dependencies: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/FirebaseSessions.build/Objects-normal/x86_64/SettingsDownloadClient.d"
+  diagnostics: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/FirebaseSessions.build/Objects-normal/x86_64/SettingsDownloadClient.dia"
 "/Users/marina/StudioProjects/mh-flutter/ios/Pods/FirebaseSessions/FirebaseSessions/Sources/Settings/SettingsCacheClient.swift":
-  const-values: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/FirebaseSessions.build/Objects-normal/x86_64/SettingsCacheClient.swiftconstvalues"
   object: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/FirebaseSessions.build/Objects-normal/x86_64/SettingsCacheClient.o"
   swift-dependencies: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/FirebaseSessions.build/Objects-normal/x86_64/SettingsCacheClient.swiftdeps"
   dependencies: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/FirebaseSessions.build/Objects-normal/x86_64/SettingsCacheClient.d"
+  const-values: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/FirebaseSessions.build/Objects-normal/x86_64/SettingsCacheClient.swiftconstvalues"
   diagnostics: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/FirebaseSessions.build/Objects-normal/x86_64/SettingsCacheClient.dia"
-"/Users/marina/StudioProjects/mh-flutter/ios/Pods/FirebaseSessions/FirebaseSessions/Sources/Settings/SettingsDownloadClient.swift":
-  swift-dependencies: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/FirebaseSessions.build/Objects-normal/x86_64/SettingsDownloadClient.swiftdeps"
-  dependencies: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/FirebaseSessions.build/Objects-normal/x86_64/SettingsDownloadClient.d"
-  const-values: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/FirebaseSessions.build/Objects-normal/x86_64/SettingsDownloadClient.swiftconstvalues"
-  object: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/FirebaseSessions.build/Objects-normal/x86_64/SettingsDownloadClient.o"
-  diagnostics: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/FirebaseSessions.build/Objects-normal/x86_64/SettingsDownloadClient.dia"

@@ -1,18 +1,18 @@
-"/Users/marina/StudioProjects/mh-flutter/ios/Pods/DKImagePickerController/Sources/DKImagePickerController/View/Cell/DKAssetGroupDetailCameraCell.swift":
-  dependencies: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/arm64/DKAssetGroupDetailCameraCell.d"
-  swift-dependencies: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/arm64/DKAssetGroupDetailCameraCell.swiftdeps"
-  object: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/arm64/DKAssetGroupDetailCameraCell.o"
-  const-values: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/arm64/DKAssetGroupDetailCameraCell.swiftconstvalues"
-  diagnostics: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/arm64/DKAssetGroupDetailCameraCell.dia"
-"/Users/marina/StudioProjects/mh-flutter/ios/Pods/DKImagePickerController/Sources/DKImagePickerController/View/DKAssetGroupDetailVC.swift":
-  diagnostics: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/arm64/DKAssetGroupDetailVC.dia"
-  const-values: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/arm64/DKAssetGroupDetailVC.swiftconstvalues"
-  object: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/arm64/DKAssetGroupDetailVC.o"
-  dependencies: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/arm64/DKAssetGroupDetailVC.d"
-  swift-dependencies: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/arm64/DKAssetGroupDetailVC.swiftdeps"
-"/Users/marina/StudioProjects/mh-flutter/ios/Pods/DKImagePickerController/Sources/DKImagePickerController/View/Cell/DKAssetGroupDetailImageCell.swift":
-  object: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/arm64/DKAssetGroupDetailImageCell.o"
-  diagnostics: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/arm64/DKAssetGroupDetailImageCell.dia"
-  const-values: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/arm64/DKAssetGroupDetailImageCell.swiftconstvalues"
-  dependencies: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/arm64/DKAssetGroupDetailImageCell.d"
-  swift-dependencies: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/arm64/DKAssetGroupDetailImageCell.swiftdeps"
+"/Users/marina/StudioProjects/mh-flutter/ios/Pods/DKImagePickerController/Sources/DKImageDataManager/Model/DKAsset+Export.swift":
+  const-values: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/arm64/DKAsset+Export.swiftconstvalues"
+  object: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/arm64/DKAsset+Export.o"
+  dependencies: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/arm64/DKAsset+Export.d"
+  swift-dependencies: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/arm64/DKAsset+Export.swiftdeps"
+  diagnostics: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/arm64/DKAsset+Export.dia"
+"/Users/marina/StudioProjects/mh-flutter/ios/Pods/DKImagePickerController/Sources/DKImageDataManager/Model/DKAsset.swift":
+  const-values: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/arm64/DKAsset.swiftconstvalues"
+  object: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/arm64/DKAsset.o"
+  swift-dependencies: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/arm64/DKAsset.swiftdeps"
+  dependencies: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/arm64/DKAsset.d"
+  diagnostics: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/arm64/DKAsset.dia"
+"/Users/marina/StudioProjects/mh-flutter/ios/Pods/DKImagePickerController/Sources/DKImageDataManager/Model/DKAsset+Fetch.swift":
+  diagnostics: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/arm64/DKAsset+Fetch.dia"
+  dependencies: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/arm64/DKAsset+Fetch.d"
+  object: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/arm64/DKAsset+Fetch.o"
+  const-values: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/arm64/DKAsset+Fetch.swiftconstvalues"
+  swift-dependencies: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/arm64/DKAsset+Fetch.swiftdeps"

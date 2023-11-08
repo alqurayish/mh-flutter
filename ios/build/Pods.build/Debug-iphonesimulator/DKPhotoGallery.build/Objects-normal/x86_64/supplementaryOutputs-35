@@ -1,18 +1,18 @@
-"/Users/marina/StudioProjects/mh-flutter/ios/Pods/DKPhotoGallery/DKPhotoGallery/DKPhotoPreviewFactory.swift":
-  object: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/DKPhotoGallery.build/Objects-normal/x86_64/DKPhotoPreviewFactory.o"
-  const-values: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/DKPhotoGallery.build/Objects-normal/x86_64/DKPhotoPreviewFactory.swiftconstvalues"
-  swift-dependencies: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/DKPhotoGallery.build/Objects-normal/x86_64/DKPhotoPreviewFactory.swiftdeps"
-  diagnostics: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/DKPhotoGallery.build/Objects-normal/x86_64/DKPhotoPreviewFactory.dia"
-  dependencies: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/DKPhotoGallery.build/Objects-normal/x86_64/DKPhotoPreviewFactory.d"
-"/Users/marina/StudioProjects/mh-flutter/ios/Pods/DKPhotoGallery/DKPhotoGallery/Preview/DKPhotoProgressIndicator.swift":
-  swift-dependencies: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/DKPhotoGallery.build/Objects-normal/x86_64/DKPhotoProgressIndicator.swiftdeps"
-  const-values: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/DKPhotoGallery.build/Objects-normal/x86_64/DKPhotoProgressIndicator.swiftconstvalues"
-  object: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/DKPhotoGallery.build/Objects-normal/x86_64/DKPhotoProgressIndicator.o"
-  diagnostics: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/DKPhotoGallery.build/Objects-normal/x86_64/DKPhotoProgressIndicator.dia"
-  dependencies: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/DKPhotoGallery.build/Objects-normal/x86_64/DKPhotoProgressIndicator.d"
 "/Users/marina/StudioProjects/mh-flutter/ios/Pods/DKPhotoGallery/DKPhotoGallery/Preview/DKPhotoProgressIndicatorProtocol.swift":
-  dependencies: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/DKPhotoGallery.build/Objects-normal/x86_64/DKPhotoProgressIndicatorProtocol.d"
-  diagnostics: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/DKPhotoGallery.build/Objects-normal/x86_64/DKPhotoProgressIndicatorProtocol.dia"
   object: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/DKPhotoGallery.build/Objects-normal/x86_64/DKPhotoProgressIndicatorProtocol.o"
+  diagnostics: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/DKPhotoGallery.build/Objects-normal/x86_64/DKPhotoProgressIndicatorProtocol.dia"
+  dependencies: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/DKPhotoGallery.build/Objects-normal/x86_64/DKPhotoProgressIndicatorProtocol.d"
   const-values: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/DKPhotoGallery.build/Objects-normal/x86_64/DKPhotoProgressIndicatorProtocol.swiftconstvalues"
   swift-dependencies: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/DKPhotoGallery.build/Objects-normal/x86_64/DKPhotoProgressIndicatorProtocol.swiftdeps"
+"/Users/marina/StudioProjects/mh-flutter/ios/Pods/DKPhotoGallery/DKPhotoGallery/DKPhotoPreviewFactory.swift":
+  diagnostics: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/DKPhotoGallery.build/Objects-normal/x86_64/DKPhotoPreviewFactory.dia"
+  const-values: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/DKPhotoGallery.build/Objects-normal/x86_64/DKPhotoPreviewFactory.swiftconstvalues"
+  swift-dependencies: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/DKPhotoGallery.build/Objects-normal/x86_64/DKPhotoPreviewFactory.swiftdeps"
+  dependencies: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/DKPhotoGallery.build/Objects-normal/x86_64/DKPhotoPreviewFactory.d"
+  object: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/DKPhotoGallery.build/Objects-normal/x86_64/DKPhotoPreviewFactory.o"
+"/Users/marina/StudioProjects/mh-flutter/ios/Pods/DKPhotoGallery/DKPhotoGallery/Preview/DKPhotoProgressIndicator.swift":
+  dependencies: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/DKPhotoGallery.build/Objects-normal/x86_64/DKPhotoProgressIndicator.d"
+  const-values: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/DKPhotoGallery.build/Objects-normal/x86_64/DKPhotoProgressIndicator.swiftconstvalues"
+  swift-dependencies: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/DKPhotoGallery.build/Objects-normal/x86_64/DKPhotoProgressIndicator.swiftdeps"
+  diagnostics: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/DKPhotoGallery.build/Objects-normal/x86_64/DKPhotoProgressIndicator.dia"
+  object: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/DKPhotoGallery.build/Objects-normal/x86_64/DKPhotoProgressIndicator.o"

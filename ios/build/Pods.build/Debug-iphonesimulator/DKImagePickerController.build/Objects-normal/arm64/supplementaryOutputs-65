@@ -1,18 +1,18 @@
+"/Users/marina/StudioProjects/mh-flutter/ios/Pods/DKImagePickerController/Sources/DKImagePickerController/Resource/DKImagePickerControllerResource.swift":
+  const-values: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/arm64/DKImagePickerControllerResource.swiftconstvalues"
+  swift-dependencies: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/arm64/DKImagePickerControllerResource.swiftdeps"
+  diagnostics: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/arm64/DKImagePickerControllerResource.dia"
+  object: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/arm64/DKImagePickerControllerResource.o"
+  dependencies: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/arm64/DKImagePickerControllerResource.d"
 "/Users/marina/StudioProjects/mh-flutter/ios/Pods/DKImagePickerController/Sources/DKImagePickerController/DKImagePickerControllerBaseUIDelegate.swift":
   dependencies: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/arm64/DKImagePickerControllerBaseUIDelegate.d"
+  const-values: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/arm64/DKImagePickerControllerBaseUIDelegate.swiftconstvalues"
+  swift-dependencies: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/arm64/DKImagePickerControllerBaseUIDelegate.swiftdeps"
   diagnostics: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/arm64/DKImagePickerControllerBaseUIDelegate.dia"
   object: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/arm64/DKImagePickerControllerBaseUIDelegate.o"
-  swift-dependencies: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/arm64/DKImagePickerControllerBaseUIDelegate.swiftdeps"
-  const-values: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/arm64/DKImagePickerControllerBaseUIDelegate.swiftconstvalues"
-"/Users/marina/StudioProjects/mh-flutter/ios/Pods/DKImagePickerController/Sources/DKImagePickerController/Resource/DKImagePickerControllerResource.swift":
-  dependencies: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/arm64/DKImagePickerControllerResource.d"
-  object: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/arm64/DKImagePickerControllerResource.o"
-  const-values: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/arm64/DKImagePickerControllerResource.swiftconstvalues"
-  diagnostics: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/arm64/DKImagePickerControllerResource.dia"
-  swift-dependencies: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/arm64/DKImagePickerControllerResource.swiftdeps"
 "/Users/marina/StudioProjects/mh-flutter/ios/Pods/DKImagePickerController/Sources/DKImagePickerController/DKImagePickerController.swift":
-  diagnostics: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/arm64/DKImagePickerController.dia"
   swift-dependencies: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/arm64/DKImagePickerController.swiftdeps"
+  diagnostics: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/arm64/DKImagePickerController.dia"
   object: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/arm64/DKImagePickerController.o"
   dependencies: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/arm64/DKImagePickerController.d"
   const-values: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/DKImagePickerController.build/Objects-normal/arm64/DKImagePickerController.swiftconstvalues"

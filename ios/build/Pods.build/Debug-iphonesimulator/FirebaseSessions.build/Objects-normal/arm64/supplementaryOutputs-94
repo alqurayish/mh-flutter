@@ -1,18 +1,18 @@
 "/Users/marina/StudioProjects/mh-flutter/ios/Pods/FirebaseSessions/FirebaseSessions/Sources/Public/SessionsProvider.swift":
   swift-dependencies: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/FirebaseSessions.build/Objects-normal/arm64/SessionsProvider.swiftdeps"
   object: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/FirebaseSessions.build/Objects-normal/arm64/SessionsProvider.o"
-  const-values: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/FirebaseSessions.build/Objects-normal/arm64/SessionsProvider.swiftconstvalues"
   dependencies: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/FirebaseSessions.build/Objects-normal/arm64/SessionsProvider.d"
+  const-values: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/FirebaseSessions.build/Objects-normal/arm64/SessionsProvider.swiftconstvalues"
   diagnostics: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/FirebaseSessions.build/Objects-normal/arm64/SessionsProvider.dia"
 "/Users/marina/StudioProjects/mh-flutter/ios/Pods/FirebaseSessions/FirebaseSessions/Sources/Public/SessionsSubscriber.swift":
+  dependencies: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/FirebaseSessions.build/Objects-normal/arm64/SessionsSubscriber.d"
   diagnostics: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/FirebaseSessions.build/Objects-normal/arm64/SessionsSubscriber.dia"
   object: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/FirebaseSessions.build/Objects-normal/arm64/SessionsSubscriber.o"
   const-values: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/FirebaseSessions.build/Objects-normal/arm64/SessionsSubscriber.swiftconstvalues"
-  dependencies: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/FirebaseSessions.build/Objects-normal/arm64/SessionsSubscriber.d"
   swift-dependencies: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/FirebaseSessions.build/Objects-normal/arm64/SessionsSubscriber.swiftdeps"
 "/Users/marina/StudioProjects/mh-flutter/ios/Pods/FirebaseSessions/FirebaseSessions/Sources/Settings/SessionsSettings.swift":
-  object: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/FirebaseSessions.build/Objects-normal/arm64/SessionsSettings.o"
-  dependencies: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/FirebaseSessions.build/Objects-normal/arm64/SessionsSettings.d"
-  diagnostics: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/FirebaseSessions.build/Objects-normal/arm64/SessionsSettings.dia"
   const-values: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/FirebaseSessions.build/Objects-normal/arm64/SessionsSettings.swiftconstvalues"
   swift-dependencies: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/FirebaseSessions.build/Objects-normal/arm64/SessionsSettings.swiftdeps"
+  diagnostics: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/FirebaseSessions.build/Objects-normal/arm64/SessionsSettings.dia"
+  object: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/FirebaseSessions.build/Objects-normal/arm64/SessionsSettings.o"
+  dependencies: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/FirebaseSessions.build/Objects-normal/arm64/SessionsSettings.d"

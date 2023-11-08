@@ -1,18 +1,18 @@
-"/Users/marina/StudioProjects/mh-flutter/ios/Pods/PromisesSwift/Sources/Promises/Promise+Catch.swift":
-  dependencies: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/PromisesSwift.build/Objects-normal/arm64/Promise+Catch.d"
-  const-values: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/PromisesSwift.build/Objects-normal/arm64/Promise+Catch.swiftconstvalues"
-  swift-dependencies: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/PromisesSwift.build/Objects-normal/arm64/Promise+Catch.swiftdeps"
-  diagnostics: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/PromisesSwift.build/Objects-normal/arm64/Promise+Catch.dia"
-  object: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/PromisesSwift.build/Objects-normal/arm64/Promise+Catch.o"
 "/Users/marina/StudioProjects/mh-flutter/ios/Pods/PromisesSwift/Sources/Promises/Promise+Delay.swift":
-  dependencies: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/PromisesSwift.build/Objects-normal/arm64/Promise+Delay.d"
-  object: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/PromisesSwift.build/Objects-normal/arm64/Promise+Delay.o"
   swift-dependencies: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/PromisesSwift.build/Objects-normal/arm64/Promise+Delay.swiftdeps"
   diagnostics: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/PromisesSwift.build/Objects-normal/arm64/Promise+Delay.dia"
+  dependencies: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/PromisesSwift.build/Objects-normal/arm64/Promise+Delay.d"
+  object: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/PromisesSwift.build/Objects-normal/arm64/Promise+Delay.o"
   const-values: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/PromisesSwift.build/Objects-normal/arm64/Promise+Delay.swiftconstvalues"
 "/Users/marina/StudioProjects/mh-flutter/ios/Pods/PromisesSwift/Sources/Promises/Promise+Do.swift":
   dependencies: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/PromisesSwift.build/Objects-normal/arm64/Promise+Do.d"
   object: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/PromisesSwift.build/Objects-normal/arm64/Promise+Do.o"
-  diagnostics: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/PromisesSwift.build/Objects-normal/arm64/Promise+Do.dia"
   swift-dependencies: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/PromisesSwift.build/Objects-normal/arm64/Promise+Do.swiftdeps"
+  diagnostics: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/PromisesSwift.build/Objects-normal/arm64/Promise+Do.dia"
   const-values: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/PromisesSwift.build/Objects-normal/arm64/Promise+Do.swiftconstvalues"
+"/Users/marina/StudioProjects/mh-flutter/ios/Pods/PromisesSwift/Sources/Promises/Promise+Catch.swift":
+  object: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/PromisesSwift.build/Objects-normal/arm64/Promise+Catch.o"
+  swift-dependencies: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/PromisesSwift.build/Objects-normal/arm64/Promise+Catch.swiftdeps"
+  const-values: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/PromisesSwift.build/Objects-normal/arm64/Promise+Catch.swiftconstvalues"
+  diagnostics: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/PromisesSwift.build/Objects-normal/arm64/Promise+Catch.dia"
+  dependencies: "/Users/marina/StudioProjects/mh-flutter/ios/build/Pods.build/Debug-iphonesimulator/PromisesSwift.build/Objects-normal/arm64/Promise+Catch.d"
