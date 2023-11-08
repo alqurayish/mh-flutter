@@ -14,7 +14,6 @@ dependencies:
 
   # state management, routing
   get: ^4.6.6
-  gap: ^3.0.1
 
   # local storage
   get_storage: ^2.1.1

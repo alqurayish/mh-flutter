@@ -81,29 +81,29 @@ class AdminAllEmployeesView extends GetView<AdminAllEmployeesController> {
           ),
           const Spacer(),
           Obx(() => Visibility(
-            visible: controller.nationalityDataLoad.value == true && controller.hourlyRateDataLoaded.value == true,
+              visible: controller.nationalityDataLoad.value == true && controller.hourlyRateDataLoaded.value == true,
               child: GestureDetector(
-            onTap: () => CustomFilter.customFilter(
-              context: controller.context!,
-              hourlyRateDetails: controller.hourlyRateDetails.value,
-              nationalityList: controller.nationalityList,
-              onApplyClick: controller.onApplyClick,
-              onResetClick: controller.onResetClick,
-              showPositionId: true,
-            ),
-            child: Container(
-              width: 36.w,
-              height: 36.w,
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                color: MyColors.c_DDBD68,
-              ),
-              child: const Icon(
-                Icons.filter_list_rounded,
-                color: Colors.white,
-              ),
-            ),
-          )))
+                onTap: () => CustomFilter.customFilter(
+                  context: controller.context!,
+                  hourlyRateDetails: controller.hourlyRateDetails.value,
+                  nationalityList: controller.nationalityList,
+                  onApplyClick: controller.onApplyClick,
+                  onResetClick: controller.onResetClick,
+                  showPositionId: true,
+                ),
+                child: Container(
+                  width: 36.w,
+                  height: 36.w,
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: MyColors.c_DDBD68,
+                  ),
+                  child: const Icon(
+                    Icons.filter_list_rounded,
+                    color: Colors.white,
+                  ),
+                ),
+              )))
         ],
       ),
     );
@@ -202,7 +202,7 @@ class AdminAllEmployeesView extends GetView<AdminAllEmployeesController> {
                       Row(
                         children: [
                           _detailsItem(controller.getPositionLogo(user.positionId!), user.positionName ?? "", ""),
-                          _activeStatus(available: user.available ?? ''),
+                          _activeStatus(active: user.active ?? false),
                           const SizedBox(width: 7),
                         ],
                       ),
@@ -294,16 +294,14 @@ class AdminAllEmployeesView extends GetView<AdminAllEmployeesController> {
         ),
       );
 
-  Widget _activeStatus({required String available}) => Container(
+  Widget _activeStatus({required bool active}) => Container(
         padding: const EdgeInsets.symmetric(
           horizontal: 5,
           vertical: 2,
         ),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(50),
-          color: ((available.isEmpty || int.parse(available.split(' ').first) <= 0))
-              ? MyColors.c_FF5029_10
-              : MyColors.c_00C92C_10,
+          color: ((active == true)) ? MyColors.c_00C92C_10 : MyColors.c_FF5029_10,
         ),
         child: Row(
           children: [
@@ -312,13 +310,11 @@ class AdminAllEmployeesView extends GetView<AdminAllEmployeesController> {
               width: 11,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: ((available.isEmpty || int.parse(available.split(' ').first) <= 0))
-                    ? MyColors.c_C92C1A
-                    : MyColors.c_00C92C,
+                color: ((active == true)) ? MyColors.c_00C92C : MyColors.c_C92C1A,
               ),
             ),
             const SizedBox(width: 5),
-            Text(((available.isEmpty || int.parse(available.split(' ').first) <= 0)) ? 'Booked' : 'Available',
+            Text(((active == true)) ? 'Active' : 'Inactive',
                 style: MyColors.l111111_dwhite(controller.context!).medium11)
           ],
         ),

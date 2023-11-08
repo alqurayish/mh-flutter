@@ -118,7 +118,6 @@ class EmployeeHomeController extends GetxController {
     response.fold((CustomError customError) {
       Utils.errorDialog(context!, customError..onRetry = _getTodayCheckInOutDetails);
     }, (TodayCheckInOutDetails details) {
-      Logcat.msg(details.toJson().toString(), printWithLog: true);
       if (details.status == 'success' && details.details != null) {
         todayCheckInOutDetails.value = details;
         checkOut.value = false;
@@ -507,22 +506,4 @@ class EmployeeHomeController extends GetxController {
           child: const CheckOutSuccessWidget()));
     }
   }
-
- /* void connectWithSocket() {
-    try {
-      socket = i_o.io("http://52.86.43.146:8000", <String, dynamic>{
-        "transports": ["websocket"],
-        "autoConnect": false,
-      });
-      socket?.connect();
-      socket?.onConnect((_) {
-        socket?.on('notification', (data) {
-            //Get.find<NotificationsController>().getNotificationList();
-            log('ConnectWithSocket: ${jsonEncode(data)}');
-        });
-      });
-    } catch (_) {
-    }
-  }*/
-
 }

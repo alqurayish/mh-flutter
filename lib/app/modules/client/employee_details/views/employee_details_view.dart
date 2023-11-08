@@ -62,7 +62,7 @@ class EmployeeDetailsView extends GetView<EmployeeDetailsController> {
           const CustomAppbarBackButton(),
           const Spacer(),
           Container(
-            width: 244.w,
+            width: 210.w,
             height: 218.h,
             decoration: BoxDecoration(
               color: Colors.grey.withOpacity(.1),
@@ -71,6 +71,7 @@ class EmployeeDetailsView extends GetView<EmployeeDetailsController> {
             child: CustomNetworkImage(
               url: (controller.employee.profilePicture ?? "").imageUrl,
               radius: 20,
+              fit: BoxFit.fill,
             ),
           ),
           const Spacer(),

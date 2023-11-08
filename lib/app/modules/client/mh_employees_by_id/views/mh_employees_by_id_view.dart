@@ -242,7 +242,7 @@ class MhEmployeesByIdView extends GetView<MhEmployeesByIdController> {
 
   Widget _image(String profilePicture) => Container(
         margin: const EdgeInsets.fromLTRB(16, 16, 13, 16),
-        width: 74.w,
+        width: 70.w,
         height: 74.w,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5),
@@ -250,6 +250,7 @@ class MhEmployeesByIdView extends GetView<MhEmployeesByIdController> {
         ),
         child: CustomNetworkImage(
           url: profilePicture,
+          fit: BoxFit.fill,
           radius: 5,
         ),
       );

@@ -39,10 +39,10 @@ class ClientHomeView extends GetView<ClientHomeController> {
                     child: Padding(
                       padding: EdgeInsets.only(top: 15.h, right: 15.w),
                       child: Badge(
-                        backgroundColor: MyColors.c_C6A34F,
+                        backgroundColor: MyColors.c_C92C1A,
                         label: Obx(() {
                           return Text(controller.notificationsController.unreadCount.toString(),
-                              style: const TextStyle(color: MyColors.c_FFFFFF));
+                              style: MyColors.white.semiBold12);
                         }),
                         child: const Icon(CupertinoIcons.bell),
                       ),
