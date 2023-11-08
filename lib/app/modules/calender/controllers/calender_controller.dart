@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dartz/dartz.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -124,8 +126,8 @@ class CalenderController extends GetxController {
     } else if (rangeStartDate.value == null) {
       rangeStartDate.value = currentDate;
     } else if (totalDateList.anyDatesExistInRange(
-        rangeStart: rangeStartDate.value.toString().substring(0, 10),
-        rangeEnd: currentDate.toString().substring(0, 10)) ==
+            rangeStart: rangeStartDate.value.toString().substring(0, 10),
+            rangeEnd: currentDate.toString().substring(0, 10)) ==
         true) {
       Utils.showSnackBar(message: 'You cannot select this range', isTrue: false);
     } else if (rangeStartDate.value != null && currentDate.isBefore(rangeStartDate.value!)) {
@@ -148,7 +150,7 @@ class CalenderController extends GetxController {
     CustomLoader.show(context!);
 
     UpdateUnavailableDateRequestModel updateUnavailableDateRequestModel =
-    UpdateUnavailableDateRequestModel(unavailableDateList: unavailableDateList.toSet().toList());
+        UpdateUnavailableDateRequestModel(unavailableDateList: unavailableDateList.toSet().toList());
     _apiHelper
         .updateUnavailableDate(updateUnavailableDateRequestModel: updateUnavailableDateRequestModel)
         .then((Either<CustomError, CommonResponseModel> responseData) {
@@ -214,8 +216,8 @@ class CalenderController extends GetxController {
       selectedDates.remove(currentDate);
     } else {
       if (totalDateList.anyDatesExistInRange(
-          rangeStart: rangeStartDate.value.toString().substring(0, 10),
-          rangeEnd: currentDate.toString().substring(0, 10)) ==
+              rangeStart: rangeStartDate.value.toString().substring(0, 10),
+              rangeEnd: currentDate.toString().substring(0, 10)) ==
           false) {
         selectedDates.add(currentDate);
       }
@@ -251,7 +253,7 @@ class CalenderController extends GetxController {
         Get.back();
         final String dateToRemove = currentDate.toString().substring(0, 10);
         dateListModel.value.unavailableDates?.removeWhere(
-                (item) => item.startDate!.compareTo(dateToRemove) <= 0 && item.endDate!.compareTo(dateToRemove) >= 0);
+            (item) => item.startDate!.compareTo(dateToRemove) <= 0 && item.endDate!.compareTo(dateToRemove) >= 0);
         for (CalenderDataModel date in dateListModel.value.unavailableDates!) {
           if (!unavailableDateList.contains(Dates(startDate: date.startDate ?? '', endDate: date.endDate ?? ''))) {
             unavailableDateList.add(Dates(startDate: date.startDate ?? '', endDate: date.endDate ?? ''));
@@ -267,9 +269,7 @@ class CalenderController extends GetxController {
   ///---------------- For Client only ----------------------------------
 
   void onDateClickForShortList({required DateTime currentDate}) {
-    if (currentDate.isBefore(DateTime.now()) ||
-        selectedDate.value == currentDate ||
-        selectedDates.contains(currentDate) == true ||
+    if (selectedDates.contains(currentDate) == true ||
         requestDateList.any((dateRange) => isDateInSelectedRangeForShortList(currentDate, dateRange)) == true) {
       return; // Skip processing for previous dates and current date
     }
@@ -300,9 +300,9 @@ class CalenderController extends GetxController {
             ));
       } else if (rangeEndDate.value != null && rangeStartDate.value != null) {
         requestDateList.removeWhere(
-                (RequestDateModel element) => element.startDate == rangeStartDate.value.toString().substring(0, 10));
+            (RequestDateModel element) => element.startDate == rangeStartDate.value.toString().substring(0, 10));
         requestDateList.removeWhere(
-                (RequestDateModel element) => element.startDate == rangeEndDate.value.toString().substring(0, 10));
+            (RequestDateModel element) => element.startDate == rangeEndDate.value.toString().substring(0, 10));
         requestDateList.insert(
             0,
             RequestDateModel(
@@ -313,7 +313,6 @@ class CalenderController extends GetxController {
         rangeStartDate.value = null;
         rangeEndDate.value = null;
       }
-
       requestDateList.refresh();
     }
   }
@@ -442,23 +441,23 @@ class CalenderController extends GetxController {
   }
 
   static Widget _title(BuildContext context, String text) => Row(
-    children: [
-      _divider(context),
-      SizedBox(width: 10.w),
-      Text(
-        text,
-        style: MyColors.l7B7B7B_dtext(context).semiBold16,
-      ),
-      SizedBox(width: 10.w),
-      _divider(context),
-    ],
-  );
+        children: [
+          _divider(context),
+          SizedBox(width: 10.w),
+          Text(
+            text,
+            style: MyColors.l7B7B7B_dtext(context).semiBold16,
+          ),
+          SizedBox(width: 10.w),
+          _divider(context),
+        ],
+      );
   static Widget _divider(BuildContext context) => Expanded(
-    child: Container(
-      height: 1,
-      color: MyColors.lD9D9D9_dstock(context),
-    ),
-  );
+        child: Container(
+          height: 1,
+          color: MyColors.lD9D9D9_dstock(context),
+        ),
+      );
 
   bool get disabledBookButton {
     return requestDateList.hasNullAttributes();
@@ -467,7 +466,7 @@ class CalenderController extends GetxController {
   void onBookNowClick() async {
     if (shortListId.isNotEmpty) {
       UpdateShortListRequestModel updateShortListRequestModel =
-      UpdateShortListRequestModel(shortListId: shortListId, requestDateList: requestDateList);
+          UpdateShortListRequestModel(shortListId: shortListId, requestDateList: requestDateList);
       await _updateShortListDateOrTime(updateShortListRequestModel: updateShortListRequestModel);
     } else {
       await shortlistController.onBookNowClick(employeeId: employeeId, requestDateList: requestDateList);
@@ -478,7 +477,7 @@ class CalenderController extends GetxController {
   Future<void> _updateShortListDateOrTime({required UpdateShortListRequestModel updateShortListRequestModel}) async {
     CustomLoader.show(context!);
     Either<CustomError, Response> response =
-    await _apiHelper.updateShortlistItem(updateShortListRequestModel: updateShortListRequestModel);
+        await _apiHelper.updateShortlistItem(updateShortListRequestModel: updateShortListRequestModel);
     CustomLoader.hide(context!);
     response.fold((l) {
       Logcat.msg(l.msg);
